@@ -16,3 +16,13 @@ sql:
     managed: true
   rules:
     - sqlc/db-prepare
+- schema: "db/schema.sql"
+  queries: "db/query.sql"
+  engine: "mysql"
+  codegen:
+  - out: src/db
+    plugin: ts
+    options:
+      runtime: node
+      driver: mysql2
+  
