@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,9 +9,9 @@ import (
 	"path/filepath"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/computerextra/golang-backend/env"
+	"github.com/computerextra/golang-backend/mitarbeiter"
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 )
 
 // spaHandler implements the http.Handler interface, so we can use it
@@ -22,16 +21,6 @@ import (
 type spaHandler struct {
 	staticPath string
 	indexPath  string
-}
-
-// Get .env Vars
-func GetEnv(key string) string {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	return os.Getenv(key)
 }
 
 // ServeHTTP inspects the URL path to locate a file within the static dir
@@ -61,14 +50,6 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// Get Database
-	db, err := sql.Open("mysql", GetEnv("DATABASE_URL"))
-	if err != nil {
-		panic(err)
-	}
-	db.SetConnMaxIdleTime(time.Minute * 3)
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(10)
 
 	router := mux.NewRouter()
 
@@ -76,11 +57,14 @@ func main() {
 		// an example API handler
 		json.NewEncoder(w).Encode(map[string]bool{"okasd": true})
 	})
+	router.HandleFunc("/api/mitarbeiter", mitarbeiter.GetAll).Methods(http.MethodGet)
+
+	router.Use(mux.CORSMethodMiddleware(router))
 
 	spa := spaHandler{staticPath: "dist", indexPath: "index.html"}
 	router.PathPrefix("/").Handler(spa)
 
-	port := GetEnv("VITE_PORT")
+	port := env.GetEnv("VITE_PORT")
 	srv := &http.Server{
 		Handler: router,
 		Addr:    fmt.Sprintf("127.0.0.1:%v", port),
