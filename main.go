@@ -12,6 +12,7 @@ import (
 	"github.com/computerextra/golang-backend/env"
 	"github.com/computerextra/golang-backend/mitarbeiter"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 // spaHandler implements the http.Handler interface, so we can use it
@@ -57,16 +58,20 @@ func main() {
 		// an example API handler
 		json.NewEncoder(w).Encode(map[string]bool{"okasd": true})
 	})
-	router.HandleFunc("/api/mitarbeiter", mitarbeiter.GetAll).Methods(http.MethodGet)
+	router.HandleFunc("/api/user", mitarbeiter.GetAll).Methods(http.MethodGet)
+	router.HandleFunc("/api/user/{id}", mitarbeiter.Get).Methods(http.MethodGet)
 
-	router.Use(mux.CORSMethodMiddleware(router))
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+	})
+	handler := c.Handler(router)
 
 	spa := spaHandler{staticPath: "dist", indexPath: "index.html"}
 	router.PathPrefix("/").Handler(spa)
 
 	port := env.GetEnv("VITE_PORT")
 	srv := &http.Server{
-		Handler: router,
+		Handler: handler,
 		Addr:    fmt.Sprintf("127.0.0.1:%v", port),
 		// Good Pratice: enfoce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
