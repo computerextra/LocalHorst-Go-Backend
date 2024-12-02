@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -79,9 +80,10 @@ func main() {
 	spa := spaHandler{staticPath: "dist", indexPath: "index.html"}
 	router.PathPrefix("/").Handler(spa)
 
+	port := GetEnv("VITE_PORT")
 	srv := &http.Server{
 		Handler: router,
-		Addr:    "127.0.0.1:8000",
+		Addr:    fmt.Sprintf("127.0.0.1:%v", port),
 		// Good Pratice: enfoce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

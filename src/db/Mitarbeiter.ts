@@ -10,8 +10,10 @@ import type {
   GetUsersRow,
 } from "./query_sql";
 
+const port = import.meta.env.VITE_PORT;
+
 const client = axios.create({
-  baseURL: "http://127.0.0.1/api",
+  baseURL: `http://127.0.0.1:${port}/api`,
 });
 
 const getUser = async (args: GetUserArgs): Promise<GetUserRow | null> => {
