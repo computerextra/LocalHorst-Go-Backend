@@ -63,7 +63,11 @@ func main() {
 	router.HandleFunc("/api/user/{id}", mitarbeiter.Get).Methods(http.MethodGet)
 
 	// Einkauf
+	router.HandleFunc("/api/Einkauf", mitarbeiter.GetEinkaufListe).Methods(http.MethodGet)
 	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.GetEinkauf).Methods(http.MethodGet)
+	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.Updateeinkauf).Methods(http.MethodPost)
+	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.DeleteEinkauf).Methods(http.MethodDelete)
+	router.HandleFunc("/api/Einkauf/skip", mitarbeiter.SkipEinkauf).Methods(http.MethodPost)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},

@@ -38,3 +38,9 @@ Bild3 = ?,
 Bild1Date = ?,
 Bild2Date = ?,
 Bild3Date = ?;
+
+-- name: SkipEinkauf :exec
+UPDATE Einkauf SET Abgeschickt = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE id = ?;
+
+-- name: DeleteEinkauf :exec
+DELETE FROM Einkauf WHERE id = ?;

@@ -5,6 +5,27 @@ export interface GetEinkaufArgs {
   id: string;
 }
 
+export interface UpdateEinkaufArgs {
+  id: string;
+  mitarbeiterId: string;
+  Abonniert: boolean;
+  Bild1?: string;
+  Bild2?: string;
+  Bild3?: string;
+  Dinge?: string;
+  Geld?: string;
+  Paypal: boolean;
+  Pfand?: string;
+}
+
+export interface SkipEinkaufArgs {
+  id: string;
+}
+
+export interface DeleteEinkaufArgs {
+  id: string;
+}
+
 export interface Einkauf {
   Abgeschickt: {
     Valid: boolean;
@@ -52,17 +73,50 @@ export interface Einkauf {
   };
 }
 
+const config: AxiosRequestConfig = {
+  headers: {
+    Accept: "application/json",
+  } as RawAxiosRequestHeaders,
+};
+
 // 127.0.0.1:8000/api/Einkauf/cltplzdp80000zlfc0rae9dnt
 
 const getEinkauf = async (args: GetEinkaufArgs): Promise<Einkauf | null> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   const res = await client.get<Einkauf | null>(`/Einkauf/${args.id}`, config);
 
   return res.data;
 };
 
-export { getEinkauf };
+const getEinkaufsListe = async (): Promise<Einkauf[]> => {
+  const res = await client.get<Einkauf[]>("/Einkauf", config);
+
+  return res.data;
+};
+
+const updateEinkauf = async (args: UpdateEinkaufArgs): Promise<Einkauf> => {
+  const data = {
+    ...args,
+  };
+  const res = await client.post<Einkauf>(`/Einkauf/${args.id}`, data, config);
+
+  return res.data;
+};
+
+const skipEinkauf = async (args: SkipEinkaufArgs): Promise<void> => {
+  const data = {
+    ...args,
+  };
+  await client.post(`/Einkauf/skip`, data, config);
+};
+
+const deleteEinkauf = async (args: DeleteEinkaufArgs): Promise<void> => {
+  await client.delete(`/Einkauf/${args.id}`, config);
+};
+
+export {
+  getEinkauf,
+  getEinkaufsListe,
+  updateEinkauf,
+  skipEinkauf,
+  deleteEinkauf,
+};

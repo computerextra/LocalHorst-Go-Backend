@@ -58,23 +58,19 @@ export interface Mitarbeiter {
   };
 }
 
+const config: AxiosRequestConfig = {
+  headers: {
+    Accept: "application/json",
+  } as RawAxiosRequestHeaders,
+};
+
 const getUser = async (args: GetUserArgs): Promise<Mitarbeiter | null> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   const res = await client.get<Mitarbeiter | null>(`/user/${args.id}`, config);
 
   return res.data;
 };
 
 const getUsers = async (): Promise<Mitarbeiter[]> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   const res = await client.get<Mitarbeiter[]>("/user", config);
 
   return res.data;
@@ -91,11 +87,6 @@ const getUsers = async (): Promise<Mitarbeiter[]> => {
 // };
 
 const deleteUser = async (args: GetUserArgs): Promise<void> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   return await client.delete(`/user/${args.id}`, config);
 };
 
