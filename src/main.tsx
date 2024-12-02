@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import RootLayout from "./components/RootLayout";
 import Mitarbeiter from "./Pages/Mitarbeiter/Overview";
 import MitarbeiterDetail from "./Pages/Mitarbeiter/Details";
+import MitarbeiterBearbeiten from "./Pages/Mitarbeiter/Berabeiten";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,10 +25,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="Telefon" element={<>Mitarbeiter Telefonliste</>} />
             <Route path="Geburtstag" element={<>Mitarbeiter Geburtstage</>} />
             <Route path=":mid" element={<MitarbeiterDetail />} />
-            <Route
-              path=":mid/Bearbeiten"
-              element={<>Mitarbeiter bearbeiten</>}
-            />
+            <Route path=":mid/Bearbeiten" element={<MitarbeiterBearbeiten />} />
             <Route path="Neu" element={<>Neuer Mitarbeiter</>} />
           </Route>
 

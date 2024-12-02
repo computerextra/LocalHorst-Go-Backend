@@ -40,7 +40,6 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 
 		json.NewEncoder(w).Encode(User)
 	}
-
 }
 
 func Get(w http.ResponseWriter, r *http.Request) {

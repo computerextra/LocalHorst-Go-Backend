@@ -82,7 +82,14 @@ const config: AxiosRequestConfig = {
 // 127.0.0.1:8000/api/Einkauf/cltplzdp80000zlfc0rae9dnt
 
 const getEinkauf = async (args: GetEinkaufArgs): Promise<Einkauf | null> => {
-  const res = await client.get<Einkauf | null>(`/Einkauf/${args.id}`, config);
+  const res = await client.get<Einkauf | { error: string }>(
+    `/Einkauf/${args.id}`,
+    config
+  );
+
+  if ("error" in res.data) {
+    return null;
+  }
 
   return res.data;
 };
