@@ -5,8 +5,9 @@ export default function RootLayout() {
   return (
     <>
       <Navigation />
-      <h1>Root Layout</h1>
-      <Outlet />
+      <div className="container mx-auto mt-5">
+        <Outlet />
+      </div>
     </>
   );
 }

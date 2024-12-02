@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { getUser, Mitarbeiter } from "@/db/Mitarbeiter";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -21,6 +22,11 @@ export default function MitarbeiterDetail() {
     void x();
   }, [mid]);
 
-  if (loading) return <>Loading ... </>;
-  return <>{mitarbeiter?.Name}</>;
+  if (loading) return <LoadingSpinner />;
+
+  return (
+    <>
+      <h1>{mitarbeiter?.Name}</h1>
+    </>
+  );
 }
