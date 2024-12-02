@@ -61,6 +61,9 @@ func main() {
 	// Mitarbeiter
 	router.HandleFunc("/api/user", mitarbeiter.GetAll).Methods(http.MethodGet)
 	router.HandleFunc("/api/user/{id}", mitarbeiter.Get).Methods(http.MethodGet)
+	router.HandleFunc("/api/user/{id}", mitarbeiter.Edit).Methods(http.MethodPatch)
+	router.HandleFunc("/api/user/{id}", mitarbeiter.Delete).Methods(http.MethodDelete)
+	router.HandleFunc("/api/user/", mitarbeiter.Create).Methods(http.MethodPost)
 
 	// Einkauf
 	router.HandleFunc("/api/Einkauf", mitarbeiter.GetEinkaufListe).Methods(http.MethodGet)

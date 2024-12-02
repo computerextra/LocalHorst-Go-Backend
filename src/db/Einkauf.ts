@@ -94,19 +94,13 @@ const getEinkaufsListe = async (): Promise<Einkauf[]> => {
 };
 
 const updateEinkauf = async (args: UpdateEinkaufArgs): Promise<Einkauf> => {
-  const data = {
-    ...args,
-  };
-  const res = await client.post<Einkauf>(`/Einkauf/${args.id}`, data, config);
+  const res = await client.post<Einkauf>(`/Einkauf/${args.id}`, args, config);
 
   return res.data;
 };
 
 const skipEinkauf = async (args: SkipEinkaufArgs): Promise<void> => {
-  const data = {
-    ...args,
-  };
-  await client.post(`/Einkauf/skip`, data, config);
+  await client.post(`/Einkauf/skip`, args, config);
 };
 
 const deleteEinkauf = async (args: DeleteEinkaufArgs): Promise<void> => {

@@ -5,6 +5,26 @@ export interface GetUserArgs {
   id: string;
 }
 
+export interface CreateUserArgs {
+  Name: string;
+  Short?: string;
+  Gruppenwahl?: string;
+  InternTelefon1?: string;
+  InternTelefon2?: string;
+  FestnetzAlternativ?: string;
+  FestnetzPrivat?: string;
+  HomeOffice?: string;
+  MobilBusiness?: string;
+  MobilPrivat?: string;
+  Email?: string;
+  Azubi?: string;
+  Geburtstag?: string;
+}
+
+export interface UpdateUserArgs extends CreateUserArgs {
+  id: string;
+}
+
 export interface Mitarbeiter {
   ID: string;
   Name: string;
@@ -76,18 +96,28 @@ const getUsers = async (): Promise<Mitarbeiter[]> => {
   return res.data;
 };
 
-// const createUser = async (args: CreateUserArgs): Promise<Mitarbeiter> => {
-//   const config: AxiosRequestConfig = {
-//     headers: {
-//       Accept: "application/json",
-//     } as RawAxiosRequestHeaders,
-//   };
-//   const res = await client.post<Mitarbeiter>("/user", args, config);
-//   return res.data;
-// };
+const createUser = async (args: CreateUserArgs): Promise<Mitarbeiter> => {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: "application/json",
+    } as RawAxiosRequestHeaders,
+  };
+  const res = await client.post<Mitarbeiter>("/user", args, config);
+  return res.data;
+};
+
+const updateUser = async (args: UpdateUserArgs): Promise<Mitarbeiter> => {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: "application/json",
+    } as RawAxiosRequestHeaders,
+  };
+  const res = await client.patch<Mitarbeiter>(`/user/${args.id}`, args, config);
+  return res.data;
+};
 
 const deleteUser = async (args: GetUserArgs): Promise<void> => {
   return await client.delete(`/user/${args.id}`, config);
 };
 
-export { getUser, getUsers, deleteUser };
+export { getUser, getUsers, deleteUser, createUser, updateUser };
