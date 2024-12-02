@@ -58,8 +58,12 @@ func main() {
 		// an example API handler
 		json.NewEncoder(w).Encode(map[string]bool{"okasd": true})
 	})
+	// Mitarbeiter
 	router.HandleFunc("/api/user", mitarbeiter.GetAll).Methods(http.MethodGet)
 	router.HandleFunc("/api/user/{id}", mitarbeiter.Get).Methods(http.MethodGet)
+
+	// Einkauf
+	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.GetEinkauf).Methods(http.MethodGet)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},

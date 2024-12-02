@@ -8,9 +8,11 @@ import (
 
 	"github.com/computerextra/golang-backend/db"
 	"github.com/computerextra/golang-backend/env"
+	"github.com/gorilla/mux"
 )
 
 func GetEinkauf(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
@@ -25,7 +27,7 @@ func GetEinkauf(w http.ResponseWriter, r *http.Request) {
 	datebase.SetMaxOpenConns(10)
 	datebase.SetMaxIdleConns(10)
 	queries := db.New(datebase)
-	User, err := queries.(ctx)
+	User, err := queries.GetEinkauf(ctx, id)
 	datebase.Close()
 
 	if err != nil {

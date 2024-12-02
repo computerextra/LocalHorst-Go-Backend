@@ -1,7 +1,5 @@
-import axios, {
-  type AxiosRequestConfig,
-  type RawAxiosRequestHeaders,
-} from "axios";
+import { type AxiosRequestConfig, type RawAxiosRequestHeaders } from "axios";
+import { client } from "./config";
 
 export interface GetUserArgs {
   id: string;
@@ -59,13 +57,6 @@ export interface Mitarbeiter {
     Time: Date | null;
   };
 }
-
-const port = import.meta.env.VITE_PORT;
-const API = import.meta.env.VITE_API;
-
-const client = axios.create({
-  baseURL: `${API}:${port}/api`,
-});
 
 const getUser = async (args: GetUserArgs): Promise<Mitarbeiter | null> => {
   const config: AxiosRequestConfig = {

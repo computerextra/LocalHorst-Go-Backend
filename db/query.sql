@@ -26,15 +26,15 @@ SELECT * FROM Einkauf ORDER BY Abgeschickt DESC;
 INSERT INTO Einkauf (Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date)
 VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?)
 ON DUPLICATE KEY UPDATE
-Paypal = VALUES(?),
-Abonniert = VALUES(?),
-Geld = VALUES(?),
-Pfand = VALUES(?),
-Dinge = VALUES(?),
-Abgeschickt = VALUES(NOW()),
-Bild1 = VALUES(?),
-Bild2 = VALUES(?),
-Bild3 = VALUES(?),
-Bild1Date = VALUES(?),
-Bild2Date = VALUES(?),
-Bild3Date = VALUES(?);
+Paypal = ?,
+Abonniert = ?,
+Geld = ?,
+Pfand = ?,
+Dinge = ?,
+Abgeschickt = NOW(),
+Bild1 = ?,
+Bild2 = ?,
+Bild3 = ?,
+Bild1Date = ?,
+Bild2Date = ?,
+Bild3Date = ?;
