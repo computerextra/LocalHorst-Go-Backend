@@ -13,6 +13,23 @@ HomeOffice, MobilBusiness,
 MobilPrivat, Email, Azubi, Geburtstag) 
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
+-- name: UpdateUser :execresult
+UPDATE Mitarbeiter SET
+ Name = ?,
+ Short = ?,
+ Gruppenwahl = ?,
+ InternTelefon1 = ?,
+ InternTelefon2 = ?,
+ FestnetzAlternativ = ?,
+ FestnetzPrivat = ?,
+ HomeOffice = ?,
+ MobilBusiness = ?,
+ MobilPrivat = ?,
+ Email = ?,
+ Azubi = ?,
+ Geburtstag = ?
+ WHERE id = ?;
+
 -- name: DeleteUser :exec
 DELETE FROM Mitarbeiter WHERE id = ?;
 
