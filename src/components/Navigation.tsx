@@ -40,9 +40,6 @@ export function Navigation() {
             <MenubarItem onClick={() => navigate("/Mitarbeiter")}>
               Übersicht
             </MenubarItem>
-            <MenubarItem onClick={() => navigate("/Mitarbeiter/Telefon")}>
-              Telefonliste
-            </MenubarItem>
             <MenubarItem onClick={() => navigate("/Mitarbeiter/Geburtstag")}>
               Geburtstage
             </MenubarItem>

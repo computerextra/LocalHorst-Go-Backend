@@ -1,135 +1,191 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { Einkauf, getEinkauf } from "@/db/Einkauf";
-import { getUser, Mitarbeiter } from "@/db/Mitarbeiter";
+import { getEinkauf } from "@/db/Einkauf";
+import { getUser } from "@/db/Mitarbeiter";
+import { useQuery } from "@tanstack/react-query";
 import { Check } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 export default function MitarbeiterDetail() {
   const { mid } = useParams();
-  const [mitarbeiter, setMitarbeiter] = useState<
-    undefined | null | Mitarbeiter
-  >(undefined);
-  const [einkauf, setEinkauf] = useState<undefined | null | Einkauf>(undefined);
-  const [loading, setLoading] = useState(true);
+  const {
+    data: mitarbeiter,
+    isLoading: maLoading,
+    isError: maError,
+  } = useQuery({
+    queryKey: ["user", mid],
+    queryFn: () => getUser({ id: mid ?? "" }),
+    enabled: !!mid,
+  });
+  const {
+    data: einkauf,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["einkauf", mid],
+    queryFn: () => getEinkauf({ id: mid ?? "" }),
+    enabled: !!mid,
+  });
 
-  useEffect(() => {
-    async function x() {
-      if (mid == null) return;
-
-      const user = await getUser({ id: mid });
-      const einkauf = await getEinkauf({ id: mid });
-
-      setEinkauf(einkauf);
-      setMitarbeiter(user);
-      setLoading(false);
-    }
-
-    void x();
-  }, [mid]);
-
-  if (loading) return <LoadingSpinner />;
+  if (isLoading || maLoading) return <LoadingSpinner />;
+  if (isError || maError) return <>Fehler...</>;
 
   return (
     <>
       <h1 className="mb-4">{mitarbeiter?.Name}</h1>
       {mitarbeiter && (
-        <Table>
-          <TableBody>
-            {mitarbeiter.Gruppenwahl.Valid && (
-              <TableRow>
-                <TableCell className="font-medium">Gruppenwahl:</TableCell>
-                <TableCell>{mitarbeiter.Gruppenwahl.String}</TableCell>
-              </TableRow>
-            )}
-            {(mitarbeiter.Interntelefon1.Valid ||
-              mitarbeiter.Interntelefon2.Valid) && (
-              <TableRow>
-                <TableCell className="font-medium">
-                  Interne Durchwahl:
-                </TableCell>
-                <TableCell>
-                  {mitarbeiter.Interntelefon1.Valid &&
-                    mitarbeiter.Interntelefon1.String}
-                  {mitarbeiter.Interntelefon1.Valid &&
-                    mitarbeiter.Interntelefon2.Valid && <>{" / "}</>}
-                  {mitarbeiter.Interntelefon2.Valid &&
-                    mitarbeiter.Interntelefon2.String}
-                </TableCell>
-              </TableRow>
-            )}
-            {mitarbeiter.Homeoffice.Valid && (
-              <TableRow>
-                <TableCell className="font-medium">Homeoffice:</TableCell>
-                <TableCell>{mitarbeiter.Homeoffice.String}</TableCell>
-              </TableRow>
-            )}
-            {mitarbeiter.Festnetzprivat.Valid && (
-              <TableRow>
-                <TableCell className="font-medium">Festnetz Privat:</TableCell>
-                <TableCell>
-                  <a
-                    className="underline text-primary"
-                    href={`tel:${mitarbeiter.Festnetzprivat.String}`}
-                  >
-                    {mitarbeiter.Festnetzprivat.String}
-                  </a>
-                </TableCell>
-              </TableRow>
-            )}
-            {mitarbeiter.Festnetzalternativ.Valid && (
-              <TableRow>
-                <TableCell className="font-medium">
-                  Festnetz Geschäftlich:
-                </TableCell>
-                <TableCell>
-                  <a
-                    className="underline text-primary"
-                    href={`tel:${mitarbeiter.Festnetzalternativ.String}`}
-                  >
-                    {mitarbeiter.Festnetzalternativ.String}
-                  </a>
-                </TableCell>
-              </TableRow>
-            )}
-            {mitarbeiter.Mobilbusiness.Valid && (
-              <TableRow>
-                <TableCell className="font-medium">Mobil Business:</TableCell>
-                <TableCell>
-                  <a
-                    className="underline text-primary"
-                    href={`tel:${mitarbeiter.Mobilbusiness.String}`}
-                  >
-                    {mitarbeiter.Mobilbusiness.String}
-                  </a>
-                </TableCell>
-              </TableRow>
-            )}
-            {mitarbeiter.Mobilprivat.Valid && (
-              <TableRow>
-                <TableCell className="font-medium">Mobil Privat:</TableCell>
-                <TableCell>
-                  <a
-                    className="underline text-primary"
-                    href={`tel:${mitarbeiter.Mobilprivat.String}`}
-                  >
-                    {mitarbeiter.Mobilprivat.String}
-                  </a>
-                </TableCell>
-              </TableRow>
-            )}
+        <Card key={mitarbeiter.ID}>
+          <CardHeader>
+            <CardTitle>{mitarbeiter.Name}</CardTitle>
+            <CardDescription>
+              {mitarbeiter.Email.Valid ? (
+                <a
+                  className="underline text-primary"
+                  href={`mailto:${mitarbeiter.Email.String}`}
+                >
+                  {mitarbeiter.Email.String}
+                </a>
+              ) : (
+                ""
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="min-h-[11rem]">
+            <Table>
+              <TableBody>
+                {mitarbeiter.Gruppenwahl.Valid && (
+                  <TableRow>
+                    <TableCell className="font-medium">Gruppenwahl:</TableCell>
+                    <TableCell>{mitarbeiter.Gruppenwahl.String}</TableCell>
+                  </TableRow>
+                )}
+                {(mitarbeiter.Interntelefon1.Valid ||
+                  mitarbeiter.Interntelefon2.Valid) && (
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      Interne Durchwahl:
+                    </TableCell>
+                    <TableCell>
+                      {mitarbeiter.Interntelefon1.Valid &&
+                        mitarbeiter.Interntelefon1.String}
+                      {mitarbeiter.Interntelefon1.Valid &&
+                        mitarbeiter.Interntelefon2.Valid && <>{" / "}</>}
+                      {mitarbeiter.Interntelefon2.Valid &&
+                        mitarbeiter.Interntelefon2.String}
+                    </TableCell>
+                  </TableRow>
+                )}
+                {mitarbeiter.Homeoffice.Valid && (
+                  <TableRow>
+                    <TableCell className="font-medium">Homeoffice:</TableCell>
+                    <TableCell>{mitarbeiter.Homeoffice.String}</TableCell>
+                  </TableRow>
+                )}
+                {mitarbeiter.Festnetzprivat.Valid && (
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      Festnetz Privat:
+                    </TableCell>
+                    <TableCell>
+                      <a
+                        className="underline text-primary"
+                        href={`tel:${mitarbeiter.Festnetzprivat.String}`}
+                      >
+                        {mitarbeiter.Festnetzprivat.String}
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                )}
+                {mitarbeiter.Festnetzalternativ.Valid && (
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      Festnetz Geschäftlich:
+                    </TableCell>
+                    <TableCell>
+                      <a
+                        className="underline text-primary"
+                        href={`tel:${mitarbeiter.Festnetzalternativ.String}`}
+                      >
+                        {mitarbeiter.Festnetzalternativ.String}
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                )}
+                {mitarbeiter.Mobilbusiness.Valid && (
+                  <TableRow>
+                    <TableCell className="font-medium">
+                      Mobil Business:
+                    </TableCell>
+                    <TableCell>
+                      <a
+                        className="underline text-primary"
+                        href={`tel:${mitarbeiter.Mobilbusiness.String}`}
+                      >
+                        {mitarbeiter.Mobilbusiness.String}
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                )}
+                {mitarbeiter.Mobilprivat.Valid && (
+                  <TableRow>
+                    <TableCell className="font-medium">Mobil Privat:</TableCell>
+                    <TableCell>
+                      <a
+                        className="underline text-primary"
+                        href={`tel:${mitarbeiter.Mobilprivat.String}`}
+                      >
+                        {mitarbeiter.Mobilprivat.String}
+                      </a>
+                    </TableCell>
+                  </TableRow>
+                )}
 
-            {mitarbeiter.Azubi.Valid && mitarbeiter.Azubi.Bool && (
-              <TableRow>
-                <TableCell>Azubi</TableCell>
-                <TableCell>
-                  <Check className="w-4 h-4 text-primary" />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                {mitarbeiter.Azubi.Valid && mitarbeiter.Azubi.Bool && (
+                  <TableRow>
+                    <TableCell className="font-medium">Azubi</TableCell>
+                    <TableCell>
+                      <Check className="w-4 h-4 text-primary" />
+                    </TableCell>
+                  </TableRow>
+                )}
+
+                {mitarbeiter.Geburtstag.Valid &&
+                  mitarbeiter.Geburtstag.Time && (
+                    <TableRow>
+                      <TableCell className="font-medium">Geburtstag:</TableCell>
+                      <TableCell>
+                        {new Date(
+                          mitarbeiter.Geburtstag.Time
+                        ).toLocaleDateString("de-DE", {
+                          day: "2-digit",
+                          month: "long",
+                        })}
+                      </TableCell>
+                    </TableRow>
+                  )}
+              </TableBody>
+            </Table>
+          </CardContent>
+          <CardFooter className="justify-between">
+            <Button asChild>
+              <Link to={`/Mitarbeiter/${mitarbeiter.ID}`}>Details</Link>
+            </Button>
+            <Button variant="ghost" asChild>
+              <Link to={`/Mitarbeiter/${mitarbeiter.ID}/Bearbeiten`}>
+                Bearbeiten
+              </Link>
+            </Button>
+          </CardFooter>
+        </Card>
       )}
       {einkauf && (
         <>
