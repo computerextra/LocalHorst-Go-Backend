@@ -15,7 +15,7 @@ import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
-export default function Mitarbeiter() {
+export default function MitarbeiterOverview() {
   const [mitarbeiter, setMitarbeiter] = useState<undefined | Mitarbeiter[]>(
     undefined
   );
@@ -148,9 +148,21 @@ export default function Mitarbeiter() {
 
                   {x.Azubi.Valid && x.Azubi.Bool && (
                     <TableRow>
-                      <TableCell>Azubi</TableCell>
+                      <TableCell className="font-medium">Azubi</TableCell>
                       <TableCell>
                         <Check className="w-4 h-4 text-primary" />
+                      </TableCell>
+                    </TableRow>
+                  )}
+
+                  {x.Geburtstag.Valid && x.Geburtstag.Time && (
+                    <TableRow>
+                      <TableCell className="font-medium">Geburtstag:</TableCell>
+                      <TableCell>
+                        {new Date(x.Geburtstag.Time).toLocaleDateString(
+                          "de-DE",
+                          { day: "2-digit", month: "long" }
+                        )}
                       </TableCell>
                     </TableRow>
                   )}

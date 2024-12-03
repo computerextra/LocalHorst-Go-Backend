@@ -19,7 +19,7 @@ export const CreateUserArgs = z.object({
   HomeOffice: z.string().optional(),
   MobilBusiness: z.string().optional(),
   MobilPrivat: z.string().optional(),
-  Email: z.string().email().optional(),
+  Email: z.string().optional(),
   Azubi: z.boolean().optional(),
   Geburtstag: z.date().optional(),
 });
@@ -93,13 +93,13 @@ const createUser = async (args: CreateUserArgs): Promise<Mitarbeiter> => {
   return res.data;
 };
 
-const updateUser = async (args: UpdateUserArgs): Promise<Mitarbeiter> => {
+const updateUser = async (args: FormData, id: string): Promise<Mitarbeiter> => {
   const config: AxiosRequestConfig = {
     headers: {
       Accept: "application/json",
     } as RawAxiosRequestHeaders,
   };
-  const res = await client.patch<Mitarbeiter>(`/user/${args.id}`, args, config);
+  const res = await client.post<Mitarbeiter>(`/user/${id}/edit`, args, config);
   return res.data;
 };
 

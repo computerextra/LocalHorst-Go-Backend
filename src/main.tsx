@@ -3,9 +3,10 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import RootLayout from "./components/RootLayout";
-import Mitarbeiter from "./Pages/Mitarbeiter/Overview";
+
 import MitarbeiterDetail from "./Pages/Mitarbeiter/Details";
 import MitarbeiterBearbeiten from "./Pages/Mitarbeiter/Berabeiten";
+import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -21,7 +22,7 @@ createRoot(document.getElementById("root")!).render(
           </Route>
 
           <Route path="Mitarbeiter">
-            <Route index element={<Mitarbeiter />} />
+            <Route index element={<MitarbeiterOverview />} />
             <Route path="Telefon" element={<>Mitarbeiter Telefonliste</>} />
             <Route path="Geburtstag" element={<>Mitarbeiter Geburtstage</>} />
             <Route path=":mid" element={<MitarbeiterDetail />} />
