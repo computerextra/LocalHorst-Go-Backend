@@ -1,77 +1,79 @@
 import { type AxiosRequestConfig, type RawAxiosRequestHeaders } from "axios";
 import { client } from "./config";
+import { z } from "zod";
 
-export interface GetEinkaufArgs {
-  id: string;
-}
+export const SqlNullString = z.object({
+  Valid: z.boolean(),
+  String: z.string().nullable(),
+});
 
-export interface UpdateEinkaufArgs {
-  id: string;
-  mitarbeiterId: string;
-  Abonniert: boolean;
-  Bild1?: string;
-  Bild2?: string;
-  Bild3?: string;
-  Dinge?: string;
-  Geld?: string;
-  Paypal: boolean;
-  Pfand?: string;
-}
+export const SqlNullDateTime = z.object({
+  Valid: z.boolean(),
+  Time: z.date().nullable(),
+});
 
-export interface SkipEinkaufArgs {
-  id: string;
-}
+export const SqlNullBool = z.object({
+  Valid: z.boolean(),
+  Bool: z.boolean().nullable(),
+});
 
-export interface DeleteEinkaufArgs {
-  id: string;
-}
+const GetEinkaufArgs = z.object({ id: z.string() });
 
-export interface Einkauf {
-  Abgeschickt: {
-    Valid: boolean;
-    Time: Date;
-  };
-  Abonniert: boolean;
-  Bild1: {
-    Valid: boolean;
-    String: string;
-  };
-  Bild1date: {
-    Valid: boolean;
-    Time: Date;
-  };
-  Bild2: {
-    Valid: boolean;
-    String: string;
-  };
-  Bild2date: {
-    Valid: boolean;
-    Time: Date;
-  };
-  Bild3: {
-    Valid: boolean;
-    String: string;
-  };
-  Bild3date: {
-    Valid: boolean;
-    Time: Date;
-  };
-  Dinge: {
-    Valid: boolean;
-    String: string;
-  };
-  Geld: {
-    Valid: boolean;
-    String: string;
-  };
-  ID: string;
-  Mitarbeiterid: string;
-  Paypal: boolean;
-  Pfand: {
-    Valid: boolean;
-    String: string;
-  };
-}
+export type GetEinkaufArgs = z.infer<typeof GetEinkaufArgs>;
+
+const UpdateEinkaufArgs = z.object({
+  id: z.string(),
+  mitarbeiterId: z.string(),
+  Bild1: SqlNullString,
+  Bild2: SqlNullString,
+  Bild3: SqlNullString,
+  Dinge: SqlNullString,
+  Geld: SqlNullString,
+  Paypal: z.boolean(),
+  Pfand: SqlNullString,
+});
+export type UpdateEinkaufArgs = z.infer<typeof UpdateEinkaufArgs>;
+
+const SkipEinkaufArgs = z.object({ id: z.string() });
+export type SkipEinkaufArgs = z.infer<typeof SkipEinkaufArgs>;
+
+const DeleteEinkaufArgs = z.object({ id: z.string() });
+export type DeleteEinkaufArgs = z.infer<typeof DeleteEinkaufArgs>;
+
+const EinkaufListe = z.object({
+  ID: z.string(),
+  Paypal: z.boolean(),
+  Abonniert: z.boolean(),
+  Geld: SqlNullString,
+  Pfand: SqlNullString,
+  Dinge: SqlNullString,
+  Bild1: SqlNullString,
+  Bild2: SqlNullString,
+  Bild3: SqlNullString,
+  Bild1date: SqlNullDateTime,
+  Bild2date: SqlNullDateTime,
+  Bild3date: SqlNullDateTime,
+  Name: SqlNullString,
+});
+export type EinkaufListe = z.infer<typeof EinkaufListe>;
+
+const Einkauf = z.object({
+  Abgeschickt: SqlNullBool,
+  Abonniert: z.boolean(),
+  Bild1: SqlNullString,
+  Bild1date: SqlNullDateTime,
+  Bild2: SqlNullString,
+  Bild2date: SqlNullDateTime,
+  Bild3: SqlNullString,
+  Bild3date: SqlNullDateTime,
+  Dinge: SqlNullString,
+  Geld: SqlNullString,
+  ID: z.string(),
+  Mitarbeiterid: z.string(),
+  Paypal: z.boolean(),
+  Pfand: SqlNullString,
+});
+export type Einkauf = z.infer<typeof Einkauf>;
 
 const config: AxiosRequestConfig = {
   headers: {
@@ -94,8 +96,8 @@ const getEinkauf = async (args: GetEinkaufArgs): Promise<Einkauf | null> => {
   return res.data;
 };
 
-const getEinkaufsListe = async (): Promise<Einkauf[]> => {
-  const res = await client.get<Einkauf[]>("/Einkauf", config);
+const getEinkaufsListe = async (): Promise<EinkaufListe[]> => {
+  const res = await client.get<EinkaufListe[]>("/Einkauf", config);
 
   return res.data;
 };

@@ -28,9 +28,7 @@ export default function Geburtstage() {
     const morgen: Birthday[] = [];
     const actualDate = new Date();
     const today = new Date(new Date(actualDate).toDateString());
-    // TODO: Geburtstage Sortieren und zuordnen.
-    // TODO: Datum anpassen, damit das Jahr nicht mitgenommen wird.
-    // TODO: Datum danach als String (Tag. Monat) zurückgeben
+
     data.forEach((x) => {
       // @ts-expect-error Sollte Date sein, ist aber string...
       if (x.Geburtstag.Time != "1.1.1") {

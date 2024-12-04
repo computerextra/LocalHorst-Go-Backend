@@ -10,6 +10,7 @@ import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
 import InfoPage from "./Pages/Service/Info";
 import Geburtstage from "./Pages/Mitarbeiter/Geburtstage";
 import MitarbeiterNeu from "./Pages/Mitarbeiter/Neu";
+import EinkaufListe from "./Pages/Einkauf/Liste";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -23,7 +24,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<>Home</>} />
 
             <Route path="Einkauf">
-              <Route index element={<>Einkaufsliste</>} />
+              <Route index element={<EinkaufListe />} />
               <Route path="Eingabe" element={<>Einkauf Eingabe</>} />
               <Route path="Abrechnung" element={<>Einkuaf Abrechnung</>} />
             </Route>

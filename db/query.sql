@@ -38,7 +38,14 @@ DELETE FROM Mitarbeiter WHERE id = ?;
 SELECT * FROM Einkauf WHERE mitarbeiterId = ? LIMIT 1;
 
 -- name: GetEinkaufListe :many
-SELECT * FROM Einkauf ORDER BY Abgeschickt DESC;
+SELECT 
+Einkauf.id, Einkauf.Paypal, Einkauf.Abonniert, Einkauf.Geld, Einkauf.Pfand, Einkauf.Dinge, 
+Einkauf.Bild1, Einkauf.Bild2, Einkauf.Bild3, Einkauf.Bild1Date, Einkauf.Bild2Date, 
+Einkauf.Bild3Date, Mitarbeiter.Name 
+FROM Einkauf 
+LEFT JOIN Mitarbeiter ON Einkauf.mitarbeiterId = Mitarbeiter.id 
+WHERE DATEDIFF(NOW(), Einkauf.Abgeschickt) = 0 OR Einkauf.Abonniert = 1 
+ORDER BY Einkauf.Abgeschickt DESC;
 
 -- name: UpsertEinkauf :execresult
 INSERT INTO Einkauf (Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date)
