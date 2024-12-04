@@ -2,7 +2,8 @@
 SELECT * FROM Mitarbeiter WHERE id = ? LIMIT 1;
 
 -- name: GetUsers :many
-SELECT * FROM Mitarbeiter ORDER BY name;
+SELECT * FROM Mitarbeiter ORDER BY Name;
+
 
 -- name: CreateUser :execresult
 INSERT INTO Mitarbeiter 

@@ -8,6 +8,7 @@ import MitarbeiterDetail from "./Pages/Mitarbeiter/Details";
 import MitarbeiterBearbeiten from "./Pages/Mitarbeiter/Berabeiten";
 import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
 import InfoPage from "./Pages/Service/Info";
+import Geburtstage from "./Pages/Mitarbeiter/Geburtstage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -28,7 +29,7 @@ createRoot(document.getElementById("root")!).render(
 
             <Route path="Mitarbeiter">
               <Route index element={<MitarbeiterOverview />} />
-              <Route path="Geburtstag" element={<>Mitarbeiter Geburtstage</>} />
+              <Route path="Geburtstag" element={<Geburtstage />} />
               <Route path=":mid" element={<MitarbeiterDetail />} />
               <Route
                 path=":mid/Bearbeiten"
