@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MitarbeiterDetail from "./Pages/Mitarbeiter/Details";
 import MitarbeiterBearbeiten from "./Pages/Mitarbeiter/Berabeiten";
 import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
-import Home from "./Pages/Home";
+import InfoPage from "./Pages/Service/Info";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -18,7 +18,7 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Routes>
           <Route element={<RootLayout />}>
-            <Route index element={<Home />} />
+            <Route index element={<>Home</>} />
 
             <Route path="Einkauf">
               <Route index element={<>Einkaufsliste</>} />
@@ -64,7 +64,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="Service">
               <Route index element={<>Hier gibts nichts zu sehen!</>} />
               <Route path="Seriennummer" element={<>Service Seriennummer</>} />
-              <Route path="Info" element={<>Service Info</>} />
+              <Route path="Info" element={<InfoPage />} />
             </Route>
 
             <Route path="CMS">

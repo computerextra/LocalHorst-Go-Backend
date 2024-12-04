@@ -11,11 +11,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { InfoArgs, sendInfo } from "@/db/Service";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export default function Home() {
+export default function InfoPage() {
   const [message, setMessage] = useState<string | undefined>(undefined);
 
   const form = useForm<z.infer<typeof InfoArgs>>({
@@ -23,16 +23,33 @@ export default function Home() {
     defaultValues: {},
   });
 
+  useEffect(() => {
+    const MessageTimeout = setTimeout(() => setMessage(""), 2000);
+    return () => {
+      clearTimeout(MessageTimeout);
+    };
+  }, [message]);
+
   const onSubmit = async (values: z.infer<typeof InfoArgs>) => {
     const res = await sendInfo(values);
     if (res?.error == "false") setMessage("Mail versendet");
     else {
       setMessage(res?.error);
-      form.reset({
+    }
+
+    form.reset(
+      {
         Auftrag: "",
         Mail: "",
-      });
-    }
+      },
+      {
+        keepDefaultValues: false,
+        keepDirty: false,
+        keepErrors: false,
+        keepIsValid: false,
+        keepIsSubmitted: false,
+      }
+    );
   };
 
   return (
@@ -46,7 +63,7 @@ export default function Home() {
               <FormItem>
                 <FormLabel>Mail</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Mail" {...field} />
+                  <Input type="email" required placeholder="Mail" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -60,7 +77,12 @@ export default function Home() {
               <FormItem>
                 <FormLabel>Auftrag</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="Auftrag" {...field} />
+                  <Input
+                    type="text"
+                    required
+                    placeholder="Auftrag"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>Nummer AU/LI/RE</FormDescription>
                 <FormMessage />
@@ -71,7 +93,7 @@ export default function Home() {
         </form>
       </Form>
 
-      <p>{message}</p>
+      <p className="text-2xl font-semibold">{message}</p>
     </>
   );
 }
