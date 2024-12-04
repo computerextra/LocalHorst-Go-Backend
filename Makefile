@@ -6,6 +6,9 @@ install:
 	go get .
 
 build:
+	pnpm install
+	sqlc generate
+	go get .
 	pnpm build
 	go build .
 

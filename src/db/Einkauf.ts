@@ -58,7 +58,7 @@ const EinkaufListe = z.object({
 export type EinkaufListe = z.infer<typeof EinkaufListe>;
 
 const Einkauf = z.object({
-  Abgeschickt: SqlNullBool,
+  Abgeschickt: SqlNullDateTime,
   Abonniert: z.boolean(),
   Bild1: SqlNullString,
   Bild1date: SqlNullDateTime,

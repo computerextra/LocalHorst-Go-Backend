@@ -63,6 +63,8 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	m.SetHeader("From", MAIL_FROM)
 	// Receiver
 	m.SetHeader("To", Mail)
+	// BCC
+	m.SetHeader("Bcc", "service@computer-extra.de")
 	// Set Subject
 	m.SetHeader("Subject", fmt.Sprintf("Ihre Bestellung %s", Auftrag))
 	// Set Body

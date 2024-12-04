@@ -194,15 +194,16 @@ export default function MitarbeiterDetail() {
             <p>
               Letzer Einkauf vom{" "}
               {einkauf.Abgeschickt.Valid &&
+                // @ts-expect-error Sollte Date sein, ist aber string
                 new Date(einkauf.Abgeschickt.Time).toLocaleDateString()}
             </p>
             <pre className="font-sans text-base">{einkauf?.Dinge.String}</pre>
           </div>
           <p>Letzte Bilder</p>
           <div className="grid grid-cols-3 mt-4">
-            {einkauf.Bild1.Valid && <img src={einkauf.Bild1.String} />}
-            {einkauf.Bild2.Valid && <img src={einkauf.Bild2.String} />}
-            {einkauf.Bild3.Valid && <img src={einkauf.Bild3.String} />}
+            {einkauf.Bild1.Valid && <img src={einkauf.Bild1.String ?? ""} />}
+            {einkauf.Bild2.Valid && <img src={einkauf.Bild2.String ?? ""} />}
+            {einkauf.Bild3.Valid && <img src={einkauf.Bild3.String ?? ""} />}
           </div>
         </>
       )}
