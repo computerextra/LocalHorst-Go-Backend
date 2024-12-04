@@ -11,6 +11,7 @@ import (
 
 	"github.com/computerextra/golang-backend/env"
 	"github.com/computerextra/golang-backend/mitarbeiter"
+	"github.com/computerextra/golang-backend/service"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -72,6 +73,8 @@ func main() {
 	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.DeleteEinkauf).Methods(http.MethodDelete)
 	router.HandleFunc("/api/Einkauf/skip", mitarbeiter.SkipEinkauf).Methods(http.MethodPost)
 
+	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost)
+
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
 	})
@@ -83,7 +86,7 @@ func main() {
 	port := env.GetEnv("VITE_PORT")
 	srv := &http.Server{
 		Handler: handler,
-		Addr:    fmt.Sprintf("127.0.0.1:%v", port),
+		Addr:    fmt.Sprintf(":%v", port),
 		// Good Pratice: enfoce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
