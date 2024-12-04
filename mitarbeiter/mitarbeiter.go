@@ -12,6 +12,7 @@ import (
 	"github.com/computerextra/golang-backend/env"
 	"github.com/computerextra/golang-backend/helper"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 )
 
@@ -103,6 +104,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	datebase.SetMaxIdleConns(10)
 	queries := db.New(datebase)
 	User, err := queries.CreateUser(ctx, db.CreateUserParams{
+		ID:                 uuid.New().String(),
 		Name:               Name,
 		Short:              sql.NullString{Valid: helper.If(len(Short) > 0, true, false), String: Short},
 		Gruppenwahl:        sql.NullString{Valid: helper.If(len(Gruppenwahl) > 0, true, false), String: Gruppenwahl},

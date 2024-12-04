@@ -7,12 +7,12 @@ SELECT * FROM Mitarbeiter ORDER BY Name;
 
 -- name: CreateUser :execresult
 INSERT INTO Mitarbeiter 
-(Name, Short, Gruppenwahl, 
+(id, Name, Short, Gruppenwahl, 
 InternTelefon1, InternTelefon2, 
 FestnetzAlternativ, FestnetzPrivat, 
 HomeOffice, MobilBusiness, 
 MobilPrivat, Email, Azubi, Geburtstag) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 -- name: UpdateUser :execresult
 UPDATE Mitarbeiter SET

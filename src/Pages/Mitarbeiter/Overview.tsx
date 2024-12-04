@@ -170,6 +170,9 @@ export default function MitarbeiterOverview() {
   return (
     <>
       <h1 className="mb-6">Mitarbeiter</h1>
+      <Button asChild className="mb-6">
+        <Link to="/Mitarbeiter/Neu">Neuer Mitarbeiter</Link>
+      </Button>
       {/* @ts-expect-error Null Werte... */}
       <DataTable columns={columns} data={data} />
     </>

@@ -1,14 +1,6 @@
-import LoadingSpinner from "@/components/LoadingSpinner";
-import {
-  deleteUser,
-  getUser,
-  Mitarbeiter,
-  updateUser,
-  UpdateUserArgs,
-} from "@/db/Mitarbeiter";
-import { useEffect, useState } from "react";
+import { createUser, CreateUserArgs } from "@/db/Mitarbeiter";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -35,66 +27,15 @@ import { de } from "date-fns/locale";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-export default function MitarbeiterBearbeiten() {
-  const { mid } = useParams();
+export default function MitarbeiterNeu() {
   const navigate = useNavigate();
-  const [mitarbeiter, setMitarbeiter] = useState<
-    undefined | null | Mitarbeiter
-  >(undefined);
-  const [loading, setLoading] = useState(true);
 
-  const form = useForm<z.infer<typeof UpdateUserArgs>>({
-    resolver: zodResolver(UpdateUserArgs),
-    defaultValues: {
-      Azubi: mitarbeiter?.Azubi.Bool ?? false,
-      Email: mitarbeiter?.Email.String ?? "",
-      FestnetzAlternativ: mitarbeiter?.Festnetzalternativ.String ?? "",
-      FestnetzPrivat: mitarbeiter?.Festnetzprivat.String ?? "",
-      Geburtstag: mitarbeiter?.Geburtstag.Time ?? undefined,
-      Gruppenwahl: mitarbeiter?.Gruppenwahl.String ?? "",
-      HomeOffice: mitarbeiter?.Homeoffice.String ?? "",
-      id: mitarbeiter?.ID,
-      InternTelefon1: mitarbeiter?.Interntelefon1.String ?? "",
-      InternTelefon2: mitarbeiter?.Interntelefon2.String ?? "",
-      MobilBusiness: mitarbeiter?.Mobilbusiness.String ?? "",
-      MobilPrivat: mitarbeiter?.Mobilprivat.String ?? "",
-      Name: mitarbeiter?.Name,
-      Short: mitarbeiter?.Short.String ?? "",
-    },
+  const form = useForm<z.infer<typeof CreateUserArgs>>({
+    resolver: zodResolver(CreateUserArgs),
+    defaultValues: {},
   });
 
-  useEffect(() => {
-    async function x() {
-      if (mid == null) return;
-      const user = await getUser({ id: mid });
-      setMitarbeiter(user);
-      if (user != null) {
-        form.reset({
-          Name: user.Name,
-          Azubi: user.Azubi.Bool ?? false,
-          Email: user.Email.String ?? "",
-          FestnetzAlternativ: user.Festnetzalternativ.String ?? "",
-          FestnetzPrivat: user.Festnetzprivat.String ?? "",
-          Geburtstag: new Date(user.Geburtstag.Time ?? ""),
-          Gruppenwahl: user.Gruppenwahl.String ?? "",
-          HomeOffice: user.Homeoffice.String ?? "",
-          InternTelefon1: user.Interntelefon1.String ?? "",
-          InternTelefon2: user.Interntelefon2.String ?? "",
-          id: user.ID,
-          MobilBusiness: user.Mobilbusiness.String ?? "",
-          MobilPrivat: user.Mobilprivat.String ?? "",
-          Short: user.Short.String ?? "",
-        });
-      }
-
-      setLoading(false);
-    }
-
-    void x();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mid]);
-
-  const onSumit = async (values: z.infer<typeof UpdateUserArgs>) => {
+  const onSumit = async (values: z.infer<typeof CreateUserArgs>) => {
     const formData = new FormData();
 
     formData.set("Name", values.Name);
@@ -114,25 +55,15 @@ export default function MitarbeiterBearbeiten() {
       new Date(values.Geburtstag ?? "").toLocaleDateString("de-DE")
     );
 
-    const res = await updateUser(formData, values.id);
+    const res = await createUser(formData);
     if (res) {
       navigate("/Mitarbeiter");
     }
   };
 
-  const onDelete = async () => {
-    if (mid == null) return;
-    await deleteUser({ id: mid });
-    navigate("/Mitarbeiter");
-  };
-
-  if (loading) return <LoadingSpinner />;
-  if (mid == null) return <>Keine ID</>;
-  if (mitarbeiter == null) return <LoadingSpinner />;
-
   return (
     <>
-      <h1 className="mb-4">{mitarbeiter.Name} bearbeiten</h1>
+      <h1 className="mb-4">Neuen Mitarbeiter anlegen</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSumit)} className="space-y-8">
           <div className="grid grid-cols-2 gap-4">
@@ -367,18 +298,8 @@ export default function MitarbeiterBearbeiten() {
               </FormItem>
             )}
           />
-          <div className="flex justify-between">
-            <Button type="submit">Speichern</Button>
-            <Button
-              variant="destructive"
-              onClick={(e) => {
-                e.preventDefault();
-                void onDelete();
-              }}
-            >
-              Löschen
-            </Button>
-          </div>
+
+          <Button type="submit">Speichern</Button>
         </form>
       </Form>
     </>

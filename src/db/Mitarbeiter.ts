@@ -83,13 +83,13 @@ const getUsers = async (): Promise<Mitarbeiter[]> => {
   return res.data;
 };
 
-const createUser = async (args: CreateUserArgs): Promise<Mitarbeiter> => {
+const createUser = async (args: FormData): Promise<Mitarbeiter> => {
   const config: AxiosRequestConfig = {
     headers: {
       Accept: "application/json",
     } as RawAxiosRequestHeaders,
   };
-  const res = await client.post<Mitarbeiter>("/user", args, config);
+  const res = await client.post<Mitarbeiter>("/user/new", args, config);
   return res.data;
 };
 
@@ -104,7 +104,7 @@ const updateUser = async (args: FormData, id: string): Promise<Mitarbeiter> => {
 };
 
 const deleteUser = async (args: GetUserArgs): Promise<void> => {
-  return await client.delete(`/user/${args.id}`, config);
+  return await client.post(`/user/${args.id}/delete`, config);
 };
 
 export { getUser, getUsers, deleteUser, createUser, updateUser };
