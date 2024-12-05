@@ -1,7 +1,9 @@
+import { DataTable } from "@/components/DataTable";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getUsers } from "@/db/Mitarbeiter";
 import { useQuery } from "@tanstack/react-query";
+import { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 
 type Birthday = {
@@ -9,6 +11,17 @@ type Birthday = {
   Name: string;
   Geburtstag: string;
 };
+
+const columns: ColumnDef<Birthday>[] = [
+  {
+    accessorKey: "Name",
+    header: "Mitarbeiter",
+  },
+  {
+    accessorKey: "Geburtstag",
+    header: "Geburtstag",
+  },
+];
 
 export default function Geburtstage() {
   const { data, isLoading, isError } = useQuery({
@@ -114,18 +127,10 @@ export default function Geburtstage() {
       ))}
 
       <h2 className="mt-6">Vergangene Geburtstage</h2>
-      {vergangen?.map((user) => (
-        <li key={user.id}>
-          {user.Name} - {user.Geburtstag}
-        </li>
-      ))}
+      {vergangen && <DataTable columns={columns} data={vergangen} />}
 
       <h2 className="mt-6">Zukünftige Geburtstage</h2>
-      {zukunft?.map((user) => (
-        <li key={user.id}>
-          {user.Name} - {user.Geburtstag}
-        </li>
-      ))}
+      {zukunft && <DataTable columns={columns} data={zukunft} />}
     </>
   );
 }

@@ -46,16 +46,20 @@ export function Navigation() {
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
+          <MenubarTrigger onClick={() => navigate("/Lieferanten")}>
+            Lieferanten
+          </MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger onClick={() => navigate("/Sage")}>
+            CE Archiv
+          </MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
           <MenubarTrigger>Sage</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem onClick={() => navigate("/Sage")}>
-              CE Archiv
-            </MenubarItem>
-            <MenubarItem onClick={() => navigate("/Sage/Kunden")}>
+            <MenubarItem onClick={() => navigate("/Sage/Suche")}>
               Kundensuche
-            </MenubarItem>
-            <MenubarItem onClick={() => navigate("/Sage/Lieferanten")}>
-              Lieferanten
             </MenubarItem>
             <MenubarSeparator />
             <MenubarItem onClick={() => navigate("/Sage/Inventur")}>

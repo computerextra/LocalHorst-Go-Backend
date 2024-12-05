@@ -11,6 +11,7 @@ import InfoPage from "./Pages/Service/Info";
 import Geburtstage from "./Pages/Mitarbeiter/Geburtstage";
 import MitarbeiterNeu from "./Pages/Mitarbeiter/Neu";
 import EinkaufListe from "./Pages/Einkauf/Liste";
+import Home from "./Pages/Home";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -21,7 +22,7 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Routes>
           <Route element={<RootLayout />}>
-            <Route index element={<>Home</>} />
+            <Route index element={<Home />} />
 
             <Route path="Einkauf">
               <Route index element={<EinkaufListe />} />
@@ -40,10 +41,31 @@ createRoot(document.getElementById("root")!).render(
               <Route path="Neu" element={<MitarbeiterNeu />} />
             </Route>
 
+            <Route path="Lieferanten">
+              <Route index element={<>Lieferanten Übersicht</>} />
+              <Route path=":lid" element={<>Lieferanten Details</>} />
+              <Route
+                path=":lid/Bearbeiten"
+                element={<>Lieferant Bearbeiten</>}
+              />
+              <Route path=":lid/:aid" element={<>Ansprechpartner Details</>} />
+              <Route
+                path=":lid/:aid/Bearbeiten"
+                element={<>Ansprechpartner Bearbeiten</>}
+              />
+              <Route
+                path=":lid/Neu"
+                element={<>Neuer Ansprechpartner auf Lieferant</>}
+              />
+              <Route path="Neu" element={<>Neuer Lieferant</>} />
+            </Route>
+
             <Route path="Sage">
               <Route index element={<>Sage</>} />
-              <Route path="Kunden" element={<>Sage Kunden</>} />
-              <Route path="Lieferanten" element={<>Sage Lieferanten</>} />
+              <Route
+                path="Suche"
+                element={<>Sage Kunden/Lieferanten Suche</>}
+              />
 
               <Route path="Inventur">
                 <Route index element={<>Inventur Übersicht der Jahre</>} />
