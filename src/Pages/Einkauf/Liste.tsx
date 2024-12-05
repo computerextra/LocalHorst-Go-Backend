@@ -64,6 +64,7 @@ function PrintMurks({ props }: { props: EinkaufListe }) {
       {props.Name.String} <br />
       Geld: {props.Geld.String} <br />
       Pfand: {props.Pfand.String} <br />
+      {/* TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!) */}
       <pre className="font-sans">{props.Dinge.String}</pre>
       <div className="grid grid-cols-3 mb-2">
         {props.Bild1date.Time &&
@@ -119,6 +120,7 @@ function EinkaufCard({ props }: { props: EinkaufListe }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!) */}
         <pre className="font-sans">{props.Dinge.String}</pre>
       </CardContent>
       <CardFooter>

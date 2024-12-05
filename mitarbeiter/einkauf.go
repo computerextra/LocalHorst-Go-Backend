@@ -88,6 +88,7 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	mitarbeiterId := r.FormValue("mitarbeiterId")
+	// TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!)
 	Dinge := r.FormValue("Dinge")
 
 	Pfand := r.FormValue("Pfand")
@@ -185,13 +186,13 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 }
 
 func Createeinkauf(w http.ResponseWriter, r *http.Request) {
-
 	if err := r.ParseMultipartForm(200 << 20); err != nil { // Maximum of 200MB file allowed
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 		return
 	}
 	mitarbeiterId := r.FormValue("mitarbeiterId")
+	// TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!)
 	Dinge := r.FormValue("Dinge")
 	Pfand := r.FormValue("Pfand")
 	Geld := r.FormValue("Geld")
