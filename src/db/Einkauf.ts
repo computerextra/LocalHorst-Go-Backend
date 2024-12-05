@@ -54,6 +54,7 @@ const EinkaufListe = z.object({
   Bild2date: SqlNullDateTime,
   Bild3date: SqlNullDateTime,
   Name: SqlNullString,
+  Email: SqlNullString,
 });
 export type EinkaufListe = z.infer<typeof EinkaufListe>;
 
@@ -116,10 +117,20 @@ const deleteEinkauf = async (args: DeleteEinkaufArgs): Promise<void> => {
   await client.delete(`/Einkauf/${args.id}`, config);
 };
 
+const sendPayPalMail = async (args: FormData): Promise<{ error: string }> => {
+  const res = await client.post<{ error: string }>(
+    "/Einkauf/Mail",
+    args,
+    config
+  );
+  return res.data;
+};
+
 export {
   getEinkauf,
   getEinkaufsListe,
   updateEinkauf,
   skipEinkauf,
   deleteEinkauf,
+  sendPayPalMail,
 };

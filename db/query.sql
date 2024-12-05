@@ -41,7 +41,7 @@ SELECT * FROM Einkauf WHERE mitarbeiterId = ? LIMIT 1;
 SELECT 
 Einkauf.id, Einkauf.Paypal, Einkauf.Abonniert, Einkauf.Geld, Einkauf.Pfand, Einkauf.Dinge, 
 Einkauf.Bild1, Einkauf.Bild2, Einkauf.Bild3, Einkauf.Bild1Date, Einkauf.Bild2Date, 
-Einkauf.Bild3Date, Mitarbeiter.Name 
+Einkauf.Bild3Date, Mitarbeiter.Name, Mitarbeiter.Email
 FROM Einkauf 
 LEFT JOIN Mitarbeiter ON Einkauf.mitarbeiterId = Mitarbeiter.id 
 WHERE DATEDIFF(NOW(), Einkauf.Abgeschickt) = 0 OR Einkauf.Abonniert = 1 

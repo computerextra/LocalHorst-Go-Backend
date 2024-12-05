@@ -68,6 +68,7 @@ func main() {
 
 	// Einkauf
 	router.HandleFunc("/api/Einkauf", mitarbeiter.GetEinkaufListe).Methods(http.MethodGet)
+	router.HandleFunc("/api/Einkauf/Mail", mitarbeiter.SendPaypalMail).Methods(http.MethodPost)
 	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.GetEinkauf).Methods(http.MethodGet)
 	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.Updateeinkauf).Methods(http.MethodPost)
 	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.DeleteEinkauf).Methods(http.MethodDelete)

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paypal Abrechnung</title>
+  </head>
+  <body>
+    <h1>Paypal Abrechnung</h1>
+
+    <p>Bitte Bezahle {{.Betrag}}€ über Paypal.</p>
+    <p>
+      Link:
+      <a href="http://paypal.me/{{.Name}}/{{.Betrag}}"
+        >http://paypal.me/{{.Name}}/{{.Betrag}}</a
+      >
+    </p>
+  </body>
+</html>

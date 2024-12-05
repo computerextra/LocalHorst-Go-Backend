@@ -12,6 +12,7 @@ import { type EinkaufListe, getEinkaufsListe } from "@/db/Einkauf";
 import { useQuery } from "@tanstack/react-query";
 import { Check, Cross } from "lucide-react";
 import { useRef } from "react";
+import { useNavigate } from "react-router";
 import { useReactToPrint } from "react-to-print";
 
 export default function EinkaufListe() {
@@ -19,6 +20,7 @@ export default function EinkaufListe() {
     queryKey: ["einkaufsliste"],
     queryFn: getEinkaufsListe,
   });
+  const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
 
@@ -28,9 +30,18 @@ export default function EinkaufListe() {
   return (
     <>
       <h1>Einkaufs Liste</h1>
-      <Button className="my-6" onClick={() => reactToPrintFn()}>
-        Liste Drucken
-      </Button>
+      <div className="flex justify-between">
+        <Button className="my-6" onClick={() => reactToPrintFn()}>
+          Liste Drucken
+        </Button>
+        <Button
+          className="my-6"
+          variant="secondary"
+          onClick={() => navigate("/Einkauf/Abrechnung")}
+        >
+          PayPal Abrechnung
+        </Button>
+      </div>
       <div className="grid grid-cols-2 gap-4">
         {data && data.map((x) => <EinkaufCard key={x.ID} props={x} />)}
       </div>

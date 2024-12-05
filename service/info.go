@@ -15,11 +15,6 @@ import (
 	gomail "gopkg.in/mail.v2"
 )
 
-type Infos = struct {
-	Name    string
-	Message string
-}
-
 func Info(w http.ResponseWriter, r *http.Request) {
 	// Get Mail Settings
 	MAIL_FROM := env.GetEnv("MAIL_FROM")

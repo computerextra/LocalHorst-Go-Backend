@@ -1,15 +1,23 @@
 package mitarbeiter
 
 import (
+	"bytes"
+	"crypto/tls"
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"html/template"
+	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/computerextra/golang-backend/db"
 	"github.com/computerextra/golang-backend/env"
 	"github.com/computerextra/golang-backend/helper"
 	"github.com/gorilla/mux"
+
+	gomail "gopkg.in/mail.v2"
 )
 
 func GetEinkauf(w http.ResponseWriter, r *http.Request) {
@@ -195,4 +203,76 @@ func SkipEinkauf(w http.ResponseWriter, r *http.Request) {
 
 		json.NewEncoder(w).Encode(map[string]string{"error": "false"})
 	}
+}
+
+type infos struct {
+	Name   string
+	Betrag string
+}
+
+func SendPaypalMail(w http.ResponseWriter, r *http.Request) {
+	r.Header.Add("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json")
+	Name := r.FormValue("Name")
+	Mail := r.FormValue("Mail")
+	Betrag := r.FormValue("Betrag")
+
+	infos := infos{
+		Name:   Name,
+		Betrag: Betrag,
+	}
+
+	// Get Mail Settings
+	MAIL_FROM := env.GetEnv("MAIL_FROM")
+	MAIL_SERVER := env.GetEnv("MAIL_SERVER")
+	MAIL_PORT := env.GetEnv("MAIL_PORT")
+	PORT, err := strconv.Atoi(MAIL_PORT)
+	if err != nil {
+		fmt.Println(err)
+		fehler := err.Error()
+		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		return
+	}
+	MAIL_USER := env.GetEnv("MAIL_USER")
+	MAIL_PASSWORD := env.GetEnv("MAIL_PASSWORD")
+
+	// Get and Parse HTML Template
+	t := template.New("Info.html")
+
+	t, err = t.ParseFiles("Info.html")
+	if err != nil {
+		log.Println(err)
+	}
+
+	var tpl bytes.Buffer
+	if err := t.Execute(&tpl, infos); err != nil {
+		log.Println(err)
+	}
+
+	result := tpl.String()
+
+	// Create Mail
+	m := gomail.NewMessage()
+
+	// Set Mail Sender
+	m.SetHeader("From", MAIL_FROM)
+	// Receiver
+	m.SetHeader("To", Mail)
+	// Set Subject
+	m.SetHeader("Subject", "PayPal Abrechnung")
+	// Set Body
+	m.SetBody("text/html", result)
+
+	d := gomail.NewDialer(MAIL_SERVER, PORT, MAIL_USER, MAIL_PASSWORD)
+
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	if err := d.DialAndSend(m); err != nil {
+		fmt.Println(err)
+		fehler := err.Error()
+		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]string{"error": ""})
 }
