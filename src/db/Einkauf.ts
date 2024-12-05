@@ -21,16 +21,17 @@ const GetEinkaufArgs = z.object({ id: z.string() });
 
 export type GetEinkaufArgs = z.infer<typeof GetEinkaufArgs>;
 
-const UpdateEinkaufArgs = z.object({
+export const UpdateEinkaufArgs = z.object({
   id: z.string(),
   mitarbeiterId: z.string(),
-  Bild1: SqlNullString,
-  Bild2: SqlNullString,
-  Bild3: SqlNullString,
-  Dinge: SqlNullString,
-  Geld: SqlNullString,
+  Bild1: z.string().optional(),
+  Bild2: z.string().optional(),
+  Bild3: z.string().optional(),
+  Dinge: z.string().optional(),
+  Geld: z.string().optional(),
   Paypal: z.boolean(),
-  Pfand: SqlNullString,
+  Abonniert: z.boolean(),
+  Pfand: z.string().optional(),
 });
 export type UpdateEinkaufArgs = z.infer<typeof UpdateEinkaufArgs>;
 
@@ -103,8 +104,8 @@ const getEinkaufsListe = async (): Promise<EinkaufListe[]> => {
   return res.data;
 };
 
-const updateEinkauf = async (args: UpdateEinkaufArgs): Promise<Einkauf> => {
-  const res = await client.post<Einkauf>(`/Einkauf/${args.id}`, args, config);
+const updateEinkauf = async (args: FormData, id: string): Promise<Einkauf> => {
+  const res = await client.post<Einkauf>(`/Einkauf/${id}`, args, config);
 
   return res.data;
 };

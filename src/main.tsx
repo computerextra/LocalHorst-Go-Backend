@@ -13,6 +13,7 @@ import MitarbeiterNeu from "./Pages/Mitarbeiter/Neu";
 import EinkaufListe from "./Pages/Einkauf/Liste";
 import Home from "./Pages/Home";
 import Abrechnung from "./Pages/Einkauf/Abrechnung";
+import { Auswahl, Eingabe } from "./Pages/Einkauf/Eingabe";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -27,7 +28,8 @@ createRoot(document.getElementById("root")!).render(
 
             <Route path="Einkauf">
               <Route index element={<EinkaufListe />} />
-              <Route path="Eingabe" element={<>Einkauf Eingabe</>} />
+              <Route path="Eingabe" element={<Auswahl />} />
+              <Route path="Eingabe/:mid" element={<Eingabe />} />
               <Route path="Abrechnung" element={<Abrechnung />} />
             </Route>
 

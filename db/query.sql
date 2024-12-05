@@ -47,10 +47,8 @@ LEFT JOIN Mitarbeiter ON Einkauf.mitarbeiterId = Mitarbeiter.id
 WHERE DATEDIFF(NOW(), Einkauf.Abgeschickt) = 0 OR Einkauf.Abonniert = 1 
 ORDER BY Einkauf.Abgeschickt DESC;
 
--- name: UpsertEinkauf :execresult
-INSERT INTO Einkauf (Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date)
-VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?)
-ON DUPLICATE KEY UPDATE
+-- name: UpdateEinkauf :execresult
+UPDATE Einkauf SET 
 Paypal = ?,
 Abonniert = ?,
 Geld = ?,
@@ -62,7 +60,12 @@ Bild2 = ?,
 Bild3 = ?,
 Bild1Date = ?,
 Bild2Date = ?,
-Bild3Date = ?;
+Bild3Date = ?
+WHERE mitarbeiterId = ?;
+
+-- name: CreateEinkauf :execresult
+INSERT INTO Einkauf (Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date)
+VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);
 
 -- name: SkipEinkauf :exec
 UPDATE Einkauf SET Abgeschickt = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE id = ?;

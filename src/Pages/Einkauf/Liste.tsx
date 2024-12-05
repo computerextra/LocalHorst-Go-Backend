@@ -34,6 +34,9 @@ export default function EinkaufListe() {
         <Button className="my-6" onClick={() => reactToPrintFn()}>
           Liste Drucken
         </Button>
+        <Button className="my-6" onClick={() => navigate("/Einkauf/Eingabe")}>
+          Eingeben{" "}
+        </Button>
         <Button
           className="my-6"
           variant="secondary"

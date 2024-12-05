@@ -80,15 +80,52 @@ func GetEinkaufListe(w http.ResponseWriter, r *http.Request) {
 }
 
 func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseMultipartForm(200 << 20); err != nil { // Maximum of 200MB file allowed
+		fehler := err.Error()
+		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		return
+	}
 	mitarbeiterId := r.FormValue("mitarbeiterId")
-	Abonniert := r.FormValue("Abonniert")
-	Bild1 := r.FormValue("Bild1")
-	Bild2 := r.FormValue("Bild2")
-	Bild3 := r.FormValue("Bild3")
 	Dinge := r.FormValue("Dinge")
-	Geld := r.FormValue("Geld")
-	Paypal := r.FormValue("Paypal")
 	Pfand := r.FormValue("Pfand")
+	Geld := r.FormValue("Geld")
+	var Paypal bool
+	if r.FormValue("Paypal") == "true" {
+		Paypal = true
+	} else {
+		Paypal = false
+	}
+	var Abonniert bool
+	if r.FormValue("Abonniert") == "true" {
+		Abonniert = true
+	} else {
+		Abonniert = false
+	}
+	var err error
+	var Bild1 string
+	var Bild2 string
+	var Bild3 string
+	for _, h := range r.MultipartForm.File["Bild1"] {
+		Bild1, err = helper.SaveFile(h, mitarbeiterId, "1")
+		if err != nil {
+			fehler := err.Error()
+			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		}
+	}
+	for _, h := range r.MultipartForm.File["Bild2"] {
+		Bild2, err = helper.SaveFile(h, mitarbeiterId, "2")
+		if err != nil {
+			fehler := err.Error()
+			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		}
+	}
+	for _, h := range r.MultipartForm.File["Bild3"] {
+		Bild3, err = helper.SaveFile(h, mitarbeiterId, "3")
+		if err != nil {
+			fehler := err.Error()
+			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		}
+	}
 
 	var Bild1Date time.Time
 	var Bild2Date time.Time
@@ -107,6 +144,13 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
 
+	fmt.Printf("mitarbeiterId: %s\n", mitarbeiterId)
+	fmt.Printf("Bild1: %s\n", Bild1)
+	fmt.Printf("Bild2: %s\n", Bild2)
+	fmt.Printf("Bild3: %s\n", Bild3)
+	fmt.Printf("Dinge: %s\n", Dinge)
+	fmt.Printf("Pfand: %s\n", Pfand)
+
 	// Get Database
 	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
 	if err != nil {
@@ -118,9 +162,10 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 	datebase.SetMaxIdleConns(10)
 	queries := db.New(datebase)
 
-	einkauf, err := queries.UpsertEinkauf(ctx, db.UpsertEinkaufParams{
-		Paypal:        helper.If(Paypal == "true", true, false),
-		Abonniert:     helper.If(Abonniert == "true", true, false),
+	var einkauf sql.Result
+	einkauf, err = queries.UpdateEinkauf(ctx, db.UpdateEinkaufParams{
+		Paypal:        Paypal,
+		Abonniert:     Abonniert,
 		Geld:          sql.NullString{String: Geld, Valid: helper.If(len(Geld) > 0, true, false)},
 		Pfand:         sql.NullString{String: Pfand, Valid: helper.If(len(Pfand) > 0, true, false)},
 		Dinge:         sql.NullString{String: Dinge, Valid: helper.If(len(Dinge) > 0, true, false)},
@@ -132,6 +177,23 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 		Bild2date:     sql.NullTime{Valid: helper.If(len(Bild2) > 0, true, false), Time: Bild2Date},
 		Bild3date:     sql.NullTime{Valid: helper.If(len(Bild3) > 0, true, false), Time: Bild3Date},
 	})
+	if err != nil {
+		// Update geht nicht, gibts noch nicht. Lege neu an:
+		einkauf, err = queries.CreateEinkauf(ctx, db.CreateEinkaufParams{
+			Paypal:        Paypal,
+			Abonniert:     Abonniert,
+			Geld:          sql.NullString{String: Geld, Valid: helper.If(len(Geld) > 0, true, false)},
+			Pfand:         sql.NullString{String: Pfand, Valid: helper.If(len(Pfand) > 0, true, false)},
+			Dinge:         sql.NullString{String: Dinge, Valid: helper.If(len(Dinge) > 0, true, false)},
+			Mitarbeiterid: mitarbeiterId,
+			Bild1:         sql.NullString{String: Bild1, Valid: helper.If(len(Bild1) > 0, true, false)},
+			Bild2:         sql.NullString{String: Bild2, Valid: helper.If(len(Bild2) > 0, true, false)},
+			Bild3:         sql.NullString{String: Bild3, Valid: helper.If(len(Bild3) > 0, true, false)},
+			Bild1date:     sql.NullTime{Valid: helper.If(len(Bild1) > 0, true, false), Time: Bild1Date},
+			Bild2date:     sql.NullTime{Valid: helper.If(len(Bild2) > 0, true, false), Time: Bild2Date},
+			Bild3date:     sql.NullTime{Valid: helper.If(len(Bild3) > 0, true, false), Time: Bild3Date},
+		})
+	}
 	datebase.Close()
 
 	if err != nil {
@@ -140,7 +202,6 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 	} else {
 		// w.WriteHeader(http.StatusOK)
-
 		json.NewEncoder(w).Encode(einkauf)
 	}
 }
