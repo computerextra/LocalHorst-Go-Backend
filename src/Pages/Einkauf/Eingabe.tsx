@@ -125,9 +125,9 @@ export function Eingabe() {
 
     const formData = new FormData();
     formData.set("mitarbeiterId", values.mitarbeiterId);
-    formData.set("Bild1", Image1Blob ?? "");
-    formData.set("Bild2", Image2Blob ?? "");
-    formData.set("Bild3", Image3Blob ?? "");
+    formData.append("Bild1", Image1Blob ?? "");
+    formData.append("Bild2", Image2Blob ?? "");
+    formData.append("Bild3", Image3Blob ?? "");
     formData.set("Dinge", values.Dinge ?? "");
     formData.set("Paypal", values.Paypal ? "true" : "false");
     formData.set("Pfand", values.Pfand ?? "");

@@ -11,12 +11,12 @@ import (
 
 var (
 	_, b, _, _ = runtime.Caller(0)
-	RootPath   = filepath.Join(filepath.Dir(b), "../..")
+	RootPath   = filepath.Join(filepath.Dir(b), "../dist\\")
 )
 
-func fileNameWithoutExtension(filename string) string {
-	return filename[:len(filename)-len(filepath.Ext(filename))]
-}
+// func fileNameWithoutExtension(filename string) string {
+// 	return filename[:len(filename)-len(filepath.Ext(filename))]
+// }
 
 func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (string, error) {
 	File, err := h.Open()
@@ -25,10 +25,10 @@ func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (str
 	}
 	defer File.Close()
 
-	tempFolderPath := fmt.Sprintf("%s%s", RootPath, "/tempFiles")
-	tempFileName := fmt.Sprintf("%s--%s-%s-*.%s", number, mitarbeiterId, fileNameWithoutExtension(h.Filename), filepath.Ext(h.Filename))
+	tempFolderPath := fmt.Sprintf("%s%s", RootPath, "\\upload")
+	tempFileName := fmt.Sprintf("%s--%s%s", number, mitarbeiterId, filepath.Ext(h.Filename))
 
-	tempFile, err := os.CreateTemp(tempFolderPath, tempFileName)
+	tempFile, err := os.Create(fmt.Sprintf("%s/%s", tempFolderPath, tempFileName))
 	if err != nil {
 		return "", err
 	}
@@ -41,5 +41,6 @@ func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (str
 	}
 
 	tempFile.Write(filebytes)
-	return fmt.Sprintf("%s/%s", tempFolderPath, tempFileName), nil
+
+	return fmt.Sprintf("%s/%s", "/upload/", tempFileName), nil
 }
