@@ -81,7 +81,7 @@ func GetEinkaufListe(w http.ResponseWriter, r *http.Request) {
 }
 
 func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("Update Einkauf")
+
 	if err := r.ParseMultipartForm(200 << 20); err != nil { // Maximum of 200MB file allowed
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
@@ -89,6 +89,7 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 	}
 	mitarbeiterId := r.FormValue("mitarbeiterId")
 	Dinge := r.FormValue("Dinge")
+
 	Pfand := r.FormValue("Pfand")
 	Geld := r.FormValue("Geld")
 	var Paypal bool
@@ -184,7 +185,7 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 }
 
 func Createeinkauf(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("Erstelle Einkauf")
+
 	if err := r.ParseMultipartForm(200 << 20); err != nil { // Maximum of 200MB file allowed
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})

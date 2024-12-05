@@ -113,10 +113,8 @@ const updateEinkauf = async (
 ): Promise<Einkauf> => {
   let res: axios.AxiosResponse<Einkauf>;
   if (id) {
-    alert("Update");
     res = await client.post<Einkauf>(`/Einkauf/update/${id}`, args, config);
   } else {
-    alert("Create");
     res = await client.post<Einkauf>("/Einkauf/new", args, config);
   }
 
