@@ -69,10 +69,11 @@ func main() {
 	// Einkauf
 	router.HandleFunc("/api/Einkauf", mitarbeiter.GetEinkaufListe).Methods(http.MethodGet)
 	router.HandleFunc("/api/Einkauf/Mail", mitarbeiter.SendPaypalMail).Methods(http.MethodPost)
-	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.GetEinkauf).Methods(http.MethodGet)
-	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.Updateeinkauf).Methods(http.MethodPost)
-	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.DeleteEinkauf).Methods(http.MethodDelete)
+	router.HandleFunc("/api/Einkauf/new", mitarbeiter.Createeinkauf).Methods(http.MethodPost)
+	router.HandleFunc("/api/Einkauf/delete", mitarbeiter.DeleteEinkauf).Methods(http.MethodPost)
 	router.HandleFunc("/api/Einkauf/skip", mitarbeiter.SkipEinkauf).Methods(http.MethodPost)
+	router.HandleFunc("/api/Einkauf/update/{id}", mitarbeiter.Updateeinkauf).Methods(http.MethodPost)
+	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.GetEinkauf).Methods(http.MethodGet)
 
 	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost)
 

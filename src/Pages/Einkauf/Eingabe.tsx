@@ -21,7 +21,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { getEinkauf, updateEinkauf, UpdateEinkaufArgs } from "@/db/Einkauf";
+import {
+  deleteEinkauf,
+  getEinkauf,
+  skipEinkauf,
+  updateEinkauf,
+} from "@/db/Einkauf";
 import { getUsers } from "@/db/Mitarbeiter";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -74,6 +79,14 @@ export function Auswahl() {
   );
 }
 
+const formSchema = z.object({
+  Dinge: z.string().optional(),
+  Geld: z.string().optional(),
+  Paypal: z.boolean().optional(),
+  Abonniert: z.boolean().optional(),
+  Pfand: z.string().optional(),
+});
+
 export function Eingabe() {
   const { mid } = useParams();
   const navigate = useNavigate();
@@ -83,19 +96,14 @@ export function Eingabe() {
     enabled: !!mid,
   });
 
-  const form = useForm<z.infer<typeof UpdateEinkaufArgs>>({
-    resolver: zodResolver(UpdateEinkaufArgs),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
   });
 
   useEffect(() => {
     if (data == null) return;
 
     form.reset({
-      id: data.ID,
-      mitarbeiterId: data.Mitarbeiterid,
-      Bild1: data.Bild1.String ?? undefined,
-      Bild2: data.Bild2.String ?? undefined,
-      Bild3: data.Bild3.String ?? undefined,
       Dinge: data.Dinge.String ?? undefined,
       Geld: data.Geld.String ?? undefined,
       Paypal: data.Paypal,
@@ -105,7 +113,7 @@ export function Eingabe() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  const onSubmit = async (values: z.infer<typeof UpdateEinkaufArgs>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     let Image1Blob: Blob | null = null,
       Image2Blob: Blob | null = null,
       Image3Blob: Blob | null = null;
@@ -124,7 +132,7 @@ export function Eingabe() {
     }
 
     const formData = new FormData();
-    formData.set("mitarbeiterId", values.mitarbeiterId);
+    formData.set("mitarbeiterId", mid!);
     formData.append("Bild1", Image1Blob ?? "");
     formData.append("Bild2", Image2Blob ?? "");
     formData.append("Bild3", Image3Blob ?? "");
@@ -133,8 +141,22 @@ export function Eingabe() {
     formData.set("Pfand", values.Pfand ?? "");
     formData.set("Abonniert", values.Abonniert ? "true" : "false");
 
-    const res = await updateEinkauf(formData, values.id);
+    const res = await updateEinkauf(formData, data?.ID);
 
+    if (res) navigate("/Einkauf");
+  };
+
+  const handleSkip = async () => {
+    if (data == null) {
+      return;
+    }
+    const res = await skipEinkauf({ id: data.ID });
+    if (res) navigate("/Einkauf");
+  };
+
+  const handleDelete = async () => {
+    if (data == null) return;
+    const res = await deleteEinkauf({ id: data.ID });
     if (res) navigate("/Einkauf");
   };
 
@@ -157,7 +179,7 @@ export function Eingabe() {
                 <FormItem>
                   <FormLabel>Geld</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input required={false} {...field} />
                   </FormControl>
                   <FormDescription>Dein Bargeld</FormDescription>
                   <FormMessage />
@@ -171,7 +193,7 @@ export function Eingabe() {
                 <FormItem>
                   <FormLabel>Pfand</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input required={false} {...field} />
                   </FormControl>
                   <FormDescription>Dein Pfand</FormDescription>
                   <FormMessage />
@@ -191,6 +213,7 @@ export function Eingabe() {
                   </div>
                   <FormControl>
                     <Switch
+                      required={false}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -214,6 +237,7 @@ export function Eingabe() {
                   </div>
                   <FormControl>
                     <Switch
+                      required={false}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -230,6 +254,7 @@ export function Eingabe() {
                 <FormLabel>Dein Einkauf</FormLabel>
                 <FormControl>
                   <Textarea
+                    required={false}
                     placeholder="Dein Einkauf"
                     className="resize-y"
                     rows={20}
@@ -252,7 +277,7 @@ export function Eingabe() {
               <FormItem>
                 <FormLabel>Bild1</FormLabel>
                 <FormControl>
-                  <Input type="file" id="Bild1" name="Bild1" />
+                  <Input required={false} type="file" id="Bild1" name="Bild1" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -267,7 +292,7 @@ export function Eingabe() {
               <FormItem>
                 <FormLabel>Bild2</FormLabel>
                 <FormControl>
-                  <Input type="file" id="Bild2" name="Bild2" />
+                  <Input required={false} type="file" id="Bild2" name="Bild2" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -282,13 +307,33 @@ export function Eingabe() {
               <FormItem>
                 <FormLabel>Bild3</FormLabel>
                 <FormControl>
-                  <Input type="file" id="Bild3" name="Bild3" />
+                  <Input required={false} type="file" id="Bild3" name="Bild3" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           </div>
-          <Button type="submit">Speichern</Button>
+          <div className="grid grid-cols-3 gap-8">
+            <Button type="submit">Speichern</Button>
+            <Button
+              variant="secondary"
+              onClick={(e) => {
+                e.preventDefault();
+                void handleSkip();
+              }}
+            >
+              Einkauf für heute Aussetzen
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={(e) => {
+                e.preventDefault();
+                void handleDelete();
+              }}
+            >
+              Einkauf Löschen
+            </Button>
+          </div>
         </form>
       </Form>
     </>

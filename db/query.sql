@@ -64,11 +64,11 @@ Bild3Date = ?
 WHERE mitarbeiterId = ?;
 
 -- name: CreateEinkauf :execresult
-INSERT INTO Einkauf (Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date)
-VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);
+INSERT INTO Einkauf (id, Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date)
+VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);
 
 -- name: SkipEinkauf :exec
-UPDATE Einkauf SET Abgeschickt = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE id = ?;
+UPDATE Einkauf SET Abgeschickt = ? WHERE id = ?;
 
 -- name: DeleteEinkauf :exec
 DELETE FROM Einkauf WHERE id = ?;

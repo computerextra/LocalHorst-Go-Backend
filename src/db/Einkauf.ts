@@ -1,4 +1,7 @@
-import { type AxiosRequestConfig, type RawAxiosRequestHeaders } from "axios";
+import axios, {
+  type AxiosRequestConfig,
+  type RawAxiosRequestHeaders,
+} from "axios";
 import { client } from "./config";
 import { z } from "zod";
 
@@ -29,8 +32,8 @@ export const UpdateEinkaufArgs = z.object({
   Bild3: z.string().optional(),
   Dinge: z.string().optional(),
   Geld: z.string().optional(),
-  Paypal: z.boolean(),
-  Abonniert: z.boolean(),
+  Paypal: z.boolean().optional(),
+  Abonniert: z.boolean().optional(),
   Pfand: z.string().optional(),
 });
 export type UpdateEinkaufArgs = z.infer<typeof UpdateEinkaufArgs>;
@@ -104,18 +107,46 @@ const getEinkaufsListe = async (): Promise<EinkaufListe[]> => {
   return res.data;
 };
 
-const updateEinkauf = async (args: FormData, id: string): Promise<Einkauf> => {
-  const res = await client.post<Einkauf>(`/Einkauf/${id}`, args, config);
+const updateEinkauf = async (
+  args: FormData,
+  id: string | undefined
+): Promise<Einkauf> => {
+  let res: axios.AxiosResponse<Einkauf>;
+  if (id) {
+    alert("Update");
+    res = await client.post<Einkauf>(`/Einkauf/update/${id}`, args, config);
+  } else {
+    alert("Create");
+    res = await client.post<Einkauf>("/Einkauf/new", args, config);
+  }
 
   return res.data;
 };
 
-const skipEinkauf = async (args: SkipEinkaufArgs): Promise<void> => {
-  await client.post(`/Einkauf/skip`, args, config);
+const skipEinkauf = async (
+  args: SkipEinkaufArgs
+): Promise<{ error: string }> => {
+  const form = new FormData();
+  form.set("id", args.id);
+  const res = await client.post<{ error: string }>(
+    `/Einkauf/skip`,
+    form,
+    config
+  );
+  return res.data;
 };
 
-const deleteEinkauf = async (args: DeleteEinkaufArgs): Promise<void> => {
-  await client.delete(`/Einkauf/${args.id}`, config);
+const deleteEinkauf = async (
+  args: DeleteEinkaufArgs
+): Promise<{ error: string }> => {
+  const form = new FormData();
+  form.set("id", args.id);
+  const res = await client.post<{ error: string }>(
+    `/Einkauf/delete`,
+    form,
+    config
+  );
+  return res.data;
 };
 
 const sendPayPalMail = async (args: FormData): Promise<{ error: string }> => {
