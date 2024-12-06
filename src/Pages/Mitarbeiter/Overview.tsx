@@ -173,7 +173,14 @@ export default function MitarbeiterOverview() {
       <Button asChild className="mb-6">
         <Link to="/Mitarbeiter/Neu">Neuer Mitarbeiter</Link>
       </Button>
-      {data && <DataTable columns={columns} data={data} />}
+      {data && (
+        <DataTable
+          search="Name"
+          placeholder="Suche nach Namen"
+          columns={columns}
+          data={data}
+        />
+      )}
     </>
   );
 }

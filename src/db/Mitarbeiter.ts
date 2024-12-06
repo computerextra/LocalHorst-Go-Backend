@@ -1,6 +1,7 @@
 import { type AxiosRequestConfig, type RawAxiosRequestHeaders } from "axios";
 import { client } from "./config";
 import { z } from "zod";
+import { SqlNullBool, SqlNullDateTime, SqlNullString } from "./sqlTypes";
 
 const GetUserArgs = z.object({
   id: z.string(),
@@ -31,21 +32,6 @@ export const UpdateUserArgs = CreateUserArgs.extend({
 });
 
 export type UpdateUserArgs = z.infer<typeof UpdateUserArgs>;
-
-export const SqlNullString = z.object({
-  Valid: z.boolean(),
-  String: z.string().nullable(),
-});
-
-export const SqlNullDateTime = z.object({
-  Valid: z.boolean(),
-  Time: z.date().nullable(),
-});
-
-export const SqlNullBool = z.object({
-  Valid: z.boolean(),
-  Bool: z.boolean().nullable(),
-});
 
 export const Mitarbeiter = z.object({
   ID: z.string(),

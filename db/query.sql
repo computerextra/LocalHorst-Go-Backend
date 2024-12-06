@@ -1,74 +1,235 @@
 -- name: GetUser :one
-SELECT * FROM Mitarbeiter WHERE id = ? LIMIT 1;
+SELECT
+    *
+FROM
+    Mitarbeiter
+WHERE
+    id = ?
+LIMIT
+    1;
 
 -- name: GetUsers :many
-SELECT * FROM Mitarbeiter ORDER BY Name;
-
+SELECT
+    *
+FROM
+    Mitarbeiter
+ORDER BY
+    Name;
 
 -- name: CreateUser :execresult
-INSERT INTO Mitarbeiter 
-(id, Name, Short, Gruppenwahl, 
-InternTelefon1, InternTelefon2, 
-FestnetzAlternativ, FestnetzPrivat, 
-HomeOffice, MobilBusiness, 
-MobilPrivat, Email, Azubi, Geburtstag) 
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO
+    Mitarbeiter (
+        id,
+        Name,
+        Short,
+        Gruppenwahl,
+        InternTelefon1,
+        InternTelefon2,
+        FestnetzAlternativ,
+        FestnetzPrivat,
+        HomeOffice,
+        MobilBusiness,
+        MobilPrivat,
+        Email,
+        Azubi,
+        Geburtstag
+    )
+VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 -- name: UpdateUser :execresult
-UPDATE Mitarbeiter SET
- Name = ?,
- Short = ?,
- Gruppenwahl = ?,
- InternTelefon1 = ?,
- InternTelefon2 = ?,
- FestnetzAlternativ = ?,
- FestnetzPrivat = ?,
- HomeOffice = ?,
- MobilBusiness = ?,
- MobilPrivat = ?,
- Email = ?,
- Azubi = ?,
- Geburtstag = ?
- WHERE id = ?;
+UPDATE
+    Mitarbeiter
+SET
+    Name = ?,
+    Short = ?,
+    Gruppenwahl = ?,
+    InternTelefon1 = ?,
+    InternTelefon2 = ?,
+    FestnetzAlternativ = ?,
+    FestnetzPrivat = ?,
+    HomeOffice = ?,
+    MobilBusiness = ?,
+    MobilPrivat = ?,
+    Email = ?,
+    Azubi = ?,
+    Geburtstag = ?
+WHERE
+    id = ?;
 
 -- name: DeleteUser :exec
-DELETE FROM Mitarbeiter WHERE id = ?;
+DELETE FROM
+    Mitarbeiter
+WHERE
+    id = ?;
 
 -- name: GetEinkauf :one
-SELECT * FROM Einkauf WHERE mitarbeiterId = ? LIMIT 1;
+SELECT
+    *
+FROM
+    Einkauf
+WHERE
+    mitarbeiterId = ?
+LIMIT
+    1;
 
 -- name: GetEinkaufListe :many
-SELECT 
-Einkauf.id, Einkauf.Paypal, Einkauf.Abonniert, Einkauf.Geld, Einkauf.Pfand, Einkauf.Dinge, 
-Einkauf.Bild1, Einkauf.Bild2, Einkauf.Bild3, Einkauf.Bild1Date, Einkauf.Bild2Date, 
-Einkauf.Bild3Date, Mitarbeiter.Name, Mitarbeiter.Email
-FROM Einkauf 
-LEFT JOIN Mitarbeiter ON Einkauf.mitarbeiterId = Mitarbeiter.id 
-WHERE DATEDIFF(NOW(), Einkauf.Abgeschickt) = 0 OR Einkauf.Abonniert = 1 
-ORDER BY Einkauf.Abgeschickt DESC;
+SELECT
+    Einkauf.id,
+    Einkauf.Paypal,
+    Einkauf.Abonniert,
+    Einkauf.Geld,
+    Einkauf.Pfand,
+    Einkauf.Dinge,
+    Einkauf.Bild1,
+    Einkauf.Bild2,
+    Einkauf.Bild3,
+    Einkauf.Bild1Date,
+    Einkauf.Bild2Date,
+    Einkauf.Bild3Date,
+    Mitarbeiter.Name,
+    Mitarbeiter.Email
+FROM
+    Einkauf
+    LEFT JOIN Mitarbeiter ON Einkauf.mitarbeiterId = Mitarbeiter.id
+WHERE
+    DATEDIFF (NOW(), Einkauf.Abgeschickt) = 0
+    OR Einkauf.Abonniert = 1
+ORDER BY
+    Einkauf.Abgeschickt DESC;
 
 -- name: UpdateEinkauf :execresult
-UPDATE Einkauf SET 
-Paypal = ?,
-Abonniert = ?,
-Geld = ?,
-Pfand = ?,
-Dinge = ?,
-Abgeschickt = NOW(),
-Bild1 = ?,
-Bild2 = ?,
-Bild3 = ?,
-Bild1Date = ?,
-Bild2Date = ?,
-Bild3Date = ?
-WHERE mitarbeiterId = ?;
+UPDATE
+    Einkauf
+SET
+    Paypal = ?,
+    Abonniert = ?,
+    Geld = ?,
+    Pfand = ?,
+    Dinge = ?,
+    Abgeschickt = NOW(),
+    Bild1 = ?,
+    Bild2 = ?,
+    Bild3 = ?,
+    Bild1Date = ?,
+    Bild2Date = ?,
+    Bild3Date = ?
+WHERE
+    mitarbeiterId = ?;
 
 -- name: CreateEinkauf :execresult
-INSERT INTO Einkauf (id, Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date)
-VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);
+INSERT INTO
+    Einkauf (
+        id,
+        Paypal,
+        Abonniert,
+        Geld,
+        Pfand,
+        Dinge,
+        mitarbeiterId,
+        Abgeschickt,
+        Bild1,
+        Bild2,
+        Bild3,
+        Bild1Date,
+        Bild2Date,
+        Bild3Date
+    )
+VALUES
+    (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);
 
 -- name: SkipEinkauf :exec
-UPDATE Einkauf SET Abgeschickt = ? WHERE id = ?;
+UPDATE
+    Einkauf
+SET
+    Abgeschickt = ?
+WHERE
+    id = ?;
 
 -- name: DeleteEinkauf :exec
-DELETE FROM Einkauf WHERE id = ?;
+DELETE FROM
+    Einkauf
+WHERE
+    id = ?;
+
+-- name: GetLieferant :one
+SELECT
+    *
+FROM
+    Lieferanten
+WHERE
+    id = ?
+LIMIT
+    1;
+
+-- name: GetLieferantWithAnsprechpartner :many
+SELECT * FROM Lieferanten INNER JOIN Anschprechpartner ON lieferanten.id = anschprechpartner.lieferantenId WHERE lieferanten.id = ?;
+
+-- name: GetLieferanten :many
+SELECT
+    *
+FROM
+    Lieferanten
+ORDER BY
+    Firma;
+
+-- name: CreateLieferant :execresult
+INSERT INTO
+    Lieferanten (id, Firma, Kundennummer, Webseite)
+VALUES
+    (?, ?, ?, ?);
+
+-- name: UpdateLuieferant :execresult
+UPDATE
+    Lieferanten
+SET
+    Firma = ?,
+    Kundennummer = ?,
+    Webseite = ?
+WHERE
+    id = ?;
+
+-- name: DeleteLieferant :exec
+DELETE FROM
+    Lieferanten
+WHERE
+    id = ?;
+
+-- name: GetAnsprechpartner :one
+SELECT
+    *
+FROM
+    Anschprechpartner
+WHERE
+    id = ?;
+
+-- name: GetAnsprechpartnerFromLiegerant :many
+SELECT
+    *
+FROM
+    Anschprechpartner
+WHERE
+    lieferantenId = ?;
+
+-- name: CreateAnsprechpartner :execresult
+INSERT INTO
+    Anschprechpartner (id, Name, Telefon, Mobil, Mail, lieferantenId)
+VALUES
+    (?, ?, ?, ?, ?, ?);
+
+-- name: UpdateAnsprechpartner :execresult
+UPDATE
+    Anschprechpartner
+SET
+    Name = ?,
+    Telefon = ?,
+    Mobil = ?,
+    Mail = ?,
+    lieferantenId = ?
+WHERE
+    id = ?;
+
+-- name: DeleteAnsprechpartner :exec
+DELETE FROM Anschprechpartner
+WHERE
+    id = ?;

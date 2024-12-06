@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -164,6 +165,7 @@ export function Eingabe() {
   if (isError) return <>Error...</>;
   return (
     <>
+      <BackButton href="/Einkauf/Eingabe" />
       <h1 className="my-8">Einkauf Eingabe</h1>
       <Form {...form}>
         <form

@@ -14,9 +14,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import BackButton from "@/components/BackButton";
 
 export default function MitarbeiterDetail() {
   const { mid } = useParams();
+
   const {
     data: mitarbeiter,
     isLoading: maLoading,
@@ -41,6 +43,8 @@ export default function MitarbeiterDetail() {
 
   return (
     <>
+      <BackButton href="/Mitarbeiter" />
+
       <h1 className="mb-4">{mitarbeiter?.Name}</h1>
       {mitarbeiter && (
         <Card key={mitarbeiter.ID}>
@@ -177,9 +181,6 @@ export default function MitarbeiterDetail() {
           </CardContent>
           <CardFooter className="justify-between">
             <Button asChild>
-              <Link to={`/Mitarbeiter/${mitarbeiter.ID}`}>Details</Link>
-            </Button>
-            <Button variant="ghost" asChild>
               <Link to={`/Mitarbeiter/${mitarbeiter.ID}/Bearbeiten`}>
                 Bearbeiten
               </Link>

@@ -34,6 +34,7 @@ import { CalendarIcon } from "lucide-react";
 import { de } from "date-fns/locale";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import BackButton from "@/components/BackButton";
 
 export default function MitarbeiterBearbeiten() {
   const { mid } = useParams();
@@ -132,6 +133,7 @@ export default function MitarbeiterBearbeiten() {
 
   return (
     <>
+      <BackButton href="/Mitarbeiter" />
       <h1 className="mb-4">{mitarbeiter.Name} bearbeiten</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSumit)} className="space-y-8">

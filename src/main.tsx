@@ -14,6 +14,10 @@ import EinkaufListe from "./Pages/Einkauf/Liste";
 import Home from "./Pages/Home";
 import Abrechnung from "./Pages/Einkauf/Abrechnung";
 import { Auswahl, Eingabe } from "./Pages/Einkauf/Eingabe";
+import Lieferanten from "./Pages/Lieferanten/Overview";
+import LieferantenDetails from "./Pages/Lieferanten/Details";
+import LieferantNeu from "./Pages/Lieferanten/Neu";
+import LieferantBearbeiten from "./Pages/Lieferanten/Berabeiten";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -36,21 +40,19 @@ createRoot(document.getElementById("root")!).render(
             <Route path="Mitarbeiter">
               <Route index element={<MitarbeiterOverview />} />
               <Route path="Geburtstag" element={<Geburtstage />} />
+              <Route path="Neu" element={<MitarbeiterNeu />} />
               <Route path=":mid" element={<MitarbeiterDetail />} />
               <Route
                 path=":mid/Bearbeiten"
                 element={<MitarbeiterBearbeiten />}
               />
-              <Route path="Neu" element={<MitarbeiterNeu />} />
             </Route>
 
             <Route path="Lieferanten">
-              <Route index element={<>Lieferanten Übersicht</>} />
-              <Route path=":lid" element={<>Lieferanten Details</>} />
-              <Route
-                path=":lid/Bearbeiten"
-                element={<>Lieferant Bearbeiten</>}
-              />
+              <Route index element={<Lieferanten />} />
+              <Route path="Neu" element={<LieferantNeu />} />
+              <Route path=":lid" element={<LieferantenDetails />} />
+              <Route path=":lid/Bearbeiten" element={<LieferantBearbeiten />} />
               <Route path=":lid/:aid" element={<>Ansprechpartner Details</>} />
               <Route
                 path=":lid/:aid/Bearbeiten"
@@ -60,7 +62,6 @@ createRoot(document.getElementById("root")!).render(
                 path=":lid/Neu"
                 element={<>Neuer Ansprechpartner auf Lieferant</>}
               />
-              <Route path="Neu" element={<>Neuer Lieferant</>} />
             </Route>
 
             <Route path="Sage">

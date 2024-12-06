@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/computerextra/golang-backend/env"
+	"github.com/computerextra/golang-backend/lieferanten"
 	"github.com/computerextra/golang-backend/mitarbeiter"
 	"github.com/computerextra/golang-backend/service"
 	"github.com/gorilla/mux"
@@ -61,10 +62,10 @@ func main() {
 	})
 	// Mitarbeiter
 	router.HandleFunc("/api/user", mitarbeiter.GetAll).Methods(http.MethodGet)
+	router.HandleFunc("/api/user/new", mitarbeiter.Create).Methods(http.MethodPost)
 	router.HandleFunc("/api/user/{id}", mitarbeiter.Get).Methods(http.MethodGet)
 	router.HandleFunc("/api/user/{id}/edit", mitarbeiter.Edit).Methods(http.MethodPost)
 	router.HandleFunc("/api/user/{id}/delete", mitarbeiter.Delete).Methods(http.MethodPost)
-	router.HandleFunc("/api/user/new", mitarbeiter.Create).Methods(http.MethodPost)
 
 	// Einkauf
 	router.HandleFunc("/api/Einkauf", mitarbeiter.GetEinkaufListe).Methods(http.MethodGet)
@@ -75,6 +76,21 @@ func main() {
 	router.HandleFunc("/api/Einkauf/update/{id}", mitarbeiter.Updateeinkauf).Methods(http.MethodPost)
 	router.HandleFunc("/api/Einkauf/{id}", mitarbeiter.GetEinkauf).Methods(http.MethodGet)
 
+	// Lieferanten
+	router.HandleFunc("/api/Lieferant", lieferanten.GetLieferanten).Methods(http.MethodGet)
+	router.HandleFunc("/api/Lieferant/new", lieferanten.CreateLieferant).Methods(http.MethodPost)
+	router.HandleFunc("/api/Lieferant/{id}", lieferanten.GetLieferant).Methods(http.MethodGet)
+	router.HandleFunc("/api/Lieferant/{id}/edit", lieferanten.UpdateLieferant).Methods(http.MethodPost)
+	router.HandleFunc("/api/Lieferant/{id}/delete", lieferanten.DeleteLieferant).Methods(http.MethodPost)
+	router.HandleFunc("/api/Lieferant/{id}/Ansprechpartner", lieferanten.GetAnsprechpartnerFromLieferant).Methods(http.MethodGet)
+
+	// Ansprechpartner
+	router.HandleFunc("/api/Ansprechpartner/new", lieferanten.CreateAnsprechpartner).Methods(http.MethodPost)
+	router.HandleFunc("/api/Ansprechpartner/{id}", lieferanten.GetAnsprechpartner).Methods(http.MethodGet)
+	router.HandleFunc("/api/Ansprechpartner/{id}/edit", lieferanten.UpdateAnsprechpartner).Methods(http.MethodPost)
+	router.HandleFunc("/api/Ansprechpartner/{id}/delete", lieferanten.DeleteAnsprechpartner).Methods(http.MethodPost)
+
+	// Service
 	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost)
 
 	c := cors.New(cors.Options{

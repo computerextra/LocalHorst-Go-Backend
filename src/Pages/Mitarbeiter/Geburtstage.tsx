@@ -127,10 +127,24 @@ export default function Geburtstage() {
       ))}
 
       <h2 className="mt-6">Vergangene Geburtstage</h2>
-      {vergangen && <DataTable columns={columns} data={vergangen} />}
+      {vergangen && (
+        <DataTable
+          search="Name"
+          placeholder="Suche nach Namen"
+          columns={columns}
+          data={vergangen}
+        />
+      )}
 
       <h2 className="mt-6">Zukünftige Geburtstage</h2>
-      {zukunft && <DataTable columns={columns} data={zukunft} />}
+      {zukunft && (
+        <DataTable
+          search="Name"
+          placeholder="Suche nach Namen"
+          columns={columns}
+          data={zukunft}
+        />
+      )}
     </>
   );
 }

@@ -27,7 +27,9 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+  search,
+  placeholder,
+}: DataTableProps<TData, TValue> & { search: string; placeholder: string }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
     data,
@@ -45,10 +47,10 @@ export function DataTable<TData, TValue>({
     <div className="border rounded-md">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Suche nach Namen..."
-          value={(table.getColumn("Name")?.getFilterValue() as string) ?? ""}
+          placeholder={placeholder}
+          value={(table.getColumn(search)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("Name")?.setFilterValue(event.target.value)
+            table.getColumn(search)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
