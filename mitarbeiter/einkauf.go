@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/computerextra/golang-backend/db"
@@ -88,8 +89,8 @@ func Updateeinkauf(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	mitarbeiterId := r.FormValue("mitarbeiterId")
-	// TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!)
-	Dinge := r.FormValue("Dinge")
+
+	Dinge := strings.TrimSpace(r.FormValue("Dinge"))
 
 	Pfand := r.FormValue("Pfand")
 	Geld := r.FormValue("Geld")
@@ -192,8 +193,8 @@ func Createeinkauf(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	mitarbeiterId := r.FormValue("mitarbeiterId")
-	// TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!)
-	Dinge := r.FormValue("Dinge")
+
+	Dinge := strings.TrimSpace(r.FormValue("Dinge"))
 	Pfand := r.FormValue("Pfand")
 	Geld := r.FormValue("Geld")
 	var Paypal bool

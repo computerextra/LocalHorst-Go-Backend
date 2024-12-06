@@ -28,5 +28,7 @@ dist-ssr
 golang-backend.exe
 /tmp
 /db/*.go
+/cms/*.go
 /src/db/query_sql.ts
+
 .env
