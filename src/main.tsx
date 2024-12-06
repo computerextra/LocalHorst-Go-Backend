@@ -18,6 +18,9 @@ import Lieferanten from "./Pages/Lieferanten/Overview";
 import LieferantenDetails from "./Pages/Lieferanten/Details";
 import LieferantNeu from "./Pages/Lieferanten/Neu";
 import LieferantBearbeiten from "./Pages/Lieferanten/Berabeiten";
+import APDetails from "./Pages/Lieferanten/Ansprechpartner/Details";
+import AnsprechpartnerBearbeiten from "./Pages/Lieferanten/Ansprechpartner/Bearbeiten";
+import AnsprechpartnerNeu from "./Pages/Lieferanten/Ansprechpartner/Neu";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -53,15 +56,12 @@ createRoot(document.getElementById("root")!).render(
               <Route path="Neu" element={<LieferantNeu />} />
               <Route path=":lid" element={<LieferantenDetails />} />
               <Route path=":lid/Bearbeiten" element={<LieferantBearbeiten />} />
-              <Route path=":lid/:aid" element={<>Ansprechpartner Details</>} />
+              <Route path=":lid/:aid" element={<APDetails />} />
               <Route
                 path=":lid/:aid/Bearbeiten"
-                element={<>Ansprechpartner Bearbeiten</>}
+                element={<AnsprechpartnerBearbeiten />}
               />
-              <Route
-                path=":lid/Neu"
-                element={<>Neuer Ansprechpartner auf Lieferant</>}
-              />
+              <Route path=":lid/Neu" element={<AnsprechpartnerNeu />} />
             </Route>
 
             <Route path="Sage">

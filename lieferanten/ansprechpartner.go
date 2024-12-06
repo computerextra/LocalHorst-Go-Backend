@@ -3,6 +3,7 @@ package lieferanten
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -50,6 +51,7 @@ func CreateAnsprechpartner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
 	if err != nil {
+		fmt.Println(err.Error())
 		panic(err)
 	}
 	database.SetConnMaxIdleTime(time.Minute * 3)
@@ -67,6 +69,7 @@ func CreateAnsprechpartner(w http.ResponseWriter, r *http.Request) {
 	database.Close()
 
 	if err != nil {
+		fmt.Println(err.Error())
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 	} else {
@@ -75,7 +78,6 @@ func CreateAnsprechpartner(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateAnsprechpartner(w http.ResponseWriter, r *http.Request) {
-
 	id := r.FormValue("ID")
 	Name := r.FormValue("Name")
 	Telefon := r.FormValue("Telefon")
