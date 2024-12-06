@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 02. Dez 2024 um 10:47
+-- Erstellungszeit: 06. Dez 2024 um 16:05
 -- Server-Version: 10.5.27-MariaDB-ubu2004-log
--- PHP-Version: 7.4.33-nmm6
+-- PHP-Version: 7.4.33-nmm7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -228,6 +228,19 @@ CREATE TABLE `Warenlieferung` (
   `Artikelnummer` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `Wiki`
+--
+
+CREATE TABLE `Wiki` (
+  `id` varchar(191) NOT NULL,
+  `Name` varchar(191) NOT NULL,
+  `Inhalt` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -320,6 +333,13 @@ ALTER TABLE `VerificationToken`
 --
 ALTER TABLE `Warenlieferung`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `Wiki`
+--
+ALTER TABLE `Wiki`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `Name` (`Name`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen

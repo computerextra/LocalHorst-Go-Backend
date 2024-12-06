@@ -14,11 +14,14 @@ var (
 	RootPath   = filepath.Join(filepath.Dir(b), "../dist\\")
 )
 
-// func fileNameWithoutExtension(filename string) string {
-// 	return filename[:len(filename)-len(filepath.Ext(filename))]
-// }
-
 func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (string, error) {
+	_, err := os.Stat("temp")
+	if os.IsNotExist(err) {
+		fmt.Println("Folder does not exist.")
+		os.Mkdir(fmt.Sprintf("%s\\%s", RootPath, "upload"), os.ModePerm)
+
+	}
+
 	File, err := h.Open()
 	if err != nil {
 		return "", err

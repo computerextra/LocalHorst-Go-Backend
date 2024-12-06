@@ -71,10 +71,9 @@ export function Navigation() {
           <MenubarTrigger>Wiki</MenubarTrigger>
           <MenubarContent>
             <MenubarItem onClick={() => navigate("/Wiki")}>
-              Übersicht
+              Alle Einträge
             </MenubarItem>
             <MenubarSeparator />
-            {/* TODO: Dynamisch erzeugen! */}
             <MenubarItem onClick={() => navigate("/Wiki/Signaturen")}>
               Signaturen
             </MenubarItem>

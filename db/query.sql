@@ -233,3 +233,19 @@ WHERE
 DELETE FROM Anschprechpartner
 WHERE
     id = ?;
+
+
+-- name: GetWikis :many
+SELECT * FROM Wiki ORDER BY created_at DESC;
+
+-- name: GetWiki :one
+SELECT * FROM Wiki WHERE id = ? LIMIT 1;
+
+-- name: CreateWiki :execresult
+INSERT INTO Wiki (id, Name, Inhalt) VALUES(?, ?, ?);
+
+-- name: UpdateWiki :execresult
+UPDATE Wiki SET Name = ?, Inhalt = ?, created_at = NOW() WHERE id = ?;
+
+-- name: DeleteWiki :exec
+DELETE FROM Wiki WHERE id = ?; 
