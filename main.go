@@ -13,6 +13,7 @@ import (
 	"github.com/computerextra/golang-backend/lieferanten"
 	"github.com/computerextra/golang-backend/mitarbeiter"
 	"github.com/computerextra/golang-backend/service"
+	"github.com/computerextra/golang-backend/wiki"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -89,6 +90,13 @@ func main() {
 	router.HandleFunc("/api/Ansprechpartner/{id}", lieferanten.GetAnsprechpartner).Methods(http.MethodGet)
 	router.HandleFunc("/api/Ansprechpartner/{id}/edit", lieferanten.UpdateAnsprechpartner).Methods(http.MethodPost)
 	router.HandleFunc("/api/Ansprechpartner/{id}/delete", lieferanten.DeleteAnsprechpartner).Methods(http.MethodPost)
+
+	// Wiki
+	router.HandleFunc("/api/Wiki", wiki.GetWikis).Methods(http.MethodGet)
+	router.HandleFunc("/api/Wiki/new", wiki.CreateWiki).Methods(http.MethodPost)
+	router.HandleFunc("/api/Wiki/{id}", wiki.GetWiki).Methods(http.MethodGet)
+	router.HandleFunc("/api/Wiki/{id}/edit", wiki.UpdateWiki).Methods(http.MethodPost)
+	router.HandleFunc("/api/Wiki/{id}/delete", wiki.DeleteWiki).Methods(http.MethodPost)
 
 	// Service
 	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost)

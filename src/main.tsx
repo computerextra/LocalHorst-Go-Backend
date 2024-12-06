@@ -21,6 +21,10 @@ import LieferantBearbeiten from "./Pages/Lieferanten/Berabeiten";
 import APDetails from "./Pages/Lieferanten/Ansprechpartner/Details";
 import AnsprechpartnerBearbeiten from "./Pages/Lieferanten/Ansprechpartner/Bearbeiten";
 import AnsprechpartnerNeu from "./Pages/Lieferanten/Ansprechpartner/Neu";
+import Wikis from "./Pages/Wiki/Overview";
+import WikiDetails from "./Pages/Wiki/Details";
+import NewWiki from "./Pages/Wiki/Neu";
+import EditWiki from "./Pages/Wiki/Bearbeiten";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -81,13 +85,10 @@ createRoot(document.getElementById("root")!).render(
             </Route>
 
             <Route path="Wiki">
-              <Route index element={<>Wiki Übersicht</>} />
-              <Route path="Neu" element={<>Neuer WikiArtikel</>} />
-              <Route path=":wid" element={<>Wiki Artikel ... </>} />
-              <Route
-                path=":wid/Bearbeiten"
-                element={<>Wiki Artikel bearbeiten</>}
-              />
+              <Route index element={<Wikis />} />
+              <Route path="Neu" element={<NewWiki />} />
+              <Route path=":wid" element={<WikiDetails />} />
+              <Route path=":wid/Bearbeiten" element={<EditWiki />} />
             </Route>
 
             <Route path="Service">
