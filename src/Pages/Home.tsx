@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import Geburtstage from "./Mitarbeiter/Geburtstage";
 import { Link } from "react-router";
-import { HoverCard } from "@radix-ui/react-hover-card";
-import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import {
+  HoverCardContent,
+  HoverCardTrigger,
+  HoverCard,
+} from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Home() {
