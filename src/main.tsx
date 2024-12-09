@@ -1,30 +1,48 @@
+import RootLayout from "@/components/RootLayout";
+import "@/index.css";
+import {
+  AbteilungEdit,
+  AbteilungNew,
+  AbteilungOverview,
+  AngebotNew,
+  AngebotOverview,
+  AngeboteEdit,
+  MitarbeiterOverview as CmsMitarbeiterOverview,
+  CmsOverview,
+  JobsEdit,
+  JobsNew,
+  JobsOverview,
+  MitarbeiterEdit,
+  MitarbeiterNew,
+  PartnerEdit,
+  PartnerNew,
+  PartnerOverview,
+} from "@/Pages/CMS";
+import Abrechnung from "@/Pages/Einkauf/Abrechnung";
+import { Auswahl, Eingabe } from "@/Pages/Einkauf/Eingabe";
+import EinkaufListe from "@/Pages/Einkauf/Liste";
+import Home from "@/Pages/Home";
+import AnsprechpartnerBearbeiten from "@/Pages/Lieferanten/Ansprechpartner/Bearbeiten";
+import APDetails from "@/Pages/Lieferanten/Ansprechpartner/Details";
+import AnsprechpartnerNeu from "@/Pages/Lieferanten/Ansprechpartner/Neu";
+import LieferantBearbeiten from "@/Pages/Lieferanten/Berabeiten";
+import LieferantenDetails from "@/Pages/Lieferanten/Details";
+import LieferantNeu from "@/Pages/Lieferanten/Neu";
+import Lieferanten from "@/Pages/Lieferanten/Overview";
+import MitarbeiterBearbeiten from "@/Pages/Mitarbeiter/Berabeiten";
+import MitarbeiterDetail from "@/Pages/Mitarbeiter/Details";
+import Geburtstage from "@/Pages/Mitarbeiter/Geburtstage";
+import MitarbeiterNeu from "@/Pages/Mitarbeiter/Neu";
+import MitarbeiterOverview from "@/Pages/Mitarbeiter/Overview";
+import InfoPage from "@/Pages/Service/Info";
+import EditWiki from "@/Pages/Wiki/Bearbeiten";
+import WikiDetails from "@/Pages/Wiki/Details";
+import NewWiki from "@/Pages/Wiki/Neu";
+import Wikis from "@/Pages/Wiki/Overview";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router";
-import RootLayout from "./components/RootLayout";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import MitarbeiterDetail from "./Pages/Mitarbeiter/Details";
-import MitarbeiterBearbeiten from "./Pages/Mitarbeiter/Berabeiten";
-import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
-import InfoPage from "./Pages/Service/Info";
-import Geburtstage from "./Pages/Mitarbeiter/Geburtstage";
-import MitarbeiterNeu from "./Pages/Mitarbeiter/Neu";
-import EinkaufListe from "./Pages/Einkauf/Liste";
-import Home from "./Pages/Home";
-import Abrechnung from "./Pages/Einkauf/Abrechnung";
-import { Auswahl, Eingabe } from "./Pages/Einkauf/Eingabe";
-import Lieferanten from "./Pages/Lieferanten/Overview";
-import LieferantenDetails from "./Pages/Lieferanten/Details";
-import LieferantNeu from "./Pages/Lieferanten/Neu";
-import LieferantBearbeiten from "./Pages/Lieferanten/Berabeiten";
-import APDetails from "./Pages/Lieferanten/Ansprechpartner/Details";
-import AnsprechpartnerBearbeiten from "./Pages/Lieferanten/Ansprechpartner/Bearbeiten";
-import AnsprechpartnerNeu from "./Pages/Lieferanten/Ansprechpartner/Neu";
-import Wikis from "./Pages/Wiki/Overview";
-import WikiDetails from "./Pages/Wiki/Details";
-import NewWiki from "./Pages/Wiki/Neu";
-import EditWiki from "./Pages/Wiki/Bearbeiten";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -98,53 +116,36 @@ createRoot(document.getElementById("root")!).render(
             </Route>
 
             <Route path="CMS">
-              <Route index element={<>CMS Übersicht</>} />
+              <Route index element={<CmsOverview />} />
 
               <Route path="Abteilungen">
-                <Route index element={<>Abteilungen Übersicht</>} />
-                <Route path="Neu" element={<>Neue Abteilung</>} />
-                <Route path=":aid" element={<>Abteilung</>} />
-                <Route
-                  path=":aid/Barbeiten"
-                  element={<>Abteilung bearbeiten</>}
-                />
+                <Route index element={<AbteilungOverview />} />
+                <Route path="Neu" element={<AbteilungNew />} />
+                <Route path=":aid" element={<AbteilungEdit />} />
               </Route>
 
               <Route path="Mitarbeiter">
-                <Route index element={<>Mitarbeiter Übersicht</>} />
-                <Route path="Neu" element={<>Neue Mitarbeiter</>} />
-                <Route path=":mid" element={<>Mitarbeiter</>} />
-                <Route
-                  path=":mid/Barbeiten"
-                  element={<>Mitarbeiter bearbeiten</>}
-                />
+                <Route index element={<CmsMitarbeiterOverview />} />
+                <Route path="Neu" element={<MitarbeiterNew />} />
+                <Route path=":mid" element={<MitarbeiterEdit />} />
               </Route>
 
               <Route path="Partner">
-                <Route index element={<>Partner Übersicht</>} />
-                <Route path="Neu" element={<>Neue Partner</>} />
-                <Route path=":pid" element={<>Partner</>} />
-                <Route
-                  path=":pid/Barbeiten"
-                  element={<>Partner bearbeiten</>}
-                />
+                <Route index element={<PartnerOverview />} />
+                <Route path="Neu" element={<PartnerNew />} />
+                <Route path=":pid" element={<PartnerEdit />} />
               </Route>
 
               <Route path="Angebote">
-                <Route index element={<>Angebote Übersicht</>} />
-                <Route path="Neu" element={<>Neue Angebote</>} />
-                <Route path=":aid" element={<>Angebote</>} />
-                <Route
-                  path=":aid/Barbeiten"
-                  element={<>Angebote bearbeiten</>}
-                />
+                <Route index element={<AngebotOverview />} />
+                <Route path="Neu" element={<AngebotNew />} />
+                <Route path=":aid" element={<AngeboteEdit />} />
               </Route>
 
               <Route path="Jobs">
-                <Route index element={<>Jobs Übersicht</>} />
-                <Route path="Neu" element={<>Neue Jobs</>} />
-                <Route path=":jid" element={<>Jobs</>} />
-                <Route path=":jid/Barbeiten" element={<>Jobs bearbeiten</>} />
+                <Route index element={<JobsOverview />} />
+                <Route path="Neu" element={<JobsNew />} />
+                <Route path=":jid" element={<JobsEdit />} />
               </Route>
             </Route>
 
