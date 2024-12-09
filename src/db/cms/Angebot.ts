@@ -113,6 +113,6 @@ export {
   deleteAngebot,
   type Angebot,
   type GetAngebotProps,
-  type CreateAngebotProps,
-  type UpdateAngebotProps,
+  CreateAngebotProps,
+  UpdateAngebotProps,
 };

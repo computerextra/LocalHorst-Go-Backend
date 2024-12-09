@@ -145,7 +145,7 @@ func UpdateAngebot(w http.ResponseWriter, r *http.Request) {
 		DateStop:  Stop,
 		Link:      Link,
 		Image:     Image,
-		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "1", true, false), Valid: helper.If(Anzeigen == "1", true, false)},
+		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "true", true, false), Valid: helper.If(Anzeigen == "true", true, false)},
 		ID:        ID,
 	})
 	datebase.Close()
@@ -235,7 +235,7 @@ func CreateAngebot(w http.ResponseWriter, r *http.Request) {
 		DateStop:  Stop,
 		Link:      Link,
 		Image:     Image,
-		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "1", true, false), Valid: helper.If(Anzeigen == "1", true, false)},
+		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "true", true, false), Valid: helper.If(Anzeigen == "true", true, false)},
 		ID:        uuid.New().String(),
 	})
 	datebase.Close()
