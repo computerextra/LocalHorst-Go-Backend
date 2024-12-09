@@ -44,6 +44,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Werkstatt from "./Pages/Werkstatt";
+import NotFound from "./Pages/NotFound";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -152,7 +153,7 @@ createRoot(document.getElementById("root")!).render(
 
             <Route path="Werkstatt" element={<Werkstatt />} />
           </Route>
-          <Route path="*" element={<>Nicht gefunden</>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
