@@ -43,6 +43,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
+import Werkstatt from "./Pages/Werkstatt";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -149,7 +150,7 @@ createRoot(document.getElementById("root")!).render(
               </Route>
             </Route>
 
-            <Route path="Werkstatt" element={<>Werkstatt Form Gen</>} />
+            <Route path="Werkstatt" element={<Werkstatt />} />
           </Route>
           <Route path="*" element={<>Nicht gefunden</>} />
         </Routes>

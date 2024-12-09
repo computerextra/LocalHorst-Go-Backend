@@ -172,28 +172,3 @@ func DeleteMitarbeiter(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{"error": ""})
 	}
 }
-
-func CountMitarbeiter(w http.ResponseWriter, r *http.Request) {
-	r.Header.Add("Content-Type", "application/json")
-	w.Header().Set("Content-Type", "application/json")
-	ctx := r.Context()
-
-	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
-	if err != nil {
-		panic(err)
-	}
-	datebase.SetConnMaxIdleTime(time.Minute * 3)
-	datebase.SetMaxOpenConns(10)
-	datebase.SetMaxIdleConns(10)
-	queries := cms.New(datebase)
-	count, err := queries.CountMitarbeiter(ctx)
-	datebase.Close()
-
-	if err != nil {
-		fehler := err.Error()
-		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
-	} else {
-		json.NewEncoder(w).Encode(count)
-	}
-}

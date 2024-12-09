@@ -13,6 +13,7 @@ import (
 	"github.com/computerextra/golang-backend/env"
 	"github.com/computerextra/golang-backend/lieferanten"
 	"github.com/computerextra/golang-backend/mitarbeiter"
+	"github.com/computerextra/golang-backend/sage"
 	"github.com/computerextra/golang-backend/service"
 	"github.com/computerextra/golang-backend/wiki"
 	"github.com/gorilla/mux"
@@ -138,6 +139,7 @@ func main() {
 	router.HandleFunc("/api/CMS/Partner/{id}/delete", cmsroutes.DeletePartner).Methods(http.MethodPost) // Delete Partner
 
 	// SAGE Routes
+	router.HandleFunc("/api/Sage/Kunde", sage.GetKunde).Methods(http.MethodPost)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
