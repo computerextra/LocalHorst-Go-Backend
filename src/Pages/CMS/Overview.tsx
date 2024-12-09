@@ -19,27 +19,27 @@ export default function CmsOverview() {
       <h1>CMS Übersicht</h1>
       <div className="flex flex-col items-start mt-8">
         <Button asChild variant="link" className="my-2">
-          <Link to="/">
+          <Link to="/CMS/Abteilungen">
             Abteilungen <Badge>{data?.Abteilung}</Badge>
           </Link>
         </Button>
         <Button asChild variant="link" className="my-2">
-          <Link to="/">
+          <Link to="/CMS/Angebote">
             Angebote <Badge>{data?.Angebot}</Badge>
           </Link>
         </Button>
         <Button asChild variant="link" className="my-2">
-          <Link to="/">
+          <Link to="/CMS/Jobs">
             Jobs <Badge>{data?.Jobs}</Badge>
           </Link>
         </Button>
         <Button asChild variant="link" className="my-2">
-          <Link to="/">
+          <Link to="/CMS/Mitarbeiter">
             Mitarbeiter <Badge>{data?.Mitarbeiter}</Badge>
           </Link>
         </Button>
         <Button asChild variant="link" className="my-2">
-          <Link to="/">
+          <Link to="/CMS/Partner">
             Partner <Badge>{data?.Partner}</Badge>
           </Link>
         </Button>
