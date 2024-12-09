@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { DataTable } from "@/components/DataTable";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,7 @@ export default function AbteilungOverview() {
   if (isError) return <>Datenbank Fehler!</>;
   return (
     <>
+      <BackButton href="/CMS/" />
       <h1 className="mb-8">CMS - Abteilungen</h1>
       {data && (
         <DataTable

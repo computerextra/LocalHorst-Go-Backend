@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { DataTable } from "@/components/DataTable";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
@@ -45,7 +46,7 @@ const columns: ColumnDef<Job>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link to={`/CMS/Abteilungen/${payment.ID}`}>Bearbeiten</Link>
+              <Link to={`/CMS/Jobs/${payment.ID}`}>Bearbeiten</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -64,6 +65,7 @@ export default function JobsOverview() {
   if (isError) return <>Datenbank Fehler!</>;
   return (
     <>
+      <BackButton href="/CMS/" />
       <h1 className="mb-8">CMS - Jobs</h1>
       {data && (
         <DataTable
