@@ -74,15 +74,27 @@ export function Navigation() {
               Alle Einträge
             </MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={() => navigate("/Wiki/Signaturen")}>
+            <MenubarItem
+              onClick={() =>
+                navigate("/Wiki/412fc476-f341-457d-a06c-c8d27d4cc165")
+              }
+            >
               Signaturen
             </MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={() => navigate("/Wiki/Zeiterfassung")}>
+            <MenubarItem
+              onClick={() =>
+                navigate("/Wiki/d320c2bf-24ca-43b8-85a3-96fd9c664944")
+              }
+            >
               Zeiterfassung
             </MenubarItem>
             <MenubarSeparator />
-            <MenubarItem onClick={() => navigate("/Wiki/Datenschutz")}>
+            <MenubarItem
+              onClick={() =>
+                navigate("Wiki/89221838-3219-4a51-aecc-9bc45a05f230")
+              }
+            >
               Datenschutz
             </MenubarItem>
           </MenubarContent>
