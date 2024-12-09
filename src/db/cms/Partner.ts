@@ -24,7 +24,7 @@ type CreatePartnerProps = z.infer<typeof CreatePartnerProps>;
 
 const getAllPartner = async (): Promise<Partner[] | null> => {
   const res = await client.get<Partner[] | { error: string }>(
-    `/CMS/Partner/`,
+    `/CMS/Partner`,
     config
   );
   if ("error" in res.data) {

@@ -18,7 +18,7 @@ func GetAllPartner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +44,7 @@ func GetPartner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -73,7 +73,7 @@ func UpdatePartner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -106,7 +106,7 @@ func CreatePartner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -137,7 +137,7 @@ func DeletePartner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -162,7 +162,7 @@ func CountPartner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}

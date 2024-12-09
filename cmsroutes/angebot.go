@@ -21,7 +21,7 @@ func GetAngebote(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +47,7 @@ func GetAngebot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -130,7 +130,7 @@ func UpdateAngebot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -220,7 +220,7 @@ func CreateAngebot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -255,7 +255,7 @@ func DeleteAngebot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -280,7 +280,7 @@ func CountAngebot(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}

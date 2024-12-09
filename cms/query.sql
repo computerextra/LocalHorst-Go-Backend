@@ -13,9 +13,6 @@ INSERT INTO Abteilung (id, name) VALUES (?, ?);
 -- name: DeleteAbteilung :exec
 DELETE FROM Abteilung WHERE id = ?;
 
--- name: CountAbteilung :execresult
-SELECT COUNT(id) FROM Abteilung;
-
 -- name: GetAngebot :one
 SELECT * FROM Angebot WHERE id = ? LIMIT 1;
 
@@ -32,8 +29,6 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 -- name: DeleteAngebot :exec
 DELETE FROM Angebot WHERE id = ?;
 
--- name: CountAngebot :execresult
-SELECT COUNT(id) FROM Angebot;
 
 -- name: GetJob :one
 SELECT * FROM Jobs WHERE id = ? LIMIT 1;
@@ -50,8 +45,6 @@ INSERT INTO Jobs (id, name, online) VALUES (?, ?,?);
 -- name: DeleteJob :exec
 DELETE FROM Jobs WHERE id = ?;
 
--- name: CountJobs :execresult
-SELECT COUNT(id) FROM Jobs;
 
 -- name: GetMitarbeiter :one
 SELECT * FROM Mitarbeiter WHERE id = ? LIMIT 1;
@@ -69,8 +62,6 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 -- name: DeleteMitarbeiter :exec
 DELETE FROM Mitarbeiter WHERE id = ?;
 
--- name: CountMitarbeiter :execresult
-SELECT COUNT(id) FROM Mitarbeiter;
 
 -- name: GetPartner :one
 SELECT * FROM Partner WHERE id = ? LIMIT 1;
@@ -88,5 +79,3 @@ VALUES (?, ?, ?, ?);
 -- name: DeletePartner :exec
 DELETE FROM Partner WHERE id = ?;
 
--- name: CountPartner :execresult
-SELECT COUNT(id) FROM Partner;

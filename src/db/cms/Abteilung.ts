@@ -21,7 +21,7 @@ type CreateAbteilungProps = z.infer<typeof CreateAbteilungProps>;
 
 const getAbteilungen = async (): Promise<Abteilung[] | null> => {
   const res = await client.get<Abteilung[] | { error: string }>(
-    `/CMS/Abteilung/`,
+    `/CMS/Abteilung`,
     config
   );
   if ("error" in res.data) {

@@ -32,7 +32,7 @@ type CreateAngebotProps = z.infer<typeof CreateAngebotProps>;
 
 const getAngebote = async (): Promise<Angebot[] | null> => {
   const res = await client.get<Angebot[] | { error: string }>(
-    `/CMS/Angebot/`,
+    `/CMS/Angebot`,
     config
   );
   if ("error" in res.data) {

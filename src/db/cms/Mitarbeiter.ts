@@ -32,7 +32,7 @@ type CreateMitarbeiterProps = z.infer<typeof CreateMitarbeiterProps>;
 
 const getAllMitarbeiter = async (): Promise<Mitarbeiter[] | null> => {
   const res = await client.get<Mitarbeiter[] | { error: string }>(
-    `/CMS/Mitarbeiter/`,
+    `/CMS/Mitarbeiter`,
     config
   );
   if ("error" in res.data) {

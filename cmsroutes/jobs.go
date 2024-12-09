@@ -19,7 +19,7 @@ func GetJobs(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func GetJob(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -73,7 +73,7 @@ func UpdateJob(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -104,7 +104,7 @@ func CreateJob(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -134,7 +134,7 @@ func DeleteJob(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -159,7 +159,7 @@ func CountJobs(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}

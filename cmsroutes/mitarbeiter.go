@@ -19,7 +19,7 @@ func GetAllMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -45,7 +45,7 @@ func GetMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -78,7 +78,7 @@ func UpdateMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +119,7 @@ func CreateMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -154,7 +154,7 @@ func DeleteMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}
@@ -179,7 +179,7 @@ func CountMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
 	if err != nil {
 		panic(err)
 	}

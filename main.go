@@ -105,7 +105,6 @@ func main() {
 	// CMS - Abteilung
 	router.HandleFunc("/api/CMS/Abteilung", cmsroutes.GetAbteilungen).Methods(http.MethodGet)               // Get All Abteilungen
 	router.HandleFunc("/api/CMS/Abteilung/new", cmsroutes.CreateAbteilung).Methods(http.MethodPost)         // Create Abteilung
-	router.HandleFunc("/api/CMS/Abteilung/count", cmsroutes.CountAbteilung).Methods(http.MethodGet)         // Count Abteilungen
 	router.HandleFunc("/api/CMS/Abteilung/{id}", cmsroutes.GetAbteilung).Methods(http.MethodGet)            // Get Abteilung
 	router.HandleFunc("/api/CMS/Abteilung/{id}/edit", cmsroutes.UpdateAbteilung).Methods(http.MethodPost)   // Update Abteilung
 	router.HandleFunc("/api/CMS/Abteilung/{id}/delete", cmsroutes.DeleteAbteilung).Methods(http.MethodPost) // Delete Abteilung
@@ -113,7 +112,6 @@ func main() {
 	// CMS - Angebot
 	router.HandleFunc("/api/CMS/Angebot", cmsroutes.GetAngebote).Methods(http.MethodGet)                // Get All Angebote
 	router.HandleFunc("/api/CMS/Angebot/new", cmsroutes.CreateAngebot).Methods(http.MethodPost)         // Create Angebot
-	router.HandleFunc("/api/CMS/Angebot/count", cmsroutes.CountAngebot).Methods(http.MethodGet)         // Count Angebote
 	router.HandleFunc("/api/CMS/Angebot/{id}", cmsroutes.GetAngebot).Methods(http.MethodGet)            // Get Angebot
 	router.HandleFunc("/api/CMS/Angebot/{id}/edit", cmsroutes.UpdateAngebot).Methods(http.MethodPost)   // Update Angebot
 	router.HandleFunc("/api/CMS/Angebot/{id}/delete", cmsroutes.DeleteAngebot).Methods(http.MethodPost) // Delete Angebot
@@ -121,7 +119,6 @@ func main() {
 	// CMS - Jobs
 	router.HandleFunc("/api/CMS/Jobs", cmsroutes.GetJobs).Methods(http.MethodGet)                // Get All Jobs
 	router.HandleFunc("/api/CMS/Jobs/new", cmsroutes.CreateJob).Methods(http.MethodPost)         // Create Job
-	router.HandleFunc("/api/CMS/Jobs/count", cmsroutes.CountJobs).Methods(http.MethodGet)        // Count Jobs
 	router.HandleFunc("/api/CMS/Jobs/{id}", cmsroutes.GetJob).Methods(http.MethodGet)            // Get Job
 	router.HandleFunc("/api/CMS/Jobs/{id}/edit", cmsroutes.UpdateJob).Methods(http.MethodPost)   // Update Job
 	router.HandleFunc("/api/CMS/Jobs/{id}/delete", cmsroutes.DeleteJob).Methods(http.MethodPost) // Delete Job
@@ -129,7 +126,6 @@ func main() {
 	// CMS - Mitarbeiter
 	router.HandleFunc("/api/CMS/Mitarbeiter", cmsroutes.GetAllMitarbeiter).Methods(http.MethodGet)              // Get All Mitarbeiter
 	router.HandleFunc("/api/CMS/Mitarbeiter/new", cmsroutes.CreateMitarbeiter).Methods(http.MethodPost)         // Create Mitarbeiter
-	router.HandleFunc("/api/CMS/Mitarbeiter/count", cmsroutes.CountMitarbeiter).Methods(http.MethodGet)         // Count Mitarbeiter
 	router.HandleFunc("/api/CMS/Mitarbeiter/{id}", cmsroutes.GetMitarbeiter).Methods(http.MethodGet)            // Get Mitarbeiter
 	router.HandleFunc("/api/CMS/Mitarbeiter/{id}/edit", cmsroutes.UpdateMitarbeiter).Methods(http.MethodPost)   // Update Mitarbeiter
 	router.HandleFunc("/api/CMS/Mitarbeiter/{id}/delete", cmsroutes.DeleteMitarbeiter).Methods(http.MethodPost) // Delete Mitarbeiter
@@ -137,7 +133,6 @@ func main() {
 	// CMS - Partner
 	router.HandleFunc("/api/CMS/Partner", cmsroutes.GetAllPartner).Methods(http.MethodGet)              // Get All Partner
 	router.HandleFunc("/api/CMS/Partner/new", cmsroutes.CreatePartner).Methods(http.MethodPost)         // Create Partner
-	router.HandleFunc("/api/CMS/Partner/count", cmsroutes.CountPartner).Methods(http.MethodGet)         // Count Partner
 	router.HandleFunc("/api/CMS/Partner/{id}", cmsroutes.GetPartner).Methods(http.MethodGet)            // Get Partner
 	router.HandleFunc("/api/CMS/Partner/{id}/edit", cmsroutes.UpdatePartner).Methods(http.MethodPost)   // Update Partner
 	router.HandleFunc("/api/CMS/Partner/{id}/delete", cmsroutes.DeletePartner).Methods(http.MethodPost) // Delete Partner

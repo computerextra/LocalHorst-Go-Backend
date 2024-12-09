@@ -20,15 +20,15 @@ const CreateJobProps = z.object({
 });
 type CreateJobProps = z.infer<typeof CreateJobProps>;
 
-const getAngebote = async (): Promise<Job[] | null> => {
-  const res = await client.get<Job[] | { error: string }>(`/CMS/Jobs/`, config);
+const getJobs = async (): Promise<Job[] | null> => {
+  const res = await client.get<Job[] | { error: string }>(`/CMS/Jobs`, config);
   if ("error" in res.data) {
     return null;
   }
   return res.data;
 };
 
-const getAngebot = async (props: GetJobProps): Promise<Job | null> => {
+const getJob = async (props: GetJobProps): Promise<Job | null> => {
   const res = await client.get<Job | { error: string }>(
     `/CMS/Jobs/${props.id}`,
     config
@@ -39,7 +39,7 @@ const getAngebot = async (props: GetJobProps): Promise<Job | null> => {
   return res.data;
 };
 
-const updateAngebot = async (props: UpdateJobProps): Promise<Job | null> => {
+const updateJob = async (props: UpdateJobProps): Promise<Job | null> => {
   const form = new FormData();
   form.set("ID", props.ID);
   form.set("Name", props.Name);
@@ -55,7 +55,7 @@ const updateAngebot = async (props: UpdateJobProps): Promise<Job | null> => {
   return res.data;
 };
 
-const createAngebot = async (props: CreateJobProps): Promise<Job | null> => {
+const createJob = async (props: CreateJobProps): Promise<Job | null> => {
   const form = new FormData();
   form.set("Name", props.Name);
   form.set("Online", props.Online ? "true" : "false");
@@ -68,7 +68,7 @@ const createAngebot = async (props: CreateJobProps): Promise<Job | null> => {
   return res.data;
 };
 
-const deleteAngebot = async (props: GetJobProps): Promise<void> => {
+const deleteJob = async (props: GetJobProps): Promise<void> => {
   const form = new FormData();
   form.set("ID", props.id);
   await client.post<{ error: string }>(
@@ -79,11 +79,11 @@ const deleteAngebot = async (props: GetJobProps): Promise<void> => {
 };
 
 export {
-  getAngebot,
-  getAngebote,
-  updateAngebot,
-  createAngebot,
-  deleteAngebot,
+  getJob,
+  getJobs,
+  updateJob,
+  createJob,
+  deleteJob,
   type Job,
   type GetJobProps,
   type CreateJobProps,
