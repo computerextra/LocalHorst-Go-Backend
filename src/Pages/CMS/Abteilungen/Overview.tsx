@@ -57,6 +57,9 @@ export default function AbteilungOverview() {
     <>
       <BackButton href="/CMS/" />
       <h1 className="mb-8">CMS - Abteilungen</h1>
+      <Button asChild className="mb-2">
+        <Link to="/CMS/Abteilungen/Neu">Neue Abteilung</Link>
+      </Button>
       {data && (
         <DataTable
           columns={columns}

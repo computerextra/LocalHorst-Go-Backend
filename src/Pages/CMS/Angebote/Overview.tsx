@@ -103,6 +103,9 @@ export default function AngebotOverview() {
     <>
       <BackButton href="/CMS/" />
       <h1 className="mb-8">CMS - Angebote</h1>
+      <Button asChild className="mb-2">
+        <Link to="/CMS/Angebote/Neu">Neues Angebot</Link>
+      </Button>
       {data && (
         <DataTable
           columns={columns}

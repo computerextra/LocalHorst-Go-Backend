@@ -96,6 +96,6 @@ export {
   deleteAbteilung,
   type Abteilung,
   type GetAbteilungProps,
-  type CreateAbteilungProps,
-  type UpdateAbteilungProps,
+  CreateAbteilungProps,
+  UpdateAbteilungProps,
 };

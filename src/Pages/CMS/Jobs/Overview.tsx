@@ -67,6 +67,9 @@ export default function JobsOverview() {
     <>
       <BackButton href="/CMS/" />
       <h1 className="mb-8">CMS - Jobs</h1>
+      <Button asChild className="mb-2">
+        <Link to="/CMS/Jobs/Neu">Neuen Job</Link>
+      </Button>
       {data && (
         <DataTable
           columns={columns}

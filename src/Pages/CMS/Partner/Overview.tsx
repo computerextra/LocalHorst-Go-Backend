@@ -65,6 +65,9 @@ export default function PartnerOverview() {
     <>
       <BackButton href="/CMS/" />
       <h1 className="mb-8">CMS - Partner</h1>
+      <Button asChild className="mb-2">
+        <Link to="/CMS/Partner/Neu">Neuen Partner</Link>
+      </Button>
       {data && (
         <DataTable
           columns={columns}
