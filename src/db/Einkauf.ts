@@ -1,10 +1,7 @@
-import axios, {
-  type AxiosRequestConfig,
-  type RawAxiosRequestHeaders,
-} from "axios";
-import { client } from "./config";
+import { client, config } from "./config";
 import { z } from "zod";
 import { SqlNullDateTime, SqlNullString } from "./sqlTypes";
+import axios from "axios";
 
 const GetEinkaufArgs = z.object({ id: z.string() });
 
@@ -65,12 +62,6 @@ const Einkauf = z.object({
   Pfand: SqlNullString,
 });
 export type Einkauf = z.infer<typeof Einkauf>;
-
-const config: AxiosRequestConfig = {
-  headers: {
-    Accept: "application/json",
-  } as RawAxiosRequestHeaders,
-};
 
 // 127.0.0.1:8000/api/Einkauf/cltplzdp80000zlfc0rae9dnt
 

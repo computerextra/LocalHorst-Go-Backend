@@ -1,12 +1,5 @@
 import { z } from "zod";
-import { client } from "./config";
-import { AxiosRequestConfig, RawAxiosRequestHeaders } from "axios";
-
-const config: AxiosRequestConfig = {
-  headers: {
-    Accept: "application/json",
-  } as RawAxiosRequestHeaders,
-};
+import { client, config } from "./config";
 
 const Wiki = z.object({
   ID: z.string(),

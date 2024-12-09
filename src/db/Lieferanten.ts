@@ -1,13 +1,6 @@
-import { type AxiosRequestConfig, type RawAxiosRequestHeaders } from "axios";
-import { client } from "./config";
+import { client, config } from "./config";
 import { z } from "zod";
 import { SqlNullString } from "./sqlTypes";
-
-const config: AxiosRequestConfig = {
-  headers: {
-    Accept: "application/json",
-  } as RawAxiosRequestHeaders,
-};
 
 const Lieferanten = z.object({
   ID: z.string(),
@@ -62,11 +55,6 @@ const getLieferanten = async (): Promise<Lieferanten[]> => {
 const createLieferant = async (
   args: CreateLieferantParams
 ): Promise<Lieferanten> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   const form = new FormData();
   form.set("Firma", args.Firma);
   form.set("Kundennummer", args.Kundennummer.String ?? "");
@@ -79,11 +67,6 @@ const createLieferant = async (
 const updateLieferant = async (
   args: UpdateLieferantParams
 ): Promise<Lieferanten> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   const form = new FormData();
   form.set("ID", args.ID);
   form.set("Firma", args.Firma);

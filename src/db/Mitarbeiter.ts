@@ -1,5 +1,4 @@
-import { type AxiosRequestConfig, type RawAxiosRequestHeaders } from "axios";
-import { client } from "./config";
+import { client, config } from "./config";
 import { z } from "zod";
 import { SqlNullBool, SqlNullDateTime, SqlNullString } from "./sqlTypes";
 
@@ -52,15 +51,8 @@ export const Mitarbeiter = z.object({
 
 export type Mitarbeiter = z.infer<typeof Mitarbeiter>;
 
-const config: AxiosRequestConfig = {
-  headers: {
-    Accept: "application/json",
-  } as RawAxiosRequestHeaders,
-};
-
 const getUser = async (args: GetUserArgs): Promise<Mitarbeiter | null> => {
   const res = await client.get<Mitarbeiter | null>(`/user/${args.id}`, config);
-
   return res.data;
 };
 
@@ -70,21 +62,11 @@ const getUsers = async (): Promise<Mitarbeiter[]> => {
 };
 
 const createUser = async (args: FormData): Promise<Mitarbeiter> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   const res = await client.post<Mitarbeiter>("/user/new", args, config);
   return res.data;
 };
 
 const updateUser = async (args: FormData, id: string): Promise<Mitarbeiter> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Accept: "application/json",
-    } as RawAxiosRequestHeaders,
-  };
   const res = await client.post<Mitarbeiter>(`/user/${id}/edit`, args, config);
   return res.data;
 };

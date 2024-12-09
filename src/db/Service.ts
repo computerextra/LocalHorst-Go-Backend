@@ -1,5 +1,4 @@
-import { type AxiosRequestConfig, type RawAxiosRequestHeaders } from "axios";
-import { client } from "./config";
+import { client, config } from "./config";
 import { z } from "zod";
 
 export const InfoArgs = z.object({
@@ -8,12 +7,6 @@ export const InfoArgs = z.object({
 });
 
 export type InfoArgs = z.infer<typeof InfoArgs>;
-
-const config: AxiosRequestConfig = {
-  headers: {
-    Accept: "application/json",
-  } as RawAxiosRequestHeaders,
-};
 
 const sendInfo = async (args: InfoArgs): Promise<{ error: string } | null> => {
   const formData = new FormData();

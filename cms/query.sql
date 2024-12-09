@@ -23,8 +23,8 @@ SELECT * FROM Angebot ORDER BY title;
 UPDATE Angebot SET title = ?, subtitle = ?, date_start = ?, date_stop = ?, link = ?, image = ?, anzeigen = ? WHERE id = ?;
 
 -- name: CreateAngebot :execresult
-INSERT INTO Angebot (id, title, date_start, date_stop, link, image, anzeigen)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+INSERT INTO Angebot (id, title, subtitle, date_start, date_stop, link, image, anzeigen)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 -- name: DeleteAngebot :exec
 DELETE FROM Angebot WHERE id = ?;
