@@ -12,7 +12,7 @@ import { type EinkaufListe, getEinkaufsListe } from "@/db/Einkauf";
 import { useQuery } from "@tanstack/react-query";
 import { Check, Cross } from "lucide-react";
 import { useRef } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useReactToPrint } from "react-to-print";
 
 export default function EinkaufListe() {
@@ -20,7 +20,6 @@ export default function EinkaufListe() {
     queryKey: ["einkaufsliste"],
     queryFn: getEinkaufsListe,
   });
-  const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
 
@@ -31,18 +30,23 @@ export default function EinkaufListe() {
     <>
       <h1>Einkaufs Liste</h1>
       <div className="flex justify-between">
+        <Button className="my-6" variant="default" asChild>
+          <a
+            href="https://www.edeka.de/markt-id/10001842/prospekt/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Edeka Blättchen
+          </a>
+        </Button>
         <Button className="my-6" onClick={() => reactToPrintFn()}>
           Liste Drucken
         </Button>
-        <Button className="my-6" onClick={() => navigate("/Einkauf/Eingabe")}>
-          Eingeben{" "}
+        <Button className="my-6" asChild>
+          <Link to="/Einkauf/Eingabe">Eingeben</Link>
         </Button>
-        <Button
-          className="my-6"
-          variant="secondary"
-          onClick={() => navigate("/Einkauf/Abrechnung")}
-        >
-          PayPal Abrechnung
+        <Button className="my-6" variant="secondary" asChild>
+          <Link to="/Einkauf/Abrechnung">PayPal Abrechnung</Link>
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -64,7 +68,6 @@ function PrintMurks({ props }: { props: EinkaufListe }) {
       {props.Name.String} <br />
       Geld: {props.Geld.String} <br />
       Pfand: {props.Pfand.String} <br />
-      {/* TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!) */}
       <pre className="font-sans">{props.Dinge.String}</pre>
       <div className="grid grid-cols-3 mb-2">
         {props.Bild1date.Time &&
@@ -120,7 +123,6 @@ function EinkaufCard({ props }: { props: EinkaufListe }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* TODO: Einen Weg finden, vielleicht sogar Servier Seitig, damit die letzten Zeilen abgeschnitten werden, wenn sie komplett leer sind (Siehe WEBER!!!) */}
         <pre className="font-sans">{props.Dinge.String}</pre>
       </CardContent>
       <CardFooter>

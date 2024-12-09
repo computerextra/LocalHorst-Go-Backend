@@ -299,6 +299,15 @@ export default function Home() {
           <Link to="/Einkauf">Einkaufs Liste</Link>
         </Button>
         <Button asChild>
+          <a
+            href="https://www.edeka.de/markt-id/10001842/prospekt/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Edeka Blättchen
+          </a>
+        </Button>
+        <Button asChild>
           <Link to="/Mitarbeiter">Mitarbeiter Übersicht</Link>
         </Button>
         <Button asChild>

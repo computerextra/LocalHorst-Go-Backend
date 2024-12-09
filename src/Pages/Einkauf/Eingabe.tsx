@@ -52,7 +52,17 @@ export function Auswahl() {
   if (isError) return <>Error...</>;
   return (
     <>
+      <BackButton href="/Einkauf" />
       <h1 className="my-8">Einkauf</h1>
+      <Button className="my-6" variant="default" asChild>
+        <a
+          href="https://www.edeka.de/markt-id/10001842/prospekt/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Edeka Blättchen
+        </a>
+      </Button>
       <Select onValueChange={(e) => setSelected(e)}>
         <SelectTrigger className="w-[280px]">
           <SelectValue placeholder="Bitte wählen ..." />
@@ -167,6 +177,15 @@ export function Eingabe() {
     <>
       <BackButton href="/Einkauf/Eingabe" />
       <h1 className="my-8">Einkauf Eingabe</h1>
+      <Button className="my-6" variant="default" asChild>
+        <a
+          href="https://www.edeka.de/markt-id/10001842/prospekt/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Edeka Blättchen
+        </a>
+      </Button>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
