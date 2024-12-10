@@ -142,6 +142,8 @@ func main() {
 
 	// SAGE Routes
 	router.HandleFunc("/api/Sage/Kunde", sage.GetKunde).Methods(http.MethodPost)
+	router.HandleFunc("/api/Sage/Search", sage.SucheKunde).Methods(http.MethodPost)
+	router.HandleFunc("/api/Sage/ReverseSearch", sage.ReverseSucheKunde).Methods(http.MethodPost)
 	router.HandleFunc("/api/Inventur/Years", inventur.GetYears).Methods(http.MethodGet)
 	router.HandleFunc("/api/Inventur/All", inventur.GetAllEntries).Methods(http.MethodPost)
 	router.HandleFunc("/api/Inventur/Teams", inventur.GetTeams).Methods(http.MethodPost)

@@ -50,6 +50,7 @@ import InventurOverview from "./Pages/Sage/Inventur/Overview";
 import Jahr from "./Pages/Sage/Inventur/Jahr";
 import Team from "./Pages/Sage/Inventur/Team";
 import Teams from "./Pages/Sage/Inventur/Teams";
+import KundenSuche from "./Pages/Sage/Kundensuche";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -94,11 +95,8 @@ createRoot(document.getElementById("root")!).render(
             </Route>
 
             <Route path="Sage">
-              <Route index element={<>Sage</>} />
-              <Route
-                path="Suche"
-                element={<>Sage Kunden/Lieferanten Suche</>}
-              />
+              <Route index element={<>CE Archive</>} />
+              <Route path="Suche" element={<KundenSuche />} />
 
               <Route path="Inventur">
                 <Route index element={<InventurOverview />} />

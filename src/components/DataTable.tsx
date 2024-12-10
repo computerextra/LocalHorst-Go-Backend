@@ -29,7 +29,7 @@ export function DataTable<TData, TValue>({
   data,
   search,
   placeholder,
-}: DataTableProps<TData, TValue> & { search: string; placeholder: string }) {
+}: DataTableProps<TData, TValue> & { search?: string; placeholder: string }) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
     data,
@@ -45,16 +45,18 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="border rounded-md">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder={placeholder}
-          value={(table.getColumn(search)?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn(search)?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div>
+      {search && (
+        <div className="flex items-center py-4">
+          <Input
+            placeholder={placeholder}
+            value={(table.getColumn(search)?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn(search)?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+        </div>
+      )}
       <div className="border rounded-md">
         <Table>
           <TableHeader>
