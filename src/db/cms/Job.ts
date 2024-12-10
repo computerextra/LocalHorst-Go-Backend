@@ -86,6 +86,6 @@ export {
   deleteJob,
   type Job,
   type GetJobProps,
-  type CreateJobProps,
-  type UpdateJobProps,
+  CreateJobProps,
+  UpdateJobProps,
 };
