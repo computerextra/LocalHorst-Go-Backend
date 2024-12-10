@@ -46,6 +46,10 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Werkstatt from "./Pages/Werkstatt";
 import NotFound from "./Pages/NotFound";
 import Seriennummer from "./Pages/Service/Seriennummer";
+import InventurOverview from "./Pages/Sage/Inventur/Overview";
+import Jahr from "./Pages/Sage/Inventur/Jahr";
+import Team from "./Pages/Sage/Inventur/Team";
+import Teams from "./Pages/Sage/Inventur/Teams";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -97,10 +101,11 @@ createRoot(document.getElementById("root")!).render(
               />
 
               <Route path="Inventur">
-                <Route index element={<>Inventur Übersicht der Jahre</>} />
+                <Route index element={<InventurOverview />} />
                 <Route path=":iyear">
-                  <Route index element={<>Inventur Artikel Übersicht</>} />
-                  <Route path=":igroup" element={<>Inventur Gruppe</>} />
+                  <Route index element={<Jahr />} />
+                  <Route path="Teams" element={<Teams />} />
+                  <Route path="Teams/:iteam" element={<Team />} />
                 </Route>
               </Route>
             </Route>

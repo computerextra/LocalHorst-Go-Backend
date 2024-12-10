@@ -11,6 +11,7 @@ import (
 
 	"github.com/computerextra/golang-backend/cmsroutes"
 	"github.com/computerextra/golang-backend/env"
+	"github.com/computerextra/golang-backend/inventur"
 	"github.com/computerextra/golang-backend/lieferanten"
 	"github.com/computerextra/golang-backend/mitarbeiter"
 	"github.com/computerextra/golang-backend/sage"
@@ -141,6 +142,10 @@ func main() {
 
 	// SAGE Routes
 	router.HandleFunc("/api/Sage/Kunde", sage.GetKunde).Methods(http.MethodPost)
+	router.HandleFunc("/api/Inventur/Years", inventur.GetYears).Methods(http.MethodGet)
+	router.HandleFunc("/api/Inventur/All", inventur.GetAllEntries).Methods(http.MethodPost)
+	router.HandleFunc("/api/Inventur/Teams", inventur.GetTeams).Methods(http.MethodPost)
+	router.HandleFunc("/api/Inventur/Entry", inventur.GetEntry).Methods(http.MethodPost)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
