@@ -86,20 +86,22 @@ func UpdateAngebot(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
+
 		month, err := strconv.Atoi(split[1])
 		if err != nil {
 			fehler := err.Error()
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
-		day, err := strconv.Atoi(split[1])
+
+		day, err := strconv.Atoi(split[0])
 		if err != nil {
 			fehler := err.Error()
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
 
-		Start = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.Now().Local().Location())
+		Start = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 	}
 	if len(DateStop) > 1 {
 		split := strings.Split(DateStop, ".")
@@ -115,14 +117,14 @@ func UpdateAngebot(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
-		day, err := strconv.Atoi(split[1])
+		day, err := strconv.Atoi(split[0])
 		if err != nil {
 			fehler := err.Error()
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
 
-		Stop = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.Now().Local().Location())
+		Stop = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 	}
 
 	r.Header.Add("Content-Type", "application/json")
@@ -145,7 +147,7 @@ func UpdateAngebot(w http.ResponseWriter, r *http.Request) {
 		DateStop:  Stop,
 		Link:      Link,
 		Image:     Image,
-		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "true", true, false), Valid: helper.If(Anzeigen == "true", true, false)},
+		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "true", true, false), Valid: helper.If(len(Anzeigen) > 1, true, false)},
 		ID:        ID,
 	})
 	datebase.Close()
@@ -171,26 +173,29 @@ func CreateAngebot(w http.ResponseWriter, r *http.Request) {
 
 	if len(DateStart) > 1 {
 		split := strings.Split(DateStart, ".")
+
 		year, err := strconv.Atoi(split[2])
 		if err != nil {
 			fehler := err.Error()
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
+
 		month, err := strconv.Atoi(split[1])
 		if err != nil {
 			fehler := err.Error()
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
-		day, err := strconv.Atoi(split[1])
+
+		day, err := strconv.Atoi(split[0])
 		if err != nil {
 			fehler := err.Error()
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
 
-		Start = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.Now().Local().Location())
+		Start = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 	}
 	if len(DateStop) > 1 {
 		split := strings.Split(DateStop, ".")
@@ -206,14 +211,14 @@ func CreateAngebot(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
-		day, err := strconv.Atoi(split[1])
+		day, err := strconv.Atoi(split[0])
 		if err != nil {
 			fehler := err.Error()
 			json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 			return
 		}
 
-		Stop = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.Now().Local().Location())
+		Stop = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 	}
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
@@ -235,7 +240,7 @@ func CreateAngebot(w http.ResponseWriter, r *http.Request) {
 		DateStop:  Stop,
 		Link:      Link,
 		Image:     Image,
-		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "true", true, false), Valid: helper.If(Anzeigen == "true", true, false)},
+		Anzeigen:  sql.NullBool{Bool: helper.If(Anzeigen == "true", true, false), Valid: helper.If(len(Anzeigen) > 1, true, false)},
 		ID:        uuid.New().String(),
 	})
 	datebase.Close()

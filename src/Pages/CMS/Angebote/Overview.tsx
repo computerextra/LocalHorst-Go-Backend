@@ -12,7 +12,7 @@ import {
 import { Angebot, getAngebote } from "@/db/cms/Angebot";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { Check, Cross, MoreHorizontal } from "lucide-react";
 import { Link } from "react-router";
 
 const columns: ColumnDef<Angebot>[] = [
@@ -21,7 +21,7 @@ const columns: ColumnDef<Angebot>[] = [
     header: "Title",
   },
   {
-    accessorKey: "Subtitle.String",
+    accessorKey: "Subtitle",
     header: "Subtitle",
   },
   {
@@ -64,6 +64,15 @@ const columns: ColumnDef<Angebot>[] = [
           })}
         </p>
       );
+    },
+  },
+  {
+    accessorKey: "Anzeigen",
+    header: "Online",
+    cell: ({ row }) => {
+      const x = row.original;
+      if (x.Anzeigen) return <Check className="text-green-500" />;
+      else return <Cross className="rotate-45 text-primary" />;
     },
   },
   {

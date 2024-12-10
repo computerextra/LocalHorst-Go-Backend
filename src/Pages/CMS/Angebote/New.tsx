@@ -21,7 +21,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -33,7 +32,6 @@ export default function AngebotNew() {
     resolver: zodResolver(CreateAngebotProps),
   });
   const navigate = useNavigate();
-  const [msg, setMsg] = useState<undefined | string>(undefined);
 
   const onSubmit = async (values: z.infer<typeof CreateAngebotProps>) => {
     const start = new Date(values.DateStart);
@@ -49,18 +47,13 @@ export default function AngebotNew() {
       }.${start.getFullYear()}`,
       DateStop: `${end.getDate()}.${end.getMonth() + 1}.${end.getFullYear()}`,
     };
-    const res = await createAngebot(data);
-    if (res) {
-      navigate("/CMS/Angebote");
-    } else {
-      setMsg("Fehler!");
-    }
+    await createAngebot(data);
+    navigate("/CMS/Angebote");
   };
   return (
     <>
       <BackButton href="/CMS/Angebote" />
       <h1 className="mt-8">Neues Angebot anglegen</h1>
-      {msg && <h2 className="text-primary">{msg}</h2>}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">
           <FormField

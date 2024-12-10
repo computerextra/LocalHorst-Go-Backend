@@ -28,7 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { DayPicker } from "react-day-picker";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
@@ -59,21 +59,18 @@ export default function AngebotEdit() {
     },
   });
   const navigate = useNavigate();
-  const [msg, setMsg] = useState<undefined | string>(undefined);
 
   useEffect(() => {
     if (data == null) return;
 
     form.reset({
-      // @ts-expect-error ist eigentlich so richtig...
-      Anzeigen: data.Anzeigen.Bool,
+      Anzeigen: data.Anzeigen,
       DateStart: data.DateStart,
       DateStop: data.DateStop,
       ID: data.ID,
       Image: data.Image,
       Link: data.Link,
-      // @ts-expect-error ist eigentlich so richtig...
-      Subtitle: data.Subtitle.String,
+      Subtitle: data.Subtitle,
       Title: data.Title,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,16 +92,13 @@ export default function AngebotEdit() {
       DateStop: `${end.getDate()}.${end.getMonth() + 1}.${end.getFullYear()}`,
     };
     const res = await updateAngebot(data);
-    if (res) {
-      navigate("/CMS/Angebote");
-    } else {
-      setMsg("Fehler!");
-    }
+    if (res) navigate("/CMS/Angebote");
   };
 
   const handleDelete = async () => {
     if (aid == null) return;
     await deleteAngebot({ id: aid });
+    navigate("/CMS/Angebote");
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -114,7 +108,6 @@ export default function AngebotEdit() {
     <>
       <BackButton href="/CMS/Angebote" />
       <h1 className="mt-8">{data?.Title} bearbeiten</h1>
-      {msg && <h2 className="text-primary">{msg}</h2>}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">
           <FormField
