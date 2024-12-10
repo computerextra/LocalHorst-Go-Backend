@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import BackButton from "@/components/BackButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,6 +62,7 @@ export default function JobsEdit() {
 
   return (
     <>
+      <BackButton href="/CMS/Jobs" />
       <h1 className="my-8">Neuen Job Anlegen</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

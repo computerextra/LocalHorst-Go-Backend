@@ -115,6 +115,6 @@ export {
   deleteMitarbeiter,
   type Mitarbeiter,
   type GetMitarbeiterProps,
-  type CreateMitarbeiterProps,
-  type UpdateMitarbeiterProps,
+  CreateMitarbeiterProps,
+  UpdateMitarbeiterProps,
 };

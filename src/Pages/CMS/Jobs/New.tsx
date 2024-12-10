@@ -1,3 +1,4 @@
+import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,6 +29,7 @@ export default function JobsNew() {
 
   return (
     <>
+      <BackButton href="/CMS/Jobs" />
       <h1 className="my-8">Neuen Job Anlegen</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
