@@ -102,6 +102,7 @@ func main() {
 
 	// Service
 	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost) // Send Info Mail
+	router.HandleFunc("/api/Service/Seriennummer", sage.GetSeriennummer).Methods(http.MethodPost)
 
 	// CMS - Abteilung
 	router.HandleFunc("/api/CMS/Abteilung", cmsroutes.GetAbteilungen).Methods(http.MethodGet)               // Get All Abteilungen

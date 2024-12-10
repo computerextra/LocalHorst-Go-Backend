@@ -45,6 +45,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Werkstatt from "./Pages/Werkstatt";
 import NotFound from "./Pages/NotFound";
+import Seriennummer from "./Pages/Service/Seriennummer";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -113,7 +114,7 @@ createRoot(document.getElementById("root")!).render(
 
             <Route path="Service">
               <Route index element={<>Hier gibts nichts zu sehen!</>} />
-              <Route path="Seriennummer" element={<>Service Seriennummer</>} />
+              <Route path="Seriennummer" element={<Seriennummer />} />
               <Route path="Info" element={<InfoPage />} />
             </Route>
 
