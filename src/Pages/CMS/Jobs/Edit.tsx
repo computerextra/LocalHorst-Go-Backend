@@ -63,7 +63,7 @@ export default function JobsEdit() {
   return (
     <>
       <BackButton href="/CMS/Jobs" />
-      <h1 className="my-8">Neuen Job Anlegen</h1>
+      <h1 className="my-8">{data?.Name} bearbeiten</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

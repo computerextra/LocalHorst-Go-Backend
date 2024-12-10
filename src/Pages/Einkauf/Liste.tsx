@@ -53,7 +53,7 @@ export default function EinkaufListe() {
         {data && data.map((x) => <EinkaufCard key={x.ID} props={x} />)}
       </div>
       <div className="sr-only">
-        <div className="my-6 ps-6" ref={contentRef}>
+        <div className="my-6 text-black ps-6" ref={contentRef}>
           <h1>An Post / Milch und Kaffee denken!</h1>
           {data && data.map((x) => <PrintMurks key={x.ID} props={x} />)}
         </div>

@@ -80,7 +80,7 @@ const createPartner = async (
   return res.data;
 };
 
-const deleteMitarbeiter = async (props: GetPartnerProps): Promise<void> => {
+const deletePartner = async (props: GetPartnerProps): Promise<void> => {
   const form = new FormData();
   form.set("ID", props.id);
   await client.post<{ error: string }>(
@@ -95,9 +95,9 @@ export {
   getPartner,
   updatePartner,
   createPartner,
-  deleteMitarbeiter,
+  deletePartner,
   type Partner,
   type GetPartnerProps,
-  type CreatePartnerProps,
-  type UpdatePartnerProps,
+  CreatePartnerProps,
+  UpdatePartnerProps,
 };
