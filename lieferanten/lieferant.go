@@ -17,9 +17,9 @@ func GetLieferanten(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -43,7 +43,8 @@ func GetLieferant(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -67,7 +68,8 @@ func GetAnsprechpartnerFromLieferant(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -94,7 +96,8 @@ func CreateLieferant(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -127,7 +130,8 @@ func UpdateLieferant(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -156,7 +160,8 @@ func DeleteLieferant(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}

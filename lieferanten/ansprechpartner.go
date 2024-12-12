@@ -19,9 +19,9 @@ func GetAnsprechpartner(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,8 @@ func CreateAnsprechpartner(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		fmt.Println(err.Error())
 		panic(err)
@@ -88,7 +89,8 @@ func UpdateAnsprechpartner(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -119,7 +121,8 @@ func DeleteAnsprechpartner(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-	database, err := sql.Open("mysql", env.GetEnv("DATABASE_URL"))
+	env := env.GetEnv()
+	database, err := sql.Open("mysql", env.DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}

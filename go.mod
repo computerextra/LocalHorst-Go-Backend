@@ -3,6 +3,7 @@ module github.com/computerextra/golang-backend
 go 1.23.3
 
 require (
+	github.com/caarlos0/env/v6 v6.10.1
 	github.com/denisenkom/go-mssqldb v0.12.3
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/google/uuid v1.6.0

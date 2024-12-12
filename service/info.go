@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"text/template"
 
 	"github.com/computerextra/golang-backend/env"
@@ -16,19 +15,13 @@ import (
 )
 
 func Info(w http.ResponseWriter, r *http.Request) {
+	env := env.GetEnv()
 	// Get Mail Settings
-	MAIL_FROM := env.GetEnv("MAIL_FROM")
-	MAIL_SERVER := env.GetEnv("MAIL_SERVER")
-	MAIL_PORT := env.GetEnv("MAIL_PORT")
-	PORT, err := strconv.Atoi(MAIL_PORT)
-	if err != nil {
-		fmt.Println(err)
-		fehler := err.Error()
-		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
-		return
-	}
-	MAIL_USER := env.GetEnv("MAIL_USER")
-	MAIL_PASSWORD := env.GetEnv("MAIL_PASSWORD")
+	MAIL_FROM := env.MAIL_FROM
+	MAIL_SERVER := env.MAIL_SERVER
+	MAIL_PORT := env.MAIL_PORT
+	MAIL_USER := env.MAIL_USER
+	MAIL_PASSWORD := env.MAIL_PASSWORD
 
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
@@ -39,7 +32,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	// Get and Parse HTML Template
 	t := template.New("mail.html")
 
-	t, err = t.ParseFiles("mail.html")
+	t, err := t.ParseFiles("mail.html")
 	if err != nil {
 		log.Println(err)
 	}
@@ -65,7 +58,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	// Set Body
 	m.SetBody("text/html", result)
 
-	d := gomail.NewDialer(MAIL_SERVER, PORT, MAIL_USER, MAIL_PASSWORD)
+	d := gomail.NewDialer(MAIL_SERVER, MAIL_PORT, MAIL_USER, MAIL_PASSWORD)
 
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 

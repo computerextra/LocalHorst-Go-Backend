@@ -249,3 +249,6 @@ UPDATE Wiki SET Name = ?, Inhalt = ?, created_at = NOW() WHERE id = ?;
 
 -- name: DeleteWiki :exec
 DELETE FROM Wiki WHERE id = ?; 
+
+-- name: SearchArchive :many
+SELECT id, title  FROM pdfs WHERE title LIKE ? OR body LIKE ?;

@@ -17,9 +17,9 @@ func GetAllMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -43,9 +43,9 @@ func GetMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -76,9 +76,9 @@ func UpdateMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -117,9 +117,9 @@ func CreateMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -152,9 +152,9 @@ func DeleteMitarbeiter(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}

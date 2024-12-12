@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/computerextra/golang-backend/env"
@@ -19,15 +18,12 @@ type User struct {
 }
 
 func getConnectionString() string {
-
-	server := env.GetEnv("SAGE_SERVER")
-	db := env.GetEnv("SAGE_DB")
-	user := env.GetEnv("SAGE_USER")
-	password := env.GetEnv("SAGE_PASS")
-	port, err := strconv.ParseInt(env.GetEnv("SAGE_PORT"), 0, 64)
-	if err != nil {
-		log.Fatal("SAGE_PORT not in .env: ", err)
-	}
+	env := env.GetEnv()
+	server := env.SAGE_SERVER
+	db := env.SAGE_DB
+	user := env.SAGE_USER
+	password := env.SAGE_PASS
+	port := env.SAGE_PORT
 	return fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", server, db, user, password, port)
 }
 

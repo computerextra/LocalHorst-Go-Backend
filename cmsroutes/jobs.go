@@ -17,9 +17,9 @@ func GetJobs(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -43,9 +43,9 @@ func GetJob(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -71,9 +71,9 @@ func UpdateJob(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -102,9 +102,9 @@ func CreateJob(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}
@@ -132,9 +132,9 @@ func DeleteJob(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Content-Type", "application/json")
 	w.Header().Set("Content-Type", "application/json")
 	ctx := r.Context()
-
+	env := env.GetEnv()
 	// Get Database
-	datebase, err := sql.Open("mysql", env.GetEnv("CMS_DATABASE_URL"))
+	datebase, err := sql.Open("mysql", env.CMS_DATABASE_URL)
 	if err != nil {
 		panic(err)
 	}

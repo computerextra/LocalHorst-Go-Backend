@@ -1,12 +1,15 @@
 package helper
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"mime/multipart"
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/computerextra/golang-backend/env"
 )
 
 var (
@@ -14,13 +17,17 @@ var (
 	RootPath   = filepath.Join(filepath.Dir(b), "../dist\\")
 )
 
-func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (string, error) {
+func checkFolder() {
 	_, err := os.Stat("temp")
 	if os.IsNotExist(err) {
 		fmt.Println("Folder does not exist.")
 		os.Mkdir(fmt.Sprintf("%s\\%s", RootPath, "upload"), os.ModePerm)
 
 	}
+}
+
+func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (string, error) {
+	checkFolder()
 
 	File, err := h.Open()
 	if err != nil {
@@ -46,4 +53,62 @@ func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (str
 	tempFile.Write(filebytes)
 
 	return fmt.Sprintf("%s/%s", "/upload/", tempFileName), nil
+}
+
+func SavePdf(Title string) error {
+	checkFolder()
+
+	env := env.GetEnv()
+	ArchivePath := env.ARCHIVE_PATH
+	tempFolderPath := fmt.Sprintf("%s%s", RootPath, "\\upload")
+
+	directory := filepath.Join(ArchivePath, Title)
+	fi, err := os.Open(directory)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := fi.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	// make a read buffer
+	r := bufio.NewReader(fi)
+
+	fo, err := os.Create(fmt.Sprintf("%s/%s", tempFolderPath, fi.Name()))
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := fo.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	// make a write buffer
+	w := bufio.NewWriter(fo)
+
+	buf := make([]byte, 1024)
+	for {
+		// read a chunk
+		n, err := r.Read(buf)
+		if err != nil && err != io.EOF {
+			return err
+		}
+		if n == 0 {
+			break
+		}
+
+		// write a chunk
+		if _, err := w.Write(buf[:n]); err != nil {
+			return err
+		}
+	}
+
+	if err = w.Flush(); err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -44,13 +44,15 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Werkstatt from "./Pages/Werkstatt";
-import NotFound from "./Pages/NotFound";
 import Seriennummer from "./Pages/Service/Seriennummer";
 import InventurOverview from "./Pages/Sage/Inventur/Overview";
 import Jahr from "./Pages/Sage/Inventur/Jahr";
 import Team from "./Pages/Sage/Inventur/Team";
 import Teams from "./Pages/Sage/Inventur/Teams";
 import KundenSuche from "./Pages/Sage/Kundensuche";
+import Archive from "./Pages/Archive/Archive";
+import NotFound from "./Pages/NotFound";
+import Download from "./Pages/Archive/Download";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -95,7 +97,8 @@ createRoot(document.getElementById("root")!).render(
             </Route>
 
             <Route path="Sage">
-              <Route index element={<>CE Archive</>} />
+              <Route index element={<Archive />} />
+              <Route path=":filename" element={<Download />} />
               <Route path="Suche" element={<KundenSuche />} />
 
               <Route path="Inventur">

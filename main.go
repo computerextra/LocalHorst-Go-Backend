@@ -149,6 +149,10 @@ func main() {
 	router.HandleFunc("/api/Inventur/Teams", inventur.GetTeams).Methods(http.MethodPost)
 	router.HandleFunc("/api/Inventur/Entry", inventur.GetEntry).Methods(http.MethodPost)
 
+	// Archive
+	router.HandleFunc("/api/Archive", sage.SearchArchive).Methods(http.MethodPost)
+	router.HandleFunc("/api/Archive/{filename}", sage.GetArchiveFile).Methods(http.MethodGet)
+
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
 	})
@@ -156,11 +160,10 @@ func main() {
 
 	spa := spaHandler{staticPath: "dist", indexPath: "index.html"}
 	router.PathPrefix("/").Handler(spa)
-
-	port := env.GetEnv("VITE_PORT")
+	env := env.GetEnv()
 	srv := &http.Server{
 		Handler: handler,
-		Addr:    fmt.Sprintf(":%v", port),
+		Addr:    fmt.Sprintf(":%v", env.VITE_PORT),
 		// Good Pratice: enfoce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
