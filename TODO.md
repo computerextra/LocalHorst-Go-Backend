@@ -1,0 +1,2 @@
+- [ ] Inventur Modul geht nicht im Livebetrieb.
+- [ ] Seriennummern gehen im Live nicht! 00660: [object Object] wurde in die Zwischenablage kopiert.
