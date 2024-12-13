@@ -27,7 +27,29 @@ export default function Seriennummer() {
     if (res) {
       const x = `${values.Artikelnummer}: ${res}`;
       setString(x);
-      await navigator.clipboard.writeText(x);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(x);
+      } else {
+        // Use the 'out of viewport hidden text area' trick
+        const textArea = document.createElement("textarea");
+        textArea.value = x;
+
+        // Move textarea out of the viewport
+        textArea.style.position = "absolute";
+        textArea.style.left = "-99999999px";
+
+        document.body.prepend(textArea);
+        textArea.select();
+
+        try {
+          document.execCommand("copy");
+        } catch (error) {
+          alert(error);
+        } finally {
+          textArea.remove();
+        }
+      }
+
       setTimeout(() => {
         setString(undefined);
         form.reset({
