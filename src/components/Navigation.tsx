@@ -138,6 +138,17 @@ export function Navigation() {
             Werkstatt
           </MenubarTrigger>
         </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>
+            <a
+              href="http://10.0.0.64:8080"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Alter Local Horst
+            </a>
+          </MenubarTrigger>
+        </MenubarMenu>
       </Menubar>
     </div>
   );
