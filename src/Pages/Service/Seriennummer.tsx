@@ -27,7 +27,7 @@ export default function Seriennummer() {
     if (res) {
       const x = `${values.Artikelnummer}: ${res}`;
       setString(x);
-      navigator.clipboard.writeText(x);
+      await navigator.clipboard.writeText(x);
       setTimeout(() => {
         setString(undefined);
         form.reset({
