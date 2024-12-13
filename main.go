@@ -17,6 +17,7 @@ import (
 	"github.com/computerextra/golang-backend/sage"
 	"github.com/computerextra/golang-backend/service"
 	"github.com/computerextra/golang-backend/wiki"
+	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -54,6 +55,42 @@ func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.FileServer(http.Dir(h.staticPath)).ServeHTTP(w, r)
+}
+
+func getToken(name string) (string, error) {
+	signingKey := []byte("keymaker")
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"name": name,
+		"role": "redpill",
+	})
+	tokenString, err := token.SignedString(signingKey)
+	return tokenString, err
+}
+
+func authenticate(w http.ResponseWriter, r *http.Request) {
+	name := r.FormValue("programName")
+	password := r.FormValue("programPassword")
+
+	if len(name) == 0 || len(password) == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Please provide name and password to obtain the token"))
+		return
+	}
+	if (name == "johannes.kirchner@computer-extra.de" && password == "n3livibE?") || (name == "christop.salowski@computer-extra.de" && password == "Neunsend!m97") {
+		token, err := getToken(name)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Error generating JWT token: " + err.Error()))
+		} else {
+			w.Header().Set("Authorization", "Bearer "+token)
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Token: " + token))
+		}
+	} else {
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("Name and password do not match"))
+		return
+	}
 }
 
 func main() {
@@ -152,6 +189,9 @@ func main() {
 	// Archive
 	router.HandleFunc("/api/Archive", sage.SearchArchive).Methods(http.MethodPost)
 	router.HandleFunc("/api/Archive/{filename}", sage.GetArchiveFile).Methods(http.MethodGet)
+
+	// Auth
+	router.HandleFunc("/api/authenticate", authenticate).Methods(http.MethodPost)
 
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},

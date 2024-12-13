@@ -1,3 +1,4 @@
+import { AuthPage } from "@/components/AuthPage";
 import BackButton from "@/components/BackButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
@@ -52,140 +53,142 @@ export default function MitarbeiterNew() {
   };
 
   return (
-    <>
-      <BackButton href="/CMS/Mitarbeiter" />
-      <h1 className="my-8">Neuen Mitarbeiter anlegen</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="Name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Short"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Short</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Focus"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Focus</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Tags"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tags</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Sex"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Geschlecht</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+    <AuthPage>
+      <>
+        <BackButton href="/CMS/Mitarbeiter" />
+        <h1 className="my-8">Neuen Mitarbeiter anlegen</h1>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="Name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Bitte Wählen" />
-                    </SelectTrigger>
+                    <Input {...field} />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="m">Männlich</SelectItem>
-                    <SelectItem value="w">Weiblich</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div>
-            <h3 className="mb-4 text-lg font-medium">Bild auf Webseite</h3>
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="Image"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Bild</FormLabel>
-                    </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Short"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Short</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Focus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Focus</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Tags"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tags</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Sex"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Geschlecht</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Bitte Wählen" />
+                      </SelectTrigger>
                     </FormControl>
-                  </FormItem>
-                )}
-              />
+                    <SelectContent>
+                      <SelectItem value="m">Männlich</SelectItem>
+                      <SelectItem value="w">Weiblich</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div>
+              <h3 className="mb-4 text-lg font-medium">Bild auf Webseite</h3>
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="Image"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">Bild</FormLabel>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-          </div>
-          <FormField
-            control={form.control}
-            name="Abteilungid"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Abteilung</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Bitte Wählen" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Abteilungen?.map((x) => (
-                      <SelectItem key={x.ID} value={x.ID}>
-                        {x.Name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="Abteilungid"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Abteilung</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Bitte Wählen" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Abteilungen?.map((x) => (
+                        <SelectItem key={x.ID} value={x.ID}>
+                          {x.Name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Button type="submit">Speichern</Button>
-        </form>
-      </Form>
-    </>
+            <Button type="submit">Speichern</Button>
+          </form>
+        </Form>
+      </>
+    </AuthPage>
   );
 }

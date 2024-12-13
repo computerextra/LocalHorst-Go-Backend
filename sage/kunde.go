@@ -24,6 +24,7 @@ func getConnectionString() string {
 	user := env.SAGE_USER
 	password := env.SAGE_PASS
 	port := env.SAGE_PORT
+
 	return fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", server, db, user, password, port)
 }
 

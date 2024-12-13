@@ -6,12 +6,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 )
 
 var (
-	_, b, _, _ = runtime.Caller(0)
-	RootPath   = filepath.Join(filepath.Dir(b), "./Data")
+	RootPath = filepath.Join("inventur", "Data")
 )
 
 type AllFile struct {
@@ -22,7 +20,15 @@ type AllFile struct {
 }
 
 func GetYears(w http.ResponseWriter, r *http.Request) {
-	folder, err := os.ReadDir(RootPath)
+	ex, err := os.Executable()
+	if err != nil {
+		fehler := err.Error()
+		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		return
+	}
+	exPath := filepath.Dir(ex)
+
+	folder, err := os.ReadDir(filepath.Join(exPath, RootPath))
 	if err != nil {
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
@@ -37,8 +43,15 @@ func GetYears(w http.ResponseWriter, r *http.Request) {
 
 func GetAllEntries(w http.ResponseWriter, r *http.Request) {
 	year := r.FormValue("Year")
+	ex, err := os.Executable()
+	if err != nil {
+		fehler := err.Error()
+		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		return
+	}
+	exPath := filepath.Dir(ex)
 
-	file, err := os.ReadFile(fmt.Sprintf("%s/%s/_ALL.json", RootPath, year))
+	file, err := os.ReadFile(fmt.Sprintf("%s/_ALL.json", filepath.Join(exPath, RootPath, year)))
 	if err != nil {
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
@@ -65,8 +78,16 @@ type TeamFile struct {
 
 func GetTeams(w http.ResponseWriter, r *http.Request) {
 	year := r.FormValue("Year")
+	ex, err := os.Executable()
+	if err != nil {
+		fehler := err.Error()
+		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		return
+	}
+	exPath := filepath.Dir(ex)
 
-	file, err := os.ReadFile(fmt.Sprintf("%s/%s/_TEAMS.json", RootPath, year))
+	file, err := os.ReadFile(fmt.Sprintf("%s/_TEAMS.json", filepath.Join(exPath, RootPath, year)))
+
 	if err != nil {
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
@@ -93,8 +114,16 @@ type Entry struct {
 func GetEntry(w http.ResponseWriter, r *http.Request) {
 	year := r.FormValue("Year")
 	team := r.FormValue("Team")
+	ex, err := os.Executable()
+	if err != nil {
+		fehler := err.Error()
+		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
+		return
+	}
+	exPath := filepath.Dir(ex)
 
-	file, err := os.ReadFile(fmt.Sprintf("%s/%s/%s.json", RootPath, year, team))
+	file, err := os.ReadFile(fmt.Sprintf("%s/%s.json", filepath.Join(exPath, RootPath, year), team))
+
 	if err != nil {
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})

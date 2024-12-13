@@ -53,6 +53,7 @@ import KundenSuche from "./Pages/Sage/Kundensuche";
 import Archive from "./Pages/Archive/Archive";
 import NotFound from "./Pages/NotFound";
 import Download from "./Pages/Archive/Download";
+import Login from "./Pages/Login";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -64,6 +65,8 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route element={<RootLayout />}>
             <Route index element={<Home />} />
+
+            <Route path="Login" element={<Login />} />
 
             <Route path="Einkauf">
               <Route index element={<EinkaufListe />} />

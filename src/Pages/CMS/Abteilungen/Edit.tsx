@@ -1,3 +1,4 @@
+import { AuthPage } from "@/components/AuthPage";
 import BackButton from "@/components/BackButton";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
@@ -68,39 +69,45 @@ export default function AbteilungEdit() {
   if (isError) return <>Fehler...</>;
 
   return (
-    <>
-      <BackButton href="/CMS/Abteilungen" />
-      <h1 className="mt-8">{data?.Name} bearbeiten</h1>
-      {msg && <h2 className="text-primary">{msg}</h2>}
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">
-          <FormField
-            control={form.control}
-            name="Name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex justify-between">
-            <Button type="submit">Speichern</Button>
-            <Button
-              variant="secondary"
-              onClick={(e) => {
-                e.preventDefault();
-                void handleDelete();
-              }}
-            >
-              Eintrag Löschen
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </>
+    <AuthPage>
+      <>
+        <BackButton href="/CMS/Abteilungen" />
+        <h1 className="mt-8">{data?.Name} bearbeiten</h1>
+
+        {msg && <h2 className="text-primary">{msg}</h2>}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="mt-8 space-y-8"
+          >
+            <FormField
+              control={form.control}
+              name="Name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex justify-between">
+              <Button type="submit">Speichern</Button>
+              <Button
+                variant="secondary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  void handleDelete();
+                }}
+              >
+                Eintrag Löschen
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </>
+    </AuthPage>
   );
 }

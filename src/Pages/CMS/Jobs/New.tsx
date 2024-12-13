@@ -1,3 +1,4 @@
+import { AuthPage } from "@/components/AuthPage";
 import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,49 +29,52 @@ export default function JobsNew() {
   };
 
   return (
-    <>
-      <BackButton href="/CMS/Jobs" />
-      <h1 className="my-8">Neuen Job Anlegen</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="Name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div>
-            <h3 className="mb-4 text-lg font-medium">Anzeige auf Webseite</h3>
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="Online"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Online</FormLabel>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+    <AuthPage>
+      <>
+        <BackButton href="/CMS/Jobs" />
+        <h1 className="my-8">Neuen Job Anlegen</h1>
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="Name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div>
+              <h3 className="mb-4 text-lg font-medium">Anzeige auf Webseite</h3>
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="Online"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center justify-between p-4 border rounded-lg">
+                      <div className="space-y-0.5">
+                        <FormLabel className="text-base">Online</FormLabel>
+                      </div>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-          </div>
-          <Button type="submit">Speichern</Button>
-        </form>
-      </Form>
-    </>
+            <Button type="submit">Speichern</Button>
+          </form>
+        </Form>
+      </>
+    </AuthPage>
   );
 }
