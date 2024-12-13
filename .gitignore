@@ -27,6 +27,7 @@ dist-ssr
 # Backend Stuff
 golang-backend.exe
 /tmp
+/main.exe
 /db/*.go
 /cms/*.go
 /src/db/query_sql.ts
