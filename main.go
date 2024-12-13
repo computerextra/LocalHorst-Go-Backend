@@ -76,7 +76,7 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Please provide name and password to obtain the token"))
 		return
 	}
-	if (name == "johannes.kirchner@computer-extra.de" && password == "n3livibE?") || (name == "christop.salowski@computer-extra.de" && password == "Neunsend!m97") {
+	if (name == "johannes.kirchner@computer-extra.de" && password == "n3livibE?") || (name == "christoph.salowski@computer-extra.de" && password == "Neunsend!m97") {
 		token, err := getToken(name)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
