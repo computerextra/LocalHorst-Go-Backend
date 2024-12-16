@@ -152,6 +152,9 @@ DELETE FROM
 WHERE
     id = ?;
 
+-- name: DeleteEinkaufFromUser :exec
+DELETE FROM Einkauf WHERE mitarbeiterId = ?;
+
 -- name: GetLieferant :one
 SELECT
     *

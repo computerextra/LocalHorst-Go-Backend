@@ -238,6 +238,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	datebase.SetMaxOpenConns(10)
 	datebase.SetMaxIdleConns(10)
 	queries := db.New(datebase)
+	_ = queries.DeleteEinkaufFromUser(ctx, id)
 	err = queries.DeleteUser(ctx, id)
 	datebase.Close()
 
