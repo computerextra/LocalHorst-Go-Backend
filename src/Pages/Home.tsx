@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+// TODO: Alle Bilder transparent machen wegen Dark mode
+
 export default function Home() {
   return (
     <>
