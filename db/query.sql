@@ -255,3 +255,24 @@ DELETE FROM Wiki WHERE id = ?;
 
 -- name: SearchArchive :many
 SELECT id, title  FROM pdfs WHERE title LIKE ? OR body LIKE ?;
+
+-- name: GetWarenlieferung :many
+SELECT * FROM Warenlieferung;
+
+-- name: InsertWarenlieferung :execresult
+INSERT INTO Warenlieferung (id, Name, angelegt, Artikelnummer) VALUES(?, ?, NOW(), ?);
+
+-- name: UpdateWarenlieferung :execresult
+UPDATE Warenlieferung SET geliefert=NOW(), Name = ? WHERE id = ?;
+
+-- name: UpdatePreisWarenlieferung :execresult
+UPDATE Warenlieferung SET Preis=NOW(), AlterPreis = ?, NeuerPreis = ? WHERE id = ?;
+
+-- name: GetDailyWarenlieferung :many
+SELECT Name, Artikelnummer, AlterPreis, NeuerPreis FROM Warenlieferung WHERE DATE_FORMAT(Preis, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') AND DATE_FORMAT(angelegt, '%Y-%m-%d') != DATE_FORMAT(NOW(), '%Y-%m-%d') ORDER BY Artikelnummer ASC;
+
+-- name: GetDailyDelivered :many
+SELECT Name, Artikelnummer FROM Warenlieferung WHERE DATE_FORMAT(geliefert, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') AND DATE_FORMAT(angelegt, '%Y-%m-%d') != DATE_FORMAT(NOW(), '%Y-%m-%d') ORDER BY Artikelnummer ASC;
+
+-- name: GetDailyNew :many
+SELECT Name, Artikelnummer FROM Warenlieferung WHERE DATE_FORMAT(angelegt, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') ORDER BY Artikelnummer ASC;
