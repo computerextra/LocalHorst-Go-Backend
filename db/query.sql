@@ -276,3 +276,6 @@ SELECT Name, Artikelnummer FROM Warenlieferung WHERE DATE_FORMAT(geliefert, '%Y-
 
 -- name: GetDailyNew :many
 SELECT Name, Artikelnummer FROM Warenlieferung WHERE DATE_FORMAT(angelegt, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') ORDER BY Artikelnummer ASC;
+
+-- name: InsertAussteller :execresult
+INSERT INTO Aussteller (id, Artikelnummer, Artikelname, Specs, Preis) VALUES (?, ?, ?,?,?) ON DUPLICATE KEY UPDATE Artikelname = ?, Specs = ?, Preis = ?;

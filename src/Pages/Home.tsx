@@ -7,8 +7,13 @@ import {
   HoverCard,
 } from "@/components/ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-// TODO: Alle Bilder transparent machen wegen Dark mode
+import ViteImage from "@/Assets/Images/VITE.png";
+import TailwindImage from "@/Assets/Images/TAILWIND.png";
+import TanstackImage from "@/Assets/Images/TANSTACK.png";
+import GoImage from "@/Assets/Images/GO.png";
+import MuxImage from "@/Assets/Images/MUX.png";
+import SQLCImage from "@/Assets/Images/SQLC.png";
+import ReactImage from "@/Assets/Images/REACT.png";
 
 export default function Home() {
   return (
@@ -60,14 +65,14 @@ export default function Home() {
           <HoverCardTrigger>
             <img
               className="max-h-[200px] h-[200px] object-contain"
-              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fblog.codeinside.eu%2Fassets%2Fmd-images%2F2023-02-11%2Fvitejs.png&f=1&nofb=1&ipt=a2bcbc26c2ec6739c16dd2c021d732696ba4a5d2e01294cd8cffc9a25ff06656&ipo=images"
+              src={ViteImage}
               alt="Vite Bild"
             />
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fblog.codeinside.eu%2Fassets%2Fmd-images%2F2023-02-11%2Fvitejs.png&f=1&nofb=1&ipt=a2bcbc26c2ec6739c16dd2c021d732696ba4a5d2e01294cd8cffc9a25ff06656&ipo=images" />
+                <AvatarImage src={ViteImage} />
                 <AvatarFallback>VJ</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
@@ -98,9 +103,9 @@ export default function Home() {
                 y2="208"
                 fill="none"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="32"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="32"
               ></line>
               <line
                 x1="192"
@@ -109,9 +114,9 @@ export default function Home() {
                 y2="192"
                 fill="none"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="32"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="32"
               ></line>
             </svg>
           </HoverCardTrigger>
@@ -138,14 +143,14 @@ export default function Home() {
           <HoverCardTrigger>
             <img
               className="max-h-[200px] h-[200px] object-contain"
-              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd5%2FTailwind_CSS_Logo.svg%2F1024px-Tailwind_CSS_Logo.svg.png%3F20230715030042&f=1&nofb=1&ipt=60ff6f8d94a2aaf617d09fa6ea6b35a8b4ae4d49700ad61169f48d53f3760c32&ipo=images"
+              src={TailwindImage}
               alt="TailwindCSS Bild"
             />
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd5%2FTailwind_CSS_Logo.svg%2F1024px-Tailwind_CSS_Logo.svg.png%3F20230715030042&f=1&nofb=1&ipt=60ff6f8d94a2aaf617d09fa6ea6b35a8b4ae4d49700ad61169f48d53f3760c32&ipo=images" />
+                <AvatarImage src={TailwindImage} />
                 <AvatarFallback>TW</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
@@ -163,19 +168,19 @@ export default function Home() {
           </HoverCardContent>
         </HoverCard>
 
-        {/* TansStack Query */}
+        {/* TanStack Query */}
         <HoverCard>
           <HoverCardTrigger>
             <img
               className="max-h-[200px] h-[200px] object-contain"
-              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.5yiv9Vk8-ElZeuOiwTP36gAAAA%26pid%3DApi&f=1&ipt=2b6ae3a80190aea8cbabab70d07c5618ed8d7bd22ec45cbb178285af071f7886&ipo=images"
+              src={TanstackImage}
               alt="Tanstack Bild"
             />
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.5yiv9Vk8-ElZeuOiwTP36gAAAA%26pid%3DApi&f=1&ipt=2b6ae3a80190aea8cbabab70d07c5618ed8d7bd22ec45cbb178285af071f7886&ipo=images" />
+                <AvatarImage src={TanstackImage} />
                 <AvatarFallback>TS</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
@@ -194,14 +199,14 @@ export default function Home() {
           <HoverCardTrigger>
             <img
               className="max-h-[200px] h-[200px] object-cover"
-              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdz2cdn1.dzone.com%2Fstorage%2Ftemp%2F12562442-golang-development-servics.png&f=1&nofb=1&ipt=3b04fad57eddbe4bfb8565c174850e80e3c791bb74b3b900a1dd40e64551fd4e&ipo=images"
+              src={GoImage}
               alt="Go Bild"
             />
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdz2cdn1.dzone.com%2Fstorage%2Ftemp%2F12562442-golang-development-servics.png&f=1&nofb=1&ipt=3b04fad57eddbe4bfb8565c174850e80e3c791bb74b3b900a1dd40e64551fd4e&ipo=images" />
+                <AvatarImage src={GoImage} />
                 <AvatarFallback>GO</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
@@ -222,14 +227,14 @@ export default function Home() {
           <HoverCardTrigger>
             <img
               className="max-h-[200px] h-[200px] object-contain"
-              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.cv0eA8UMNYzk_GPLroJTMQAAAA%26pid%3DApi&f=1&ipt=d60e271187fbe6e236b5d163f5b6169fc2b4bb85f011657094b422c7756ee99e&ipo=images"
+              src={MuxImage}
               alt="Gorilla Mux Bild"
             />
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.cv0eA8UMNYzk_GPLroJTMQAAAA%26pid%3DApi&f=1&ipt=d60e271187fbe6e236b5d163f5b6169fc2b4bb85f011657094b422c7756ee99e&ipo=images" />
+                <AvatarImage src={MuxImage} />
                 <AvatarFallback>GM</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
@@ -248,14 +253,14 @@ export default function Home() {
           <HoverCardTrigger>
             <img
               className="max-h-[200px]  h-[200px] object-contain"
-              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.M3uPfGiBdf5MYR9mn3S6VAAAAA%26pid%3DApi&f=1&ipt=f92d8ea584dcde27b83143a4b0e6e44721f4290886b8e38318abf45fa5996c91&ipo=images"
+              src={SQLCImage}
               alt="SQLC Bild"
             />
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.M3uPfGiBdf5MYR9mn3S6VAAAAA%26pid%3DApi&f=1&ipt=f92d8ea584dcde27b83143a4b0e6e44721f4290886b8e38318abf45fa5996c91&ipo=images" />
+                <AvatarImage src={SQLCImage} />
                 <AvatarFallback>SQ</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
@@ -271,14 +276,14 @@ export default function Home() {
           <HoverCardTrigger>
             <img
               className="max-h-[200px] h-[200px] object-cover"
-              src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Foneteamsolutions.in%2Fblogoneteam%2Fwp-content%2Fuploads%2F2020%2F05%2FREACT-JS-KOCHI.png&f=1&nofb=1&ipt=d1a6df0b8c6c820891fe8a3c9a05b5a92c74cd784ba8b9cc1e6ac7645f0a719a&ipo=images"
+              src={ReactImage}
               alt="React Bild"
             />
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Foneteamsolutions.in%2Fblogoneteam%2Fwp-content%2Fuploads%2F2020%2F05%2FREACT-JS-KOCHI.png&f=1&nofb=1&ipt=d1a6df0b8c6c820891fe8a3c9a05b5a92c74cd784ba8b9cc1e6ac7645f0a719a&ipo=images" />
+                <AvatarImage src={ReactImage} />
                 <AvatarFallback>R</AvatarFallback>
               </Avatar>
               <div className="space-y-1">

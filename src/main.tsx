@@ -55,6 +55,9 @@ import NotFound from "./Pages/NotFound";
 import Download from "./Pages/Archive/Download";
 import Login from "./Pages/Login";
 import { ThemeProvider } from "@/components/theme-provider";
+import Warenlieferung from "./Pages/Service/Warenlieferung";
+import Label from "./Pages/Service/Label";
+import Aussteller from "./Pages/Service/Aussteller";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -130,6 +133,9 @@ createRoot(document.getElementById("root")!).render(
                 <Route index element={<>Hier gibts nichts zu sehen!</>} />
                 <Route path="Seriennummer" element={<Seriennummer />} />
                 <Route path="Info" element={<InfoPage />} />
+                <Route path="Warenlieferung" element={<Warenlieferung />} />
+                <Route path="Label" element={<Label />} />
+                <Route path="Aussteller" element={<Aussteller />} />
               </Route>
 
               <Route path="CMS">

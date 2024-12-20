@@ -23,6 +23,7 @@ type Config struct {
 	SAGE_USER        string `env:"SAGE_USER,required"`
 	SAGE_PASS        string `env:"SAGE_PASS,required"`
 	SAGE_DB          string `env:"SAGE_DB,required"`
+	ACCESS_DB        string `env:"ACCESS_DB,required"`
 }
 
 // Get .env Vars

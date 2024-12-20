@@ -139,9 +139,12 @@ func main() {
 	router.HandleFunc("/api/Wiki/{id}/delete", wiki.DeleteWiki).Methods(http.MethodPost) // Delete Wiki
 
 	// Service
-	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost) // Send Info Mail
-	router.HandleFunc("/api/Service/Seriennummer", sage.GetSeriennummer).Methods(http.MethodPost)
-	//  TODO: Warenlieferung einbinden (SAGE Anbindung ist fertig! Sage -> Warenlieferung)
+	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost)                                    // Send Info Mail
+	router.HandleFunc("/api/Service/Seriennummer", sage.GetSeriennummer).Methods(http.MethodPost)                     // Get Seriennummer
+	router.HandleFunc("/api/Service/Warenlieferung/Generate", service.GenerateWarenlieferung).Methods(http.MethodGet) // Generate Warenlieferung
+	router.HandleFunc("/api/Service/Warenlieferung/Send", service.SendWarenlieferung).Methods(http.MethodPost)        // Send Warenlieferung
+	router.HandleFunc("/api/Service/LabelSync", service.SyncLabel).Methods(http.MethodPost)                           // Sync Label
+	router.HandleFunc("/api/Service/Aussteller/Sync", service.SyncAussteller).Methods(http.MethodPost)                // Sync Aussteller
 
 	// CMS - Abteilung
 	router.HandleFunc("/api/CMS/Abteilung", cmsroutes.GetAbteilungen).Methods(http.MethodGet)               // Get All Abteilungen

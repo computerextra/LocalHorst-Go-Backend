@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 type Birthday = {
   id: string;
   Name: string;
-  Geburtstag: string;
+  Geburtstag: Date;
 };
 
 const columns: ColumnDef<Birthday>[] = [
@@ -20,6 +20,14 @@ const columns: ColumnDef<Birthday>[] = [
   {
     accessorKey: "Geburtstag",
     header: "Geburtstag",
+    cell: ({ row }) => {
+      const x = row.original;
+      const date = new Date(x.Geburtstag).toLocaleDateString("de-DE", {
+        day: "2-digit",
+        month: "long",
+      });
+      return <p>{date}</p>;
+    },
   },
 ];
 
@@ -44,12 +52,7 @@ export default function Geburtstage() {
 
     data.forEach((x) => {
       // @ts-expect-error Sollte Date sein, ist aber string...
-      if (x.Geburtstag.Time != "1.1.1") {
-        // @ts-expect-error Cast als string, weil es ist ein string, sollte aber ein Date sein...
-        const date = new Date(x.Geburtstag.Time).toLocaleDateString("de-DE", {
-          day: "2-digit",
-          month: "long",
-        });
+      if (x.Geburtstag.Time != "0001-01-01T00:00:00Z") {
         const bday = new Date(
           today.getFullYear() +
             "-" +
@@ -59,10 +62,9 @@ export default function Geburtstage() {
             // @ts-expect-error Cast als string, weil es ist ein string, sollte aber ein Date sein...
             new Date(x.Geburtstag.Time).getDate()
         );
-
         const user: Birthday = {
           Name: x.Name,
-          Geburtstag: date,
+          Geburtstag: bday,
           id: x.ID,
         };
         // @ts-expect-error Dates wollen sich nicht berechnen lassen, geht aber trotzdem!

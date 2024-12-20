@@ -110,6 +110,15 @@ export function Navigation() {
               <MenubarItem onClick={() => navigate("/Service/Info")}>
                 Info an Kunde
               </MenubarItem>
+              <MenubarItem onClick={() => navigate("/Service/Aussteller")}>
+                Aussteller
+              </MenubarItem>
+              <MenubarItem onClick={() => navigate("/Service/Label")}>
+                Label Sync
+              </MenubarItem>
+              <MenubarItem onClick={() => navigate("/Service/Warenlieferung")}>
+                Warenlieferung
+              </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
           <MenubarMenu>
