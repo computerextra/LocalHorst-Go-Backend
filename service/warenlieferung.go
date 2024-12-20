@@ -317,7 +317,7 @@ func SendWarenlieferung(w http.ResponseWriter, r *http.Request) {
 			// Set Mail Sender
 			m.SetHeader("From", MAIL_FROM)
 			// Receiver
-			m.SetHeader("To", "service@computer-extra.de")
+			m.SetHeader("To", Mitarbeiter[i].Email.String)
 			// Set Subject
 			m.SetHeader("Subject", fmt.Sprintf("Warenlieferung vom %v", time.Now().Format(time.DateOnly)))
 			// Set Body
