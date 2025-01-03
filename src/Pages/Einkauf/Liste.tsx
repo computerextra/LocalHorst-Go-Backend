@@ -68,7 +68,7 @@ function PrintMurks({ props }: { props: EinkaufListe }) {
       {props.Name.String} <br />
       Geld: {props.Geld.String} <br />
       Pfand: {props.Pfand.String} <br />
-      <pre className="font-sans">{props.Dinge.String}</pre>
+      <pre className="font-sans text-wrap">{props.Dinge.String}</pre>
       <div className="grid grid-cols-3 mb-2">
         {props.Bild1date.Time &&
           new Date(props.Bild1date.Time).toLocaleDateString() ==
@@ -123,7 +123,7 @@ function EinkaufCard({ props }: { props: EinkaufListe }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <pre className="font-sans">{props.Dinge.String}</pre>
+        <pre className="font-sans text-wrap">{props.Dinge.String}</pre>
       </CardContent>
       <CardFooter>
         <div className="grid grid-cols-3 gap-2">
