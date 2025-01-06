@@ -149,7 +149,7 @@ export function Navigation() {
               Werkstatt
             </MenubarTrigger>
           </MenubarMenu>
-          <MenubarMenu>
+          {/* <MenubarMenu>
             <MenubarTrigger>
               <a
                 href="http://10.0.0.64:8080"
@@ -159,7 +159,7 @@ export function Navigation() {
                 Alter Local Horst
               </a>
             </MenubarTrigger>
-          </MenubarMenu>
+          </MenubarMenu> */}
         </Menubar>
       </div>
       <div className="mt-2 me-4">
