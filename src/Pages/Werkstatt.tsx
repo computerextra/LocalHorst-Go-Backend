@@ -263,6 +263,8 @@ function MicrosoftForm() {
     Benutzername: z.string(),
     Passwort: z.string(),
     Kundennummer: z.string(),
+    Email: z.string().optional(),
+    Mobil: z.string().optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -321,7 +323,32 @@ function MicrosoftForm() {
               </FormItem>
             )}
           />
-
+          <FormField
+            control={form.control}
+            name="Email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>E-Mail Adresse (optional)</FormLabel>
+                <FormControl>
+                  <Input required={false} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Mobil"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Handynummer (Optional)</FormLabel>
+                <FormControl>
+                  <Input required={false} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button type="submit">
             {name ? "Drucken" : "Kundeninfo aus Sage ziehen"}
           </Button>
@@ -337,8 +364,7 @@ function MicrosoftForm() {
             alt="Microsoft 365 Logo"
           />
 
-          <div className="mt-8 text-center">
-            <p>Für:</p>
+          <div className="mt-4 text-center">
             <p>
               <b>Kundennummer:</b>
               <br />
@@ -359,6 +385,21 @@ function MicrosoftForm() {
               <br />
               {form.getValues().Passwort}
             </p>
+
+            {form.getValues().Email && (
+              <p>
+                <b>Alternative E-Mail Adresse:</b>
+                <br />
+                {form.getValues().Email}
+              </p>
+            )}
+            {form.getValues().Mobil && (
+              <p>
+                <b>Mobilfunk:</b>
+                <br />
+                {form.getValues().Mobil}
+              </p>
+            )}
             <div className="max-w-[40%] mx-auto mt-8">
               <small className="mt-6 text-gray-500">
                 Bitte heben Sie diese Zugangsdaten sorgfältig auf, sie werden
