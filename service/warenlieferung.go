@@ -186,14 +186,21 @@ func SendWarenlieferung(w http.ResponseWriter, r *http.Request) {
 		body = fmt.Sprintf("%s<br><br><h2>Preisänderungen</h2><ul>", body)
 
 		for i := range neuePreise {
-			var alterPreis string
-			var neuerPreis string
+			var alterPreis float64
+			var neuerPreis float64
+			var err error
 
-			alterPreis = neuePreise[i].Alterpreis.String
-			neuerPreis = neuePreise[i].Neuerpreis.String
+			alterPreis, err = strconv.ParseFloat(neuePreise[i].Alterpreis.String, 64)
+			if err != nil {
+				panic(err)
+			}
+			neuerPreis, err = strconv.ParseFloat(neuePreise[i].Neuerpreis.String, 64)
+			if err != nil {
+				panic(err)
+			}
 
 			if neuerPreis != alterPreis {
-				body = fmt.Sprintf("%s<li><b>%s</b> - %s: %s ➡️ %s ", body, neuePreise[i].Artikelnummer, neuePreise[i].Name, alterPreis, neuerPreis)
+				body = fmt.Sprintf("%s<li><b>%s</b> - %s: %.2f ➡️ %.2f ", body, neuePreise[i].Artikelnummer, neuePreise[i].Name, alterPreis, neuerPreis)
 				var altFloat float64
 				var neuFloat float64
 				if neuePreise[i].Alterpreis.Valid {
@@ -333,5 +340,6 @@ func SendWarenlieferung(w http.ResponseWriter, r *http.Request) {
 			m.Reset()
 		}
 	}
+
 	json.NewEncoder(w).Encode(map[string]string{"ok": "true", "error": "false"})
 }
