@@ -12,14 +12,3 @@ sql:
     managed: true
   rules:
     - sqlc/db-prepare
-- schema: "cms/schema.sql"
-  queries: "cms/query.sql"
-  engine: "mysql"
-  gen:
-    go:
-      package: "cms"
-      out: "cms"
-  database:
-    managed: true
-  rules:
-    - sqlc/db-prepare

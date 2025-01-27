@@ -1,23 +1,5 @@
 import RootLayout from "@/components/RootLayout";
 import "@/index.css";
-import {
-  AbteilungEdit,
-  AbteilungNew,
-  AbteilungOverview,
-  AngebotNew,
-  AngebotOverview,
-  AngeboteEdit,
-  MitarbeiterOverview as CmsMitarbeiterOverview,
-  CmsOverview,
-  JobsEdit,
-  JobsNew,
-  JobsOverview,
-  MitarbeiterEdit,
-  MitarbeiterNew,
-  PartnerEdit,
-  PartnerNew,
-  PartnerOverview,
-} from "@/Pages/CMS";
 import Abrechnung from "@/Pages/Einkauf/Abrechnung";
 import { Auswahl, Eingabe } from "@/Pages/Einkauf/Eingabe";
 import EinkaufListe from "@/Pages/Einkauf/Liste";
@@ -34,7 +16,6 @@ import MitarbeiterDetail from "@/Pages/Mitarbeiter/Details";
 import Geburtstage from "@/Pages/Mitarbeiter/Geburtstage";
 import MitarbeiterNeu from "@/Pages/Mitarbeiter/Neu";
 import MitarbeiterOverview from "@/Pages/Mitarbeiter/Overview";
-import InfoPage from "@/Pages/Service/Info";
 import EditWiki from "@/Pages/Wiki/Bearbeiten";
 import WikiDetails from "@/Pages/Wiki/Details";
 import NewWiki from "@/Pages/Wiki/Neu";
@@ -44,7 +25,6 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Werkstatt from "./Pages/Werkstatt";
-import Seriennummer from "./Pages/Service/Seriennummer";
 import InventurOverview from "./Pages/Sage/Inventur/Overview";
 import Jahr from "./Pages/Sage/Inventur/Jahr";
 import Team from "./Pages/Sage/Inventur/Team";
@@ -55,9 +35,6 @@ import NotFound from "./Pages/NotFound";
 import Download from "./Pages/Archive/Download";
 import Login from "./Pages/Login";
 import { ThemeProvider } from "@/components/theme-provider";
-import Warenlieferung from "./Pages/Service/Warenlieferung";
-import Label from "./Pages/Service/Label";
-import Aussteller from "./Pages/Service/Aussteller";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -127,49 +104,6 @@ createRoot(document.getElementById("root")!).render(
                 <Route path="Neu" element={<NewWiki />} />
                 <Route path=":wid" element={<WikiDetails />} />
                 <Route path=":wid/Bearbeiten" element={<EditWiki />} />
-              </Route>
-
-              <Route path="Service">
-                <Route index element={<>Hier gibts nichts zu sehen!</>} />
-                <Route path="Seriennummer" element={<Seriennummer />} />
-                <Route path="Info" element={<InfoPage />} />
-                <Route path="Warenlieferung" element={<Warenlieferung />} />
-                <Route path="Label" element={<Label />} />
-                <Route path="Aussteller" element={<Aussteller />} />
-              </Route>
-
-              <Route path="CMS">
-                <Route index element={<CmsOverview />} />
-
-                <Route path="Abteilungen">
-                  <Route index element={<AbteilungOverview />} />
-                  <Route path="Neu" element={<AbteilungNew />} />
-                  <Route path=":aid" element={<AbteilungEdit />} />
-                </Route>
-
-                <Route path="Mitarbeiter">
-                  <Route index element={<CmsMitarbeiterOverview />} />
-                  <Route path="Neu" element={<MitarbeiterNew />} />
-                  <Route path=":mid" element={<MitarbeiterEdit />} />
-                </Route>
-
-                <Route path="Partner">
-                  <Route index element={<PartnerOverview />} />
-                  <Route path="Neu" element={<PartnerNew />} />
-                  <Route path=":pid" element={<PartnerEdit />} />
-                </Route>
-
-                <Route path="Angebote">
-                  <Route index element={<AngebotOverview />} />
-                  <Route path="Neu" element={<AngebotNew />} />
-                  <Route path=":aid" element={<AngeboteEdit />} />
-                </Route>
-
-                <Route path="Jobs">
-                  <Route index element={<JobsOverview />} />
-                  <Route path="Neu" element={<JobsNew />} />
-                  <Route path=":jid" element={<JobsEdit />} />
-                </Route>
               </Route>
 
               <Route path="Werkstatt" element={<Werkstatt />} />

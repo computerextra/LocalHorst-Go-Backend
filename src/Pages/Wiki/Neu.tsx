@@ -1,4 +1,3 @@
-import { AuthPage } from "@/components/AuthPage";
 import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -62,76 +61,74 @@ export default function NewWiki() {
   };
 
   return (
-    <AuthPage>
-      <>
-        <BackButton href="/Wiki" />
-        <h1 className="mb-4">Neuen Wiki Eintrag anlegen</h1>
+    <>
+      <BackButton href="/Wiki" />
+      <h1 className="mb-4">Neuen Wiki Eintrag anlegen</h1>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="Name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input required {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="Inhalt"
-              render={({ field }) => (
-                <>
-                  <div className="sr-only">
-                    <FormItem>
-                      <FormLabel>Inhalt</FormLabel>
-                      <FormControl>
-                        <Textarea className="resize-y" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  </div>
-                  <MDXEditor
-                    ref={field.ref}
-                    markdown={field.value}
-                    onChange={field.onChange}
-                    plugins={[
-                      headingsPlugin(),
-                      listsPlugin(),
-                      quotePlugin(),
-                      linkPlugin(),
-                      linkDialogPlugin(),
-                      tablePlugin(),
-                      thematicBreakPlugin(),
-                      toolbarPlugin({
-                        toolbarClassName: "flex row gap-4",
-                        toolbarContents: () => (
-                          <>
-                            <UndoRedo />
-                            <Separator />
-                            <BoldItalicUnderlineToggles />
-                            <Separator />
-                            <BlockTypeSelect />
-                            <Separator />
-                            <InsertTable />
-                            <ListsToggle />
-                          </>
-                        ),
-                      }),
-                    ]}
-                  />
-                </>
-              )}
-            />
-            <Button type="submit">Speichern</Button>
-          </form>
-        </Form>
-      </>
-    </AuthPage>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="Name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input required {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Inhalt"
+            render={({ field }) => (
+              <>
+                <div className="sr-only">
+                  <FormItem>
+                    <FormLabel>Inhalt</FormLabel>
+                    <FormControl>
+                      <Textarea className="resize-y" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </div>
+                <MDXEditor
+                  ref={field.ref}
+                  markdown={field.value}
+                  onChange={field.onChange}
+                  plugins={[
+                    headingsPlugin(),
+                    listsPlugin(),
+                    quotePlugin(),
+                    linkPlugin(),
+                    linkDialogPlugin(),
+                    tablePlugin(),
+                    thematicBreakPlugin(),
+                    toolbarPlugin({
+                      toolbarClassName: "flex row gap-4",
+                      toolbarContents: () => (
+                        <>
+                          <UndoRedo />
+                          <Separator />
+                          <BoldItalicUnderlineToggles />
+                          <Separator />
+                          <BlockTypeSelect />
+                          <Separator />
+                          <InsertTable />
+                          <ListsToggle />
+                        </>
+                      ),
+                    }),
+                  ]}
+                />
+              </>
+            )}
+          />
+          <Button type="submit">Speichern</Button>
+        </form>
+      </Form>
+    </>
   );
 }

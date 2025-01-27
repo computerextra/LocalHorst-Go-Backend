@@ -101,65 +101,12 @@ export function Navigation() {
               </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger>Service</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem onClick={() => navigate("/Service/Seriennummer")}>
-                Seriennummer
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/Service/Info")}>
-                Info an Kunde
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/Service/Aussteller")}>
-                Aussteller
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/Service/Label")}>
-                Label Sync
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/Service/Warenlieferung")}>
-                Warenlieferung
-              </MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger>CMS</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem onClick={() => navigate("/CMS")}>
-                Übersicht
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/CMS/Abteilungen")}>
-                Abteilungen
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/CMS/Mitarbeiter")}>
-                Mitarbeiter
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/CMS/Partner")}>
-                Partner
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/CMS/Angebote")}>
-                Angebote
-              </MenubarItem>
-              <MenubarItem onClick={() => navigate("/CMS/Jobs")}>
-                Jobs
-              </MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
+
           <MenubarMenu>
             <MenubarTrigger onClick={() => navigate("/Werkstatt")}>
               Werkstatt
             </MenubarTrigger>
           </MenubarMenu>
-          {/* <MenubarMenu>
-            <MenubarTrigger>
-              <a
-                href="http://10.0.0.64:8080"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Alter Local Horst
-              </a>
-            </MenubarTrigger>
-          </MenubarMenu> */}
         </Menubar>
       </div>
       <div className="mt-2 me-4">

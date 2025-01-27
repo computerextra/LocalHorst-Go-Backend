@@ -9,13 +9,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/computerextra/golang-backend/cmsroutes"
 	"github.com/computerextra/golang-backend/env"
 	"github.com/computerextra/golang-backend/inventur"
 	"github.com/computerextra/golang-backend/lieferanten"
 	"github.com/computerextra/golang-backend/mitarbeiter"
 	"github.com/computerextra/golang-backend/sage"
-	"github.com/computerextra/golang-backend/service"
 	"github.com/computerextra/golang-backend/wiki"
 	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/mux"
@@ -136,50 +134,7 @@ func main() {
 	router.HandleFunc("/api/Wiki/new", wiki.CreateWiki).Methods(http.MethodPost)         // Create Wiki
 	router.HandleFunc("/api/Wiki/{id}", wiki.GetWiki).Methods(http.MethodGet)            // Get Wiki
 	router.HandleFunc("/api/Wiki/{id}/edit", wiki.UpdateWiki).Methods(http.MethodPost)   // Update Wiki
-	router.HandleFunc("/api/Wiki/{id}/delete", wiki.DeleteWiki).Methods(http.MethodPost) // Delete Wiki
-
-	// Service
-	router.HandleFunc("/api/Service/Info/", service.Info).Methods(http.MethodPost)                                    // Send Info Mail
-	router.HandleFunc("/api/Service/Seriennummer", sage.GetSeriennummer).Methods(http.MethodPost)                     // Get Seriennummer
-	router.HandleFunc("/api/Service/Warenlieferung/Generate", service.GenerateWarenlieferung).Methods(http.MethodGet) // Generate Warenlieferung
-	router.HandleFunc("/api/Service/Warenlieferung/Send", service.SendWarenlieferung).Methods(http.MethodPost)        // Send Warenlieferung
-	router.HandleFunc("/api/Service/LabelSync", service.SyncLabel).Methods(http.MethodPost)                           // Sync Label
-	router.HandleFunc("/api/Service/Aussteller/Sync", service.SyncAussteller).Methods(http.MethodPost)                // Sync Aussteller
-
-	// CMS - Abteilung
-	router.HandleFunc("/api/CMS/Abteilung", cmsroutes.GetAbteilungen).Methods(http.MethodGet)               // Get All Abteilungen
-	router.HandleFunc("/api/CMS/Abteilung/new", cmsroutes.CreateAbteilung).Methods(http.MethodPost)         // Create Abteilung
-	router.HandleFunc("/api/CMS/Abteilung/{id}", cmsroutes.GetAbteilung).Methods(http.MethodGet)            // Get Abteilung
-	router.HandleFunc("/api/CMS/Abteilung/{id}/edit", cmsroutes.UpdateAbteilung).Methods(http.MethodPost)   // Update Abteilung
-	router.HandleFunc("/api/CMS/Abteilung/{id}/delete", cmsroutes.DeleteAbteilung).Methods(http.MethodPost) // Delete Abteilung
-
-	// CMS - Angebot
-	router.HandleFunc("/api/CMS/Angebot", cmsroutes.GetAngebote).Methods(http.MethodGet)                // Get All Angebote
-	router.HandleFunc("/api/CMS/Angebot/new", cmsroutes.CreateAngebot).Methods(http.MethodPost)         // Create Angebot
-	router.HandleFunc("/api/CMS/Angebot/{id}", cmsroutes.GetAngebot).Methods(http.MethodGet)            // Get Angebot
-	router.HandleFunc("/api/CMS/Angebot/{id}/edit", cmsroutes.UpdateAngebot).Methods(http.MethodPost)   // Update Angebot
-	router.HandleFunc("/api/CMS/Angebot/{id}/delete", cmsroutes.DeleteAngebot).Methods(http.MethodPost) // Delete Angebot
-
-	// CMS - Jobs
-	router.HandleFunc("/api/CMS/Jobs", cmsroutes.GetJobs).Methods(http.MethodGet)                // Get All Jobs
-	router.HandleFunc("/api/CMS/Jobs/new", cmsroutes.CreateJob).Methods(http.MethodPost)         // Create Job
-	router.HandleFunc("/api/CMS/Jobs/{id}", cmsroutes.GetJob).Methods(http.MethodGet)            // Get Job
-	router.HandleFunc("/api/CMS/Jobs/{id}/edit", cmsroutes.UpdateJob).Methods(http.MethodPost)   // Update Job
-	router.HandleFunc("/api/CMS/Jobs/{id}/delete", cmsroutes.DeleteJob).Methods(http.MethodPost) // Delete Job
-
-	// CMS - Mitarbeiter
-	router.HandleFunc("/api/CMS/Mitarbeiter", cmsroutes.GetAllMitarbeiter).Methods(http.MethodGet)              // Get All Mitarbeiter
-	router.HandleFunc("/api/CMS/Mitarbeiter/new", cmsroutes.CreateMitarbeiter).Methods(http.MethodPost)         // Create Mitarbeiter
-	router.HandleFunc("/api/CMS/Mitarbeiter/{id}", cmsroutes.GetMitarbeiter).Methods(http.MethodGet)            // Get Mitarbeiter
-	router.HandleFunc("/api/CMS/Mitarbeiter/{id}/edit", cmsroutes.UpdateMitarbeiter).Methods(http.MethodPost)   // Update Mitarbeiter
-	router.HandleFunc("/api/CMS/Mitarbeiter/{id}/delete", cmsroutes.DeleteMitarbeiter).Methods(http.MethodPost) // Delete Mitarbeiter
-
-	// CMS - Partner
-	router.HandleFunc("/api/CMS/Partner", cmsroutes.GetAllPartner).Methods(http.MethodGet)              // Get All Partner
-	router.HandleFunc("/api/CMS/Partner/new", cmsroutes.CreatePartner).Methods(http.MethodPost)         // Create Partner
-	router.HandleFunc("/api/CMS/Partner/{id}", cmsroutes.GetPartner).Methods(http.MethodGet)            // Get Partner
-	router.HandleFunc("/api/CMS/Partner/{id}/edit", cmsroutes.UpdatePartner).Methods(http.MethodPost)   // Update Partner
-	router.HandleFunc("/api/CMS/Partner/{id}/delete", cmsroutes.DeletePartner).Methods(http.MethodPost) // Delete Partner
+	router.HandleFunc("/api/Wiki/{id}/delete", wiki.DeleteWiki).Methods(http.MethodPost) // Delete Wikiw
 
 	// SAGE Routes
 	router.HandleFunc("/api/Sage/Kunde", sage.GetKunde).Methods(http.MethodPost)

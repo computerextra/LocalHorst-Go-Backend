@@ -36,7 +36,6 @@ import "@mdxeditor/editor/style.css";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { z } from "zod";
-import { AuthPage } from "@/components/AuthPage";
 
 const formData = z.object({
   Name: z.string(),
@@ -94,88 +93,86 @@ export default function EditWiki() {
 
   if (data)
     return (
-      <AuthPage>
-        <>
-          <BackButton href="/Wiki" />
-          <h1 className="mb-4">{data.Name} bearbeiten</h1>
+      <>
+        <BackButton href="/Wiki" />
+        <h1 className="mb-4">{data.Name} bearbeiten</h1>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="Name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input required {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="Name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input required {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="Inhalt"
-                render={({ field }) => (
-                  <>
-                    <div className="sr-only">
-                      <FormItem>
-                        <FormLabel>Inhalt</FormLabel>
-                        <FormControl>
-                          <Textarea className="resize-y" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    </div>
-                    <MDXEditor
-                      ref={field.ref}
-                      markdown={field.value}
-                      onChange={field.onChange}
-                      plugins={[
-                        headingsPlugin(),
-                        listsPlugin(),
-                        quotePlugin(),
-                        linkPlugin(),
-                        linkDialogPlugin(),
-                        tablePlugin(),
-                        thematicBreakPlugin(),
-                        toolbarPlugin({
-                          toolbarClassName: "flex row gap-4",
-                          toolbarContents: () => (
-                            <>
-                              <UndoRedo />
-                              <Separator />
-                              <BoldItalicUnderlineToggles />
-                              <Separator />
-                              <BlockTypeSelect />
-                              <Separator />
-                              <InsertTable />
-                              <ListsToggle />
-                            </>
-                          ),
-                        }),
-                      ]}
-                    />
-                  </>
-                )}
-              />
-              <div className="flex justify-between">
-                <Button type="submit">Speichern</Button>
-                <Button
-                  variant="secondary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    void handleDelete();
-                  }}
-                >
-                  Löschen
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </>
-      </AuthPage>
+            <FormField
+              control={form.control}
+              name="Inhalt"
+              render={({ field }) => (
+                <>
+                  <div className="sr-only">
+                    <FormItem>
+                      <FormLabel>Inhalt</FormLabel>
+                      <FormControl>
+                        <Textarea className="resize-y" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  </div>
+                  <MDXEditor
+                    ref={field.ref}
+                    markdown={field.value}
+                    onChange={field.onChange}
+                    plugins={[
+                      headingsPlugin(),
+                      listsPlugin(),
+                      quotePlugin(),
+                      linkPlugin(),
+                      linkDialogPlugin(),
+                      tablePlugin(),
+                      thematicBreakPlugin(),
+                      toolbarPlugin({
+                        toolbarClassName: "flex row gap-4",
+                        toolbarContents: () => (
+                          <>
+                            <UndoRedo />
+                            <Separator />
+                            <BoldItalicUnderlineToggles />
+                            <Separator />
+                            <BlockTypeSelect />
+                            <Separator />
+                            <InsertTable />
+                            <ListsToggle />
+                          </>
+                        ),
+                      }),
+                    ]}
+                  />
+                </>
+              )}
+            />
+            <div className="flex justify-between">
+              <Button type="submit">Speichern</Button>
+              <Button
+                variant="secondary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  void handleDelete();
+                }}
+              >
+                Löschen
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </>
     );
 }
