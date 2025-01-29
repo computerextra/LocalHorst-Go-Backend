@@ -736,6 +736,28 @@ function AppleForm() {
   );
 }
 
+const SicherheitsfragenTelekom = [
+  "Wie lautet der Beruf Ihres Großvaters?",
+  "Wo haben Sie Ihren Partner kennengelernt?",
+  "Wie lautet der Name Ihrer Grundschule?",
+  "Wie lautet Ihre Lieblingsfigur aus der Geschichte?",
+  "Wie lautet der Name Ihrer Grundschule?",
+  "Was ist Ihr Lieblingshobby?",
+  "Wie lautet der Geburtsname Ihrer Mutter?",
+  "Welche ist Ihre Lieblingsmannschaft?",
+  "Was war Ihr erstes Auto?",
+  "Wie hieß der beste Freund aus Ihrer Kindheit?",
+  "Wie heißt oder hieß Ihr erstes Haustier?",
+  "Wie ist der Name Ihres Lieblingslehrers?",
+  "Wie hieß der Titel Ihres ersten Musik-Albums?",
+  "Was war Ihr erstes Faschingskostüm?",
+  "Wie hieß Ihr erstes Buch?",
+  "Wie hieß Ihr erstes Plüschtier?",
+  "Wo waren Sie bei Ihrem ersten Kuss?",
+  "Was war Ihr schönstes Weihnachtsgeschenk?",
+  "Wie heißt die Antwort auf die Frage aller Fragen?",
+];
+
 function TelekomForm() {
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
@@ -745,6 +767,8 @@ function TelekomForm() {
     Benutzername: z.string(),
     Passwort: z.string(),
     Kundennummer: z.string(),
+    Sicherheitsfrage: z.string(),
+    Antwort: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -803,7 +827,46 @@ function TelekomForm() {
               </FormItem>
             )}
           />
-
+          <FormField
+            control={form.control}
+            name="Sicherheitsfrage"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Sicherheitsfrage</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Bitte Wählen!" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {SicherheitsfragenTelekom.map((x, idx) => (
+                      <SelectItem key={idx} value={x}>
+                        {x}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Antwort"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Antwort auf Sicherheitsfrage</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button type="submit">
             {name ? "Drucken" : "Kundeninfo aus Sage ziehen"}
           </Button>
@@ -840,6 +903,13 @@ function TelekomForm() {
               <b>Passwort:</b>
               <br />
               {form.getValues().Passwort}
+            </p>
+            <p>
+              <b>Sicherheitsfrage:</b>
+              <br />
+              {form.getValues().Sicherheitsfrage}
+              <br />
+              {form.getValues().Antwort}
             </p>
             <div className="max-w-[40%] mx-auto mt-8">
               <small className="mt-6 text-gray-500">

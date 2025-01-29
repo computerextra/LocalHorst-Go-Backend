@@ -29,7 +29,7 @@ air-mac:
 	air -c .air.mac.toml
 
 pnpm: 
-	pnpm dev
+	pnpm dev --host
 
 devwin:
 	make -j 2 air-windows pnpm
