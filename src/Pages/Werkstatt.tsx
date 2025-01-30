@@ -7,6 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { format } from "date-fns";
 import GdataLogo from "@/Assets/Images/GDATA.png";
 import MSLogo from "@/Assets/Images/MS.jpg";
 import TelekomLogo from "@/Assets/Images/TELEKOM.jpg";
@@ -29,6 +30,15 @@ import { useForm } from "react-hook-form";
 import { useReactToPrint } from "react-to-print";
 import { z } from "zod";
 import { getKunde } from "@/db/sage/Kunde";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { de } from "date-fns/locale";
 
 const Selectable = z.enum([
   "GData",
@@ -769,6 +779,10 @@ function TelekomForm() {
     Kundennummer: z.string(),
     Sicherheitsfrage: z.string(),
     Antwort: z.string(),
+    Mobilfunk: z.string(),
+    Geburtstag: z.date({
+      required_error: "Bitte geben Sie ein gültiges Datum ein",
+    }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -867,6 +881,64 @@ function TelekomForm() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="Mobilfunk"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mobilfunk</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Geburtstag"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Geburtstag</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPPP", { locale: de })
+                        ) : (
+                          <span>Bitte Datum auswählen</span>
+                        )}{" "}
+                        <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      locale={de}
+                      mode="single"
+                      captionLayout="dropdown-buttons"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      fromYear={1920}
+                      toYear={new Date().getFullYear()}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button type="submit">
             {name ? "Drucken" : "Kundeninfo aus Sage ziehen"}
           </Button>
@@ -883,28 +955,31 @@ function TelekomForm() {
           />
 
           <div className="text-center">
-            <p>Für:</p>
             <p>
+              Für: <br />
               <b>Kundennummer:</b>
               <br />
               {form.getValues().Kundennummer}
-            </p>
-            <p>
+              <br />
               <b>Name:</b>
               <br />
               {name}
-            </p>
-            <p>
+              <br />
               <b>Benutzername:</b>
               <br />
               {form.getValues().Benutzername}
-            </p>
-            <p>
-              <b>Passwort:</b>
+              <br /> <b>Passwort:</b>
               <br />
               {form.getValues().Passwort}
-            </p>
-            <p>
+              <br />
+              <b>Mobilfunk:</b>
+              <br />
+              {form.getValues().Mobilfunk}
+              <br />
+              <b>Geburtstag:</b>
+              <br />
+              {format(form.getValues().Geburtstag, "PPPP", { locale: de })}
+              <br />
               <b>Sicherheitsfrage:</b>
               <br />
               {form.getValues().Sicherheitsfrage}
