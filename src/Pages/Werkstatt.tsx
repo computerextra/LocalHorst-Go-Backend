@@ -978,7 +978,9 @@ function TelekomForm() {
               <br />
               <b>Geburtstag:</b>
               <br />
-              {format(form.getValues().Geburtstag, "PPPP", { locale: de })}
+              {form.getValues().Geburtstag
+                ? format(form.getValues().Geburtstag, "PPPP", { locale: de })
+                : ""}
               <br />
               <b>Sicherheitsfrage:</b>
               <br />
