@@ -21,6 +21,26 @@ import (
 	gomail "gopkg.in/mail.v2"
 )
 
+type EinkaufResponse struct {
+	ID            string
+	Paypal        bool
+	Abonniert     bool
+	Geld          sql.NullString
+	Pfand         sql.NullString
+	Dinge         sql.NullString
+	Mitarbeiterid string
+	Abgeschickt   sql.NullTime
+	Bild1         sql.NullString
+	Bild2         sql.NullString
+	Bild3         sql.NullString
+	Bild1date     sql.NullTime
+	Bild2date     sql.NullTime
+	Bild3date     sql.NullTime
+	Bild1Data     string
+	Bild2Data     string
+	Bild3Data     string
+}
+
 func GetEinkauf(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	r.Header.Add("Content-Type", "application/json")
@@ -45,10 +65,67 @@ func GetEinkauf(w http.ResponseWriter, r *http.Request) {
 		fehler := err.Error()
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 	} else {
-		// w.WriteHeader(http.StatusOK)
+		var Bild1Data string
+		var Bild2Data string
+		var Bild3Data string
 
-		json.NewEncoder(w).Encode(User)
+		if User.Bild1.Valid {
+			Bild1Data = helper.ImageToBase64(User.Bild1.String)
+		} else {
+			Bild1Data = ""
+		}
+		if User.Bild2.Valid {
+			Bild2Data = helper.ImageToBase64(User.Bild2.String)
+		} else {
+			Bild2Data = ""
+		}
+		if User.Bild3.Valid {
+			Bild3Data = helper.ImageToBase64(User.Bild3.String)
+		} else {
+			Bild3Data = ""
+		}
+
+		// w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(EinkaufResponse{
+			ID:            User.ID,
+			Paypal:        User.Paypal,
+			Abonniert:     User.Abonniert,
+			Geld:          User.Geld,
+			Pfand:         User.Pfand,
+			Dinge:         User.Dinge,
+			Mitarbeiterid: User.Mitarbeiterid,
+			Abgeschickt:   User.Abgeschickt,
+			Bild1:         User.Bild1,
+			Bild2:         User.Bild2,
+			Bild3:         User.Bild3,
+			Bild1date:     User.Bild1date,
+			Bild2date:     User.Bild2date,
+			Bild3date:     User.Bild3date,
+			Bild1Data:     Bild1Data,
+			Bild2Data:     Bild2Data,
+			Bild3Data:     Bild3Data,
+		})
 	}
+}
+
+type EinkaufListeResponse struct {
+	ID        string
+	Paypal    bool
+	Abonniert bool
+	Geld      sql.NullString
+	Pfand     sql.NullString
+	Dinge     sql.NullString
+	Bild1     sql.NullString
+	Bild2     sql.NullString
+	Bild3     sql.NullString
+	Bild1date sql.NullTime
+	Bild2date sql.NullTime
+	Bild3date sql.NullTime
+	Name      sql.NullString
+	Email     sql.NullString
+	Bild1Data string
+	Bild2Data string
+	Bild3Data string
 }
 
 func GetEinkaufListe(w http.ResponseWriter, r *http.Request) {
@@ -75,8 +152,50 @@ func GetEinkaufListe(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{"error": fehler})
 	} else {
 		// w.WriteHeader(http.StatusOK)
+		var Einkauf []EinkaufListeResponse
 
-		json.NewEncoder(w).Encode(User)
+		for _, user := range User {
+			var Bild1Data string
+			var Bild2Data string
+			var Bild3Data string
+
+			if user.Bild1.Valid {
+				Bild1Data = helper.ImageToBase64(user.Bild1.String)
+			} else {
+				Bild1Data = ""
+			}
+			if user.Bild2.Valid {
+				Bild2Data = helper.ImageToBase64(user.Bild2.String)
+			} else {
+				Bild2Data = ""
+			}
+			if user.Bild3.Valid {
+				Bild3Data = helper.ImageToBase64(user.Bild3.String)
+			} else {
+				Bild3Data = ""
+			}
+			Einkauf = append(Einkauf, EinkaufListeResponse{
+				ID:        user.ID,
+				Paypal:    user.Paypal,
+				Abonniert: user.Abonniert,
+				Geld:      user.Geld,
+				Pfand:     user.Pfand,
+				Dinge:     user.Dinge,
+				Bild1:     user.Bild1,
+				Bild2:     user.Bild2,
+				Bild3:     user.Bild3,
+				Bild1date: user.Bild1date,
+				Bild2date: user.Bild2date,
+				Bild3date: user.Bild3date,
+				Name:      user.Name,
+				Email:     user.Email,
+				Bild1Data: Bild1Data,
+				Bild2Data: Bild2Data,
+				Bild3Data: Bild3Data,
+			})
+		}
+
+		json.NewEncoder(w).Encode(Einkauf)
 	}
 }
 

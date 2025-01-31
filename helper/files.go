@@ -2,26 +2,26 @@ package helper
 
 import (
 	"bufio"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"mime/multipart"
+	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 
 	"github.com/computerextra/golang-backend/env"
 )
 
 var (
-	_, b, _, _ = runtime.Caller(0)
-	RootPath   = filepath.Join(filepath.Dir(b), "../dist\\")
+	RootPath = env.GetEnv().UPLOAD_FOLDER
 )
 
 func checkFolder() {
 	_, err := os.Stat("temp")
 	if os.IsNotExist(err) {
 		fmt.Println("Folder does not exist.")
-		os.Mkdir(fmt.Sprintf("%s\\%s", RootPath, "upload"), os.ModePerm)
+		os.Mkdir(RootPath, os.ModePerm)
 
 	}
 }
@@ -35,7 +35,7 @@ func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (str
 	}
 	defer File.Close()
 
-	tempFolderPath := fmt.Sprintf("%s%s", RootPath, "\\upload")
+	tempFolderPath := RootPath
 	tempFileName := fmt.Sprintf("%s--%s%s", number, mitarbeiterId, filepath.Ext(h.Filename))
 
 	tempFile, err := os.Create(fmt.Sprintf("%s/%s", tempFolderPath, tempFileName))
@@ -52,7 +52,7 @@ func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (str
 
 	tempFile.Write(filebytes)
 
-	return fmt.Sprintf("%s/%s", "/upload/", tempFileName), nil
+	return fmt.Sprintf("%s/%s", RootPath, tempFileName), nil
 }
 
 func SavePdf(Title string) error {
@@ -60,7 +60,7 @@ func SavePdf(Title string) error {
 
 	env := env.GetEnv()
 	ArchivePath := env.ARCHIVE_PATH
-	tempFolderPath := fmt.Sprintf("%s%s", RootPath, "\\upload")
+	tempFolderPath := RootPath
 
 	directory := filepath.Join(ArchivePath, Title)
 	fi, err := os.Open(directory)
@@ -111,4 +111,22 @@ func SavePdf(Title string) error {
 	}
 
 	return nil
+}
+
+func ImageToBase64(path string) string {
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+
+	var base64Encoding string
+	mimeType := http.DetectContentType(bytes)
+	switch mimeType {
+	case "image/jpeg":
+		base64Encoding = "data:image/jpeg;base64,"
+	case "image/png":
+		base64Encoding = "data:image/png;base64,"
+	}
+	base64Encoding += base64.StdEncoding.EncodeToString(bytes)
+	return base64Encoding
 }

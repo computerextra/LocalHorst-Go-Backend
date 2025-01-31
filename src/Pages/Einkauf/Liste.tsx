@@ -75,18 +75,18 @@ function PrintMurks({ props }: { props: EinkaufListe }) {
             new Date().toLocaleDateString() && (
             <img
               className="max-h-[150px] rounded-md"
-              src={props.Bild1.String ?? ""}
+              src={props.Bild1Data ?? ""}
             />
           )}
         {props.Bild2date.Time &&
           new Date(props.Bild2date.Time).toLocaleDateString() ==
             new Date().toLocaleDateString() && (
-            <img src={props.Bild2.String ?? ""} />
+            <img src={props.Bild2Data ?? ""} />
           )}
         {props.Bild3date.Time &&
           new Date(props.Bild3date.Time).toLocaleDateString() ==
             new Date().toLocaleDateString() && (
-            <img src={props.Bild3.String ?? ""} />
+            <img src={props.Bild3Data ?? ""} />
           )}
       </div>
       <hr />
@@ -132,18 +132,18 @@ function EinkaufCard({ props }: { props: EinkaufListe }) {
               new Date().toLocaleDateString() && (
               <img
                 className="max-h-[200px] rounded-md"
-                src={props.Bild1.String ?? ""}
+                src={props.Bild1Data ?? ""}
               />
             )}
           {props.Bild2date.Time &&
             new Date(props.Bild2date.Time).toLocaleDateString() ==
               new Date().toLocaleDateString() && (
-              <img src={props.Bild2.String ?? ""} />
+              <img src={props.Bild2Data ?? ""} />
             )}
           {props.Bild3date.Time &&
             new Date(props.Bild3date.Time).toLocaleDateString() ==
               new Date().toLocaleDateString() && (
-              <img src={props.Bild3.String ?? ""} />
+              <img src={props.Bild3Data ?? ""} />
             )}
         </div>
       </CardFooter>

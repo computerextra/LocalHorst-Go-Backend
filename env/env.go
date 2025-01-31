@@ -13,6 +13,7 @@ type Config struct {
 	VITE_PORT        int    `env:"VITE_PORT,required"`
 	VITE_API         string `env:"VITE_API,required"`
 	ARCHIVE_PATH     string `env:"ARCHIVE_PATH,required"`
+	UPLOAD_FOLDER    string `env:"UPLOAD_FOLDER,required"`
 	MAIL_FROM        string `env:"MAIL_FROM,required"`
 	MAIL_SERVER      string `env:"MAIL_SERVER,required"`
 	MAIL_PORT        int    `env:"MAIL_PORT,required"`

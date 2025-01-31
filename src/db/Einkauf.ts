@@ -42,6 +42,9 @@ const EinkaufListe = z.object({
   Bild3date: SqlNullDateTime,
   Name: SqlNullString,
   Email: SqlNullString,
+  Bild1Data: z.string(),
+  Bild2Data: z.string(),
+  Bild3Data: z.string(),
 });
 export type EinkaufListe = z.infer<typeof EinkaufListe>;
 
@@ -60,6 +63,9 @@ const Einkauf = z.object({
   Mitarbeiterid: z.string(),
   Paypal: z.boolean(),
   Pfand: SqlNullString,
+  Bild1Data: z.string(),
+  Bild2Data: z.string(),
+  Bild3Data: z.string(),
 });
 export type Einkauf = z.infer<typeof Einkauf>;
 
