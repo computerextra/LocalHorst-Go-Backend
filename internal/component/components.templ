@@ -1,0 +1,116 @@
+package component
+
+templ Page(title string) {
+	<html lang="de" class="font-geist">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link href="/static/css/style.css" rel="stylesheet"/>
+			<script src="/static/js/htmx.js"></script>
+			<script src="/static/js/theme-change.js"></script>
+			<title>{ title } Viktor</title>
+		</head>
+		<body class="bg-base-100 text-base-content min-h-[100vh] antialiased">
+			@navigation()
+			<div class="container mx-auto mt-5">
+				{ children... }
+			</div>
+			<script>
+				window.addEventListener("click", function(e) {
+					document.querySelectorAll(".dropdown").forEach(function(dropdown) {
+						dropdown.open = false
+					})
+				})
+			</script>
+		</body>
+	</html>
+}
+
+templ navigation() {
+	<div class="shadow-sm navbar bg-base-100">
+		<div class="flex-1">
+			<a class="text-xl btn btn-ghost">Viktor</a>
+		</div>
+		<div class="flex-none">
+			@NavLink()
+		</div>
+	</div>
+}
+
+templ ThemeSwitcher() {
+	<details class="dropdown">
+		<summary>Theme</summary>
+		<ul class="z-50 p-2 rounded-t-none bg-base-100">
+			for _, theme := range Themes {
+				<li>
+					<a
+						class="gap-3 px-2"
+						data-set-theme={ theme.name }
+						data-act-class="ACTIVECLASS"
+					>
+						<div
+							data-theme={ theme.name }
+							class="bg-base-100 grid shrink-0 grid-cols-2 gap-0.5 rounded-md p-1 shadow-sm"
+						>
+							<div class="rounded-full bg-base-content size-1"></div>
+							<div class="rounded-full bg-primary size-1"></div>
+							<div class="rounded-full bg-secondary size-1"></div>
+							<div class="rounded-full bg-accent size-1"></div>
+						</div>
+						<div class="w-32 truncate">{ theme.title }</div>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="16"
+							height="16"
+							viewBox="0 0 24 24"
+							fill="currentColor"
+							class="invisible w-3 h-3 shrink-0"
+						>
+							<path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"></path>
+						</svg>
+					</a>
+				</li>
+			}
+		</ul>
+	</details>
+}
+
+templ NavLink() {
+	<ul class="px-1 menu menu-horizontal">
+		<li>
+			@ThemeSwitcher()
+		</li>
+		<li>
+			<details class="dropdown">
+				<summary>Einkauf</summary>
+				<ul class="p-2 rounded-t-none bg-base-100">
+					<li><a href="/Einkauf/Eingabe">Eingabe</a></li>
+					<li><a href="/Einkauf">Liste</a></li>
+					<li><a href="/Einkauf/Abrechnung">Abrechnung</a></li>
+				</ul>
+			</details>
+		</li>
+		<li>
+			<details class="dropdown">
+				<summary>Mitarbeiter</summary>
+				<ul class="p-2 rounded-t-none bg-base-100">
+					<li><a href="/Mitarbeiter">Übersicht</a></li>
+					<li><a href="/Mitarbeiter/Geburtstag">Geburtstage</a></li>
+				</ul>
+			</details>
+		</li>
+		<li><a href="/Lieferanten">Lieferanten</a></li>
+		<li><a href="/Sage">CE Archiv</a></li>
+		<li>
+			<details class="dropdown">
+				<summary>Sage</summary>
+				<ul class="p-2 rounded-t-none bg-base-100">
+					<li><a href="/Sage/Suche">Kundensuche</a></li>
+					<li><a href="/Sage/Inventur">Inventur</a></li>
+				</ul>
+			</details>
+		</li>
+		<li><a href="/Werkstatt">Werkstatt</a></li>
+	</ul>
+}

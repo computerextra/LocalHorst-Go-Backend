@@ -28,7 +28,7 @@ model Account {
 }
 
 model Anschprechpartner {
-  id            String       @id
+  id            String       @id @default(cuid())
   Name          String
   Telefon       String?
   Mobil         String?
@@ -49,7 +49,7 @@ model Aussteller {
 }
 
 model Einkauf {
-  id            String      @id
+  id            String      @id @default(cuid())
   Paypal        Boolean
   Abonniert     Boolean
   Geld          String?
@@ -67,7 +67,7 @@ model Einkauf {
 }
 
 model Lieferanten {
-  id                String              @id
+  id                String              @id @default(cuid())
   Firma             String
   Kundennummer      String?
   Webseite          String?
@@ -75,7 +75,7 @@ model Lieferanten {
 }
 
 model Mitarbeiter {
-  id                 String    @id @unique
+  id                 String    @id @unique @default(cuid())
   Name               String
   Short              String?
   Gruppenwahl        String?
@@ -122,7 +122,7 @@ model VerificationToken {
 }
 
 model Warenlieferung {
-  id            Int       @id
+  id            Int       @id @default(autoincrement())
   Name          String
   angelegt      DateTime  @default(now())
   geliefert     DateTime?

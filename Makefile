@@ -1,24 +1,11 @@
-install:
-	go install github.com/air-verse/air@latest
-	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-	pnpm install
-	sqlc generate
-	go get .
+live/templ:
+	templ generate --watch --proxy="http://localhost:3000" --open-browser=false -v
 
-build:
-	go get .
-	pnpm build
-	go build .
+live/server:
+	go run github.com/cosmtrek/air@v1.51.0
 
-serve-windows:
-	pnpm build
-	go build .
-	./golang-backend.exe
-
-serve-mac:
-	pnpm build
-	go build .
-	./golang-backend
+live/tailwind:
+	pnpm dlx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/style.css --minify --watch=forever
 
 db/pull:
 	go run github.com/steebchen/prisma-client-go db pull
@@ -29,14 +16,24 @@ db/push:
 db/generate:
 	go run github.com/steebchen/prisma-client-go generate
 
-air-windows: 
-	air -c .air.windows.toml
+live/sync_assets:
+	go run github.com/cosmtrek/air@v1.51.0 \
+	--build.cmd "templ generate --notify-proxy" \
+	--build.bin true \
+	--build.delay "100" \
+	--build.exclude_dir "" \
+	--build.exclude_dir "node_modules" \
+	--build.include_dir "static" \
+	--build.include_ext "js,css"
 
-air-mac:
-	air -c .air.mac.toml
+react/build:
+	pnpm dlx esbuild --bundle ./react/geburtstag.tsx --outdir=./static/react --minify
 
-devwin:
-	make -j 2 air-windows
+dev:
+	make -j4 live/tailwind live/templ live/server live/sync_assets
 
-devmac:
-	make -j 2 air-mac 
+build:
+	go get .
+	make db/generate
+	go generate
+	go build

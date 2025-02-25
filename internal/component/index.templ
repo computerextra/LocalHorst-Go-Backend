@@ -1,0 +1,90 @@
+package component
+
+templ Index() {
+	@Page("") {
+		<h1>VICTOR</h1>
+		<p class="py-0 !mb-0">
+			Hallo und Willkommen auf "VICTOR", der Web Plattform von Computer Extra.
+		</p>
+		<p class="py-0">
+			Diese Web App bietet viele Features darunter: Eine Einkaufsliste für das
+			morgendliche Frühstück, eine Mitarbeiter Übersicht mit Telefonnummern
+			und Mail Adressen, eine Kunden und Lieferanten Suche, die direkt an SAGE
+			angeschloßen ist, einen Ersatz für CE Archiv, ein Wiki zum erläutern von
+			Funktionen innerhalb der Web App und des Unternehmens, einen Generator
+			für "Kunden Handouts" bezüglich Zugangsdaten von Online Konten und
+			vieles mehr.
+		</p>
+		<p class="pb-0 ">
+			Diese Web App nutzt folgende Technologien:
+		</p>
+		<div class="grid grid-cols-6 gap-8 mb-8">
+			<div class="tooltip tooltip-bottom" data-tip="hello">
+				<div class="tooltip-content">
+					<h2>Go</h2>
+					<p>Go (auch Golang) ist eine kompilierbare Programmiersprache, die Nebenläufigkeit und automatische Speicherbereinigung unterstützt. Entwickelt wurde Go von Mitarbeitern des Unternehmens Google Inc.</p>
+				</div>
+				<img class="max-h-[200px] h-[200px] object-contain bg-accent rounded-2xl" src="/static/images/GO.png" alt="Go Logo"/>
+			</div>
+			<div class="tooltip tooltip-bottom" data-tip="hello">
+				<div class="tooltip-content">
+					<h2>Templ</h2>
+					<p>
+						Eine Sprache zum Schreiben von HTML-Benutzeroberflächen in Go.
+					</p>
+				</div>
+				<img class="max-h-[200px] h-[200px] object-contain bg-accent rounded-2xl" src="/static/images/templsvg.svg" alt="Templ Logo"/>
+			</div>
+			<div class="tooltip tooltip-bottom" data-tip="hello">
+				<div class="tooltip-content">
+					<h2>HTMX</h2>
+					<p>htmx (auch als HTMX stilisiert) ist eine Open-Source-Front-End-JavaScript-Bibliothek, die HTML mit benutzerdefinierten Attributen erweitert, die die Verwendung von AJAX direkt in HTML und mit einem Hypermedia-gesteuerten Ansatz ermöglichen.</p>
+				</div>
+				<img class="max-h-[200px] h-[200px] object-contain bg-accent rounded-2xl" src="/static/images/htmx_logo.1.png" alt="HTMX Logo"/>
+			</div>
+			<div class="tooltip tooltip-bottom" data-tip="hello">
+				<div class="tooltip-content">
+					<h2>Prisma</h2>
+					<p>ORM der nächsten Generation für Node.js und TypeScript | PostgreSQL, MySQL, MariaDB, SQL Server, SQLite, MongoDB und CockroachDB</p>
+				</div>
+				<img class="max-h-[200px] h-[200px] object-contain bg-accent rounded-2xl" src="/static/images/prisma.svg" alt="Prisma Logo"/>
+			</div>
+			<div class="tooltip tooltip-bottom" data-tip="hello">
+				<div class="tooltip-content">
+					<h2>Tailwind CSS</h2>
+					<p>
+						Tailwind CSS ist ein Open-Source-CSS-Framework. Im Gegensatz
+						zu anderen Frameworks, wie Bootstrap, bietet es keine Reihe
+						vordefinierter Klassen für Elemente wie Schaltflächen oder
+						Tabellen. Stattdessen erstellt es eine Liste
+						„utility“-CSS-Klassen, mit denen jedes Element durch Mischen
+						und Anpassen gestaltet werden kann.
+					</p>
+				</div>
+				<img class="max-h-[200px] h-[200px] object-contain bg-accent rounded-2xl" src="/static/images/TAILWIND.png" alt="Tailwind Logo"/>
+			</div>
+			<div class="tooltip tooltip-bottom" data-tip="hello">
+				<div class="tooltip-content">
+					<h2>daisyUI</h2>
+					<p>Es bietet nützliche Komponentenklassennamen, damit Sie weniger Code schreiben und schneller erstellen können.</p>
+				</div>
+				<img class="max-h-[200px] h-[200px] object-contain bg-accent rounded-2xl" src="/static/images/daisyui-logomark-1024-1024.png" alt="DaisyUI Logo"/>
+			</div>
+		</div>
+		<h2 class="mb-5">Quicklinks</h2>
+		<div class="grid grid-cols-3 gap-8 my-8">
+			<a class="btn btn-primary" href="/Einkauf/Liste">Einkauf Eingabe</a>
+			<a class="btn btn-primary" href="/Einkauf">Einkaufs Liste</a>
+			<a
+				class="btn btn-primary"
+				href="https://www.edeka.de/markt-id/10001842/prospekt/"
+				target="_blank"
+				rel="noopener noreferrer"
+			>Edeka Blättchen</a>
+			<a class="btn btn-primary" href="/Mitarbeiter">Mitarbeiter Übersicht</a>
+			<a class="btn btn-primary" href="/Lieferanten">Lieferanten Übersicht</a>
+			<a class="btn btn-primary" href="/Werkstatt">Kunden Formular Generierung</a>
+		</div>
+		<h2>GEBRUTSTAGE</h2>
+	}
+}

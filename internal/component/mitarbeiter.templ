@@ -1,0 +1,127 @@
+package component
+
+import (
+	"fmt"
+	"github.com/computerextra/golang-backend/db"
+	"sort"
+	"time"
+)
+
+templ Geburtstage(user []db.MitarbeiterModel) {
+	@Page("Geburtstage | ") {
+		<h1>Geburtstags Liste</h1>
+		@GeburtstagsListe(user)
+	}
+}
+
+templ GeburtstagsListe(user []db.MitarbeiterModel) {
+	{{
+	var heute []db.MitarbeiterModel
+	var vergangen []db.MitarbeiterModel
+	var zukunft []db.MitarbeiterModel
+
+	for _, y := range user {
+		geb, ok := y.Geburtstag()
+		loc, _ := time.LoadLocation("Europe/Berlin")
+		if ok {
+			new := time.Date(time.Now().Year(), geb.Month(), geb.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+			duration := time.Now().Sub(new)
+			days := duration.Hours() / 24
+			if days < -1 {
+				zukunft = append(zukunft, y)
+
+			} else if days < 0 && days > -1 {
+				heute = append(heute, y)
+			} else {
+				vergangen = append(vergangen, y)
+			}
+		}
+	}
+	sort.Slice(heute, func(i, j int) bool {
+		geb1, _ := heute[i].Geburtstag()
+		geb2, _ := heute[j].Geburtstag()
+		return geb1.Before(geb2)
+	})
+	sort.Slice(vergangen, func(i, j int) bool {
+		geb1, _ := vergangen[i].Geburtstag()
+		geb2, _ := vergangen[j].Geburtstag()
+		return geb1.Before(geb2)
+	})
+	sort.Slice(zukunft, func(i, j int) bool {
+		geb1, _ := zukunft[i].Geburtstag()
+		geb2, _ := zukunft[j].Geburtstag()
+		return geb1.Before(geb2)
+	})
+	}}
+	if len(heute) > 1 {
+		for _, user := range heute {
+			<div role="alert" class="w-full alert alert-error alert-soft">
+				<span>
+					Heute gibt es ein Geburtstagskind! | Heute hat <b>{ user.Name }</b> Geburtstag
+				</span>
+			</div>
+		}
+	}
+	if len(vergangen) > 1 {
+		<h2>Vergangene</h2>
+		<div class="overflow-x-auto">
+			<table class="table">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Geburtstag</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, user := range vergangen {
+						{{
+	geb, ok := user.Geburtstag()
+	var day string
+	day = fmt.Sprintf("%d.%02d.", geb.Day(), geb.Month())
+						}}
+						if ok {
+							<tr>
+								<th>{ user.Name }</th>
+								<td>
+									{ day }
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+	if len(zukunft) > 1 {
+		<h2>Zuküftige</h2>
+		<div class="overflow-x-auto">
+			<table class="table">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Geburtstag</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, user := range zukunft {
+						{{
+	geb, ok := user.Geburtstag()
+	var day string
+	day = fmt.Sprintf("%d.%02d.", geb.Day(), geb.Month())
+						}}
+						if ok {
+							<tr>
+								<th>{ user.Name }</th>
+								<td>
+									{ day }
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+}
