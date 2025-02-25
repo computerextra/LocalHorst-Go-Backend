@@ -6,8 +6,6 @@ install:
 	go get .
 
 build:
-	pnpm install
-	sqlc generate
 	go get .
 	pnpm build
 	go build .
@@ -22,17 +20,23 @@ serve-mac:
 	go build .
 	./golang-backend
 
+db/pull:
+	go run github.com/steebchen/prisma-client-go db pull
+
+db/push:
+	go run github.com/steebchen/prisma-client-go db push
+
+db/generate:
+	go run github.com/steebchen/prisma-client-go generate
+
 air-windows: 
 	air -c .air.windows.toml
 
 air-mac:
 	air -c .air.mac.toml
 
-pnpm: 
-	pnpm dev --host
-
 devwin:
-	make -j 2 air-windows pnpm
+	make -j 2 air-windows
 
 devmac:
-	make -j 2 air-mac pnpm
+	make -j 2 air-mac 
