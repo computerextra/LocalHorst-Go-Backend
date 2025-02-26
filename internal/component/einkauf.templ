@@ -1,0 +1,183 @@
+package component
+
+import (
+	"fmt"
+	"github.com/computerextra/golang-backend/db"
+	"github.com/computerextra/golang-backend/internal/utils"
+	"time"
+)
+
+templ Einkaufsliste(einkauf []db.EinkaufModel) {
+	@Page("Einkaufsliste | ") {
+		<h1 class="print:!hidden">Einkaufsliste</h1>
+		<h1 class="hidden print:block">An Post / Milch und Kaffee denken!</h1>
+		<div class="flex justify-between print:!hidden">
+			<a
+				href="https://www.edeka.de/markt-id/10001842/prospekt/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn  my-6 btn-primary"
+			>Edeka Blättchen</a>
+			<button class="btn my-6 btn-primary" onclick="window.print()">Liste Drucken</button>
+			<a href="/Einkauf/Eingabe" class="btn  my-6 btn-primary">Eingeben</a>
+			<a href="/Einkauf/Abrechnung" class="btn  my-6 btn-secondary">PayPal Abrechnung</a>
+		</div>
+		<div class="grid grid-cols-2 gap-4 mb-5 mt-5 print:block">
+			for _, y := range einkauf {
+				{{
+	var show bool = false
+	var showImage1 bool = false
+	var Image1 string = ""
+	var showImage2 bool = false
+	var Image2 string = ""
+	var showImage3 bool = false
+	var Image3 string = ""
+	if y.Abonniert {
+		show = true
+	}
+
+	date, ok := y.Abgeschickt()
+	if ok {
+		test := date.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
+		if test > -24 {
+			show = true
+		}
+	}
+	date1, ok := y.Bild1Date()
+	if ok {
+		data, ok := y.Bild1()
+		test := date1.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
+		if test > -24 && ok {
+			showImage1 = true
+			Image1 = utils.ImageToBase64(data)
+		}
+	}
+	date2, ok := y.Bild2Date()
+	if ok {
+		data, ok := y.Bild2()
+		test := date2.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
+		if test > -24 && ok {
+			showImage2 = true
+			Image2 = utils.ImageToBase64(data)
+		}
+	}
+	date3, ok := y.Bild3Date()
+	if ok {
+		data, ok := y.Bild3()
+		test := date3.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
+		if test > -24 && ok {
+			showImage3 = true
+			Image3 = utils.ImageToBase64(data)
+		}
+	}
+	Mitarbeiter := y.Mitarbeiter()
+	var Geld string = ""
+	var Pfand string = ""
+	var Dinge string = ""
+	geldres, ok := y.Geld()
+	if ok {
+		Geld = geldres
+	}
+	pfandres, ok := y.Pfand()
+	if ok {
+		Pfand = pfandres
+	}
+	dingeRes, ok := y.Dinge()
+	if ok {
+		Dinge = dingeRes
+	}
+				}}
+				if show {
+					<div class="card card-border bg-base-100 print:!hidden">
+						<div class="card-body">
+							<div class="flex justify-between">
+								<h2 class="card-title">
+									{ Mitarbeiter.Name }
+								</h2>
+								<div class="card-actions justify-end">
+									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingebe/%s", y.ID)) } role="link" class="btn btn-primary btn-soft">Bearbeiten</a>
+								</div>
+							</div>
+							<div class="grid grid-cols-2 gap-4">
+								<span>Geld: { Geld } </span>
+								<span class="flex items-center gap-1">
+									Abonniert: 
+									if y.Abonniert {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check text-success"><path d="M20 6 9 17l-5-5"></path></svg>
+									} else {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cross rotate-45 text-error"><path d="M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z"></path></svg>
+									}
+								</span>
+								<span>Pfand: { Pfand }</span>
+								<span class="flex items-center gap-1">
+									Paypal: 
+									if y.Paypal {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check text-success"><path d="M20 6 9 17l-5-5"></path></svg>
+									} else {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cross rotate-45 text-error"><path d="M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z"></path></svg>
+									}
+								</span>
+							</div>
+							<hr/>
+							<pre class="font-geist text-wrap">
+								{ Dinge }
+							</pre>
+							<div class="grid grid-cols-3 gap-2">
+								if showImage1 {
+									<img
+										className="max-h-[200px] rounded-md"
+										src={ Image1 }
+									/>
+								}
+								if showImage2 {
+									<img
+										className="max-h-[200px] rounded-md"
+										src={ Image2 }
+									/>
+								}
+								if showImage3 {
+									<img
+										className="max-h-[200px] rounded-md"
+										src={ Image3 }
+									/>
+								}
+							</div>
+						</div>
+					</div>
+					<div class="hidden print:block my-4 text-xs">
+						{ Mitarbeiter.Name }
+						<br/>
+						Geld: { Geld }
+						<br/>
+						Pfand: { Pfand }
+						<br/>
+						<pre class="font-geist text-wrap">
+							{ Dinge }
+						</pre>
+						<div class="grid grid-cols-3 mb-2">
+							if showImage1 {
+								<img
+									className="max-h-[150px] rounded-md"
+									src={ Image1 }
+								/>
+							}
+							if showImage2 {
+								<img
+									className="max-h-[150px] rounded-md"
+									src={ Image2 }
+								/>
+							}
+							if showImage3 {
+								<img
+									className="max-h-[150px] rounded-md"
+									src={ Image3 }
+								/>
+							}
+						</div>
+						<hr/>
+					</div>
+				}
+			}
+		</div>
+	}
+}

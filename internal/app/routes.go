@@ -17,16 +17,55 @@ func (a *App) loadPages(router *http.ServeMux) {
 	// Index Route
 	router.HandleFunc("GET /{$}", h.GetIndex)
 
-	// Mitarbeiter Routes
-	router.HandleFunc("GET /Mitarbeiter/Geburtstag", h.GetGeburtstagsPage)
-
 	// Einkauf Routes
+	router.HandleFunc("GET /Einkauf", h.GetEinkaufslistePage) // Einkaufsliste
+	// router.HandleFunc("GET /Einkauf/Eingabe") // Mitarbeiter Auswahl
+	// router.HandleFunc("GET /Einkauf/Eingabe/{id}") // Einkauf Eingabe
+	// router.HandleFunc("POST /Einkauf/Eingabe/{id}") // Einkauf speichern
+	// router.HandleFunc("PATCH /Einkauf/Eingabe/{id}") // Einkauf überspringen
+	// router.HandleFunc("DELETE /Einkauf/Eingabe/{id}") // Einkauf löschen
+	// router.HandleFunc("GET /Abrechnung") // Abrechnung anzeigen
+	// router.HandleFunc("POST /Abrechnung") // Abrechnung senden
+
+	// Mitarbeiter Routes
+	// router.HandleFunc("GET /Mitarbeiter") // Mitarbeiter Übersicht
+	router.HandleFunc("GET /Mitarbeiter/Geburtstag", h.GetGeburtstagsPage) // Mitarbeiter Geburtstage
+	// router.HandleFunc("GET /Mitarbeiter/Neu") // Neuer Mitarbeiter
+	// router.HandleFunc("POST /Mitarbeiter/Neu") // Neuer Mitarbeiter
+	// router.HandleFunc("GET /Mitarbeiter/{id}") // Mitarbeiter Details
+	// router.HandleFunc("GET /Mitarbeiter/{id}/Bearbeiten") // Mitarbeiter bearbeiten
+	// router.HandleFunc("POST /Mitarbeiter/{id}/Bearbeiten") // Mitarbeiter bearbeiten
+	// router.HandleFunc("DELETE /Mitarbeiter/{id}/Bearbeiten") // Mitarbeiter Löschen
 
 	// Lieferanten Routes
+	// router.HandleFunc("GET /Lieferanten")                        // Lieferanten Übersicht
+	// router.HandleFunc("GET /Lieferanten/Neu")                    // Neuer Lieferant
+	// router.HandleFunc("POST /Lieferanten/Neu")                    // Neuer Lieferant
+	// router.HandleFunc("GET /Lieferanten/{id}")                   // Lieferant
+	// router.HandleFunc("GET /Lieferanten/{id}/Bearbeiten")        // Lieferant bearbeiten
+	// router.HandleFunc("POST /Lieferanten/{id}/Bearbeiten")        // Lieferant bearbeiten
+	// router.HandleFunc("DELETE /Lieferanten/{id}/Bearbeiten")        // Lieferant löschen
+	// router.HandleFunc("GET /Lieferanten/{lid}/{aid}")            // Ansprechpartner Übersicht
+	// router.HandleFunc("GET /Lieferanten/{lid}/{aid}/Bearbeiten") // Ansprechpartner bearbeiten
+	// router.HandleFunc("POST /Lieferanten/{lid}/{aid}/Bearbeiten") // Ansprechpartner bearbeiten
+	// router.HandleFunc("DELETE /Lieferanten/{lid}/{aid}/Bearbeiten") // Ansprechpartner löschen
+	// router.HandleFunc("GET /Lieferanten/{lid}/Neu")              // Neuer Ansprechpartner
+	// router.HandleFunc("POST /Lieferanten/{lid}/Neu")              // Neuer Ansprechpartner
 
 	// SAGE Routes
+	// router.HandleFunc("GET /Sage")                                // CE Archiv
+	// router.HandleFunc("POST /Sage")                                // CE Archiv Suche
+	// router.HandleFunc("GET /Sage/{filenmae}")                     // Rechnung Download
+	// router.HandleFunc("GET /Sage/Suche")                          // Kunden Suche
+	// router.HandleFunc("POST /Sage/Suche")                          // Kunden Suche
+	// router.HandleFunc("GET /Sage/Inventur")                       // Inventur Übersicht
+	// router.HandleFunc("GET /Sage/Inventur/{year}")               // Jahres Übersicht
+	// router.HandleFunc("GET /Sage/Inventur/{year}/Teams")         // Teams Übersicht
+	// router.HandleFunc("GET /Sage/Inventur/{year}/Teams/{items}") // Teams Items Übersicht
 
 	// Werkstatt Route
+	// router.HandleFunc("GET /Werkstatt") // Werkstatt Formulare
+	// router.HandleFunc("POST /Werkstatt") // Werkstatt Formulare gen
 
 	// Health Route
 	router.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
