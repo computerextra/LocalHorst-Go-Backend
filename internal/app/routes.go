@@ -14,13 +14,27 @@ func (a *App) loadPages(router *http.ServeMux) {
 	// Backend Handler with database
 	h := handler.New(a.logger, a.database)
 
-	router.Handle("GET /", handler.Component(component.Index()))
+	// Index Route
+	router.HandleFunc("GET /{$}", h.GetIndex)
 
+	// Mitarbeiter Routes
 	router.HandleFunc("GET /Mitarbeiter/Geburtstag", h.GetGeburtstagsPage)
 
+	// Einkauf Routes
+
+	// Lieferanten Routes
+
+	// SAGE Routes
+
+	// Werkstatt Route
+
+	// Health Route
 	router.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
+
+	// Catch the Rest
+	router.Handle("GET /", handler.Component(component.NotFound()))
 }
 
 func (a *App) loadStaticFiles() (http.Handler, error) {

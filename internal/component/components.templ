@@ -9,7 +9,7 @@ templ Page(title string) {
 			<link href="/static/css/style.css" rel="stylesheet"/>
 			<script src="/static/js/htmx.js"></script>
 			<script src="/static/js/theme-change.js"></script>
-			<title>{ title } Viktor</title>
+			<title>{ title } Viktor v2</title>
 		</head>
 		<body class="bg-base-100 text-base-content min-h-[100vh] antialiased">
 			@navigation()
@@ -30,7 +30,7 @@ templ Page(title string) {
 templ navigation() {
 	<div class="shadow-sm navbar bg-base-100">
 		<div class="flex-1">
-			<a class="text-xl btn btn-ghost">Viktor</a>
+			<a href="/" class="text-xl btn btn-ghost">Viktor</a>
 		</div>
 		<div class="flex-none">
 			@NavLink()

@@ -1,6 +1,8 @@
 package component
 
-templ Index() {
+import "github.com/computerextra/golang-backend/db"
+
+templ Index(user []db.MitarbeiterModel) {
 	@Page("") {
 		<h1>VICTOR</h1>
 		<p class="py-0 !mb-0">
@@ -85,6 +87,9 @@ templ Index() {
 			<a class="btn btn-primary" href="/Lieferanten">Lieferanten Übersicht</a>
 			<a class="btn btn-primary" href="/Werkstatt">Kunden Formular Generierung</a>
 		</div>
-		<h2>GEBRUTSTAGE</h2>
+		<h1 class="mt-5 mb-5">Geburtstage</h1>
+		<div class="mb-5">
+			@GeburtstagsListe(user)
+		</div>
 	}
 }

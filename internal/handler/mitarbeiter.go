@@ -98,6 +98,19 @@ func (h *Handler) deleteMitarbeiter(ctx context.Context, r *http.Request) (*db.M
 	).Delete().Exec(ctx)
 }
 
+func (h *Handler) GetIndex(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	user, err := h.getAllMitarbeiter(ctx)
+	if err != nil {
+		h.logger.Error("failed to get database entry: %w", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component.Index(user).Render(ctx, w)
+}
+
 func (h *Handler) GetGeburtstagsPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
