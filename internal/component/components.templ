@@ -114,3 +114,9 @@ templ NavLink() {
 		<li><a href="/Werkstatt">Werkstatt</a></li>
 	</ul>
 }
+
+templ Backbutton(href string) {
+	<a href={ templ.URL(href) } class="btn btn-secondary mb-2">
+		Zurück
+	</a>
+}

@@ -95,7 +95,7 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 									{ Mitarbeiter.Name }
 								</h2>
 								<div class="card-actions justify-end">
-									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingebe/%s", y.ID)) } role="link" class="btn btn-primary btn-soft">Bearbeiten</a>
+									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingabe/%s", y.ID)) } role="link" class="btn btn-primary btn-soft">Bearbeiten</a>
 								</div>
 							</div>
 							<div class="grid grid-cols-2 gap-4">
@@ -179,5 +179,29 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 				}
 			}
 		</div>
+	}
+}
+
+templ EinkaufMitarbeiterAuswahl(user []db.MitarbeiterModel) {
+	@Page("Einkauf | ") {
+		@Backbutton("/Einkauf")
+		<h1 class="my-5">Einkauf</h1>
+		<a
+			href="https://www.edeka.de/markt-id/10001842/prospekt/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn btn-primary"
+		>Edeka Blättchen</a>
+		<form method="POST" class="mt-5 space-y-4">
+			<fieldset class="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box">
+				<select class="select" name="mitarbeiterId" id="mitarbeiterId">
+					<option disabled selected>Bitte wählen...</option>
+					for _, x := range user {
+						<option value={ x.ID }>{ x.Name }</option>
+					}
+				</select>
+				<button type="submit" class="btn btn-primary">Weiter</button>
+			</fieldset>
+		</form>
 	}
 }

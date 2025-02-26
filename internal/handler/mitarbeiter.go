@@ -12,7 +12,7 @@ import (
 )
 
 func (h *Handler) getAllMitarbeiter(ctx context.Context) ([]db.MitarbeiterModel, error) {
-	return h.database.Mitarbeiter.FindMany().Exec(ctx)
+	return h.database.Mitarbeiter.FindMany().With(db.Mitarbeiter.Einkauf.Fetch()).Exec(ctx)
 }
 
 func (h *Handler) getMitarbeiter(ctx context.Context, id string) (*db.MitarbeiterModel, error) {
@@ -103,7 +103,7 @@ func (h *Handler) GetIndex(w http.ResponseWriter, r *http.Request) {
 
 	user, err := h.getAllMitarbeiter(ctx)
 	if err != nil {
-		h.logger.Error("failed to get database entry: %w", slog.Any("error", err))
+		h.logger.Error("failed to get database entry:", slog.Any("error", err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -116,10 +116,23 @@ func (h *Handler) GetGeburtstagsPage(w http.ResponseWriter, r *http.Request) {
 
 	user, err := h.getAllMitarbeiter(ctx)
 	if err != nil {
-		h.logger.Error("failed to get database entry: %w", slog.Any("error", err))
+		h.logger.Error("failed to get database entry:", slog.Any("error", err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	component.Geburtstage(user).Render(ctx, w)
+}
+
+func (h *Handler) GetMitarbeiterListe(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	user, err := h.getAllMitarbeiter(ctx)
+	if err != nil {
+		h.logger.Error("failed to get database entry:", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component.EinkaufMitarbeiterAuswahl(user).Render(ctx, w)
 }

@@ -18,10 +18,11 @@ func (a *App) loadPages(router *http.ServeMux) {
 	router.HandleFunc("GET /{$}", h.GetIndex)
 
 	// Einkauf Routes
-	router.HandleFunc("GET /Einkauf", h.GetEinkaufslistePage) // Einkaufsliste
-	// router.HandleFunc("GET /Einkauf/Eingabe") // Mitarbeiter Auswahl
+	router.HandleFunc("GET /Einkauf", h.GetEinkaufslistePage)        // Einkaufsliste
+	router.HandleFunc("GET /Einkauf/Eingabe", h.GetMitarbeiterListe) // Mitarbeiter Auswahl
+	router.HandleFunc("POST /Einkauf/Eingabe", h.GetEinkauf)         // Mitarbeiter Auswahl
 	// router.HandleFunc("GET /Einkauf/Eingabe/{id}") // Einkauf Eingabe
-	// router.HandleFunc("POST /Einkauf/Eingabe/{id}") // Einkauf speichern
+	router.HandleFunc("POST /Einkauf/Eingabe/{id}", h.UpdateEinkauf) // Einkauf speichern
 	// router.HandleFunc("PATCH /Einkauf/Eingabe/{id}") // Einkauf überspringen
 	// router.HandleFunc("DELETE /Einkauf/Eingabe/{id}") // Einkauf löschen
 	// router.HandleFunc("GET /Abrechnung") // Abrechnung anzeigen
