@@ -127,3 +127,11 @@ templ Backbutton(href string) {
 		Zurück
 	</a>
 }
+
+templ ReactComponent() {
+	<div id="react-header"></div>
+	<div id="react-content"></div>
+	<div>This is server-side content from templ.</div>
+	<!-- Load the React bundle created using esbuild -->
+	<script src="static/index.js"></script>
+}
