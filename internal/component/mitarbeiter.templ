@@ -3,6 +3,7 @@ package component
 import (
 	"fmt"
 	"github.com/computerextra/golang-backend/db"
+	"github.com/computerextra/golang-backend/internal/utils"
 	"sort"
 	"time"
 )
@@ -119,6 +120,99 @@ templ GeburtstagsListe(user []db.MitarbeiterModel) {
 								</td>
 							</tr>
 						}
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+}
+
+templ MitarbeiterOverview(users []db.MitarbeiterModel) {
+	@Page("Mitarbeiter Übersicht | ") {
+		@Backbutton("/")
+		<h1>Mitarbeiter</h1>
+		<div class="overflow-x-auto">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Gruppe</th>
+						<th>Interne Durchwahl 1</th>
+						<th>Interne Durchwahl 2</th>
+						<th>Festnetz Alternativ</th>
+						<th>Festnetz Privat</th>
+						<th>Homeoffice</th>
+						<th>Mobil Business</th>
+						<th>Mobil Privat</th>
+						<th>Azubi</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, user := range users {
+						{{
+							Name := user.Name
+							Email, Email_ok := user.Email()
+							Gruppe, Gruppe_ok := user.Gruppenwahl()
+							Interntelefon1, Interntelefon1_ok := user.InternTelefon1()
+							Interntelefon2, Interntelefon2_ok := user.InternTelefon2()
+							Festnetzalternativ, Festnetzalternativ_ok := user.FestnetzAlternativ()
+							Festnetzprivat, Festnetzprivat_ok := user.FestnetzPrivat()
+							Homeoffice, Homeoffice_ok := user.HomeOffice()
+							Mobilbusiness, Mobilbusiness_ok := user.MobilBusiness()
+							Mobilprivat, Mobilprivat_ok := user.MobilPrivat()
+							Azubi, Azubi_ok := user.Azubi()
+						}}
+						<tr>
+							<th>{ Name }</th>
+							<td>
+								if Email_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("mailto:%s", Email)) }>{ Email }</a>
+								}
+							</td>
+							<td>
+								{ utils.If(Gruppe_ok, Gruppe, "") }
+							</td>
+							<td>
+								{ utils.If(Interntelefon1_ok, Interntelefon1, "") }
+							</td>
+							<td>
+								{ utils.If(Interntelefon2_ok, Interntelefon2, "") }
+							</td>
+							<td>
+								if Festnetzalternativ_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Festnetzalternativ)) }>{ Festnetzalternativ }</a>
+								}
+							</td>
+							<td>
+								if Festnetzprivat_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Festnetzprivat)) }>{ Festnetzprivat }</a>
+								}
+							</td>
+							<td>
+								{ utils.If(Homeoffice_ok, Homeoffice, "") }
+							</td>
+							<td>
+								if Mobilbusiness_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Mobilbusiness)) }>{ Mobilbusiness }</a>
+								}
+							</td>
+							<td>
+								if Mobilprivat_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Mobilprivat)) }>{ Mobilprivat }</a>
+								}
+							</td>
+							<td>
+								if Azubi_ok {
+									if Azubi {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check text-success"><path d="M20 6 9 17l-5-5"></path></svg>
+									} else {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cross rotate-45 text-error"><path d="M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z"></path></svg>
+									}
+								}
+							</td>
+						</tr>
 					}
 				</tbody>
 			</table>

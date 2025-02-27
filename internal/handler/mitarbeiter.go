@@ -124,6 +124,19 @@ func (h *Handler) GetGeburtstagsPage(w http.ResponseWriter, r *http.Request) {
 	component.Geburtstage(user).Render(ctx, w)
 }
 
+func (h *Handler) GetMitarbeiterOverview(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	user, err := h.getAllMitarbeiter(ctx)
+	if err != nil {
+		h.logger.Error("failed to get database entry:", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component.MitarbeiterOverview(user).Render(ctx, w)
+}
+
 func (h *Handler) GetMitarbeiterListe(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

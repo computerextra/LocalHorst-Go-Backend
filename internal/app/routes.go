@@ -29,7 +29,7 @@ func (a *App) loadPages(router *http.ServeMux) {
 	router.HandleFunc("POST /Einkauf/Abrechnung", h.SendAbrechnung)         // Abrechnung senden
 
 	// Mitarbeiter Routes
-	// router.HandleFunc("GET /Mitarbeiter") // Mitarbeiter Übersicht
+	router.HandleFunc("GET /Mitarbeiter", h.GetMitarbeiterOverview)        // Mitarbeiter Übersicht
 	router.HandleFunc("GET /Mitarbeiter/Geburtstag", h.GetGeburtstagsPage) // Mitarbeiter Geburtstage
 	// router.HandleFunc("GET /Mitarbeiter/Neu") // Neuer Mitarbeiter
 	// router.HandleFunc("POST /Mitarbeiter/Neu") // Neuer Mitarbeiter
