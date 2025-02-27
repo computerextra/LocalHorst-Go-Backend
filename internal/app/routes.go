@@ -18,15 +18,15 @@ func (a *App) loadPages(router *http.ServeMux) {
 	router.HandleFunc("GET /{$}", h.GetIndex)
 
 	// Einkauf Routes
-	router.HandleFunc("GET /Einkauf", h.GetEinkaufslistePage)        // Einkaufsliste
-	router.HandleFunc("GET /Einkauf/Eingabe", h.GetMitarbeiterListe) // Mitarbeiter Auswahl
-	router.HandleFunc("POST /Einkauf/Eingabe", h.GetEinkauf)         // Mitarbeiter Auswahl
-	// router.HandleFunc("GET /Einkauf/Eingabe/{id}") // Einkauf Eingabe
-	router.HandleFunc("POST /Einkauf/Eingabe/{id}", h.UpdateEinkauf) // Einkauf speichern
-	// router.HandleFunc("PATCH /Einkauf/Eingabe/{id}") // Einkauf überspringen
-	// router.HandleFunc("DELETE /Einkauf/Eingabe/{id}") // Einkauf löschen
-	// router.HandleFunc("GET /Abrechnung") // Abrechnung anzeigen
-	// router.HandleFunc("POST /Abrechnung") // Abrechnung senden
+	router.HandleFunc("GET /Einkauf", h.GetEinkaufslistePage)               // Einkaufsliste
+	router.HandleFunc("GET /Einkauf/Eingabe", h.GetMitarbeiterListe)        // Mitarbeiter Auswahl
+	router.HandleFunc("POST /Einkauf/Eingabe", h.GetEinkauf)                // Mitarbeiter Auswahl
+	router.HandleFunc("GET /Einkauf/Eingabe/{id}", h.GetEinkaufEingabePage) // Einkauf Eingabe
+	router.HandleFunc("POST /Einkauf/Eingabe/{id}", h.UpdateEinkauf)        // Einkauf speichern
+	router.HandleFunc("PATCH /Einkauf/Eingabe/{id}", h.SkipEinkauf)         // Einkauf überspringen
+	router.HandleFunc("DELETE /Einkauf/Eingabe/{id}", h.DeleteEinkauf)      // Einkauf löschen
+	router.HandleFunc("GET /Einkauf/Abrechnung", h.GetAbrechnung)           // Abrechnung anzeigen
+	router.HandleFunc("POST /Einkauf/Abrechnung", h.SendAbrechnung)         // Abrechnung senden
 
 	// Mitarbeiter Routes
 	// router.HandleFunc("GET /Mitarbeiter") // Mitarbeiter Übersicht

@@ -39,7 +39,7 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 	date, ok := y.Abgeschickt()
 	if ok {
 		test := date.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
-		if test > -24 {
+		if test > -24 && test < 24 {
 			show = true
 		}
 	}
@@ -95,7 +95,7 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 									{ Mitarbeiter.Name }
 								</h2>
 								<div class="card-actions justify-end">
-									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingabe/%s", y.ID)) } role="link" class="btn btn-primary btn-soft">Bearbeiten</a>
+									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingabe/%s", y.MitarbeiterID)) } role="link" class="btn btn-primary btn-soft">Bearbeiten</a>
 								</div>
 							</div>
 							<div class="grid grid-cols-2 gap-4">
@@ -202,6 +202,173 @@ templ EinkaufMitarbeiterAuswahl(user []db.MitarbeiterModel) {
 				</select>
 				<button type="submit" class="btn btn-primary">Weiter</button>
 			</fieldset>
+		</form>
+	}
+}
+
+templ EinkaufEingabe(user *db.MitarbeiterModel) {
+	@Page("Einkauf | ") {
+		@Backbutton("/Einkauf/Eingabe")
+		<h1>Einkauf Eingabe</h1>
+		{{
+			einkauf, ok := user.Einkauf()
+			var Geld string = ""
+			var Pfand string = ""
+			var Dinge string = ""
+			var Paypal bool = false
+			var Abo bool = false
+
+			if ok {
+				Geld, _ = einkauf.Geld()
+				Pfand, _ = einkauf.Pfand()
+				Dinge, _ = einkauf.Dinge()
+				Paypal = einkauf.Paypal
+				Abo = einkauf.Abonniert
+			}
+		}}
+		<a
+			href="https://www.edeka.de/markt-id/10001842/prospekt/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn btn-primary my-4"
+		>Edeka Blättchen</a>
+		<form method="POST" enctype="multipart/form-data" class="space-y-4 mt-5">
+			<div class="grid grid-cols-2 gap-4">
+				<div>
+					<label for="Geld">Geld</label>
+					<input type="text" name="Geld" id="Geld" class="input" value={ Geld }/>
+				</div>
+				<div>
+					<label for="Pfand">Pfand</label>
+					<input type="text" name="Pfand" id="Pfand" class="input" value={ Pfand }/>
+				</div>
+			</div>
+			<div class="grid grid-cols-2 gap-4">
+				<div>
+					<label for="Paypal">Paypal</label>
+					if Paypal {
+						<input type="checkbox" checked id="Paypal" name="Paypal" class="toggle toggle-success"/>
+					} else {
+						<input type="checkbox" id="Paypal" name="Paypal" class="toggle toggle-success"/>
+					}
+				</div>
+				<div>
+					<div class="tooltip pe-1" data-tip="Wenn dieser Einkauf Abonniert wird, wird er jeden Tag erneut in der Einkaufsliste angezeigt. Um das Abo zu beenden muss dieser Slider auf 'aus' geschoben und der Einkauf neu gespeichert werden.">
+						<label for="Abonniert">Abo</label>
+					</div>
+					if Abo {
+						<input type="checkbox" checked id="Abonniert" name="Abonniert" class="toggle toggle-success"/>
+					} else {
+						<input type="checkbox" id="Abonniert" name="Abonniert" class="toggle toggle-success"/>
+					}
+				</div>
+			</div>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Dein Einkauf</legend>
+				<textarea class="textarea h-44 !w-full" name="Dinge" id="Dinge">{ Dinge }</textarea>
+			</fieldset>
+			<div class="grid grid-cols-3 gap-4">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Bild 1</legend>
+					<input type="file" class="file-input" name="Bild1" id="Bild1" accept="image/png, image/gif, image/jpeg"/>
+					<label class="fieldset-label">Maximal 2MB</label>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Bild 2</legend>
+					<input type="file" class="file-input" name="Bild2" id="Bild2" accept="image/png, image/gif, image/jpeg"/>
+					<label class="fieldset-label">Maximal 2MB</label>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Bild 3</legend>
+					<input type="file" class="file-input" name="Bild3" id="Bild3" accept="image/png, image/gif, image/jpeg"/>
+					<label class="fieldset-label">Maximal 2MB</label>
+				</fieldset>
+			</div>
+			<input type="submit" value="Speichern" class="btn btn-success"/>
+		</form>
+		<div class="divider mt-12">ACHTUNG</div>
+		<div class="flex w-full justify-center">
+			<button class="btn btn-secondary" onclick="handleSkip()">Einkauf Überspringen</button>
+			<div class="divider divider-horizontal"></div>
+			<button class="btn btn-error" onclick="handleDelete()">Einkauf Löschen</button>
+		</div>
+		<script>
+			const url = window.location.href
+			const newUrl = url.split("/").slice(0, url.split("/").length-2).join("/")
+			function handleSkip() {
+				fetch(url, {
+					method: "PATCH"
+				}).then(res => {
+					if(res.status == 200) {
+						window.location.href=newUrl
+					}
+				})
+			}
+
+			function handleDelete() {
+				fetch(url, {
+					method: "DELETE"
+				}).then(res => {
+					if(res.status == 200) {
+						window.location.href=newUrl
+					}
+				})
+			}
+		</script>
+	}
+}
+
+templ Abrechnung(user []db.EinkaufModel, username string) {
+	@Page("Abrechnung | ") {
+		@Backbutton("/Einkauf")
+		<h1>PayPal Abrechnung</h1>
+		<form method="POST" class="mt-12 space-y-4">
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Dein PayPal Benutzername</legend>
+				<input class="input" type="text" name="Name" id="Name" value={ utils.If(len(username) > 1, username, "") } required placeholder="MaxMuster"/>
+			</fieldset>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Der geschuldete Betrag in €</legend>
+				<input class="input" type="text" name="Betrag" id="Betrag" required placeholder="1,50"/>
+			</fieldset>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Mitarbeiter</legend>
+				<select class="select" name="Mail" id="Mail" required>
+					<option disabled selected>Bitte Wählen ...</option>
+					for _, y := range user {
+						{{
+	var show bool = false
+	if y.Abonniert {
+		if y.Paypal {
+			show = true
+		}
+
+	}
+
+	date, ok := y.Abgeschickt()
+	if ok {
+		test := date.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
+		if test > -24 && test < 24 {
+			if y.Paypal {
+				show = true
+			}
+		}
+	}
+
+	Mitarbeiter := y.Mitarbeiter()
+	Name := Mitarbeiter.Name
+	Mail, Mail_ok := Mitarbeiter.Email()
+	if Mail_ok && len(Mail) < 1 {
+		show = false
+	}
+						}}
+						if show {
+							<option value={ Mail }>{ Name }</option>
+						}
+					}
+				</select>
+			</fieldset>
+			<input type="submit" value="Senden" class="btn btn-success"/>
 		</form>
 	}
 }

@@ -12,7 +12,7 @@ import (
 )
 
 func (h *Handler) getAllMitarbeiter(ctx context.Context) ([]db.MitarbeiterModel, error) {
-	return h.database.Mitarbeiter.FindMany().With(db.Mitarbeiter.Einkauf.Fetch()).Exec(ctx)
+	return h.database.Mitarbeiter.FindMany().OrderBy(db.Mitarbeiter.Name.Order(db.SortOrderAsc)).With(db.Mitarbeiter.Einkauf.Fetch()).Exec(ctx)
 }
 
 func (h *Handler) getMitarbeiter(ctx context.Context, id string) (*db.MitarbeiterModel, error) {

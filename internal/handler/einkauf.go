@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/computerextra/golang-backend/db"
@@ -21,21 +22,21 @@ func (h *Handler) getEinkaufsliste(ctx context.Context) ([]db.EinkaufModel, erro
 }
 
 func (h *Handler) UpdateEinkauf(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
+	mitarbeiterId := r.PathValue("id")
 	if err := r.ParseMultipartForm(MAXFILESIZE); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	mitarbeiterId := r.FormValue("mitarbeiterId")
+
 	Dinge := r.FormValue("Dinge")
 	Pfand := r.FormValue("Pfand")
 	Geld := r.FormValue("Geld")
 	var Paypal bool = false
-	if r.FormValue("Paypal") == "true" {
+	if r.FormValue("Paypal") == "on" {
 		Paypal = true
 	}
 	var Abonniert bool = false
-	if r.FormValue("Abonniert") == "true" {
+	if r.FormValue("Abonniert") == "on" {
 		Abonniert = true
 	}
 	var err error
@@ -49,15 +50,15 @@ func (h *Handler) UpdateEinkauf(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	for _, x := range r.MultipartForm.File["Bild1"] {
-		Bild2, err = utils.SaveFile(x, mitarbeiterId, "1")
+	for _, x := range r.MultipartForm.File["Bild2"] {
+		Bild2, err = utils.SaveFile(x, mitarbeiterId, "2")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 	}
-	for _, x := range r.MultipartForm.File["Bild1"] {
-		Bild3, err = utils.SaveFile(x, mitarbeiterId, "1")
+	for _, x := range r.MultipartForm.File["Bild3"] {
+		Bild3, err = utils.SaveFile(x, mitarbeiterId, "3")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -80,8 +81,22 @@ func (h *Handler) UpdateEinkauf(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 
-	_, err = h.database.Einkauf.FindUnique(
-		db.Einkauf.ID.Equals(id),
+	_, err = h.database.Einkauf.UpsertOne(
+		db.Einkauf.MitarbeiterID.Equals(mitarbeiterId),
+	).Create(
+		db.Einkauf.Paypal.Set(Paypal),
+		db.Einkauf.Abonniert.Set(Abonniert),
+		db.Einkauf.Mitarbeiter.Link(db.Mitarbeiter.ID.Equals(mitarbeiterId)),
+		db.Einkauf.Dinge.Set(Dinge),
+		db.Einkauf.Geld.Set(Geld),
+		db.Einkauf.Pfand.Set(Pfand),
+		db.Einkauf.Bild1.SetIfPresent(&Bild1),
+		db.Einkauf.Bild2.SetIfPresent(&Bild2),
+		db.Einkauf.Bild3.SetIfPresent(&Bild3),
+		db.Einkauf.Bild1Date.SetIfPresent(&Bild1Date),
+		db.Einkauf.Bild2Date.SetIfPresent(&Bild2Date),
+		db.Einkauf.Bild3Date.SetIfPresent(&Bild3Date),
+		db.Einkauf.Abgeschickt.Set(time.Now()),
 	).Update(
 		db.Einkauf.Abgeschickt.Set(time.Now()),
 		db.Einkauf.Paypal.Set(Paypal),
@@ -95,10 +110,10 @@ func (h *Handler) UpdateEinkauf(w http.ResponseWriter, r *http.Request) {
 		db.Einkauf.Bild1Date.SetIfPresent(&Bild1Date),
 		db.Einkauf.Bild2Date.SetIfPresent(&Bild2Date),
 		db.Einkauf.Bild3Date.SetIfPresent(&Bild3Date),
-		db.Einkauf.MitarbeiterID.Set(mitarbeiterId),
 	).Exec(ctx)
 
 	if err != nil {
+		h.logger.Error("failed to write to db", slog.Any("error", err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -112,13 +127,20 @@ func (h *Handler) UpdateEinkauf(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, uri, http.StatusFound)
 }
 
+func (h *Handler) getEinkauf(id string, ctx context.Context) (*db.MitarbeiterModel, error) {
+	return h.database.Mitarbeiter.FindFirst(
+		db.Mitarbeiter.ID.Equals(id),
+	).With(
+		db.Mitarbeiter.Einkauf.Fetch(),
+	).Exec(ctx)
+
+}
+
 func (h *Handler) GetEinkauf(w http.ResponseWriter, r *http.Request) {
 	id := r.FormValue("mitarbeiterId")
 	ctx := r.Context()
 
-	einkauf, err := h.database.Einkauf.FindFirst(
-		db.Einkauf.MitarbeiterID.Equals(id),
-	).Exec(ctx)
+	einkauf, err := h.getEinkauf(id, ctx)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -135,6 +157,21 @@ func (h *Handler) GetEinkauf(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, uri, http.StatusFound)
 }
 
+func (h *Handler) GetEinkaufEingabePage(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	ctx := r.Context()
+
+	einkauf, err := h.getEinkauf(id, ctx)
+
+	if err != nil {
+		h.logger.Error("failed to get database entry", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component.EinkaufEingabe(einkauf).Render(ctx, w)
+}
+
 func (h *Handler) GetEinkaufslistePage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -146,4 +183,76 @@ func (h *Handler) GetEinkaufslistePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	component.Einkaufsliste(einkauf).Render(ctx, w)
+}
+
+func (h *Handler) SkipEinkauf(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	ctx := r.Context()
+
+	_, err := h.database.Einkauf.FindUnique(
+		db.Einkauf.MitarbeiterID.Equals(id),
+	).Update(
+		db.Einkauf.Abgeschickt.Set(time.Now().Add(24 * time.Hour)),
+	).Exec(ctx)
+
+	if err != nil {
+		h.logger.Error("failed to skip einkauf", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	w.WriteHeader(http.StatusOK)
+
+}
+
+func (h *Handler) DeleteEinkauf(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	ctx := r.Context()
+
+	_, err := h.database.Einkauf.FindUnique(
+		db.Einkauf.MitarbeiterID.Equals(id),
+	).Delete().Exec(ctx)
+
+	if err != nil {
+		h.logger.Error("failed to skip einkauf", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (h *Handler) GetAbrechnung(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	username := r.URL.Query().Get("user")
+
+	einkauf, err := h.getEinkaufsliste(ctx)
+	if err != nil {
+		h.logger.Error("failed to get database entry", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component.Abrechnung(einkauf, username).Render(ctx, w)
+}
+
+func (h *Handler) SendAbrechnung(w http.ResponseWriter, r *http.Request) {
+	Name := r.FormValue("Name")
+	Betrag := r.FormValue("Betrag")
+	Mail := r.FormValue("Mail")
+	// ctx := r.Context()
+
+	Name = strings.Replace(Name, "@", "", -1)
+
+	if err := utils.SendPaypalMail(Name, Mail, Betrag); err != nil {
+		h.logger.Error("failed to send paypal mail", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	host := r.Host
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	uri := fmt.Sprintf("%s://%s/Einkauf/Abrechnung?user=%s", scheme, host, Name)
+	http.Redirect(w, r, uri, http.StatusFound)
 }
