@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 func If[T any](cond bool, vtrue, vfalse T) T {
@@ -76,4 +77,33 @@ func SaveFile(h *multipart.FileHeader, mitarbeiterId string, number string) (str
 	tempFile.Write(filebytes)
 
 	return fmt.Sprintf("%s/%s", uploadFolder, tempFileName), nil
+}
+
+func GetSageConnectionString() (string, error) {
+	server, ok := os.LookupEnv("SAGE_SERVER")
+	if !ok {
+		return "", fmt.Errorf("env error: could not find SAGE_SERVER")
+	}
+	portString, ok := os.LookupEnv("SAGE_PORT")
+	if !ok {
+		return "", fmt.Errorf("env error: could not find SAGE_PORT")
+	}
+	port, err := strconv.Atoi(portString)
+	if err != nil {
+		return "", err
+	}
+	user, ok := os.LookupEnv("SAGE_USER")
+	if !ok {
+		return "", fmt.Errorf("env error: could not find SAGE_USER")
+	}
+	pass, ok := os.LookupEnv("SAGE_PASS")
+	if !ok {
+		return "", fmt.Errorf("env error: could not find SAGE_PASS")
+	}
+	db, ok := os.LookupEnv("SAGE_DB")
+	if !ok {
+		return "", fmt.Errorf("env error: could not find SAGE_DB")
+	}
+
+	return fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", server, db, user, pass, port), nil
 }

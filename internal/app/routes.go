@@ -65,8 +65,9 @@ func (a *App) loadPages(router *http.ServeMux) {
 	// router.HandleFunc("GET /Sage/Inventur/{year}/Teams/{items}") // Teams Items Übersicht
 
 	// Werkstatt Route
-	// router.HandleFunc("GET /Werkstatt") // Werkstatt Formulare
-	// router.HandleFunc("POST /Werkstatt") // Werkstatt Formulare gen
+	router.Handle("GET /Werkstatt", handler.Component(component.Werkstatt())) // Werkstatt Formular Auswahl
+	router.HandleFunc("GET /Werkstatt/Software", h.GetSoftwareForm)           // Werkstatt Formulare
+	router.HandleFunc("POST /api/Werkstatt", h.GenerateForm)                  // Werkstatt Formulare Gen
 
 	// Health Route
 	router.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
