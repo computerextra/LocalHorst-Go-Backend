@@ -29,14 +29,14 @@ func (a *App) loadPages(router *http.ServeMux) {
 	router.HandleFunc("POST /Einkauf/Abrechnung", h.SendAbrechnung)         // Abrechnung senden
 
 	// Mitarbeiter Routes
-	router.HandleFunc("GET /Mitarbeiter", h.GetMitarbeiterOverview)        // Mitarbeiter Übersicht
-	router.HandleFunc("GET /Mitarbeiter/Geburtstag", h.GetGeburtstagsPage) // Mitarbeiter Geburtstage
-	// router.HandleFunc("GET /Mitarbeiter/Neu") // Neuer Mitarbeiter
-	// router.HandleFunc("POST /Mitarbeiter/Neu") // Neuer Mitarbeiter
-	// router.HandleFunc("GET /Mitarbeiter/{id}") // Mitarbeiter Details
-	// router.HandleFunc("GET /Mitarbeiter/{id}/Bearbeiten") // Mitarbeiter bearbeiten
-	// router.HandleFunc("POST /Mitarbeiter/{id}/Bearbeiten") // Mitarbeiter bearbeiten
-	// router.HandleFunc("DELETE /Mitarbeiter/{id}/Bearbeiten") // Mitarbeiter Löschen
+	router.HandleFunc("GET /Mitarbeiter", h.GetMitarbeiterOverview)                        // Mitarbeiter Übersicht
+	router.HandleFunc("GET /Mitarbeiter/Geburtstag", h.GetGeburtstagsPage)                 // Mitarbeiter Geburtstage
+	router.Handle("GET /Mitarbeiter/Neu", handler.Component(component.NeuerMitarbeiter())) // Neuer Mitarbeiter
+	router.HandleFunc("POST /Mitarbeiter/Neu", h.CreateMitarbeiter)                        // Neuer Mitarbeiter
+	router.HandleFunc("GET /Mitarbeiter/{id}", h.GetMitarbeiter)                           // Mitarbeiter Details
+	router.HandleFunc("GET /Mitarbeiter/{id}/Bearbeiten", h.GetMitarbeiterEdit)            // Mitarbeiter bearbeiten
+	router.HandleFunc("POST /Mitarbeiter/{id}/Bearbeiten", h.UpdateMitarbeiter)            // Mitarbeiter bearbeiten
+	router.HandleFunc("DELETE /Mitarbeiter/{id}/Bearbeiten", h.DeleteMitarbeiter)          // Mitarbeiter Löschen
 
 	// Lieferanten Routes
 	// router.HandleFunc("GET /Lieferanten")                        // Lieferanten Übersicht

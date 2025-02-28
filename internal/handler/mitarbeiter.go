@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
@@ -15,13 +16,41 @@ func (h *Handler) getAllMitarbeiter(ctx context.Context) ([]db.MitarbeiterModel,
 	return h.database.Mitarbeiter.FindMany().OrderBy(db.Mitarbeiter.Name.Order(db.SortOrderAsc)).With(db.Mitarbeiter.Einkauf.Fetch()).Exec(ctx)
 }
 
-func (h *Handler) getMitarbeiter(ctx context.Context, id string) (*db.MitarbeiterModel, error) {
-	return h.database.Mitarbeiter.FindUnique(
+func (h *Handler) GetMitarbeiter(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	id := r.PathValue("id")
+
+	user, err := h.database.Mitarbeiter.FindUnique(
 		db.Mitarbeiter.ID.Equals(id),
 	).Exec(ctx)
+	if err != nil {
+		h.logger.Error("failed to get database entry:", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component.MitarbeiterDetails(user).Render(ctx, w)
 }
 
-func (h *Handler) createMitarbeiter(ctx context.Context, r *http.Request) (*db.MitarbeiterModel, error) {
+func (h *Handler) GetMitarbeiterEdit(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	id := r.PathValue("id")
+
+	user, err := h.database.Mitarbeiter.FindUnique(
+		db.Mitarbeiter.ID.Equals(id),
+	).Exec(ctx)
+	if err != nil {
+		h.logger.Error("failed to get database entry:", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component.MitarbeiterBearbeiten(user).Render(ctx, w)
+}
+
+func (h *Handler) CreateMitarbeiter(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	Name := r.FormValue("Name")
 	Short := r.FormValue("Short")
 	Gruppenwahl := r.FormValue("Gruppenwahl")
@@ -35,9 +64,11 @@ func (h *Handler) createMitarbeiter(ctx context.Context, r *http.Request) (*db.M
 	Email := r.FormValue("Email")
 	Azubi := r.FormValue("Azubi")
 	Geburtstag := r.FormValue("Geburtstag")
-	Geburtstag_time, _ := time.Parse("2006-01-02 15:04:05", Geburtstag)
+	Geburtstag_time, _ := time.Parse(time.RFC3339, fmt.Sprintf("%sT00:00:00Z", Geburtstag))
 
-	return h.database.Mitarbeiter.CreateOne(
+	h.logger.Info("Geburtag:", slog.Any("Geburtstag", Geburtstag), slog.Any("Geburtstag_time", Geburtstag_time))
+
+	_, err := h.database.Mitarbeiter.CreateOne(
 		db.Mitarbeiter.Name.Set(Name),
 		db.Mitarbeiter.Short.Set(Short),
 		db.Mitarbeiter.Gruppenwahl.Set(Gruppenwahl),
@@ -49,12 +80,27 @@ func (h *Handler) createMitarbeiter(ctx context.Context, r *http.Request) (*db.M
 		db.Mitarbeiter.MobilBusiness.Set(MobilBusiness),
 		db.Mitarbeiter.MobilPrivat.Set(MobilPrivat),
 		db.Mitarbeiter.Email.Set(Email),
-		db.Mitarbeiter.Azubi.Set(utils.If(Azubi == "true", true, false)),
+		db.Mitarbeiter.Azubi.Set(utils.If(Azubi == "on", true, false)),
 		db.Mitarbeiter.Geburtstag.Set(Geburtstag_time),
 	).Exec(ctx)
+
+	if err != nil {
+		h.logger.Error("failed to create database entry:", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	host := r.Host
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	uri := fmt.Sprintf("%s://%s/Mitarbeiter", scheme, host)
+	http.Redirect(w, r, uri, http.StatusFound)
 }
 
-func (h *Handler) updateMitarbeiter(ctx context.Context, r *http.Request) (*db.MitarbeiterModel, error) {
+func (h *Handler) UpdateMitarbeiter(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	id := r.PathValue("id")
 	Name := r.FormValue("Name")
 	Short := r.FormValue("Short")
@@ -69,9 +115,9 @@ func (h *Handler) updateMitarbeiter(ctx context.Context, r *http.Request) (*db.M
 	Email := r.FormValue("Email")
 	Azubi := r.FormValue("Azubi")
 	Geburtstag := r.FormValue("Geburtstag")
-	Geburtstag_time, _ := time.Parse("2006-01-02 15:04:05", Geburtstag)
+	Geburtstag_time, _ := time.Parse(time.RFC3339, fmt.Sprintf("%sT00:00:00Z", Geburtstag))
 
-	return h.database.Mitarbeiter.FindUnique(
+	_, err := h.database.Mitarbeiter.FindUnique(
 		db.Mitarbeiter.ID.Equals(id),
 	).Update(
 		db.Mitarbeiter.Name.Set(Name),
@@ -85,17 +131,46 @@ func (h *Handler) updateMitarbeiter(ctx context.Context, r *http.Request) (*db.M
 		db.Mitarbeiter.MobilBusiness.Set(MobilBusiness),
 		db.Mitarbeiter.MobilPrivat.Set(MobilPrivat),
 		db.Mitarbeiter.Email.Set(Email),
-		db.Mitarbeiter.Azubi.Set(utils.If(Azubi == "true", true, false)),
+		db.Mitarbeiter.Azubi.Set(utils.If(Azubi == "on", true, false)),
 		db.Mitarbeiter.Geburtstag.Set(Geburtstag_time),
 	).Exec(ctx)
+
+	if err != nil {
+		h.logger.Error("failed to update database entry:", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	host := r.Host
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	uri := fmt.Sprintf("%s://%s/Mitarbeiter", scheme, host)
+	http.Redirect(w, r, uri, http.StatusFound)
 }
 
-func (h *Handler) deleteMitarbeiter(ctx context.Context, r *http.Request) (*db.MitarbeiterModel, error) {
+func (h *Handler) DeleteMitarbeiter(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	id := r.PathValue("id")
 
-	return h.database.Mitarbeiter.FindUnique(
+	_, err := h.database.Mitarbeiter.FindUnique(
 		db.Mitarbeiter.ID.Equals(id),
 	).Delete().Exec(ctx)
+
+	if err != nil {
+		h.logger.Error("failed to delete database entry:", slog.Any("error", err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	host := r.Host
+	scheme := "http"
+	if r.TLS != nil {
+		scheme = "https"
+	}
+	uri := fmt.Sprintf("%s://%s/Mitarbeiter", scheme, host)
+	http.Redirect(w, r, uri, http.StatusFound)
 }
 
 func (h *Handler) GetIndex(w http.ResponseWriter, r *http.Request) {
