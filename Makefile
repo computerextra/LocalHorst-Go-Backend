@@ -27,7 +27,7 @@ live/sync_assets:
 	--build.include_ext "js,css"
 
 react/build:
-	pnpm dlx esbuild --bundle ./react/geburtstag.tsx --outdir=./static/react --minify
+	pnpm esbuild --bundle react/index.ts --outdir=./static --minify
 
 dev:
 	make -j4 live/tailwind live/templ live/server live/sync_assets
