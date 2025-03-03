@@ -24,6 +24,7 @@ func (h *Handler) getEinkaufsliste(ctx context.Context) ([]db.EinkaufModel, erro
 func (h *Handler) UpdateEinkauf(w http.ResponseWriter, r *http.Request) {
 	mitarbeiterId := r.PathValue("id")
 	if err := r.ParseMultipartForm(MAXFILESIZE); err != nil {
+		h.logger.Error("failes to parse form", slog.Any("error", err))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

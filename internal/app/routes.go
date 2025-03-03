@@ -53,10 +53,11 @@ func (a *App) loadPages(router *http.ServeMux) {
 	// router.HandleFunc("GET /Lieferanten/{lid}/Neu")              // Neuer Ansprechpartner
 	// router.HandleFunc("POST /Lieferanten/{lid}/Neu")              // Neuer Ansprechpartner
 
+	// CE Archiv Routes
+	router.HandleFunc("GET /Archiv", h.SearchArchive)       // CE Archiv Form
+	router.HandleFunc("GET /Archiv/{id}", h.GetArchiveFile) // CE Archiv Download
+
 	// SAGE Routes
-	// router.HandleFunc("GET /Sage")                                // CE Archiv
-	// router.HandleFunc("POST /Sage")                                // CE Archiv Suche
-	// router.HandleFunc("GET /Sage/{filenmae}")                     // Rechnung Download
 	// router.HandleFunc("GET /Sage/Suche")                          // Kunden Suche
 	// router.HandleFunc("POST /Sage/Suche")                          // Kunden Suche
 	// router.HandleFunc("GET /Sage/Inventur")                       // Inventur Übersicht
