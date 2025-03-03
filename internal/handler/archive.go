@@ -17,8 +17,6 @@ func (h *Handler) SearchArchive(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	searchParams := r.URL.Query().Get("search")
 
-	h.logger.Info("params", slog.Any("search", searchParams))
-
 	if len(searchParams) < 1 {
 		component.Archiv([]db.PdfsModel{}, "").Render(ctx, w)
 		return

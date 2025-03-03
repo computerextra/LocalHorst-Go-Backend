@@ -57,9 +57,10 @@ func (a *App) loadPages(router *http.ServeMux) {
 	router.HandleFunc("GET /Archiv", h.SearchArchive)       // CE Archiv Form
 	router.HandleFunc("GET /Archiv/{id}", h.GetArchiveFile) // CE Archiv Download
 
+	// Sage Kundensuche
+	router.HandleFunc("GET /Kunde", h.SearchKunde) // Kunden Suche
+
 	// SAGE Routes
-	// router.HandleFunc("GET /Sage/Suche")                          // Kunden Suche
-	// router.HandleFunc("POST /Sage/Suche")                          // Kunden Suche
 	// router.HandleFunc("GET /Sage/Inventur")                       // Inventur Übersicht
 	// router.HandleFunc("GET /Sage/Inventur/{year}")               // Jahres Übersicht
 	// router.HandleFunc("GET /Sage/Inventur/{year}/Teams")         // Teams Übersicht
