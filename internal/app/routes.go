@@ -39,19 +39,18 @@ func (a *App) loadPages(router *http.ServeMux) {
 	router.HandleFunc("DELETE /Mitarbeiter/{id}/Bearbeiten", h.DeleteMitarbeiter)          // Mitarbeiter Löschen
 
 	// Lieferanten Routes
-	// router.HandleFunc("GET /Lieferanten")                        // Lieferanten Übersicht
-	// router.HandleFunc("GET /Lieferanten/Neu")                    // Neuer Lieferant
-	// router.HandleFunc("POST /Lieferanten/Neu")                    // Neuer Lieferant
-	// router.HandleFunc("GET /Lieferanten/{id}")                   // Lieferant
-	// router.HandleFunc("GET /Lieferanten/{id}/Bearbeiten")        // Lieferant bearbeiten
-	// router.HandleFunc("POST /Lieferanten/{id}/Bearbeiten")        // Lieferant bearbeiten
-	// router.HandleFunc("DELETE /Lieferanten/{id}/Bearbeiten")        // Lieferant löschen
-	// router.HandleFunc("GET /Lieferanten/{lid}/{aid}")            // Ansprechpartner Übersicht
-	// router.HandleFunc("GET /Lieferanten/{lid}/{aid}/Bearbeiten") // Ansprechpartner bearbeiten
-	// router.HandleFunc("POST /Lieferanten/{lid}/{aid}/Bearbeiten") // Ansprechpartner bearbeiten
-	// router.HandleFunc("DELETE /Lieferanten/{lid}/{aid}/Bearbeiten") // Ansprechpartner löschen
-	// router.HandleFunc("GET /Lieferanten/{lid}/Neu")              // Neuer Ansprechpartner
-	// router.HandleFunc("POST /Lieferanten/{lid}/Neu")              // Neuer Ansprechpartner
+	router.HandleFunc("GET /Lieferanten", h.GetLieferanten)                                       // Lieferanten Übersicht
+	router.HandleFunc("GET /Lieferanten/{id}", h.GetLieferant)                                    // Lieferant Details
+	router.Handle("GET /Lieferanten/Neu", handler.Component(component.LieferantNew()))            // Neuer Lieferant
+	router.HandleFunc("POST /Lieferanten/Neu", h.CreateLieferant)                                 // Neuer Lieferant
+	router.HandleFunc("GET /Lieferanten/{id}/edit", h.GetLieferantForEdit)                        // Lieferant bearbeiten
+	router.HandleFunc("POST /Lieferanten/{id}/edit", h.UpdateLieferant)                           // Lieferant bearbeiten
+	router.HandleFunc("DELETE /Lieferanten/{id}/edit", h.DeleteLieferant)                         // Lieferant bearbeiten
+	router.Handle("GET /Lieferanten/{id}/Neu", handler.Component(component.AnsprechpartnerNew())) // Neuer Ansprechpartner
+	router.HandleFunc("POST /Lieferanten/{id}/Neu", h.CreateAnsprechpartner)                      // Neuer Ansprechpartner
+	router.HandleFunc("GET /Lieferanten/{id}/{aid}", h.GetAnsprechpartner)                        // Ansprechpartner bearbeiten
+	router.HandleFunc("POST /Lieferanten/{id}/{aid}", h.UpdateAnsprechpartner)                    // Ansprechpartner bearbeiten
+	router.HandleFunc("DELETE /Lieferanten/{id}/{aid}", h.DeleteAnsprechpartner)                  // Ansprechpartner löschen
 
 	// CE Archiv Routes
 	router.HandleFunc("GET /Archiv", h.SearchArchive)       // CE Archiv Form
