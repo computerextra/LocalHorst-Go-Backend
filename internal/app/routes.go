@@ -60,11 +60,8 @@ func (a *App) loadPages(router *http.ServeMux) {
 	// Sage Kundensuche
 	router.HandleFunc("GET /Kunde", h.SearchKunde) // Kunden Suche
 
-	// SAGE Routes
+	// Inventur Routes
 	// router.HandleFunc("GET /Sage/Inventur")                       // Inventur Übersicht
-	// router.HandleFunc("GET /Sage/Inventur/{year}")               // Jahres Übersicht
-	// router.HandleFunc("GET /Sage/Inventur/{year}/Teams")         // Teams Übersicht
-	// router.HandleFunc("GET /Sage/Inventur/{year}/Teams/{items}") // Teams Items Übersicht
 
 	// Werkstatt Route
 	router.Handle("GET /Werkstatt", handler.Component(component.Werkstatt())) // Werkstatt Formular Auswahl
