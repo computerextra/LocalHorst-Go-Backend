@@ -41,6 +41,7 @@ templ Kunde(results []types.Sg_Adressen, search string) {
 						<!-- head -->
 						<thead>
 							<tr>
+								<th>Lieferant / Kunde</th>
 								<th>Suchbegriff</th>
 								<th>Kundennummer</th>
 								<th>Telefon 1</th>
@@ -67,7 +68,14 @@ templ Kunde(results []types.Sg_Adressen, search string) {
 									KundUmsatz := utils.If(x.KundUmsatz.Valid, x.KundUmsatz.Float64, 0)
 									LiefUmsatz := utils.If(x.LiefUmsatz.Valid, x.LiefUmsatz.Float64, 0)
 								}}
-								<tr>
+								<tr class={ utils.If(len(Lieferantennummer) > 1, "bg-base-200", "") }>
+									<th>
+										if len(Kundennummer) > 1 {
+											<span class="text-success">Kunde</span>
+										} else {
+											<span class="text-info">Lieferant</span>
+										}
+									</th>
 									<th>{ Suchbegriff }</th>
 									<td>
 										if len(Kundennummer) > 1 {
