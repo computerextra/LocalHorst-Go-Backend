@@ -61,7 +61,7 @@ func (a *App) loadPages(router *http.ServeMux) {
 	router.HandleFunc("GET /Kunde", h.SearchKunde) // Kunden Suche
 
 	// Inventur Routes
-	// router.HandleFunc("GET /Inventur")                       // Inventur Übersicht
+	router.HandleFunc("GET /Inventur", h.GetInventur) // Inventur Übersicht
 
 	// Werkstatt Route
 	router.Handle("GET /Werkstatt", handler.Component(component.Werkstatt())) // Werkstatt Formular Auswahl
