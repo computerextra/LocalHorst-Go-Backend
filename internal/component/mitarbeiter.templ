@@ -18,44 +18,61 @@ templ Geburtstage(user []db.MitarbeiterModel) {
 
 templ GeburtstagsListe(user []db.MitarbeiterModel) {
 	{{
-	var heute []db.MitarbeiterModel
-	var vergangen []db.MitarbeiterModel
-	var zukunft []db.MitarbeiterModel
+		type Geb struct {
+			Name       string
+			Geburtstag time.Time
+			diff       float64
+		}
+		var heute []Geb
+		var vergangen []Geb
+		var zukunft []Geb
 
-	for _, y := range user {
-		geb, ok := y.Geburtstag()
-		loc, _ := time.LoadLocation("Europe/Berlin")
-		if ok {
-			new := time.Date(time.Now().Year(), geb.Month(), geb.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
-			duration := time.Now().Sub(new)
-			days := duration.Hours() / 24
-			if days < -1 {
-				zukunft = append(zukunft, y)
+		for _, y := range user {
+			geb, ok := y.Geburtstag()
+			loc, _ := time.LoadLocation("Europe/Berlin")
+			if ok {
+				new := time.Date(time.Now().Year(), geb.Month(), geb.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+				duration := time.Now().Sub(new)
+				days := duration.Hours() / 24
+				if days < -1 {
+					zukunft = append(zukunft, Geb{
+						Name:       y.Name,
+						Geburtstag: new,
+						diff:       days,
+					})
 
-			} else if days < 0 && days > -1 {
-				heute = append(heute, y)
-			} else {
-				vergangen = append(vergangen, y)
+				} else if days == 0 {
+					heute = append(heute, Geb{
+						Name:       y.Name,
+						Geburtstag: new,
+						diff:       days,
+					})
+				} else {
+					vergangen = append(vergangen, Geb{
+						Name:       y.Name,
+						Geburtstag: new,
+						diff:       days,
+					})
+				}
 			}
 		}
-	}
-	sort.Slice(heute, func(i, j int) bool {
-		geb1, _ := heute[i].Geburtstag()
-		geb2, _ := heute[j].Geburtstag()
-		return geb1.Before(geb2)
-	})
-	sort.Slice(vergangen, func(i, j int) bool {
-		geb1, _ := vergangen[i].Geburtstag()
-		geb2, _ := vergangen[j].Geburtstag()
-		return geb1.Before(geb2)
-	})
-	sort.Slice(zukunft, func(i, j int) bool {
-		geb1, _ := zukunft[i].Geburtstag()
-		geb2, _ := zukunft[j].Geburtstag()
-		return geb1.Before(geb2)
-	})
+		sort.Slice(heute, func(i, j int) bool {
+			geb1 := heute[i].Geburtstag
+			geb2 := heute[j].Geburtstag
+			return geb1.Before(geb2)
+		})
+		sort.Slice(vergangen, func(i, j int) bool {
+			geb1 := vergangen[i].Geburtstag
+			geb2 := vergangen[j].Geburtstag
+			return geb1.Before(geb2)
+		})
+		sort.Slice(zukunft, func(i, j int) bool {
+			geb1 := zukunft[i].Geburtstag
+			geb2 := zukunft[j].Geburtstag
+			return geb1.Before(geb2)
+		})
 	}}
-	if len(heute) > 1 {
+	if len(heute) > 0 {
 		for _, user := range heute {
 			<div role="alert" class="w-full alert alert-error alert-soft">
 				<span>
@@ -64,7 +81,7 @@ templ GeburtstagsListe(user []db.MitarbeiterModel) {
 			</div>
 		}
 	}
-	if len(vergangen) > 1 {
+	if len(vergangen) > 0 {
 		<h2>Vergangene</h2>
 		<div class="overflow-x-auto">
 			<table class="table">
@@ -78,24 +95,22 @@ templ GeburtstagsListe(user []db.MitarbeiterModel) {
 				<tbody>
 					for _, user := range vergangen {
 						{{
-	geb, ok := user.Geburtstag()
+	geb := user.Geburtstag
 	var day string
 	day = fmt.Sprintf("%d.%02d.", geb.Day(), geb.Month())
 						}}
-						if ok {
-							<tr>
-								<th>{ user.Name }</th>
-								<td>
-									{ day }
-								</td>
-							</tr>
-						}
+						<tr>
+							<th>{ user.Name }</th>
+							<td>
+								{ day }
+							</td>
+						</tr>
 					}
 				</tbody>
 			</table>
 		</div>
 	}
-	if len(zukunft) > 1 {
+	if len(zukunft) > 0 {
 		<h2>Zuküftige</h2>
 		<div class="overflow-x-auto">
 			<table class="table">
@@ -109,18 +124,16 @@ templ GeburtstagsListe(user []db.MitarbeiterModel) {
 				<tbody>
 					for _, user := range zukunft {
 						{{
-	geb, ok := user.Geburtstag()
+	geb := user.Geburtstag
 	var day string
 	day = fmt.Sprintf("%d.%02d.", geb.Day(), geb.Month())
 						}}
-						if ok {
-							<tr>
-								<th>{ user.Name }</th>
-								<td>
-									{ day }
-								</td>
-							</tr>
-						}
+						<tr>
+							<th>{ user.Name }</th>
+							<td>
+								{ day }
+							</td>
+						</tr>
 					}
 				</tbody>
 			</table>

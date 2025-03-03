@@ -189,7 +189,9 @@ func (h *Handler) GetIndex(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetGeburtstagsPage(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	user, err := h.getAllMitarbeiter(ctx)
+	user, err := h.database.Mitarbeiter.FindMany().OrderBy(
+		db.Mitarbeiter.Geburtstag.Order(db.SortOrderAsc),
+	).Exec(ctx)
 	if err != nil {
 		h.logger.Error("failed to get database entry:", slog.Any("error", err))
 		w.WriteHeader(http.StatusInternalServerError)
