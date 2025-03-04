@@ -35,19 +35,24 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 	if y.Abonniert {
 		show = true
 	}
+	loc, _ := time.LoadLocation("Europe/Berlin")
 
 	date, ok := y.Abgeschickt()
 	if ok {
-		test := date.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
-		if test > -24 && test < 24 {
+		new := time.Date(date.Year(), date.Month(), date.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 {
 			show = true
 		}
 	}
 	date1, ok := y.Bild1Date()
 	if ok {
 		data, ok := y.Bild1()
-		test := date1.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
-		if test > -24 && ok {
+		new := time.Date(date1.Year(), date1.Month(), date1.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 && ok {
 			showImage1 = true
 			Image1 = utils.ImageToBase64(data)
 		}
@@ -55,8 +60,10 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 	date2, ok := y.Bild2Date()
 	if ok {
 		data, ok := y.Bild2()
-		test := date2.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
-		if test > -24 && ok {
+		new := time.Date(date2.Year(), date2.Month(), date2.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 && ok {
 			showImage2 = true
 			Image2 = utils.ImageToBase64(data)
 		}
@@ -64,8 +71,10 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 	date3, ok := y.Bild3Date()
 	if ok {
 		data, ok := y.Bild3()
-		test := date3.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
-		if test > -24 && ok {
+		new := time.Date(date3.Year(), date3.Month(), date3.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 && ok {
 			showImage3 = true
 			Image3 = utils.ImageToBase64(data)
 		}
