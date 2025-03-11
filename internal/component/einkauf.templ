@@ -104,7 +104,7 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 									{ Mitarbeiter.Name }
 								</h2>
 								<div class="card-actions justify-end">
-									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingabe/%s", y.MitarbeiterID)) } role="link" class="btn btn-neutral btn-soft">Bearbeiten</a>
+									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingabe/%s", y.MitarbeiterID)) } role="link" class="btn btn-accent ">Bearbeiten</a>
 								</div>
 							</div>
 							<div class="grid grid-cols-2 gap-4">
