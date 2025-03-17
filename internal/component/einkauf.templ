@@ -217,7 +217,7 @@ templ EinkaufMitarbeiterAuswahl(user []db.MitarbeiterModel) {
 
 templ EinkaufEingabe(user *db.MitarbeiterModel) {
 	@Page("Einkauf | ") {
-		@Backbutton("/Einkauf/Eingabe")
+		@Backbutton("/Einkauf")
 		<h1>Einkauf Eingabe</h1>
 		{{
 			einkauf, ok := user.Einkauf()
