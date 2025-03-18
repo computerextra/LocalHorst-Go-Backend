@@ -1,0 +1,144 @@
+package component
+
+import (
+	"fmt"
+	"github.com/computerextra/golang-backend/internal/types"
+	"github.com/computerextra/golang-backend/internal/utils"
+)
+
+templ Kunde(results []types.Sg_Adressen, search string) {
+	@Page("Kundensuche | ") {
+		@Backbutton("/")
+		<h1>Sage Kundensuche</h1>
+		<form method="GET" id="searchForm" class="space-y-4 mt-5">
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Suchbegriff</legend>
+				if len(search) > 2 {
+					<input type="text" class="input" name="search" id="search" value={ search }/>
+				} else {
+					<input type="text" class="input" name="search" id="search"/>
+				}
+				<p class="fieldset-label">Suche nach Kundennummer, Name oder Telefonnummer</p>
+			</fieldset>
+			<input type="submit" class="btn btn-neutral" id="submitbtn" value="Suchen"/>
+		</form>
+		<script>
+            const form = document.querySelector("#searchForm")
+            form.addEventListener("submit", () => {
+                const btn = document.querySelector("#submitbtn")
+                btn.disabled = true
+                btn.value='Bitte warten...'
+            })
+        </script>
+		<div class="mt-12">
+			if len(results) > 0 {
+				{{
+	anz := fmt.Sprintf("%v", len(results))
+				}}
+				<h2>{ anz } Ergebnisse</h2>
+				<div class="overflow-x-auto">
+					<table class="table">
+						<!-- head -->
+						<thead>
+							<tr>
+								<th>Lieferant / Kunde</th>
+								<th>Suchbegriff</th>
+								<th>Kundennummer</th>
+								<th>Telefon 1</th>
+								<th>Telefon 2</th>
+								<th>Mobil 1</th>
+								<th>Mobil 2</th>
+								<th>Email 1</th>
+								<th>Email 2</th>
+								<th>Umsatz</th>
+							</tr>
+						</thead>
+						<tbody>
+							for _, x := range results {
+								{{
+									Suchbegriff := utils.If(x.Suchbegriff.Valid, x.Suchbegriff.String, "")
+									Kundennummer := utils.If(x.KundNr.Valid, x.KundNr.String, "")
+									Lieferantennummer := utils.If(x.LiefNr.Valid, x.LiefNr.String, "")
+									Telefon1 := utils.If(x.Telefon1.Valid, x.Telefon1.String, "")
+									Telefon2 := utils.If(x.Telefon2.Valid, x.Telefon2.String, "")
+									Mobiltelefon1 := utils.If(x.Mobiltelefon1.Valid, x.Mobiltelefon1.String, "")
+									Mobiltelefon2 := utils.If(x.Mobiltelefon2.Valid, x.Mobiltelefon2.String, "")
+									EMail1 := utils.If(x.EMail1.Valid, x.EMail1.String, "")
+									EMail2 := utils.If(x.EMail2.Valid, x.EMail2.String, "")
+									KundUmsatz := utils.If(x.KundUmsatz.Valid, x.KundUmsatz.Float64, 0)
+									LiefUmsatz := utils.If(x.LiefUmsatz.Valid, x.LiefUmsatz.Float64, 0)
+								}}
+								<tr class={ utils.If(len(Lieferantennummer) > 1, "bg-base-200", "") }>
+									<th>
+										if len(Kundennummer) > 1 {
+											<span class="text-success">Kunde</span>
+										} else {
+											<span class="text-info">Lieferant</span>
+										}
+									</th>
+									<th>{ Suchbegriff }</th>
+									<td>
+										if len(Kundennummer) > 1 {
+											{ Kundennummer }
+										} else {
+											{ Lieferantennummer }
+										}
+									</td>
+									<td>
+										if len(Telefon1) > 1 {
+											<a href={ templ.URL(fmt.Sprintf("tel:%s", Telefon1)) } class="underline text-error">{ Telefon1 }</a>
+										} else {
+											<span>-</span>
+										}
+									</td>
+									<td>
+										if len(Telefon2) > 1 {
+											<a href={ templ.URL(fmt.Sprintf("tel:%s", Telefon2)) } class="underline text-error">{ Telefon2 }</a>
+										} else {
+											<span>-</span>
+										}
+									</td>
+									<td>
+										if len(Mobiltelefon1) > 1 {
+											<a href={ templ.URL(fmt.Sprintf("tel:%s", Mobiltelefon1)) } class="underline text-error">{ Mobiltelefon1 }</a>
+										} else {
+											<span>-</span>
+										}
+									</td>
+									<td>
+										if len(Mobiltelefon2) > 1 {
+											<a href={ templ.URL(fmt.Sprintf("tel:%s", Mobiltelefon2)) } class="underline text-error">{ Mobiltelefon2 }</a>
+										} else {
+											<span>-</span>
+										}
+									</td>
+									<td>
+										if len(EMail1) > 1 {
+											<a href={ templ.URL(fmt.Sprintf("mailto:%s", EMail1)) } class="underline text-error">{ EMail1 }</a>
+										} else {
+											<span>-</span>
+										}
+									</td>
+									<td>
+										if len(EMail2) > 1 {
+											<a href={ templ.URL(fmt.Sprintf("mailto:%s", EMail2)) } class="underline text-error">{ EMail2 }</a>
+										} else {
+											<span>-</span>
+										}
+									</td>
+									<td>
+										if len(Kundennummer) > 1 {
+											{ fmt.Sprintf("%.2f €", KundUmsatz) }
+										} else if len(Lieferantennummer) > 1 {
+											{ fmt.Sprintf("%.2f €", LiefUmsatz) }
+										}
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			}
+		</div>
+	}
+}

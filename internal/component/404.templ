@@ -1,0 +1,17 @@
+package component
+
+templ NotFound() {
+	@Page("404 | ") {
+		<div class="text-center mt-20 flex flex-col justify-center items-center">
+			<div class="card card-border card-xl shadow-sm bg-error text-error-content w-96">
+				<div class="card-body">
+					<h2 class="card-title">404 - Not Found</h2>
+					<p class="text-2xl">Die gesuchte Seite konnte nicht gefunden werden!</p>
+					<div class="card-actions justify-end">
+						<a class="btn btn-soft btn-wide" href="/">Zur Startseite</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+}

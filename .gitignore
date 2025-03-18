@@ -33,3 +33,9 @@ golang-backend.exe
 /src/db/query_sql.ts
 
 .env
+/static/css/style.css
+
+*_templ.go
+*_templ.txt
+
+static/index.js

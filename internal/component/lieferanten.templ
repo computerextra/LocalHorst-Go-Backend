@@ -1,0 +1,307 @@
+package component
+
+import (
+	"fmt"
+	"github.com/computerextra/golang-backend/db"
+	"github.com/computerextra/golang-backend/internal/utils"
+)
+
+templ LieferantenOverview(lieferanten []db.LieferantenModel) {
+	@Page("Lieferantenübersicht | ") {
+		@Backbutton("/")
+		<h1>Lieferantenübersicht</h1>
+		<a href="/Lieferanten/Neu" class="btn btn-neutral my-4">Neuen Lieferanten anlegen</a>
+		<div class="overflow-x-auto mt-5">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Firma</th>
+						<th>Kundennummer</th>
+						<th>Webseite</th>
+						<th>Ansprechpartner</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, lieferant := range lieferanten {
+						{{
+						Firma := lieferant.Firma
+						Kundennummer, _ := lieferant.Kundennummer()
+						Webseite, _ := lieferant.Webseite()
+
+						Aps := lieferant.Anschprechpartner()
+						}}
+						<tr>
+							<th>
+								<a href={ templ.URL(fmt.Sprintf("/Lieferanten/%s", lieferant.ID)) } class="underline">
+									{ Firma }
+								</a>
+							</th>
+							<td>{ Kundennummer }</td>
+							<td>
+								if len(Webseite) > 0 {
+									<a class="underline text-error" href={ templ.URL(Webseite) } target="_blank" rel="noopener noreferrer">{ Webseite }</a>
+								}
+							</td>
+							<td>
+								<details class="collapse bg-base-100 border-base-300 border">
+									<summary class="collapse-title font-semibold">Ansprechpartner</summary>
+									<div class="collapse-content ">
+										<div class="overflow-x-auto">
+											<table class="table ">
+												<thead>
+													<tr>
+														<th></th>
+														<th></th>
+														<th></th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+													for _, ap := range Aps {
+														{{
+										ap_name := ap.Name
+										ap_telefon, tel_ok := ap.Telefon()
+										ap_mobil, mob_ok := ap.Mobil()
+										ap_mail, mail_ok := ap.Mail()
+														}}
+														<tr>
+															<th>{ ap_name }</th>
+															<td>
+																if tel_ok && len(ap_telefon) > 0 {
+																	<a class="underline text-error" href={ templ.URL(fmt.Sprintf("tel:%s", ap_telefon)) }>{ ap_telefon }</a>
+																}
+															</td>
+															<td>
+																if mob_ok && len(ap_mobil) > 0 {
+																	<a class="underline text-error" href={ templ.URL(fmt.Sprintf("tel:%s", ap_mobil)) }>{ ap_mobil }</a>
+																}
+															</td>
+															<td>
+																if mail_ok && len(ap_mail) > 0 {
+																	<a class="underline text-error" href={ templ.URL(fmt.Sprintf("amilto:%s", ap_mail)) }>{ ap_mail }</a>
+																}
+															</td>
+														</tr>
+													}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</details>
+							</td>
+						</tr>
+					}
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>Firma</th>
+						<th>Kundennummer</th>
+						<th>Webseite</th>
+						<th>Ansprechpartner</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	}
+}
+
+templ Lieferant(lieferant *db.LieferantenModel) {
+	@Page("Lieferant | ") {
+		@Backbutton("/Lieferanten")
+		{{
+			Kundennummer, _ := lieferant.Kundennummer()
+			Webseite, _ := lieferant.Webseite()
+		}}
+		<h1 class="mt-5">{ lieferant.Firma }</h1>
+		<p>Kundennummer: { Kundennummer }</p>
+		<p>
+			Webseite: <a href={ templ.URL(Webseite) } target="_blank" class="underline text-error" rel="noopener noreferrer">{ Webseite }</a>
+		</p>
+		<a href={ templ.URL(fmt.Sprintf("/Lieferanten/%s/edit", lieferant.ID)) } class="btn btn-neutral my-4">Lieferant bearbeiten</a>
+		<h2 class="mt-5">Ansprechparner</h2>
+		{{
+			Aps := lieferant.Anschprechpartner()
+		}}
+		<div class="overflow-x-auto">
+			<table class="table">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Telefon</th>
+						<th>Mobil</th>
+						<th>Mail</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, ap := range Aps {
+						{{
+										ap_name := ap.Name
+										ap_telefon, tel_ok := ap.Telefon()
+										ap_mobil, mob_ok := ap.Mobil()
+										ap_mail, mail_ok := ap.Mail()
+						}}
+						<tr class="hover:bg-base-300">
+							<th>
+								<a href={ templ.URL(fmt.Sprintf("/Lieferanten/%s/%s", lieferant.ID, ap.ID)) } class="underline">
+									{ ap_name }
+								</a>
+							</th>
+							<td>
+								if tel_ok && len(ap_telefon) > 2 {
+									<a class="underline text-error" href={ templ.URL(fmt.Sprintf("tel:%s", ap_telefon)) }>{ ap_telefon }</a>
+								}
+							</td>
+							<td>
+								if mob_ok && len(ap_mobil) > 2 {
+									<a class="underline text-error" href={ templ.URL(fmt.Sprintf("tel:%s", ap_mobil)) }>{ ap_mobil }</a>
+								}
+							</td>
+							<td>
+								if mail_ok && len(ap_mail) > 2 {
+									<a class="underline text-error" href={ templ.URL(fmt.Sprintf("amilto:%s", ap_mail)) }>{ ap_mail }</a>
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+			<a href={ templ.URL(fmt.Sprintf("/Lieferanten/%s/Neu", lieferant.ID)) } class="btn btn-neutral my-4">Neuen Ansprechparner anlegen</a>
+		</div>
+	}
+}
+
+templ LieferantNew() {
+	@Page("Neuer Lieferant | ") {
+		@Backbutton("/Lieferanten")
+		<h1>Neuen Lieferanten anlegen</h1>
+		@LieferantForm(nil)
+	}
+}
+
+templ LieferantEdit(lieferant *db.LieferantenModel) {
+	@Page(fmt.Sprintf("%s bearbeiten | ", lieferant.Firma)) {
+		@Backbutton(fmt.Sprintf("/Lieferanten/%s", lieferant.ID))
+		<h1>{ lieferant.Firma } bearbeiten</h1>
+		@LieferantForm(lieferant)
+		<div class="divider divider-error my-5">DANGER ZONE</div>
+		<button class="btn btn-error" onclick="handleDelete()">Lieferant Löschen</button>
+		<script>
+			const url = window.location.href
+			const newUrl = url.split("/").slice(0, url.split("/").length-2).join("/")
+			function handleDelete() {
+				fetch(url, {
+					method: "DELETE"
+				}).then(res => {
+						window.location.href=newUrl
+				})
+			}
+		</script>
+	}
+}
+
+templ LieferantForm(lieferant *db.LieferantenModel) {
+	{{
+		var firma string
+		var nummer string
+		var web string
+		var nummer_ok bool = false
+		var web_ok bool = false
+
+		if lieferant != nil {
+			firma = lieferant.Firma
+			nummer, nummer_ok = lieferant.Kundennummer()
+			web, web_ok = lieferant.Webseite()
+		}
+	}}
+	<form method="POST" class="space-y-4 my-5">
+		<fieldset class="fieldset">
+			<legend class="fieldset-legend">Firma</legend>
+			<input type="text" required name="Firma" id="Firma" class="input" value={ utils.If(len(firma) > 1, firma, "") }/>
+		</fieldset>
+		<fieldset class="fieldset">
+			<legend class="fieldset-legend">Kundennummer</legend>
+			<input type="text" name="Kundennummer" id="Kundennummer" class="input" value={ utils.If(nummer_ok, nummer, "") }/>
+			<p class="fieldset-label">Optional</p>
+		</fieldset>
+		<fieldset class="fieldset">
+			<legend class="fieldset-legend">Webseite</legend>
+			<input type="text" name="Webseite" id="Webseite" class="input" value={ utils.If(web_ok, web, "") }/>
+			<p class="fieldset-label">Optional</p>
+		</fieldset>
+		<input type="submit" value="Speichern" class="btn btn-success"/>
+	</form>
+}
+
+templ AnsprechpartnerNew() {
+	@Page("Neuer Ansprechpartner | ") {
+		@Backbutton("/Lieferanten")
+		<h1>Neuen Ansprechparnter anlegen</h1>
+		@AnsprechpartnerForm(nil)
+	}
+}
+
+templ AnsprechpartnerEdit(ansprechpartner *db.AnschprechpartnerModel) {
+	@Page(fmt.Sprintf("%s bearbeiten | ", ansprechpartner.Name)) {
+		{{
+			lieferant, _ := ansprechpartner.LieferantenID()
+		}}
+		@Backbutton(fmt.Sprintf("/Lieferanten/%s", lieferant))
+		<h1>{ ansprechpartner.Name } bearbeiten</h1>
+		@AnsprechpartnerForm(ansprechpartner)
+		<div class="divider divider-error my-5">DANGER ZONE</div>
+		<button class="btn btn-error" onclick="handleDelete()">Ansprechpartner Löschen</button>
+		<script>
+			const url = window.location.href
+			const newUrl = url.split("/").slice(0, url.split("/").length-2).join("/")
+			function handleDelete() {
+				fetch(url, {
+					method: "DELETE"
+				}).then(res => {
+						window.location.href=newUrl
+				})
+			}
+		</script>
+	}
+}
+
+templ AnsprechpartnerForm(ansprechpartner *db.AnschprechpartnerModel) {
+	{{
+		var Name string
+		var Telefon string
+		var Mobil string
+		var Mail string
+		var Telefon_ok bool = false
+		var Mobil_ok bool = false
+		var Mail_ok bool = false
+
+		if ansprechpartner != nil {
+			Name = ansprechpartner.Name
+			Telefon, Telefon_ok = ansprechpartner.Telefon()
+			Mobil, Mobil_ok = ansprechpartner.Mobil()
+			Mail, Mail_ok = ansprechpartner.Mail()
+		}
+	}}
+	<form method="POST" class="space-y-4 my-5">
+		<fieldset class="fieldset">
+			<legend class="fieldset-legend">Name</legend>
+			<input type="text" required name="Name" id="Name" class="input" value={ utils.If(len(Name) > 1, Name, "") }/>
+		</fieldset>
+		<fieldset class="fieldset">
+			<legend class="fieldset-legend">Telefon</legend>
+			<input type="text" name="Telefon" id="Telefon" class="input" value={ utils.If(Telefon_ok, Telefon, "") }/>
+			<p class="fieldset-label">Optional</p>
+		</fieldset>
+		<fieldset class="fieldset">
+			<legend class="fieldset-legend">Mobil</legend>
+			<input type="text" name="Mobil" id="Mobil" class="input" value={ utils.If(Mobil_ok, Mobil, "") }/>
+			<p class="fieldset-label">Optional</p>
+		</fieldset>
+		<fieldset class="fieldset">
+			<legend class="fieldset-legend">Mail</legend>
+			<input type="text" name="Mail" id="Mail" class="input" value={ utils.If(Mail_ok, Mail, "") }/>
+			<p class="fieldset-label">Optional</p>
+		</fieldset>
+		<input type="submit" value="Speichern" class="btn btn-success"/>
+	</form>
+}

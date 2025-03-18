@@ -1,0 +1,383 @@
+package component
+
+import (
+	"fmt"
+	"github.com/computerextra/golang-backend/db"
+	"github.com/computerextra/golang-backend/internal/utils"
+	"time"
+)
+
+templ Einkaufsliste(einkauf []db.EinkaufModel) {
+	@Page("Einkaufsliste | ") {
+		<h1 class="print:!hidden">Einkaufsliste</h1>
+		<h1 class="hidden print:block">An Post / Milch und Kaffee denken!</h1>
+		<div class="flex justify-between print:!hidden">
+			<a
+				href="https://www.edeka.de/markt-id/10001842/prospekt/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="btn  my-6 btn-primary"
+			>Edeka Blättchen</a>
+			<button class="btn my-6 btn-primary" onclick="window.print()">Liste Drucken</button>
+			<a href="/Einkauf/Eingabe" class="btn  my-6 btn-primary">Eingeben</a>
+			<a href="/Einkauf/Abrechnung" class="btn  my-6 btn-secondary">PayPal Abrechnung</a>
+		</div>
+		<div class="grid grid-cols-2 gap-4 mb-5 mt-5 print:mb-0 print:mt-0 print:block">
+			for _, y := range einkauf {
+				{{
+	var show bool = false
+	var showImage1 bool = false
+	var Image1 string = ""
+	var showImage2 bool = false
+	var Image2 string = ""
+	var showImage3 bool = false
+	var Image3 string = ""
+	if y.Abonniert {
+		show = true
+	}
+	loc, _ := time.LoadLocation("Europe/Berlin")
+
+	date, ok := y.Abgeschickt()
+	if ok {
+		new := time.Date(date.Year(), date.Month(), date.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 {
+			show = true
+		}
+	}
+	date1, ok := y.Bild1Date()
+	if ok {
+		data, ok := y.Bild1()
+		new := time.Date(date1.Year(), date1.Month(), date1.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 && ok {
+			showImage1 = true
+			Image1 = utils.ImageToBase64(data)
+		}
+	}
+	date2, ok := y.Bild2Date()
+	if ok {
+		data, ok := y.Bild2()
+		new := time.Date(date2.Year(), date2.Month(), date2.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 && ok {
+			showImage2 = true
+			Image2 = utils.ImageToBase64(data)
+		}
+	}
+	date3, ok := y.Bild3Date()
+	if ok {
+		data, ok := y.Bild3()
+		new := time.Date(date3.Year(), date3.Month(), date3.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+		duration := time.Now().Sub(new)
+		days := duration.Hours() / 24
+		if days == 0 && ok {
+			showImage3 = true
+			Image3 = utils.ImageToBase64(data)
+		}
+	}
+	Mitarbeiter := y.Mitarbeiter()
+	var Geld string = ""
+	var Pfand string = ""
+	var Dinge string = ""
+	geldres, ok := y.Geld()
+	if ok {
+		Geld = geldres
+	}
+	pfandres, ok := y.Pfand()
+	if ok {
+		Pfand = pfandres
+	}
+	dingeRes, ok := y.Dinge()
+	if ok {
+		Dinge = dingeRes
+	}
+				}}
+				if show {
+					<div class="card card-border bg-base-100 print:!hidden">
+						<div class="card-body">
+							<div class="flex justify-between">
+								<h2 class="card-title">
+									{ Mitarbeiter.Name }
+								</h2>
+								<div class="card-actions justify-end">
+									<a href={ templ.URL(fmt.Sprintf("/Einkauf/Eingabe/%s", y.MitarbeiterID)) } role="link" class="btn btn-accent ">Bearbeiten</a>
+								</div>
+							</div>
+							<div class="grid grid-cols-2 gap-4">
+								<span>Geld: { Geld } </span>
+								<span class="flex items-center gap-1">
+									Abonniert: 
+									if y.Abonniert {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check text-success"><path d="M20 6 9 17l-5-5"></path></svg>
+									} else {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cross rotate-45 text-error"><path d="M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z"></path></svg>
+									}
+								</span>
+								<span>Pfand: { Pfand }</span>
+								<span class="flex items-center gap-1">
+									Paypal: 
+									if y.Paypal {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check text-success"><path d="M20 6 9 17l-5-5"></path></svg>
+									} else {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cross rotate-45 text-error"><path d="M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z"></path></svg>
+									}
+								</span>
+							</div>
+							<hr/>
+							<pre class="font-geist text-wrap">
+								{ Dinge }
+							</pre>
+							<div class="grid grid-cols-3 gap-2">
+								if showImage1 {
+									<img
+										className="max-h-[200px] rounded-md"
+										src={ Image1 }
+									/>
+								}
+								if showImage2 {
+									<img
+										className="max-h-[200px] rounded-md"
+										src={ Image2 }
+									/>
+								}
+								if showImage3 {
+									<img
+										className="max-h-[200px] rounded-md"
+										src={ Image3 }
+									/>
+								}
+							</div>
+						</div>
+					</div>
+					<div class="hidden print:block my-4 text-xs" data-theme="light">
+						{ Mitarbeiter.Name }
+						<br/>
+						Geld: { Geld }
+						<br/>
+						Pfand: { Pfand }
+						<br/>
+						<pre class="font-geist text-wrap">
+							{ Dinge }
+						</pre>
+						<div class="grid grid-cols-3 mb-2">
+							if showImage1 {
+								<img
+									className="max-h-[150px] rounded-md"
+									src={ Image1 }
+								/>
+							}
+							if showImage2 {
+								<img
+									className="max-h-[150px] rounded-md"
+									src={ Image2 }
+								/>
+							}
+							if showImage3 {
+								<img
+									className="max-h-[150px] rounded-md"
+									src={ Image3 }
+								/>
+							}
+						</div>
+						<hr/>
+					</div>
+				}
+			}
+		</div>
+	}
+}
+
+templ EinkaufMitarbeiterAuswahl(user []db.MitarbeiterModel) {
+	@Page("Einkauf | ") {
+		@Backbutton("/Einkauf")
+		<h1 class="my-5">Einkauf</h1>
+		<a
+			href="https://www.edeka.de/markt-id/10001842/prospekt/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn btn-primary"
+		>Edeka Blättchen</a>
+		<form method="POST" class="mt-5 space-y-4">
+			<fieldset class="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box">
+				<select class="select" name="mitarbeiterId" id="mitarbeiterId">
+					<option disabled selected>Bitte wählen...</option>
+					for _, x := range user {
+						<option value={ x.ID }>{ x.Name }</option>
+					}
+				</select>
+				<button type="submit" class="btn btn-primary">Weiter</button>
+			</fieldset>
+		</form>
+	}
+}
+
+templ EinkaufEingabe(user *db.MitarbeiterModel) {
+	@Page("Einkauf | ") {
+		@Backbutton("/Einkauf")
+		<h1>Einkauf Eingabe</h1>
+		{{
+			einkauf, ok := user.Einkauf()
+			var Geld string = ""
+			var Pfand string = ""
+			var Dinge string = ""
+			var Paypal bool = false
+			var Abo bool = false
+
+			if ok {
+				Geld, _ = einkauf.Geld()
+				Pfand, _ = einkauf.Pfand()
+				Dinge, _ = einkauf.Dinge()
+				Paypal = einkauf.Paypal
+				Abo = einkauf.Abonniert
+			}
+		}}
+		<a
+			href="https://www.edeka.de/markt-id/10001842/prospekt/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="btn btn-primary my-4"
+		>Edeka Blättchen</a>
+		<form method="POST" enctype="multipart/form-data" class="space-y-4 mt-5">
+			<div class="grid grid-cols-2 gap-4">
+				<div>
+					<label for="Geld">Geld</label>
+					<input type="text" name="Geld" id="Geld" class="input" value={ Geld }/>
+				</div>
+				<div>
+					<label for="Pfand">Pfand</label>
+					<input type="text" name="Pfand" id="Pfand" class="input" value={ Pfand }/>
+				</div>
+			</div>
+			<div class="grid grid-cols-2 gap-4">
+				<div>
+					<label for="Paypal">Paypal</label>
+					if Paypal {
+						<input type="checkbox" checked id="Paypal" name="Paypal" class="toggle toggle-success"/>
+					} else {
+						<input type="checkbox" id="Paypal" name="Paypal" class="toggle toggle-success"/>
+					}
+				</div>
+				<div>
+					<div class="tooltip pe-1" data-tip="Wenn dieser Einkauf Abonniert wird, wird er jeden Tag erneut in der Einkaufsliste angezeigt. Um das Abo zu beenden muss dieser Slider auf 'aus' geschoben und der Einkauf neu gespeichert werden.">
+						<label for="Abonniert">Abo</label>
+					</div>
+					if Abo {
+						<input type="checkbox" checked id="Abonniert" name="Abonniert" class="toggle toggle-success"/>
+					} else {
+						<input type="checkbox" id="Abonniert" name="Abonniert" class="toggle toggle-success"/>
+					}
+				</div>
+			</div>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Dein Einkauf</legend>
+				<textarea class="textarea h-44 !w-full" name="Dinge" id="Dinge">{ Dinge }</textarea>
+			</fieldset>
+			<div class="grid grid-cols-3 gap-4">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Bild 1</legend>
+					<input type="file" class="file-input" name="Bild1" id="Bild1" accept="image/png, image/gif, image/jpeg"/>
+					<label class="fieldset-label">Maximal 2MB</label>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Bild 2</legend>
+					<input type="file" class="file-input" name="Bild2" id="Bild2" accept="image/png, image/gif, image/jpeg"/>
+					<label class="fieldset-label">Maximal 2MB</label>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Bild 3</legend>
+					<input type="file" class="file-input" name="Bild3" id="Bild3" accept="image/png, image/gif, image/jpeg"/>
+					<label class="fieldset-label">Maximal 2MB</label>
+				</fieldset>
+			</div>
+			<input type="submit" value="Speichern" class="btn btn-success"/>
+		</form>
+		<div class="divider mt-12">ACHTUNG</div>
+		<div class="flex w-full justify-center">
+			<button class="btn btn-secondary" onclick="handleSkip()">Einkauf Überspringen</button>
+			<div class="divider divider-horizontal"></div>
+			<button class="btn btn-error" onclick="handleDelete()">Einkauf Löschen</button>
+		</div>
+		<script>
+			const url = window.location.href
+			const newUrl = url.split("/").slice(0, url.split("/").length-2).join("/")
+			function handleSkip() {
+				fetch(url, {
+					method: "PATCH"
+				}).then(res => {
+					if(res.status == 200) {
+						window.location.href=newUrl
+					}
+				})
+			}
+
+			function handleDelete() {
+				fetch(url, {
+					method: "DELETE"
+				}).then(res => {
+					if(res.status == 200) {
+						window.location.href=newUrl
+					}
+				})
+			}
+		</script>
+	}
+}
+
+templ Abrechnung(user []db.EinkaufModel, username string) {
+	@Page("Abrechnung | ") {
+		@Backbutton("/Einkauf")
+		<h1>PayPal Abrechnung</h1>
+		<form method="POST" class="mt-12 space-y-4">
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Dein PayPal Benutzername</legend>
+				<input class="input" type="text" name="Name" id="Name" value={ utils.If(len(username) > 1, username, "") } required placeholder="MaxMuster"/>
+			</fieldset>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Der geschuldete Betrag in €</legend>
+				<input class="input" type="text" name="Betrag" id="Betrag" required placeholder="1,50"/>
+			</fieldset>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Mitarbeiter</legend>
+				<select class="select" name="Mail" id="Mail" required>
+					<option disabled selected>Bitte Wählen ...</option>
+					for _, y := range user {
+						{{
+	var show bool = false
+	if y.Abonniert {
+		if y.Paypal {
+			show = true
+		}
+
+	}
+
+	date, ok := y.Abgeschickt()
+	if ok {
+		test := date.Sub(time.Now().Truncate(24 * time.Minute)).Hours()
+		if test > -24 && test < 24 {
+			if y.Paypal {
+				show = true
+			}
+		}
+	}
+
+	Mitarbeiter := y.Mitarbeiter()
+	Name := Mitarbeiter.Name
+	Mail, Mail_ok := Mitarbeiter.Email()
+	if Mail_ok && len(Mail) < 1 {
+		show = false
+	}
+						}}
+						if show {
+							<option value={ Mail }>{ Name }</option>
+						}
+					}
+				</select>
+			</fieldset>
+			<input type="submit" value="Senden" class="btn btn-success"/>
+		</form>
+	}
+}

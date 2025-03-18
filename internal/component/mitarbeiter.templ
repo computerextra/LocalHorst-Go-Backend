@@ -1,0 +1,559 @@
+package component
+
+import (
+	"fmt"
+	"github.com/computerextra/golang-backend/db"
+	"github.com/computerextra/golang-backend/internal/utils"
+	"sort"
+	"strings"
+	"time"
+)
+
+templ Geburtstage(user []db.MitarbeiterModel) {
+	@Page("Geburtstage | ") {
+		<h1>Geburtstags Liste</h1>
+		@GeburtstagsListe(user)
+	}
+}
+
+templ GeburtstagsListe(user []db.MitarbeiterModel) {
+	{{
+		type Geb struct {
+			Name       string
+			Geburtstag time.Time
+			diff       float64
+		}
+		var heute []Geb
+		var vergangen []Geb
+		var zukunft []Geb
+
+		for _, y := range user {
+			geb, ok := y.Geburtstag()
+			loc, _ := time.LoadLocation("Europe/Berlin")
+			if ok {
+				new := time.Date(time.Now().Year(), geb.Month(), geb.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+				duration := time.Now().Sub(new)
+				days := duration.Hours() / 24
+				if days < -1 {
+					zukunft = append(zukunft, Geb{
+						Name:       y.Name,
+						Geburtstag: new,
+						diff:       days,
+					})
+
+				} else if days == 0 {
+					heute = append(heute, Geb{
+						Name:       y.Name,
+						Geburtstag: new,
+						diff:       days,
+					})
+				} else {
+					vergangen = append(vergangen, Geb{
+						Name:       y.Name,
+						Geburtstag: new,
+						diff:       days,
+					})
+				}
+			}
+		}
+		sort.Slice(heute, func(i, j int) bool {
+			geb1 := heute[i].Geburtstag
+			geb2 := heute[j].Geburtstag
+			return geb1.Before(geb2)
+		})
+		sort.Slice(vergangen, func(i, j int) bool {
+			geb1 := vergangen[i].Geburtstag
+			geb2 := vergangen[j].Geburtstag
+			return geb1.Before(geb2)
+		})
+		sort.Slice(zukunft, func(i, j int) bool {
+			geb1 := zukunft[i].Geburtstag
+			geb2 := zukunft[j].Geburtstag
+			return geb1.Before(geb2)
+		})
+	}}
+	if len(heute) > 0 {
+		for _, user := range heute {
+			<div role="alert" class="w-full alert alert-error alert-soft">
+				<span>
+					Heute gibt es ein Geburtstagskind! | Heute hat <b>{ user.Name }</b> Geburtstag
+				</span>
+			</div>
+		}
+	}
+	if len(vergangen) > 0 {
+		<h2>Vergangene</h2>
+		<div class="overflow-x-auto">
+			<table class="table">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Geburtstag</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, user := range vergangen {
+						{{
+	geb := user.Geburtstag
+	var day string
+	day = fmt.Sprintf("%d.%02d.", geb.Day(), geb.Month())
+						}}
+						<tr>
+							<th>{ user.Name }</th>
+							<td>
+								{ day }
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+	if len(zukunft) > 0 {
+		<h2>Zuküftige</h2>
+		<div class="overflow-x-auto">
+			<table class="table">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Geburtstag</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, user := range zukunft {
+						{{
+	geb := user.Geburtstag
+	var day string
+	day = fmt.Sprintf("%d.%02d.", geb.Day(), geb.Month())
+						}}
+						<tr>
+							<th>{ user.Name }</th>
+							<td>
+								{ day }
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+}
+
+templ MitarbeiterOverview(users []db.MitarbeiterModel) {
+	@Page("Mitarbeiter Übersicht | ") {
+		@Backbutton("/")
+		<h1>Mitarbeiter</h1>
+		<a class="btn btn-primary my-5" href="/Mitarbeiter/Neu">Neuer Mitarbeiter</a>
+		<div class="overflow-x-auto">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Gruppe</th>
+						<th>Interne Durchwahl 1</th>
+						<th>Interne Durchwahl 2</th>
+						<th>Festnetz Alternativ</th>
+						<th>Festnetz Privat</th>
+						<th>Homeoffice</th>
+						<th>Mobil Business</th>
+						<th>Mobil Privat</th>
+						<th>Azubi</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, user := range users {
+						{{
+							id := user.ID
+							Name := user.Name
+							Email, Email_ok := user.Email()
+							Gruppe, Gruppe_ok := user.Gruppenwahl()
+							Interntelefon1, Interntelefon1_ok := user.InternTelefon1()
+							Interntelefon2, Interntelefon2_ok := user.InternTelefon2()
+							Festnetzalternativ, Festnetzalternativ_ok := user.FestnetzAlternativ()
+							Festnetzprivat, Festnetzprivat_ok := user.FestnetzPrivat()
+							Homeoffice, Homeoffice_ok := user.HomeOffice()
+							Mobilbusiness, Mobilbusiness_ok := user.MobilBusiness()
+							Mobilprivat, Mobilprivat_ok := user.MobilPrivat()
+							Azubi, Azubi_ok := user.Azubi()
+						}}
+						<tr>
+							<th>
+								<a href={ templ.URL(fmt.Sprintf("/Mitarbeiter/%s", id)) } class="underline">
+									{ Name }
+								</a>
+							</th>
+							<td>
+								if Email_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("mailto:%s", Email)) }>{ Email }</a>
+								}
+							</td>
+							<td>
+								{ utils.If(Gruppe_ok, Gruppe, "") }
+							</td>
+							<td>
+								{ utils.If(Interntelefon1_ok, Interntelefon1, "") }
+							</td>
+							<td>
+								{ utils.If(Interntelefon2_ok, Interntelefon2, "") }
+							</td>
+							<td>
+								if Festnetzalternativ_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Festnetzalternativ)) }>{ Festnetzalternativ }</a>
+								}
+							</td>
+							<td>
+								if Festnetzprivat_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Festnetzprivat)) }>{ Festnetzprivat }</a>
+								}
+							</td>
+							<td>
+								{ utils.If(Homeoffice_ok, Homeoffice, "") }
+							</td>
+							<td>
+								if Mobilbusiness_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Mobilbusiness)) }>{ Mobilbusiness }</a>
+								}
+							</td>
+							<td>
+								if Mobilprivat_ok {
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Mobilprivat)) }>{ Mobilprivat }</a>
+								}
+							</td>
+							<td>
+								if Azubi_ok {
+									if Azubi {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check text-success"><path d="M20 6 9 17l-5-5"></path></svg>
+									} else {
+										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cross rotate-45 text-error"><path d="M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z"></path></svg>
+									}
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+}
+
+templ NeuerMitarbeiter() {
+	@Page("Neuer Mitarbeiter | ") {
+		@Backbutton("/Mitarbeiter")
+		<h1>Neuen Mitarbeiter anlegen</h1>
+		<form method="POST" class="space-y-4 mt-5">
+			<div class="grid grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Name</legend>
+					<input type="text" class="input" name="Name" id="Name" required/>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Short</legend>
+					<input type="text" class="input" name="Short" id="Short"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">E-Mail</legend>
+				<input type="email" class="input" name="Email" id="Email"/>
+				<p class="fieldset-label">Optional</p>
+			</fieldset>
+			<div class="grid grid-cols-4">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Gruppenwahl</legend>
+					<input type="text" class="input" name="Gruppenwahl" id="Gruppenwahl"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Interne Durchwahl 1</legend>
+					<input type="text" class="input" name="InternTelefon1" id="InternTelefon1"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Interne Durchwahl 2</legend>
+					<input type="text" class="input" name="InternTelefon2" id="InternTelefon2"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Home Office</legend>
+					<input type="text" class="input" name="HomeOffice" id="HomeOffice"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<div class="grid grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Private Telefonnummer</legend>
+					<input type="text" class="input" name="FestnetzPrivat" id="FestnetzPrivat"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Geschäftliche Telefonnummer</legend>
+					<input type="text" class="input" name="FestnetzAlternativ" id="FestnetzAlternativ"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<div class="grid grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Private Handynummer</legend>
+					<input type="text" class="input" name="MobilPrivat" id="MobilPrivat"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Geschäftliche Handynummer</legend>
+					<input type="text" class="input" name="MobilBusiness" id="MobilBusiness"/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<fieldset class="fieldset p-4 bg-base-100 border border-base-300 rounded-box w-64">
+				<legend class="fieldset-legend">
+					Ist dieser Mitarbeiter ein Azubi?
+				</legend>
+				<label class="fieldset-label">
+					<input type="checkbox" name="Azubi" id="Azubi" class="toggle"/>
+					Azubi
+				</label>
+			</fieldset>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Geburtstag</legend>
+				<input type="date" class="input" name="Geburtstag" id="Geburtstag"/>
+				<p class="fieldset-label">Optional</p>
+			</fieldset>
+			<input type="submit" value="Speichern" class="btn btn-success"/>
+		</form>
+	}
+}
+
+templ MitarbeiterDetails(user *db.MitarbeiterModel) {
+	@Page("Mitarbeiter | ") {
+		@Backbutton("/Mitarbeiter")
+		{{
+			id := user.ID
+			Name := user.Name
+			Email, Email_ok := user.Email()
+			Gruppe, Gruppe_ok := user.Gruppenwahl()
+			Interntelefon1, Interntelefon1_ok := user.InternTelefon1()
+			Interntelefon2, Interntelefon2_ok := user.InternTelefon2()
+			Festnetzalternativ, Festnetzalternativ_ok := user.FestnetzAlternativ()
+			Festnetzprivat, Festnetzprivat_ok := user.FestnetzPrivat()
+			Homeoffice, Homeoffice_ok := user.HomeOffice()
+			Mobilbusiness, Mobilbusiness_ok := user.MobilBusiness()
+			Mobilprivat, Mobilprivat_ok := user.MobilPrivat()
+		}}
+		<div class="card w-150 bg-base-100 card-xl shadow-sm mt-5">
+			<div class="card-body">
+				<h2 class="card-title">{ Name }</h2>
+				<div class="overflow-x-auto">
+					<ul class="list bg-base-100 rounded-box shadow-md">
+						if Email_ok {
+							<li class="list-row">
+								<div></div>
+								<div>Email</div>
+								<div>
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("mailto:%s", Email)) }>{ Email }</a>
+								</div>
+							</li>
+						}
+						if Gruppe_ok {
+							<li class="list-row">
+								<div></div>
+								<div>Gruppenwahl</div>
+								<div>
+									{ Gruppe }
+								</div>
+							</li>
+						}
+						<li class="list-row">
+							<div></div>
+							<div>Interne Durchwahl</div>
+							<div>
+								if Interntelefon1_ok {
+									<p>{ Interntelefon1 }</p>
+								}
+								if Interntelefon2_ok {
+									<p>{ Interntelefon2 }</p>
+								}
+							</div>
+						</li>
+						if Homeoffice_ok {
+							<li class="list-row">
+								<div></div>
+								<div>Homeoffice</div>
+								<div>
+									{ Homeoffice }
+								</div>
+							</li>
+						}
+						if Festnetzalternativ_ok {
+							<li class="list-row">
+								<div></div>
+								<div>Festnetz Geschäftlich</div>
+								<div>
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Festnetzalternativ)) }>{ Festnetzalternativ }</a>
+								</div>
+							</li>
+						}
+						if Festnetzprivat_ok {
+							<li class="list-row">
+								<div></div>
+								<div>Festnetz Privat</div>
+								<div>
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Festnetzprivat)) }>{ Festnetzprivat }</a>
+								</div>
+							</li>
+						}
+						if Mobilbusiness_ok {
+							<li class="list-row">
+								<div></div>
+								<div>Mobil Geschäftlich</div>
+								<div>
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Mobilbusiness)) }>{ Mobilbusiness }</a>
+								</div>
+							</li>
+						}
+						if Mobilprivat_ok {
+							<li class="list-row">
+								<div></div>
+								<div>Mobil Privat</div>
+								<div>
+									<a class="text-error underline" href={ templ.URL(fmt.Sprintf("tel:%s", Mobilprivat)) }>{ Mobilprivat }</a>
+								</div>
+							</li>
+						}
+					</ul>
+				</div>
+				<div class="justify-end card-actions">
+					<a href={ templ.URL(fmt.Sprintf("/Mitarbeiter/%s/Bearbeiten", id)) } class="btn btn-primary">Bearbeiten</a>
+				</div>
+			</div>
+		</div>
+	}
+}
+
+templ MitarbeiterBearbeiten(user *db.MitarbeiterModel) {
+	@Page("Mitarbeiter Bearbeiten | ") {
+		@Backbutton("/Mitarbeiter")
+		{{
+			// id := user.ID
+			Name := user.Name
+			Short, Short_ok := user.Short()
+			Email, Email_ok := user.Email()
+			Gruppe, Gruppe_ok := user.Gruppenwahl()
+			Interntelefon1, Interntelefon1_ok := user.InternTelefon1()
+			Interntelefon2, Interntelefon2_ok := user.InternTelefon2()
+			Festnetzalternativ, Festnetzalternativ_ok := user.FestnetzAlternativ()
+			Festnetzprivat, Festnetzprivat_ok := user.FestnetzPrivat()
+			Homeoffice, Homeoffice_ok := user.HomeOffice()
+			Mobilbusiness, Mobilbusiness_ok := user.MobilBusiness()
+			Mobilprivat, Mobilprivat_ok := user.MobilPrivat()
+			Geburtstag, Geburtstag_ok := user.Geburtstag()
+			Azubi, Azubi_ok := user.Azubi()
+		}}
+		<h1>{ Name } bearbeiten</h1>
+		<form method="POST" class="space-y-4 mt-5">
+			<div class="grid grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Name</legend>
+					<input type="text" class="input" value={ Name } name="Name" id="Name" required/>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Short</legend>
+					<input type="text" class="input" name="Short" id="Short" value={ utils.If(Short_ok, Short, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">E-Mail</legend>
+				<input type="email" class="input" name="Email" id="Email" value={ utils.If(Email_ok, Email, "") }/>
+				<p class="fieldset-label">Optional</p>
+			</fieldset>
+			<div class="grid grid-cols-4">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Gruppenwahl</legend>
+					<input type="text" class="input" name="Gruppenwahl" id="Gruppenwahl" value={ utils.If(Gruppe_ok, Gruppe, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Interne Durchwahl 1</legend>
+					<input type="text" class="input" name="InternTelefon1" id="InternTelefon1" value={ utils.If(Interntelefon1_ok, Interntelefon1, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Interne Durchwahl 2</legend>
+					<input type="text" class="input" name="InternTelefon2" id="InternTelefon2" value={ utils.If(Interntelefon2_ok, Interntelefon2, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Home Office</legend>
+					<input type="text" class="input" name="HomeOffice" id="HomeOffice" value={ utils.If(Homeoffice_ok, Homeoffice, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<div class="grid grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Private Telefonnummer</legend>
+					<input type="text" class="input" name="FestnetzPrivat" id="FestnetzPrivat" value={ utils.If(Festnetzprivat_ok, Festnetzprivat, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Geschäftliche Telefonnummer</legend>
+					<input type="text" class="input" name="FestnetzAlternativ" id="FestnetzAlternativ" value={ utils.If(Festnetzalternativ_ok, Festnetzalternativ, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<div class="grid grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Private Handynummer</legend>
+					<input type="text" class="input" name="MobilPrivat" id="MobilPrivat" value={ utils.If(Mobilprivat_ok, Mobilprivat, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Geschäftliche Handynummer</legend>
+					<input type="text" class="input" name="MobilBusiness" id="MobilBusiness" value={ utils.If(Mobilbusiness_ok, Mobilbusiness, "") }/>
+					<p class="fieldset-label">Optional</p>
+				</fieldset>
+			</div>
+			<fieldset class="fieldset p-4 bg-base-100 border border-base-300 rounded-box w-64">
+				<legend class="fieldset-legend">
+					Ist dieser Mitarbeiter ein Azubi?
+				</legend>
+				<label class="fieldset-label">
+					if Azubi_ok {
+						if Azubi {
+							<input type="checkbox" name="Azubi" id="Azubi" class="toggle" checked/>
+						} else {
+							<input type="checkbox" name="Azubi" id="Azubi" class="toggle"/>
+						}
+					} else {
+						<input type="checkbox" name="Azubi" id="Azubi" class="toggle"/>
+					}
+					Azubi
+				</label>
+			</fieldset>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Geburtstag</legend>
+				{{
+					geb := strings.Split(Geburtstag.String(), " ")[0]
+				}}
+				<input type="date" class="input" name="Geburtstag" id="Geburtstag" value={ utils.If(Geburtstag_ok, geb, "") }/>
+				<p class="fieldset-label">Optional</p>
+			</fieldset>
+			<input type="submit" value="Speichern" class="btn btn-success"/>
+		</form>
+		<div class="divider divider-error my-5">DANGER ZONE</div>
+		<button class="btn btn-error" onclick="handleDelete()">Mitarbeiter Löschen</button>
+		<script>
+			const url = window.location.href
+			const newUrl = url.split("/").slice(0, url.split("/").length-2).join("/")
+			function handleDelete() {
+				fetch(url, {
+					method: "DELETE"
+				}).then(res => {
+						window.location.href=newUrl
+				})
+			}
+		</script>
+	}
+}
