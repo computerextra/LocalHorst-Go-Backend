@@ -19,9 +19,9 @@ templ Page(title string) {
 			</script>
 			<title>{ title } Viktor v2</title>
 		</head>
-		<body class="bg-base-100 text-base-content min-h-[100vh] antialiased">
+		<body class="bg-base-100 text-base-content min-h-[100vh] print:min-h-min print:bg-neutral print:text-neutral-content antialiased">
 			@navigation()
-			<div class="container mx-auto mt-5">
+			<div class="container mx-auto mt-5 print:block print:mt-0 print:w-full">
 				{ children... }
 			</div>
 			<script>

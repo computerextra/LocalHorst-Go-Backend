@@ -22,7 +22,7 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 			<a href="/Einkauf/Eingabe" class="btn  my-6 btn-primary">Eingeben</a>
 			<a href="/Einkauf/Abrechnung" class="btn  my-6 btn-secondary">PayPal Abrechnung</a>
 		</div>
-		<div class="grid grid-cols-2 gap-4 mb-5 mt-5 print:block">
+		<div class="grid grid-cols-2 gap-4 mb-5 mt-5 print:mb-0 print:mt-0 print:block">
 			for _, y := range einkauf {
 				{{
 	var show bool = false
@@ -153,7 +153,7 @@ templ Einkaufsliste(einkauf []db.EinkaufModel) {
 							</div>
 						</div>
 					</div>
-					<div class="hidden print:block my-4 text-xs">
+					<div class="hidden print:block my-4 text-xs" data-theme="light">
 						{ Mitarbeiter.Name }
 						<br/>
 						Geld: { Geld }
