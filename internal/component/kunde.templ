@@ -6,7 +6,7 @@ import (
 	"github.com/computerextra/golang-backend/internal/utils"
 )
 
-templ Kunde(results []types.Sg_Adressen, search string) {
+templ Kunde(results []types.Sg_Adressen, search string, abgeschickt bool) {
 	@Page("Kundensuche | ") {
 		@Backbutton("/")
 		<h1>Sage Kundensuche</h1>
@@ -138,6 +138,10 @@ templ Kunde(results []types.Sg_Adressen, search string) {
 						</tbody>
 					</table>
 				</div>
+			} else {
+				if abgeschickt {
+					<h2 class="text-center text-destructive text-5xl">Keine Ergebnisse</h2>
+				}
 			}
 		</div>
 	}

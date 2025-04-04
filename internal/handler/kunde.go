@@ -24,7 +24,7 @@ func (h *Handler) SearchKunde(w http.ResponseWriter, r *http.Request) {
 	var SearchResults []types.Sg_Adressen
 
 	if len(searchParams) < 1 {
-		component.Kunde(SearchResults, "").Render(ctx, w)
+		component.Kunde(SearchResults, "", false).Render(ctx, w)
 		return
 	}
 
@@ -164,5 +164,5 @@ func (h *Handler) SearchKunde(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	component.Kunde(SearchResults, searchParams).Render(ctx, w)
+	component.Kunde(SearchResults, searchParams, true).Render(ctx, w)
 }
