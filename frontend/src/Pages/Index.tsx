@@ -1,3 +1,5 @@
+import GeburtstagsListe from "../Components/Geburtstagsliste";
+
 export default function Index() {
   return (
     <>
@@ -40,7 +42,9 @@ export default function Index() {
         </a>
       </div>
       <h1 className="mt-5 mb-5">Geburtstage</h1>
-      <div className="mb-5">@GeburtstagsListe(user)</div>
+      <div className="mb-5">
+        <GeburtstagsListe />
+      </div>
     </>
   );
 }

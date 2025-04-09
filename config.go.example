@@ -1,0 +1,112 @@
+package main
+
+import "fmt"
+
+type Config struct {
+	DATABASE_URL     string
+	CMS_DATABASE_URL string
+	ARCHIVE_PATH     string
+	UPLOAD_FOLDER    string
+	ACCESS_DB        string
+	MAIL_FROM        string
+	MAIL_SERVER      string
+	MAIL_PORT        int
+	MAIL_USER        string
+	MAIL_PASSWORD    string
+	SAGE_SERVER      string
+	SAGE_PORT        int
+	SAGE_USER        string
+	SAGE_PASS        string
+	SAGE_DB          string
+}
+
+func config() *Config {
+	return &Config{}
+}
+
+func getConfig() *Config {
+	cfg := config()
+
+	// Database for Prisma
+	cfg.DATABASE_URL = ""
+
+	// Database for CMS Functions
+	cfg.CMS_DATABASE_URL = ""
+
+	// CE Archive Path
+	cfg.ARCHIVE_PATH = ""
+
+	// Folder to Upload images to
+	cfg.UPLOAD_FOLDER = ""
+
+	// Label Database
+	cfg.ACCESS_DB = ""
+
+	// Send Mails
+	cfg.MAIL_FROM = ""
+	cfg.MAIL_SERVER = ""
+	cfg.MAIL_PORT = 0
+	cfg.MAIL_USER = ""
+	cfg.MAIL_PASSWORD = ""
+
+	// SAGE Integration
+	cfg.SAGE_SERVER = ""
+	cfg.SAGE_PORT = 0
+	cfg.SAGE_USER = ""
+	cfg.SAGE_PASS = ""
+	cfg.SAGE_DB = ""
+
+	return cfg
+}
+
+func GetConfig() (*Config, error) {
+	cfg := getConfig()
+
+	if len(cfg.DATABASE_URL) == 0 {
+		return nil, fmt.Errorf("env error: DATABASE_URL not set")
+	}
+	if len(cfg.CMS_DATABASE_URL) == 0 {
+		return nil, fmt.Errorf("env error: CMS_DATABASE_URL not set")
+	}
+	if len(cfg.ARCHIVE_PATH) == 0 {
+		return nil, fmt.Errorf("env error: ARCHIVE_PATH not set")
+	}
+	if len(cfg.UPLOAD_FOLDER) == 0 {
+		return nil, fmt.Errorf("env error: UPLOAD_FOLDER not set")
+	}
+	if len(cfg.ACCESS_DB) == 0 {
+		return nil, fmt.Errorf("env error: ACCESS_DB not set")
+	}
+	if len(cfg.MAIL_FROM) == 0 {
+		return nil, fmt.Errorf("env error: MAIL_FROM not set")
+	}
+	if len(cfg.MAIL_SERVER) == 0 {
+		return nil, fmt.Errorf("env error: MAIL_SERVER not set")
+	}
+	if cfg.MAIL_PORT == 0 {
+		return nil, fmt.Errorf("env error: MAIL_PORT not set")
+	}
+	if len(cfg.MAIL_USER) == 0 {
+		return nil, fmt.Errorf("env error: MAIL_USER not set")
+	}
+	if len(cfg.MAIL_PASSWORD) == 0 {
+		return nil, fmt.Errorf("env error: MAIL_PASSWORD not set")
+	}
+	if len(cfg.SAGE_SERVER) == 0 {
+		return nil, fmt.Errorf("env error: SAGE_SERVER not set")
+	}
+	if cfg.SAGE_PORT == 0 {
+		return nil, fmt.Errorf("env error: SAGE_PORT not set")
+	}
+	if len(cfg.SAGE_USER) == 0 {
+		return nil, fmt.Errorf("env error: SAGE_USER not set")
+	}
+	if len(cfg.SAGE_PASS) == 0 {
+		return nil, fmt.Errorf("env error: SAGE_PASS not set")
+	}
+	if len(cfg.SAGE_DB) == 0 {
+		return nil, fmt.Errorf("env error: SAGE_DB not set")
+	}
+
+	return cfg, nil
+}
