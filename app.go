@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"golang-backend/db"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx      context.Context
+	database *db.PrismaClient
 }
 
 // NewApp creates a new App application struct
@@ -19,6 +21,11 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+	client := db.NewClient()
+	if err := client.Prisma.Connect(); err != nil {
+		panic(err)
+	}
+	a.database = client
 }
 
 // Greet returns a greeting for the given name
