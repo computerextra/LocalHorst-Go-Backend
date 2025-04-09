@@ -12,3 +12,12 @@ func (a *App) getAllMitarbeiter() ([]db.MitarbeiterModel, error) {
 		).
 		With(db.Mitarbeiter.Einkauf.Fetch()).Exec(a.ctx)
 }
+
+func (a *App) GetAllMitarbeiter() []db.MitarbeiterModel {
+	ma, err := a.getAllMitarbeiter()
+	if err != nil {
+		return nil
+	}
+
+	return ma
+}

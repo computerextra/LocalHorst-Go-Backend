@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { GetAllMitarbeiter } from "../../wailsjs/go/main/App";
 import type { db } from "../../wailsjs/go/models";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function GeburtstagsListe() {
   const [heute, setHeute] = useState<db.MitarbeiterModel[]>();
   const [zukunft, setZukunft] = useState<db.MitarbeiterModel[]>();
   const [vergangen, setVergangen] = useState<db.MitarbeiterModel[]>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function x() {
+      setLoading(true);
       const ma = await GetAllMitarbeiter();
 
       if (ma == null) return;
@@ -120,9 +123,12 @@ export default function GeburtstagsListe() {
       setHeute(heute);
       setZukunft(zukunft);
       setVergangen(vergangen);
+      setLoading(false);
     }
     x();
   }, []);
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <>
@@ -162,7 +168,7 @@ export default function GeburtstagsListe() {
                     )
                   );
                   return (
-                    <tr>
+                    <tr key={user.id}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {
@@ -203,7 +209,7 @@ export default function GeburtstagsListe() {
                     )
                   );
                   return (
-                    <tr>
+                    <tr key={user.id}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {

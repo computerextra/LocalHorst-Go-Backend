@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import GeburtstagsListe from "../Components/Geburtstagsliste";
 
 export default function Index() {
@@ -17,12 +18,12 @@ export default function Index() {
       </p>
       <h2 className="mb-5">Quicklinks</h2>
       <div className="grid grid-cols-3 gap-8 my-8">
-        <a className="btn btn-primary" href="/Einkauf/Eingabe">
+        <Link className="btn btn-primary" to="/Einkauf/Eingabe">
           Einkauf Eingabe
-        </a>
-        <a className="btn btn-primary" href="/Einkauf">
+        </Link>
+        <Link className="btn btn-primary" to="/Einkauf">
           Einkaufs Liste
-        </a>
+        </Link>
         <a
           className="btn btn-primary"
           href="https://www.edeka.de/markt-id/10001842/prospekt/"
@@ -31,15 +32,15 @@ export default function Index() {
         >
           Edeka Blättchen
         </a>
-        <a className="btn btn-primary" href="/Mitarbeiter">
+        <Link className="btn btn-primary" to="/Mitarbeiter">
           Mitarbeiter Übersicht
-        </a>
-        <a className="btn btn-primary" href="/Lieferanten">
+        </Link>
+        <Link className="btn btn-primary" to="/Lieferanten">
           Lieferanten Übersicht
-        </a>
-        <a className="btn btn-primary" href="/Werkstatt">
+        </Link>
+        <Link className="btn btn-primary" to="/Werkstatt">
           Kunden Formular Generierung
-        </a>
+        </Link>
       </div>
       <h1 className="mt-5 mb-5">Geburtstage</h1>
       <div className="mb-5">

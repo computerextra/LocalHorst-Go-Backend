@@ -122,6 +122,111 @@ export namespace db {
 		    return a;
 		}
 	}
+	export class PdfsModel {
+	    id: number;
+	    title: string;
+	    body: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new PdfsModel(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.title = source["title"];
+	        this.body = source["body"];
+	    }
+	}
+
+}
+
+export namespace main {
+	
+	export class InventurAllFile {
+	    Artikelnummer: string;
+	    Suchbegriff: string;
+	    Anzahl: number;
+	    Team: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InventurAllFile(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Artikelnummer = source["Artikelnummer"];
+	        this.Suchbegriff = source["Suchbegriff"];
+	        this.Anzahl = source["Anzahl"];
+	        this.Team = source["Team"];
+	    }
+	}
+	export class InventurEntry {
+	    Artikelnummer: string;
+	    Suchbegriff: string;
+	    Anzahl: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new InventurEntry(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Artikelnummer = source["Artikelnummer"];
+	        this.Suchbegriff = source["Suchbegriff"];
+	        this.Anzahl = source["Anzahl"];
+	    }
+	}
+	export class InventurTeamFile {
+	    Team: number;
+	    Mitarbeiter: string;
+	    Farbe: string;
+	    Ort: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new InventurTeamFile(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Team = source["Team"];
+	        this.Mitarbeiter = source["Mitarbeiter"];
+	        this.Farbe = source["Farbe"];
+	        this.Ort = source["Ort"];
+	    }
+	}
+	export class YearData {
+	    Teams: InventurTeamFile[];
+	    Entries: InventurAllFile[];
+	
+	    static createFrom(source: any = {}) {
+	        return new YearData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Teams = this.convertValues(source["Teams"], InventurTeamFile);
+	        this.Entries = this.convertValues(source["Entries"], InventurAllFile);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 
 }
 
