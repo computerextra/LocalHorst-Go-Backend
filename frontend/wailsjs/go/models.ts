@@ -1,5 +1,120 @@
 export namespace db {
 	
+	export class InventurModel {
+	    Jahr: string;
+	    Teams?: TeamModel[];
+	
+	    static createFrom(source: any = {}) {
+	        return new InventurModel(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Jahr = source["Jahr"];
+	        this.Teams = this.convertValues(source["Teams"], TeamModel);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class TeamModel {
+	    id: number;
+	    Mitarbeiter: string;
+	    Farbe: string;
+	    Ort: string;
+	    inventurJahr?: string;
+	    Artikel?: ArtikelModel[];
+	    Inventur?: InventurModel;
+	
+	    static createFrom(source: any = {}) {
+	        return new TeamModel(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.Mitarbeiter = source["Mitarbeiter"];
+	        this.Farbe = source["Farbe"];
+	        this.Ort = source["Ort"];
+	        this.inventurJahr = source["inventurJahr"];
+	        this.Artikel = this.convertValues(source["Artikel"], ArtikelModel);
+	        this.Inventur = this.convertValues(source["Inventur"], InventurModel);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class ArtikelModel {
+	    id: number;
+	    Artikelnummer: string;
+	    Suchbegriff: string;
+	    Anzahl: number;
+	    teamId?: number;
+	    Team?: TeamModel;
+	
+	    static createFrom(source: any = {}) {
+	        return new ArtikelModel(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.Artikelnummer = source["Artikelnummer"];
+	        this.Suchbegriff = source["Suchbegriff"];
+	        this.Anzahl = source["Anzahl"];
+	        this.teamId = source["teamId"];
+	        this.Team = this.convertValues(source["Team"], TeamModel);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 	export class EinkaufModel {
 	    id: string;
 	    Paypal: boolean;
@@ -137,95 +252,6 @@ export namespace db {
 	        this.title = source["title"];
 	        this.body = source["body"];
 	    }
-	}
-
-}
-
-export namespace main {
-	
-	export class InventurAllFile {
-	    Artikelnummer: string;
-	    Suchbegriff: string;
-	    Anzahl: number;
-	    Team: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InventurAllFile(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.Artikelnummer = source["Artikelnummer"];
-	        this.Suchbegriff = source["Suchbegriff"];
-	        this.Anzahl = source["Anzahl"];
-	        this.Team = source["Team"];
-	    }
-	}
-	export class InventurEntry {
-	    Artikelnummer: string;
-	    Suchbegriff: string;
-	    Anzahl: number;
-	
-	    static createFrom(source: any = {}) {
-	        return new InventurEntry(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.Artikelnummer = source["Artikelnummer"];
-	        this.Suchbegriff = source["Suchbegriff"];
-	        this.Anzahl = source["Anzahl"];
-	    }
-	}
-	export class InventurTeamFile {
-	    Team: number;
-	    Mitarbeiter: string;
-	    Farbe: string;
-	    Ort: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InventurTeamFile(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.Team = source["Team"];
-	        this.Mitarbeiter = source["Mitarbeiter"];
-	        this.Farbe = source["Farbe"];
-	        this.Ort = source["Ort"];
-	    }
-	}
-	export class YearData {
-	    Teams: InventurTeamFile[];
-	    Entries: InventurAllFile[];
-	
-	    static createFrom(source: any = {}) {
-	        return new YearData(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.Teams = this.convertValues(source["Teams"], InventurTeamFile);
-	        this.Entries = this.convertValues(source["Entries"], InventurAllFile);
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 
 }

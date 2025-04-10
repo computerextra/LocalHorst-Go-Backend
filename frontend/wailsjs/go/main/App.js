@@ -18,8 +18,8 @@ export function GetDataFromYear(arg1) {
   return window['go']['main']['App']['GetDataFromYear'](arg1);
 }
 
-export function GetEntriesFromTeam(arg1, arg2) {
-  return window['go']['main']['App']['GetEntriesFromTeam'](arg1, arg2);
+export function GetEntriesFromTeam(arg1) {
+  return window['go']['main']['App']['GetEntriesFromTeam'](arg1);
 }
 
 export function GetInventurYears() {

@@ -1,149 +1,40 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"os"
+	"golang-backend/db"
 	"path/filepath"
 )
-
-// TODO: Inventur in DB packen! Auf der Webseite auch dementsprechend anpassen!
 
 var (
 	RootPath = filepath.Join("inventur", "Data")
 )
 
-type InventurAllFile struct {
-	Artikelnummer string `json:"Artikelnummer"`
-	Suchbegriff   string `json:"Suchbegriff"`
-	Anzahl        int    `json:"Anzahl"`
-	Team          string `json:"Team"`
-}
-
-type InventurTeamFile struct {
-	Team        int    `json:"Team"`
-	Mitarbeiter string `json:"Mitarbeiter"`
-	Farbe       string `json:"Farbe"`
-	Ort         string `json:"Ort"`
-}
-
-type InventurEntry struct {
-	Artikelnummer string `json:"Artikelnummer"`
-	Suchbegriff   string `json:"Suchbegriff"`
-	Anzahl        int    `json:"Anzahl"`
-}
-
-func (a *App) GetInventurYears() []string {
-	years, err := getyears()
+func (a *App) GetInventurYears() []db.InventurModel {
+	res, err := a.database.Inventur.FindMany().Exec(a.ctx)
 	if err != nil {
 		return nil
 	}
-	return years
+	return res
 }
 
-type YearData struct {
-	Teams   []InventurTeamFile
-	Entries []InventurAllFile
-}
-
-func (a *App) GetDataFromYear(year string) YearData {
-	teams, err := getTeamData(year)
-	if err != nil {
-		return YearData{}
-	}
-	all, err := getAllEntries(year)
-	if err != nil {
-		return YearData{}
-	}
-	return YearData{
-		Teams:   teams,
-		Entries: all,
-	}
-}
-
-func (a *App) GetEntriesFromTeam(year, team string) []InventurEntry {
-	entries, err := getEntries(year, team)
+func (a *App) GetDataFromYear(year string) []db.TeamModel {
+	res, err := a.database.Team.FindMany(
+		db.Team.InventurJahr.Equals(year),
+	).With(
+		db.Team.Artikel.Fetch(),
+	).Exec(a.ctx)
 	if err != nil {
 		return nil
 	}
-	return entries
+	return res
 }
 
-func getyears() ([]string, error) {
-	ex, err := os.Executable()
+func (a *App) GetEntriesFromTeam(team int) []db.ArtikelModel {
+	res, err := a.database.Artikel.FindMany(
+		db.Artikel.TeamID.Equals(team),
+	).Exec(a.ctx)
 	if err != nil {
-		return nil, err
+		return nil
 	}
-	exPath := filepath.Dir(ex)
-
-	folder, err := os.ReadDir(filepath.Join(exPath, RootPath))
-	if err != nil {
-		return nil, err
-	}
-
-	var folderName []string
-	for _, e := range folder {
-		folderName = append(folderName, e.Name())
-	}
-	return folderName, nil
-}
-
-func getAllEntries(year string) ([]InventurAllFile, error) {
-	ex, err := os.Executable()
-	fmt.Println(ex)
-	if err != nil {
-		return nil, err
-	}
-	exPath := filepath.Dir(ex)
-	fmt.Println(exPath)
-	file, err := os.ReadFile(fmt.Sprintf("%s/_ALL.json", filepath.Join(exPath, RootPath, year)))
-	if err != nil {
-		return nil, err
-	}
-
-	var res []InventurAllFile
-	err = json.Unmarshal([]byte(file), &res)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
-}
-
-func getTeamData(year string) ([]InventurTeamFile, error) {
-	ex, err := os.Executable()
-	if err != nil {
-		return nil, err
-	}
-	exPath := filepath.Dir(ex)
-	file, err := os.ReadFile(fmt.Sprintf("%s/_TEAMS.json", filepath.Join(exPath, RootPath, year)))
-	if err != nil {
-		return nil, err
-	}
-	var res []InventurTeamFile
-	err = json.Unmarshal([]byte(file), &res)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
-}
-
-func getEntries(year string, team string) ([]InventurEntry, error) {
-	ex, err := os.Executable()
-	if err != nil {
-		return nil, err
-	}
-	exPath := filepath.Dir(ex)
-
-	file, err := os.ReadFile(fmt.Sprintf("%s/%s.json", filepath.Join(exPath, RootPath, year), team))
-
-	if err != nil {
-		return nil, err
-	}
-
-	var res []InventurEntry
-	err = json.Unmarshal([]byte(file), &res)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+	return res
 }
