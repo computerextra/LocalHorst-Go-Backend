@@ -103,7 +103,7 @@ function NavLinks() {
             <summary>Einkauf</summary>
             <ul className="p-2 rounded-t-none bg-base-100">
               <li>
-                <Link to="Einkauf/Eingabe">Eingabe</Link>
+                <Link to="Einkauf/Auswahl">Eingabe</Link>
               </li>
               <li>
                 <Link to="Einkauf">Liste</Link>

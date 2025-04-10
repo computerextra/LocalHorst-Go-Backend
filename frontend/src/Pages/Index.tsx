@@ -18,7 +18,7 @@ export default function Index() {
       </p>
       <h2 className="mb-5">Quicklinks</h2>
       <div className="grid grid-cols-3 gap-8 my-8">
-        <Link className="btn btn-primary" to="/Einkauf/Eingabe">
+        <Link className="btn btn-primary" to="/Einkauf/Auswahl">
           Einkauf Eingabe
         </Link>
         <Link className="btn btn-primary" to="/Einkauf">
