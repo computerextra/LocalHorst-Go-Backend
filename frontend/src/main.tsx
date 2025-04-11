@@ -18,6 +18,10 @@ import LieferantBearbeiten from "./Pages/Lieferanten/Bearbeiten";
 import LieferantDetails from "./Pages/Lieferanten/Lieferant";
 import NeuerLieferant from "./Pages/Lieferanten/Neu";
 import Lieferantenübersicht from "./Pages/Lieferanten/Overview";
+import MitarbeiterDetails from "./Pages/Mitarbeiter/Details";
+import MitarbeiterBearbeiter from "./Pages/Mitarbeiter/Edit";
+import NeuerMitarbeiter from "./Pages/Mitarbeiter/New";
+import Mitarbeiterübersicht from "./Pages/Mitarbeiter/Overview";
 import NotFound from "./Pages/NotFound";
 
 createRoot(document.getElementById("root")!).render(
@@ -33,12 +37,12 @@ createRoot(document.getElementById("root")!).render(
             <Route path=":id" element={<EinkaufEingabe />} />
           </Route>
           <Route path="Mitarbeiter">
-            <Route index element={<>Mitarbeiter</>} />
+            <Route index element={<Mitarbeiterübersicht />} />
             <Route path="Geburtstag" element={<Geburtstag />} />
-            <Route path="Neu" element={<>Neuer MA</>} />
+            <Route path="Neu" element={<NeuerMitarbeiter />} />
             <Route path=":id">
-              <Route index element={<>Mitarbeiter Details</>} />
-              <Route path="Bearbeiten" element={<>Mitarbeiter bearbeiten</>} />
+              <Route index element={<MitarbeiterDetails />} />
+              <Route path="Bearbeiten" element={<MitarbeiterBearbeiter />} />
             </Route>
           </Route>
           <Route path="Lieferanten">

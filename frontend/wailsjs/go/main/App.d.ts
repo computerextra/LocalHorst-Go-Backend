@@ -11,6 +11,8 @@ export function DeleteEinkauf(arg1:string):Promise<boolean>;
 
 export function DeleteLieferant(arg1:string):Promise<boolean>;
 
+export function DeleteMitarbeiter(arg1:string):Promise<boolean>;
+
 export function Firma():Promise<boolean>;
 
 export function GetAllMitarbeiter():Promise<Array<db.MitarbeiterModel>>;
@@ -33,6 +35,8 @@ export function GetLieferant(arg1:string):Promise<db.LieferantenModel>;
 
 export function GetLieferanten():Promise<Array<db.LieferantenModel>>;
 
+export function GetMitarbeiter(arg1:string):Promise<db.MitarbeiterModel>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function Internet():Promise<boolean>;
@@ -52,3 +56,5 @@ export function UploadImage(arg1:string,arg2:string):Promise<string>;
 export function UpsertAnsprechpartner(arg1:string,arg2:any,arg3:main.AnsprechpartnerParams):Promise<boolean>;
 
 export function UpsertLieferant(arg1:main.LieferantenParams,arg2:any):Promise<boolean>;
+
+export function UpsertMitarbeiter(arg1:main.MitarbeiterParams,arg2:any):Promise<boolean>;

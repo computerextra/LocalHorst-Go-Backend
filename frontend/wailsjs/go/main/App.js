@@ -18,6 +18,10 @@ export function DeleteLieferant(arg1) {
   return window['go']['main']['App']['DeleteLieferant'](arg1);
 }
 
+export function DeleteMitarbeiter(arg1) {
+  return window['go']['main']['App']['DeleteMitarbeiter'](arg1);
+}
+
 export function Firma() {
   return window['go']['main']['App']['Firma']();
 }
@@ -62,6 +66,10 @@ export function GetLieferanten() {
   return window['go']['main']['App']['GetLieferanten']();
 }
 
+export function GetMitarbeiter(arg1) {
+  return window['go']['main']['App']['GetMitarbeiter'](arg1);
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
@@ -100,4 +108,8 @@ export function UpsertAnsprechpartner(arg1, arg2, arg3) {
 
 export function UpsertLieferant(arg1, arg2) {
   return window['go']['main']['App']['UpsertLieferant'](arg1, arg2);
+}
+
+export function UpsertMitarbeiter(arg1, arg2) {
+  return window['go']['main']['App']['UpsertMitarbeiter'](arg1, arg2);
 }

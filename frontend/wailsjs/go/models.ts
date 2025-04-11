@@ -415,6 +415,42 @@ export namespace main {
 	        this.Webseite = source["Webseite"];
 	    }
 	}
+	export class MitarbeiterParams {
+	    Name: string;
+	    Short?: string;
+	    Gruppenwahl?: string;
+	    InternTelefon1?: string;
+	    InternTelefon2?: string;
+	    FestnetzAlternativ?: string;
+	    FestnetzPrivat?: string;
+	    HomeOffice?: string;
+	    MobilBusiness?: string;
+	    MobilPrivat?: string;
+	    Email?: string;
+	    Azubi?: boolean;
+	    Geburtstag?: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new MitarbeiterParams(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Name = source["Name"];
+	        this.Short = source["Short"];
+	        this.Gruppenwahl = source["Gruppenwahl"];
+	        this.InternTelefon1 = source["InternTelefon1"];
+	        this.InternTelefon2 = source["InternTelefon2"];
+	        this.FestnetzAlternativ = source["FestnetzAlternativ"];
+	        this.FestnetzPrivat = source["FestnetzPrivat"];
+	        this.HomeOffice = source["HomeOffice"];
+	        this.MobilBusiness = source["MobilBusiness"];
+	        this.MobilPrivat = source["MobilPrivat"];
+	        this.Email = source["Email"];
+	        this.Azubi = source["Azubi"];
+	        this.Geburtstag = source["Geburtstag"];
+	    }
+	}
 	export class Sg_Adressen {
 	    SG_Adressen_PK: number;
 	    Suchbegriff: sql.NullString;
