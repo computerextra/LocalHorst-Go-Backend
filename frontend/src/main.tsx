@@ -11,6 +11,7 @@ import Einkaufsliste from "./Pages/Einkauf/Liste";
 import Geburtstag from "./Pages/Geburtstag";
 import Index from "./Pages/Index";
 import Inventur from "./Pages/Inventur";
+import KundenSuche from "./Pages/KundenSuche";
 import NotFound from "./Pages/NotFound";
 
 createRoot(document.getElementById("root")!).render(
@@ -47,7 +48,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="Archiv">
             <Route index element={<Archive />} />
           </Route>
-          <Route path="Kunde" element={<>Kunden suche</>} />
+          <Route path="Kunde" element={<KundenSuche />} />
           <Route path="Inventur" element={<Inventur />} />
           <Route path="Werkstatt">
             <Route index element={<>Werkstatt</>} />

@@ -54,6 +54,10 @@ export function SearchArchive(arg1) {
   return window['go']['main']['App']['SearchArchive'](arg1);
 }
 
+export function SearchSage(arg1) {
+  return window['go']['main']['App']['SearchSage'](arg1);
+}
+
 export function SendAbrechnung(arg1, arg2, arg3) {
   return window['go']['main']['App']['SendAbrechnung'](arg1, arg2, arg3);
 }

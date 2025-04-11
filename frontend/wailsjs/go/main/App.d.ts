@@ -29,6 +29,8 @@ export function Internet():Promise<boolean>;
 
 export function SearchArchive(arg1:string):Promise<Array<db.PdfsModel>>;
 
+export function SearchSage(arg1:string):Promise<Array<main.Sg_Adressen>>;
+
 export function SendAbrechnung(arg1:string,arg2:string,arg3:string):Promise<boolean>;
 
 export function SkipEinkauf(arg1:string):Promise<boolean>;
