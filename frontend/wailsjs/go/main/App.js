@@ -6,8 +6,16 @@ export function CheckImage(arg1, arg2) {
   return window['go']['main']['App']['CheckImage'](arg1, arg2);
 }
 
+export function DeleteAnsprechpartner(arg1) {
+  return window['go']['main']['App']['DeleteAnsprechpartner'](arg1);
+}
+
 export function DeleteEinkauf(arg1) {
   return window['go']['main']['App']['DeleteEinkauf'](arg1);
+}
+
+export function DeleteLieferant(arg1) {
+  return window['go']['main']['App']['DeleteLieferant'](arg1);
 }
 
 export function Firma() {
@@ -16,6 +24,10 @@ export function Firma() {
 
 export function GetAllMitarbeiter() {
   return window['go']['main']['App']['GetAllMitarbeiter']();
+}
+
+export function GetAnsprechpartner(arg1) {
+  return window['go']['main']['App']['GetAnsprechpartner'](arg1);
 }
 
 export function GetArchive(arg1) {
@@ -40,6 +52,14 @@ export function GetEntriesFromTeam(arg1) {
 
 export function GetInventurYears() {
   return window['go']['main']['App']['GetInventurYears']();
+}
+
+export function GetLieferant(arg1) {
+  return window['go']['main']['App']['GetLieferant'](arg1);
+}
+
+export function GetLieferanten() {
+  return window['go']['main']['App']['GetLieferanten']();
 }
 
 export function Greet(arg1) {
@@ -72,4 +92,12 @@ export function UpdateEinkauf(arg1) {
 
 export function UploadImage(arg1, arg2) {
   return window['go']['main']['App']['UploadImage'](arg1, arg2);
+}
+
+export function UpsertAnsprechpartner(arg1, arg2, arg3) {
+  return window['go']['main']['App']['UpsertAnsprechpartner'](arg1, arg2, arg3);
+}
+
+export function UpsertLieferant(arg1, arg2) {
+  return window['go']['main']['App']['UpsertLieferant'](arg1, arg2);
 }

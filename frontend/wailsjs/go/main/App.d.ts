@@ -5,11 +5,17 @@ import {db} from '../models';
 
 export function CheckImage(arg1:string,arg2:string):Promise<main.ImageResponse>;
 
+export function DeleteAnsprechpartner(arg1:string):Promise<boolean>;
+
 export function DeleteEinkauf(arg1:string):Promise<boolean>;
+
+export function DeleteLieferant(arg1:string):Promise<boolean>;
 
 export function Firma():Promise<boolean>;
 
 export function GetAllMitarbeiter():Promise<Array<db.MitarbeiterModel>>;
+
+export function GetAnsprechpartner(arg1:string):Promise<db.AnschprechpartnerModel>;
 
 export function GetArchive(arg1:string):Promise<string>;
 
@@ -22,6 +28,10 @@ export function GetEinkaufsListe():Promise<Array<db.EinkaufModel>>;
 export function GetEntriesFromTeam(arg1:number):Promise<Array<db.ArtikelModel>>;
 
 export function GetInventurYears():Promise<Array<db.InventurModel>>;
+
+export function GetLieferant(arg1:string):Promise<db.LieferantenModel>;
+
+export function GetLieferanten():Promise<Array<db.LieferantenModel>>;
 
 export function Greet(arg1:string):Promise<string>;
 
@@ -38,3 +48,7 @@ export function SkipEinkauf(arg1:string):Promise<boolean>;
 export function UpdateEinkauf(arg1:main.EinkaufResponse):Promise<boolean>;
 
 export function UploadImage(arg1:string,arg2:string):Promise<string>;
+
+export function UpsertAnsprechpartner(arg1:string,arg2:any,arg3:main.AnsprechpartnerParams):Promise<boolean>;
+
+export function UpsertLieferant(arg1:main.LieferantenParams,arg2:any):Promise<boolean>;

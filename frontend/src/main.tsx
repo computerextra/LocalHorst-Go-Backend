@@ -12,6 +12,12 @@ import Geburtstag from "./Pages/Geburtstag";
 import Index from "./Pages/Index";
 import Inventur from "./Pages/Inventur";
 import KundenSuche from "./Pages/KundenSuche";
+import ApDetails from "./Pages/Lieferanten/Ansprechpartner/Details";
+import ApNew from "./Pages/Lieferanten/Ansprechpartner/New";
+import LieferantBearbeiten from "./Pages/Lieferanten/Bearbeiten";
+import LieferantDetails from "./Pages/Lieferanten/Lieferant";
+import NeuerLieferant from "./Pages/Lieferanten/Neu";
+import Lieferantenübersicht from "./Pages/Lieferanten/Overview";
 import NotFound from "./Pages/NotFound";
 
 createRoot(document.getElementById("root")!).render(
@@ -36,14 +42,16 @@ createRoot(document.getElementById("root")!).render(
             </Route>
           </Route>
           <Route path="Lieferanten">
-            <Route index element={<>Lieferantenübersicht</>} />
+            <Route index element={<Lieferantenübersicht />} />
+            <Route path="Neu" element={<NeuerLieferant />} />
             <Route path=":id">
-              <Route index element={<>Lieferanten Details</>} />
-              <Route path="edit" element={<>Lieferant bearbeiten</>} />
-              <Route path=":lid" element={<>AP Details</>} />
-              <Route path="Neu" element={<>Neuer AP</>} />
+              <Route index element={<LieferantDetails />} />
+              <Route path="edit" element={<LieferantBearbeiten />} />
+              <Route path="Neu" element={<ApNew />} />
+              <Route path=":lid">
+                <Route index element={<ApDetails />} />
+              </Route>
             </Route>
-            <Route path="Neu" element={<>Neuer Lieferant</>} />
           </Route>
           <Route path="Archiv">
             <Route index element={<Archive />} />
