@@ -22,10 +22,6 @@ export function DeleteMitarbeiter(arg1) {
   return window['go']['main']['App']['DeleteMitarbeiter'](arg1);
 }
 
-export function Firma() {
-  return window['go']['main']['App']['Firma']();
-}
-
 export function GetAllMitarbeiter() {
   return window['go']['main']['App']['GetAllMitarbeiter']();
 }
@@ -72,14 +68,6 @@ export function GetLieferanten() {
 
 export function GetMitarbeiter(arg1) {
   return window['go']['main']['App']['GetMitarbeiter'](arg1);
-}
-
-export function Greet(arg1) {
-  return window['go']['main']['App']['Greet'](arg1);
-}
-
-export function Internet() {
-  return window['go']['main']['App']['Internet']();
 }
 
 export function SearchArchive(arg1) {

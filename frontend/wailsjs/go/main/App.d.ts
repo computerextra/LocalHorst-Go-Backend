@@ -13,8 +13,6 @@ export function DeleteLieferant(arg1:string):Promise<boolean>;
 
 export function DeleteMitarbeiter(arg1:string):Promise<boolean>;
 
-export function Firma():Promise<boolean>;
-
 export function GetAllMitarbeiter():Promise<Array<db.MitarbeiterModel>>;
 
 export function GetAnsprechpartner(arg1:string):Promise<db.AnschprechpartnerModel>;
@@ -38,10 +36,6 @@ export function GetLieferant(arg1:string):Promise<db.LieferantenModel>;
 export function GetLieferanten():Promise<Array<db.LieferantenModel>>;
 
 export function GetMitarbeiter(arg1:string):Promise<db.MitarbeiterModel>;
-
-export function Greet(arg1:string):Promise<string>;
-
-export function Internet():Promise<boolean>;
 
 export function SearchArchive(arg1:string):Promise<Array<db.PdfsModel>>;
 

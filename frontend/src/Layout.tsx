@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, Outlet } from "react-router";
 import { themeChange } from "theme-change";
-import { Firma, Internet } from "../wailsjs/go/main/App";
 import { Themes } from "./themes";
 
 export default function Layout() {
@@ -72,84 +71,59 @@ function ThemeSwitcher() {
 }
 
 function NavLinks() {
-  const [firma, setFirma] = useState<boolean>();
-  const [internet, setInternet] = useState<boolean>();
-
-  useEffect(() => {
-    async function x() {
-      const firm = await Firma();
-      if (firm) {
-        setFirma(true);
-      } else {
-        setFirma(false);
-      }
-      const inten = await Internet();
-      if (inten) {
-        setInternet(true);
-      } else {
-        setInternet(false);
-      }
-    }
-    x();
-  }, []);
   return (
     <ul className="px-1 menu menu-horizontal">
       <li>
         <ThemeSwitcher />
       </li>
-      {internet && (
-        <li>
-          <details className="dropdown">
-            <summary>Einkauf</summary>
-            <ul className="p-2 rounded-t-none bg-base-100">
-              <li>
-                <Link to="Einkauf/Auswahl">Eingabe</Link>
-              </li>
-              <li>
-                <Link to="Einkauf">Liste</Link>
-              </li>
-              <li>
-                <Link to="Einkauf/Abrechnung">Abrechnung</Link>
-              </li>
-            </ul>
-          </details>
-        </li>
-      )}
-      {internet && (
-        <li>
-          <details className="dropdown">
-            <summary>Mitarbeiter</summary>
-            <ul className="p-2 rounded-t-none bg-base-100">
-              <li>
-                <Link to="Mitarbeiter">Übersicht</Link>
-              </li>
-              <li>
-                <Link to="Mitarbeiter/Geburtstag">Geburtstage</Link>
-              </li>
-            </ul>
-          </details>
-        </li>
-      )}
-      {internet && (
-        <li>
-          <Link to="Lieferanten">Lieferanten</Link>
-        </li>
-      )}
-      {firma && (
-        <li>
-          <Link to="Archiv">CE Archiv</Link>
-        </li>
-      )}
-      {firma && (
-        <li>
-          <Link to="Kunde">Kundensuche</Link>
-        </li>
-      )}
-      {firma && (
-        <li>
-          <Link to="Inventur">Inventur</Link>
-        </li>
-      )}
+
+      <li>
+        <details className="dropdown">
+          <summary>Einkauf</summary>
+          <ul className="p-2 rounded-t-none bg-base-100">
+            <li>
+              <Link to="Einkauf/Auswahl">Eingabe</Link>
+            </li>
+            <li>
+              <Link to="Einkauf">Liste</Link>
+            </li>
+            <li>
+              <Link to="Einkauf/Abrechnung">Abrechnung</Link>
+            </li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <details className="dropdown">
+          <summary>Mitarbeiter</summary>
+          <ul className="p-2 rounded-t-none bg-base-100">
+            <li>
+              <Link to="Mitarbeiter">Übersicht</Link>
+            </li>
+            <li>
+              <Link to="Mitarbeiter/Geburtstag">Geburtstage</Link>
+            </li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <Link to="Lieferanten">Lieferanten</Link>
+      </li>
+
+      <li>
+        <Link to="Archiv">CE Archiv</Link>
+      </li>
+
+      <li>
+        <Link to="Kunde">Kundensuche</Link>
+      </li>
+
+      <li>
+        <Link to="Inventur">Inventur</Link>
+      </li>
+
       <li>
         <Link to="Werkstatt">Werkstatt</Link>
       </li>
