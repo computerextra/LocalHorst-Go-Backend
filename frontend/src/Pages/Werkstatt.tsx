@@ -57,10 +57,12 @@ function WerkstattForm({ selected }: { selected?: string }) {
 }
 
 function AomeiForm() {
+  // TODO: Implement
   return <>aeomei</>;
 }
 
 function AppleForm() {
+  // TODO: Implement
   return <></>;
 }
 
@@ -367,9 +369,11 @@ function MicrosoftForm() {
 }
 
 function GoogleForm() {
+  // TODO: Implement
   return <></>;
 }
 
 function TelekomForm() {
+  // TODO: Implement
   return <></>;
 }
