@@ -31,6 +31,8 @@ export function GetEntriesFromTeam(arg1:number):Promise<Array<db.ArtikelModel>>;
 
 export function GetInventurYears():Promise<Array<db.InventurModel>>;
 
+export function GetKunde(arg1:string):Promise<main.User>;
+
 export function GetLieferant(arg1:string):Promise<db.LieferantenModel>;
 
 export function GetLieferanten():Promise<Array<db.LieferantenModel>>;

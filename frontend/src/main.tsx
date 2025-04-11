@@ -23,6 +23,7 @@ import MitarbeiterBearbeiter from "./Pages/Mitarbeiter/Edit";
 import NeuerMitarbeiter from "./Pages/Mitarbeiter/New";
 import Mitarbeiterübersicht from "./Pages/Mitarbeiter/Overview";
 import NotFound from "./Pages/NotFound";
+import Werkstatt from "./Pages/Werkstatt";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -63,8 +64,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="Kunde" element={<KundenSuche />} />
           <Route path="Inventur" element={<Inventur />} />
           <Route path="Werkstatt">
-            <Route index element={<>Werkstatt</>} />
-            <Route path="Software" element={<>Form</>} />
+            <Route index element={<Werkstatt />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Route>

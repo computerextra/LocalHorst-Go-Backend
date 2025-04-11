@@ -25,6 +25,46 @@ type Sg_Adressen struct {
 	LiefUmsatz     sql.NullFloat64
 }
 
+type User struct {
+	Name    string
+	Vorname string
+}
+
+func (a *App) GetKunde(Kundennummer string) *User {
+	var result User
+	connectionString := fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", a.config.SAGE_SERVER, a.config.SAGE_DB, a.config.SAGE_USER, a.config.SAGE_PASS, a.config.SAGE_PORT)
+	database, err := sql.Open("sqlserver", connectionString)
+	if err != nil {
+		return nil
+	}
+	defer database.Close()
+
+	rows, err := database.Query(fmt.Sprintf("SELECT Name, Vorname FROM sg_adressen WHERE KundNr LIKE '%s';", Kundennummer))
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var name sql.NullString
+		var vorname sql.NullString
+		if err := rows.Scan(&name, &vorname); err != nil {
+			return nil
+		}
+		if name.Valid {
+			result.Name = name.String
+		}
+		if vorname.Valid {
+			result.Vorname = vorname.String
+		}
+		if err := rows.Err(); err != nil {
+			return nil
+		}
+	}
+
+	return &result
+}
+
 func (a *App) SearchSage(searchTerm string) []Sg_Adressen {
 	var results []Sg_Adressen
 

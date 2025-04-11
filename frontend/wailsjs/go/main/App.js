@@ -58,6 +58,10 @@ export function GetInventurYears() {
   return window['go']['main']['App']['GetInventurYears']();
 }
 
+export function GetKunde(arg1) {
+  return window['go']['main']['App']['GetKunde'](arg1);
+}
+
 export function GetLieferant(arg1) {
   return window['go']['main']['App']['GetLieferant'](arg1);
 }
