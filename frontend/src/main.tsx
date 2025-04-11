@@ -4,8 +4,10 @@ import { HashRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout";
 import Archive from "./Pages/Archive";
+import EinkaufAbrechnung from "./Pages/Einkauf/Abrechnung";
 import EinkaufAuswahl from "./Pages/Einkauf/Auswahl";
 import EinkaufEingabe from "./Pages/Einkauf/Eingabe";
+import Einkaufsliste from "./Pages/Einkauf/Liste";
 import Geburtstag from "./Pages/Geburtstag";
 import Index from "./Pages/Index";
 import Inventur from "./Pages/Inventur";
@@ -18,9 +20,9 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<Layout />}>
           <Route index element={<Index />} />
           <Route path="Einkauf">
-            <Route index element={<>Einkaufsliste</>} />
+            <Route index element={<Einkaufsliste />} />
             <Route path="Auswahl" element={<EinkaufAuswahl />} />
-            <Route path="Abrechnung" element={<>Abrechnung</>} />
+            <Route path="Abrechnung" element={<EinkaufAbrechnung />} />
             <Route path=":id" element={<EinkaufEingabe />} />
           </Route>
           <Route path="Mitarbeiter">

@@ -2,8 +2,10 @@ package main
 
 import (
 	"crypto/tls"
+	"encoding/base64"
 	"fmt"
 	"golang-backend/db"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,9 +20,12 @@ func (a *App) GetEinkaufsListe() []db.EinkaufModel {
 	year, month, day := time.Now().In(loc).Date()
 	yesterday := time.Date(year, month, day, 0, 0, 0, 0, loc).AddDate(0, 0, -1)
 	res, err := a.database.Einkauf.FindMany(
-		db.Einkauf.And(
-			db.Einkauf.Abgeschickt.BeforeEquals(time.Now()),
-			db.Einkauf.Abgeschickt.After(yesterday),
+		db.Einkauf.Or(
+			db.Einkauf.And(
+				db.Einkauf.Abgeschickt.BeforeEquals(time.Now()),
+				db.Einkauf.Abgeschickt.After(yesterday),
+			),
+			db.Einkauf.Abonniert.Equals(true),
 		),
 	).With(
 		db.Einkauf.Mitarbeiter.Fetch(),
@@ -108,7 +113,7 @@ func (a *App) UploadImage(mitarbeiter string, imageNr string) string {
 		Filters: []runtime.FileFilter{
 			{
 				DisplayName: "Bilder",
-				Pattern:     "*.jpg,*.png,*.jpeg,*.gif",
+				Pattern:     "*.jpg;*.png;*.jpeg;*.gif",
 			},
 		},
 	})
@@ -124,7 +129,8 @@ func (a *App) UploadImage(mitarbeiter string, imageNr string) string {
 	}
 	fileSuffix := filepath.Ext(file)
 	fileName := fmt.Sprintf("%s-%s.%s", mitarbeiter, imageNr, fileSuffix)
-	err = os.WriteFile(fileName, data, 0644)
+	filePath := filepath.Join(a.config.UPLOAD_FOLDER, fileName)
+	err = os.WriteFile(filePath, data, 0644)
 	if err != nil {
 		return err.Error()
 	}
@@ -181,4 +187,79 @@ func (a *App) SendAbrechnung(Name, Betrag, Mail string) bool {
 
 	err := d.DialAndSend(m)
 	return err == nil
+}
+
+type ImageResponse struct {
+	Valid bool
+	Image string
+}
+
+func (a *App) CheckImage(id string, Nr string) ImageResponse {
+
+	ma, err := a.database.Einkauf.FindFirst(
+		db.Einkauf.MitarbeiterID.Equals(id),
+	).Exec(a.ctx)
+	if err != nil {
+		return ImageResponse{
+			Valid: false,
+		}
+	}
+	switch Nr {
+	case "1":
+		date, ok_date := ma.Bild1Date()
+		data, ok_data := ma.Bild1()
+		if ok_data && ok_date {
+			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, data))
+		}
+	case "2":
+		date, ok_date := ma.Bild2Date()
+		data, ok_data := ma.Bild2()
+		if ok_data && ok_date {
+			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, data))
+		}
+	case "3":
+		date, ok_date := ma.Bild3Date()
+		data, ok_data := ma.Bild3()
+		if ok_data && ok_date {
+			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, data))
+		}
+	}
+	return ImageResponse{
+		Valid: false,
+	}
+}
+
+func checkImage(date db.DateTime, data db.String) ImageResponse {
+	res := ImageResponse{}
+	loc, _ := time.LoadLocation("Europe/Berlin")
+	new := time.Date(date.Year(), date.Month(), date.Day(), time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), loc)
+	duration := time.Since(new)
+	days := duration.Hours() / 24
+	if days == 0 {
+		res.Valid = true
+		res.Image = imageToBase64(data)
+	} else {
+		res.Valid = false
+	}
+	return res
+}
+
+func imageToBase64(path string) string {
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+
+	var base64Encoding string
+	mimeType := http.DetectContentType(bytes)
+	switch mimeType {
+	case "image/jpg":
+		base64Encoding = "data:image/jpg;base64,"
+	case "image/jpeg":
+		base64Encoding = "data:image/jpeg;base64,"
+	case "image/png":
+		base64Encoding = "data:image/png;base64,"
+	}
+	base64Encoding += base64.StdEncoding.EncodeToString(bytes)
+	return base64Encoding
 }
