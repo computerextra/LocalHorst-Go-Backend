@@ -31,35 +31,29 @@ func (d Database) GetMitarbeiter(id string) (*Mitarbeiter, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter WHERE id = :mitarbeiterId;",
-		sql.Named("mitarbeiterId", id),
-	)
+	stmt, err := conn.Prepare("SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter WHERE id = ?;")
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer stmt.Close()
 
 	var x Mitarbeiter
-	for rows.Next() {
-		if err := rows.Scan(
-			&x.Id,
-			&x.Name,
-			&x.Short,
-			&x.Gruppenwahl,
-			&x.InternTelefon1,
-			&x.InternTelefon2,
-			&x.FestnetzAlternativ,
-			&x.FestnetzPrivat,
-			&x.HomeOffice,
-			&x.MobilBusiness,
-			&x.MobilPrivat,
-			&x.Email,
-			&x.Azubi,
-			&x.Geburtstag,
-		); err != nil {
-			return nil, err
-		}
+	err = stmt.QueryRow(id).Scan(&x.Id,
+		&x.Name,
+		&x.Short,
+		&x.Gruppenwahl,
+		&x.InternTelefon1,
+		&x.InternTelefon2,
+		&x.FestnetzAlternativ,
+		&x.FestnetzPrivat,
+		&x.HomeOffice,
+		&x.MobilBusiness,
+		&x.MobilPrivat,
+		&x.Email,
+		&x.Azubi,
+		&x.Geburtstag)
+	if err != nil {
+		return nil, err
 	}
 
 	return &x, nil
@@ -72,9 +66,13 @@ func (d Database) GetAllMitarbeiter() ([]Mitarbeiter, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter ORDER BY Name ASC;",
-	)
+	stmt, err := conn.Prepare("SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter ORDER BY Name ASC;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query()
 	if err != nil {
 		return nil, err
 	}
@@ -222,22 +220,27 @@ func (d Database) createMitarbeiter(params MitarbeiterParams) (sql.Result, error
 	}
 	defer conn.Close()
 
-	return conn.Exec(
-		"INSERT INTO Mitarbeiter ( id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag) VALUES ( :id, :Name, :Short, :Gruppenwahl, :InternTelefon1, :InternTelefon2, :FestnetzAlternativ, :FestnetzPrivat, :HomeOffice, :MobilBusiness, :MobilPrivat, :Email, :Azubi, :Geburtstag)",
-		sql.Named("id", cuid.New()),
-		sql.Named("Name", params.Name),
-		sql.Named("Short", Short),
-		sql.Named("Gruppenwahl", Gruppenwahl),
-		sql.Named("InternTelefon1", InternTelefon1),
-		sql.Named("InternTelefon2", InternTelefon2),
-		sql.Named("FestnetzAlternativ", FestnetzAlternativ),
-		sql.Named("FestnetzPrivat", FestnetzPrivat),
-		sql.Named("HomeOffice", HomeOffice),
-		sql.Named("MobilBusiness", MobilBusiness),
-		sql.Named("MobilPrivat", MobilPrivat),
-		sql.Named("Email", Email),
-		sql.Named("Azubi", params.Azubi),
-		sql.Named("Geburtstag", Geburtstag),
+	stmt, err := conn.Prepare("INSERT INTO Mitarbeiter ( id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(
+		cuid.New(),
+		params.Name,
+		Short,
+		Gruppenwahl,
+		InternTelefon1,
+		InternTelefon2,
+		FestnetzAlternativ,
+		FestnetzPrivat,
+		HomeOffice,
+		MobilBusiness,
+		MobilPrivat,
+		Email,
+		params.Azubi,
+		Geburtstag,
 	)
 }
 func (d Database) updateMitarbeiter(params MitarbeiterParams, id string) (sql.Result, error) {
@@ -331,22 +334,27 @@ func (d Database) updateMitarbeiter(params MitarbeiterParams, id string) (sql.Re
 	}
 	defer conn.Close()
 
-	return conn.Exec(
-		"UPDATE Mitarbeiter SET Name = :Name, Short = :Short, Gruppenwahl = :Gruppenwahl, InternTelefon1 = :InternTelefon1, InternTelefon2 = :InternTelefon2, FestnetzAlternativ = :FestnetzAlternativ, FestnetzPrivat = :FestnetzPrivat, HomeOffice = :HomeOffice, MobilBusiness = :MobilBusiness, MobilPrivat = :MobilPrivat, Email = :Email, Azubi = :Azubi, Geburtstag = :Geburtstag WHERE id = :id;",
-		sql.Named("Name", params.Name),
-		sql.Named("Short", Short),
-		sql.Named("Gruppenwahl", Gruppenwahl),
-		sql.Named("InternTelefon1", InternTelefon1),
-		sql.Named("InternTelefon2", InternTelefon2),
-		sql.Named("FestnetzAlternativ", FestnetzAlternativ),
-		sql.Named("FestnetzPrivat", FestnetzPrivat),
-		sql.Named("HomeOffice", HomeOffice),
-		sql.Named("MobilBusiness", MobilBusiness),
-		sql.Named("MobilPrivat", MobilPrivat),
-		sql.Named("Email", Email),
-		sql.Named("Azubi", params.Azubi),
-		sql.Named("Geburtstag", Geburtstag),
-		sql.Named("id", id),
+	stmt, err := conn.Prepare("UPDATE Mitarbeiter SET Name = ?, Short = ?, Gruppenwahl = ?, InternTelefon1 = ?, InternTelefon2 = ?, FestnetzAlternativ = ?, FestnetzPrivat = ?, HomeOffice = ?, MobilBusiness = ?, MobilPrivat = ?, Email = ?, Azubi = ?, Geburtstag = ? WHERE id = ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(
+		params.Name,
+		Short,
+		Gruppenwahl,
+		InternTelefon1,
+		InternTelefon2,
+		FestnetzAlternativ,
+		FestnetzPrivat,
+		HomeOffice,
+		MobilBusiness,
+		MobilPrivat,
+		Email,
+		params.Azubi,
+		Geburtstag,
+		id,
 	)
 }
 
@@ -357,8 +365,11 @@ func (d Database) DeleteMitarbeiter(id string) (sql.Result, error) {
 	}
 	defer conn.Close()
 
-	return conn.Exec(
-		"DELETE FROM Mitarbeiter WHERE id = :id",
-		sql.Named("id", id),
-	)
+	stmt, err := conn.Prepare("DELETE FROM Mitarbeiter WHERE id = ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(id)
 }

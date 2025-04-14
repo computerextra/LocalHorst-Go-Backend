@@ -21,9 +21,13 @@ func (d Database) GetLieferanten() ([]Lieferant, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Firma, Kundennummer, Webseite FROM Lieferanten ORDER BY Firma ASC;",
-	)
+	stmt, err := conn.Prepare("SELECT id, Firma, Kundennummer, Webseite FROM Lieferanten ORDER BY Firma ASC;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query()
 	if err != nil {
 		return nil, err
 	}
@@ -59,25 +63,21 @@ func (d Database) GetLieferant(id string) (*Lieferant, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Firma, Kundennummer, Webseite FROM Lieferanten WHERE id = :id;", sql.Named("id", id),
-	)
+	stmt, err := conn.Prepare("SELECT id, Firma, Kundennummer, Webseite FROM Lieferanten WHERE id = ?;")
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer stmt.Close()
 
 	var res Lieferant
-	for rows.Next() {
-		if err := rows.Scan(
-			&res.Id,
-			&res.Firma,
-			&res.Kundennummer,
-			&res.Webseite,
-		); err != nil {
-			return nil, err
-		}
+	err = stmt.QueryRow(id).Scan(&res.Id,
+		&res.Firma,
+		&res.Kundennummer,
+		&res.Webseite)
+	if err != nil {
+		return nil, err
 	}
+
 	res.Ansprechpartner, err = d.GetAnsprechpartnerFromLieferant(res.Id)
 	if err != nil {
 		return &res, err
@@ -120,12 +120,18 @@ func (d Database) updateLieferant(params LieferantenParams, id string) (sql.Resu
 		return nil, err
 	}
 	defer conn.Close()
-	return conn.Exec(
-		"UPDATE Lieferanten SET Firma = :firma, Kundennummer = :kundennummer, Webseite = :webseite WHERE id = :id;",
-		sql.Named("firma", params.Firma),
-		sql.Named("kundennummer", Kundennummer),
-		sql.Named("webseite", Webseite),
-		sql.Named("id", id),
+
+	stmt, err := conn.Prepare("UPDATE Lieferanten SET Firma = ?, Kundennummer = ?, Webseite = ? WHERE id = ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(
+		params.Firma,
+		Kundennummer,
+		Webseite,
+		id,
 	)
 }
 
@@ -149,12 +155,18 @@ func (d Database) createLieferant(params LieferantenParams) (sql.Result, error) 
 		return nil, err
 	}
 	defer conn.Close()
-	return conn.Exec(
-		"INSERT INTO Lieferanten (id, Firma, Kundennummer, Webseite) VALUES (:id, :firma, :kundennummer, :website);",
-		sql.Named("id", cuid.New()),
-		sql.Named("firma", params.Firma),
-		sql.Named("kundennummer", Kundennummer),
-		sql.Named("webseite", Webseite),
+
+	stmt, err := conn.Prepare("INSERT INTO Lieferanten (id, Firma, Kundennummer, Webseite) VALUES (?, ?, ?, ?);")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(
+		cuid.New(),
+		params.Firma,
+		Kundennummer,
+		Webseite,
 	)
 }
 
@@ -165,5 +177,11 @@ func (d Database) DeleteLieferant(id string) (sql.Result, error) {
 	}
 	defer conn.Close()
 
-	return conn.Exec("DELETE FROM Lieferanten WHERE id = :id", sql.Named("id", id))
+	stmt, err := conn.Prepare("DELETE FROM Lieferanten WHERE id = ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(id)
 }

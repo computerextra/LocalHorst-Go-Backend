@@ -22,9 +22,13 @@ func (d Database) GetAnsprechpartnerFromLieferant(id string) ([]Ansprechpartner,
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Name, Telefon, Mobil, Mail, lieferantenId FROM Anschprechpartner WHERE lieferantenId = :id ORDER BY Name ASC;", sql.Named("id", id),
-	)
+	stmt, err := conn.Prepare("SELECT id, Name, Telefon, Mobil, Mail, lieferantenId FROM Anschprechpartner WHERE lieferantenId = ? ORDER BY Name ASC;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(id)
 	if err != nil {
 		return nil, err
 	}
@@ -55,28 +59,24 @@ func (d Database) GetAnsprechpartner(id string) (*Ansprechpartner, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Name, Telefon, Mobil, Mail, lieferantenId FROM Anschprechpartner WHERE id = :id ORDER BY Name ASC;", sql.Named("id", id),
-	)
+	stmt, err := conn.Prepare("SELECT id, Name, Telefon, Mobil, Mail, lieferantenId FROM Anschprechpartner WHERE id = ? ORDER BY Name ASC;")
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer stmt.Close()
 
 	var x Ansprechpartner
-	for rows.Next() {
-		if err := rows.Scan(
-			&x.Id,
-			&x.Name,
-			&x.Telefon,
-			&x.Mobil,
-			&x.Mail,
-			&x.LieferantenId,
-		); err != nil {
-			return nil, err
-		}
+	err = stmt.QueryRow(id).Scan(&x.Id,
+		&x.Name,
+		&x.Telefon,
+		&x.Mobil,
+		&x.Mail,
+		&x.LieferantenId)
 
+	if err != nil {
+		return nil, err
 	}
+
 	return &x, nil
 }
 
@@ -126,14 +126,19 @@ func (d Database) createAnsprechpartner(params AnsprechpartnerParams) (sql.Resul
 	}
 	defer conn.Close()
 
-	return conn.Exec(
-		"INSERT INTO Anschprechpartner (id, Name, Telefon, Mobil, Mail, lieferantenId) VALUES (:id, :Name, :Telefon, :Mobil, :Mail, :lieferantenID)",
-		sql.Named("id", cuid.New()),
-		sql.Named("Name", params.Name),
-		sql.Named("Telefon", Telefon),
-		sql.Named("Mobil", Mobil),
-		sql.Named("Mail", Mail),
-		sql.Named("lieferantenId", params.LieferantenId),
+	stmt, err := conn.Prepare("INSERT INTO Anschprechpartner (id, Name, Telefon, Mobil, Mail, lieferantenId) VALUES (?, ?, ?, ?, ?, ?)")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(
+		cuid.New(),
+		params.Name,
+		Telefon,
+		Mobil,
+		Mail,
+		params.LieferantenId,
 	)
 
 }
@@ -167,14 +172,19 @@ func (d Database) updateAnsprechpartner(params AnsprechpartnerParams, id string)
 	}
 	defer conn.Close()
 
-	return conn.Exec(
-		"UPDATE Anschprechpartner SET Name = :name, Telefon = :Telefon, Mobil = :Mobil, Mail = :Mail, lieferantenId = :lieferantenId WHERE id = :id",
-		sql.Named("Name", params.Name),
-		sql.Named("Telefon", Telefon),
-		sql.Named("Mobil", Mobil),
-		sql.Named("Mail", Mail),
-		sql.Named("lieferantenId", params.LieferantenId),
-		sql.Named("id", id),
+	stmt, err := conn.Prepare("UPDATE Anschprechpartner SET Name = ?, Telefon = ?, Mobil = ?, Mail = ?, lieferantenId = ? WHERE id = ?")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(
+		params.Name,
+		Telefon,
+		Mobil,
+		Mail,
+		params.LieferantenId,
+		id,
 	)
 }
 
@@ -185,8 +195,11 @@ func (d Database) DeleteAnsprechpartner(id string) (sql.Result, error) {
 	}
 	defer conn.Close()
 
-	return conn.Exec(
-		"DELETE FROM Anschprechpartner WHERE id = :id;",
-		sql.Named("id", id),
-	)
+	stmt, err := conn.Prepare("DELETE FROM Anschprechpartner WHERE id = ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(id)
 }

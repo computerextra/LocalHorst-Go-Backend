@@ -32,9 +32,13 @@ func (d Database) GetEinkaufsliste() ([]Einkauf, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE DATE(Abgeschickt) = curdate() OR Abonniert = 1 ORDER BY Abgeschickt ASC;",
-	)
+	stmt, err := conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE DATE(Abgeschickt) = curdate() OR Abonniert = 1 ORDER BY Abgeschickt ASC;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query()
 	if err != nil {
 		return nil, err
 	}
@@ -173,39 +177,48 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id *string) (sql.Res
 	}
 
 	if len(*id) > 0 {
+
+		stmt, err := conn.Prepare("UPDATE Einkauf SET Paypal = ?, Abonniert = ?, Geld = ?, Pfand = ?, Dinge = ?, Abgeschickt = NOW(), Bild1 = ?, Bild2 = ?, Bild3 = ?, Bild1Date = ?, Bild2Date = ?, Bild3Date = ? WHERE id = ?;")
+		if err != nil {
+			return nil, err
+		}
+		defer stmt.Close()
 		// Update
-		return conn.Exec(
-			"UPDATE Einkauf SET Paypal = :paypal, Abonniert = :abonniert, Geld = :geld, Pfand = :pfand, Dinge = :dinge, Abgeschickt = NOW(), Bild1 = :bild1, Bild2 = :bild2, Bild3 = :bild3, Bild1Date = :bild1date, Bild2Date = :bild2date, Bild3Date = :bild3date WHERE id = :mitarbeiterid;",
-			sql.Named("paypal", Paypal),
-			sql.Named("abonniert", Abonniert),
-			sql.Named("geld", Geld),
-			sql.Named("pfand", Pfand),
-			sql.Named("dinge", Dinge),
-			sql.Named("bild1", Bild1),
-			sql.Named("bild2", Bild2),
-			sql.Named("bild3", Bild3),
-			sql.Named("bild1date", Bild1Date),
-			sql.Named("bild2date", Bild2Date),
-			sql.Named("bild3date", Bild3Date),
-			sql.Named("id", *id),
+		return stmt.Exec(
+			Paypal,
+			Abonniert,
+			Geld,
+			Pfand,
+			Dinge,
+			Bild1,
+			Bild2,
+			Bild3,
+			Bild1Date,
+			Bild2Date,
+			Bild3Date,
+			*id,
 		)
 	} else {
+
+		stmt, err := conn.Prepare("INSERT INTO Einkauf ( id, Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);")
+		if err != nil {
+			return nil, err
+		}
+		defer stmt.Close()
 		// Create
-		return conn.Exec(
-			"INSERT INTO Einkauf ( id, Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date) VALUES (:id, :Paypal, :Abonniert, :Geld, :Pfand, :Dinge, :mitarbeiterId, NOW(), :Bild1, :Bild2, :Bild3, :Bild1Date, :Bild2Date, :Bild3Date);",
-			sql.Named("id", cuid.New()),
-			sql.Named("Paypal", Paypal),
-			sql.Named("Abonniert", Abonniert),
-			sql.Named("Geld", Geld),
-			sql.Named("Pfand", Pfand),
-			sql.Named("Dinge", Dinge),
-			sql.Named("mitarbeiterId", params.MitarbeiterId),
-			sql.Named("Bild1", Bild1),
-			sql.Named("Bild2", Bild2),
-			sql.Named("Bild3", Bild3),
-			sql.Named("Bild1Date", Bild1Date),
-			sql.Named("Bild2Date", Bild2Date),
-			sql.Named("Bild3Date", Bild3Date),
+		return stmt.Exec(
+			cuid.New(),
+			Paypal,
+			Abonniert,
+			Geld,
+			Pfand,
+			Dinge,
+			Bild1,
+			Bild2,
+			Bild3,
+			Bild1Date,
+			Bild2Date,
+			Bild3Date,
 		)
 
 	}
@@ -218,39 +231,35 @@ func (d Database) GetEinkauf(id string) (*Einkauf, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE mitarbeiterid = :mitarbeiterId;",
-		sql.Named("mitarbeiterId", id),
-	)
+	stmt, err := conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE mitarbeiterid = ?;")
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer stmt.Close()
 
 	var x Einkauf
-	for rows.Next() {
-		if err := rows.Scan(
-			&x.Id,
-			&x.Paypal,
-			&x.Abonniert,
-			&x.Geld,
-			&x.Dinge,
-			&x.MitarbeiterId,
-			&x.Abgeschickt,
-			&x.Bild1,
-			&x.Bild2,
-			&x.Bild3,
-			&x.Bild1Date,
-			&x.Bild2Date,
-			&x.Bild3Date,
-		); err != nil {
-			return nil, err
-		}
+	err = stmt.QueryRow(id).Scan(&x.Id,
+		&x.Paypal,
+		&x.Abonniert,
+		&x.Geld,
+		&x.Dinge,
+		&x.MitarbeiterId,
+		&x.Abgeschickt,
+		&x.Bild1,
+		&x.Bild2,
+		&x.Bild3,
+		&x.Bild1Date,
+		&x.Bild2Date,
+		&x.Bild3Date)
+	if err != nil {
+		return nil, err
 	}
+
 	ma, err := d.GetMitarbeiter(x.MitarbeiterId)
 	if err == nil {
 		x.Mitarbeiter = *ma
 	}
+
 	return &x, nil
 }
 
@@ -260,10 +269,13 @@ func (d Database) SkipEinkauf(id string) (sql.Result, error) {
 		return nil, err
 	}
 	defer conn.Close()
-	return conn.Exec(
-		"UPDATE Einkauf SET Abgeschickt = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE mitarbeiterId = :mitarbeiterId;",
-		sql.Named("mitarbeiterId", id),
-	)
+
+	stmt, err := conn.Prepare("UPDATE Einkauf SET Abgeschickt = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE mitarbeiterId = ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec(id)
 }
 
 func (d Database) DeleteEinkauf(id string) (sql.Result, error) {
@@ -272,8 +284,12 @@ func (d Database) DeleteEinkauf(id string) (sql.Result, error) {
 		return nil, err
 	}
 	defer conn.Close()
-	return conn.Exec(
-		"DELETE FROM Einkauf WHERE mitarbeiterId = :mitarbeiterId;",
-		sql.Named("mitarbeiterId", id),
-	)
+
+	stmt, err := conn.Prepare("DELETE FROM Einkauf WHERE mitarbeiterId = ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return stmt.Exec(id)
 }

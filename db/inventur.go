@@ -1,7 +1,5 @@
 package db
 
-import "database/sql"
-
 func (d Database) GetInventurYears() ([]string, error) {
 	conn, err := getConnection(d.connectionString)
 	if err != nil {
@@ -9,10 +7,15 @@ func (d Database) GetInventurYears() ([]string, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT Jahr FROM Inventur ORDER BY Jahr ASC;",
-	)
+	stmt, err := conn.Prepare("SELECT Jahr FROM Inventur ORDER BY Jahr ASC;")
 	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query()
+	if err != nil {
+
 		return nil, err
 	}
 	defer rows.Close()
@@ -49,15 +52,20 @@ type Artikel struct {
 func (d Database) GetDataFromYear(year string) ([]Team, error) {
 	conn, err := getConnection(d.connectionString)
 	if err != nil {
+
 		return nil, err
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Mitarbeiter, Farbe, Ort, inventurJahr FROM Team WHERE inventurJahr = :jahr;",
-		sql.Named("jahr", year),
-	)
+	stmt, err := conn.Prepare("SELECT id, Mitarbeiter, Farbe, Ort, inventurJahr FROM Team WHERE inventurJahr = ?;")
 	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(year)
+	if err != nil {
+
 		return nil, err
 	}
 	defer rows.Close()
@@ -80,6 +88,7 @@ func (d Database) GetDataFromYear(year string) ([]Team, error) {
 	for idx, team := range res {
 		rowsArtikel, err := d.GetEntriesFromTeam(team.Id)
 		if err != nil {
+
 			continue
 		}
 		res[idx].Artikel = rowsArtikel
@@ -91,15 +100,20 @@ func (d Database) GetDataFromYear(year string) ([]Team, error) {
 func (d Database) GetEntriesFromTeam(id int32) ([]Artikel, error) {
 	conn, err := getConnection(d.connectionString)
 	if err != nil {
+
 		return nil, err
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		"SELECT id, Artikelnummer, Suchbegriff, Anzahl, teamId FROM Artikel WHERE teamId = :teamID;",
-		sql.Named("teamID", id),
-	)
+	stmt, err := conn.Prepare("SELECT id, Artikelnummer, Suchbegriff, Anzahl, teamId FROM Artikel WHERE teamId = ?;")
 	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(id)
+	if err != nil {
+
 		return nil, err
 	}
 	defer rows.Close()
@@ -114,6 +128,7 @@ func (d Database) GetEntriesFromTeam(id int32) ([]Artikel, error) {
 			&x.Anzahl,
 			&x.TeamId,
 		); err != nil {
+
 			return nil, err
 		}
 		res = append(res, x)

@@ -1,7 +1,5 @@
 package db
 
-import "fmt"
-
 type Archive struct {
 	Id    int32
 	Title string
@@ -15,8 +13,14 @@ func (d Database) SearchArchive(searchTerm string) ([]Archive, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		fmt.Sprintf("SELECT id, title, body FROM pdfs WHERE body LIKE \"%%%s%%\" OR title LIKE \"%%%s%%\"", searchTerm, searchTerm),
+	stmt, err := conn.Prepare("SELECT id, title, body FROM pdfs WHERE body LIKE ? OR title LIKE ?;")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(
+		searchTerm, searchTerm,
 	)
 	if err != nil {
 		return nil, err
@@ -41,19 +45,15 @@ func (d Database) GetArchive(id int32) (*Archive, error) {
 	}
 	defer conn.Close()
 
-	rows, err := conn.Query(
-		fmt.Sprintf("SELECT id, title, body FROM pdfs WHERE id=%v", id),
-	)
+	stmt, err := conn.Prepare("SELECT id, title, body FROM pdfs WHERE id= ?;")
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-
+	defer stmt.Close()
 	var x Archive
-	for rows.Next() {
-		if err := rows.Scan(&x.Id, &x.Title, &x.Body); err != nil {
-			return nil, err
-		}
+	err = stmt.QueryRow(id).Scan(&x.Id, &x.Title, &x.Body)
+	if err != nil {
+		return nil, err
 	}
 
 	return &x, nil

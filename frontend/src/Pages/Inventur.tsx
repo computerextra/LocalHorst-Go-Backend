@@ -20,6 +20,7 @@ export default function Inventur() {
     async function x() {
       setLoading(true);
       const years = await GetInventurYears();
+
       setYears(years);
       setLoading(false);
     }
@@ -32,6 +33,7 @@ export default function Inventur() {
     setTeam(undefined);
     setEntries(undefined);
     const res = await GetDataFromYear(year);
+
     setTeams(res);
     setLoading(false);
   };
@@ -41,6 +43,7 @@ export default function Inventur() {
     setLoading(true);
     setTeam(team);
     const res = await GetEntriesFromTeam(team);
+
     setEntries(res);
     setLoading(false);
   };
