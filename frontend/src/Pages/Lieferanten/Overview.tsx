@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { GetLieferanten } from "../../../wailsjs/go/main/App";
+import { db } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
-import { Ansprechpartner, Lieferant } from "./types";
 
 export default function Lieferantenübersicht() {
-  const [Lieferanten, setLieferanten] = useState<undefined | Lieferant[]>(
+  const [Lieferanten, setLieferanten] = useState<undefined | db.Lieferant[]>(
     undefined
   );
   const [loading, setLoading] = useState(false);
@@ -14,43 +14,9 @@ export default function Lieferantenübersicht() {
   useEffect(() => {
     async function x() {
       setLoading(true);
-      const lieferanten: Lieferant[] = [];
       const dbRes = await GetLieferanten();
-      dbRes.map((r) => {
-        const found = lieferanten.find((x) => x.id == r.ID);
-        if (found == undefined) {
-          const ap: Ansprechpartner = {
-            id: r.ID_2.String,
-            lieferantenId: r.ID,
-            Name: r.Name.String,
-            Mail: r.Mail.Valid ? r.Mail.String : undefined,
-            Mobil: r.Mobil.Valid ? r.Mobil.String : undefined,
-            Telefon: r.Telefon.Valid ? r.Telefon.String : undefined,
-          };
-          lieferanten.push({
-            Ansprechpartner: [ap],
-            Firma: r.Firma,
-            id: r.ID,
-            Kundennummer: r.Kundennummer.Valid
-              ? r.Kundennummer.String
-              : undefined,
-            Webseite: r.Webseite.Valid ? r.Webseite.String : undefined,
-          });
-        } else {
-          if (r.ID_2.Valid && r.Name.Valid) {
-            found.Ansprechpartner.push({
-              id: r.ID_2.String,
-              lieferantenId: r.ID,
-              Name: r.Name.String,
-              Mail: r.Mail.Valid ? r.Mail.String : undefined,
-              Mobil: r.Mobil.Valid ? r.Mobil.String : undefined,
-              Telefon: r.Telefon.Valid ? r.Telefon.String : undefined,
-            });
-          }
-        }
-      });
 
-      setLieferanten(lieferanten);
+      setLieferanten(dbRes);
       setLoading(false);
     }
     x();
@@ -81,22 +47,22 @@ export default function Lieferantenübersicht() {
                 <tr>
                   <th>
                     <Link
-                      to={"/Lieferanten/" + lieferant.id}
+                      to={"/Lieferanten/" + lieferant.Id}
                       className="underline"
                     >
                       {lieferant.Firma}
                     </Link>
                   </th>
-                  <td>{lieferant.Kundennummer}</td>
+                  <td>{lieferant.Kundennummer.String}</td>
                   <td>
-                    {lieferant.Webseite ? (
+                    {lieferant.Webseite.Valid ? (
                       <a
                         className="underline text-error"
-                        href={lieferant.Webseite}
+                        href={lieferant.Webseite.String}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {lieferant.Webseite}
+                        {lieferant.Webseite.String}
                       </a>
                     ) : (
                       <span>-</span>
@@ -117,36 +83,37 @@ export default function Lieferantenübersicht() {
                           <tr>
                             <th>{ap.Name}</th>
                             <td>
-                              {ap.Telefon && ap.Telefon.length > 1 ? (
+                              {ap.Telefon.Valid &&
+                              ap.Telefon.String.length > 1 ? (
                                 <a
                                   className="underline text-error"
-                                  href={"tel:" + ap.Telefon}
+                                  href={"tel:" + ap.Telefon.String}
                                 >
-                                  {ap.Telefon}
+                                  {ap.Telefon.String}
                                 </a>
                               ) : (
                                 <span>-</span>
                               )}
                             </td>
                             <td>
-                              {ap.Mobil && ap.Mobil.length > 1 ? (
+                              {ap.Mobil.Valid && ap.Mobil.String.length > 1 ? (
                                 <a
                                   className="underline text-error"
-                                  href={"tel:" + ap.Mobil}
+                                  href={"tel:" + ap.Mobil.String}
                                 >
-                                  {ap.Mobil}
+                                  {ap.Mobil.String}
                                 </a>
                               ) : (
                                 <span>-</span>
                               )}
                             </td>
                             <td>
-                              {ap.Mail && ap.Mail.length > 1 ? (
+                              {ap.Mail.Valid && ap.Mail.String.length > 1 ? (
                                 <a
                                   className="underline text-error"
-                                  href={"mailto:" + ap.Mail}
+                                  href={"mailto:" + ap.Mail.String}
                                 >
-                                  {ap.Mail}
+                                  {ap.Mail.String}
                                 </a>
                               ) : (
                                 <span>-</span>

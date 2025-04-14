@@ -6,9 +6,9 @@ import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function Mitarbeiterübersicht() {
-  const [Mitarbeiter, setMitarbeiter] = useState<
-    undefined | db.GetAllMitarbeiterRow[]
-  >(undefined);
+  const [Mitarbeiter, setMitarbeiter] = useState<undefined | db.Mitarbeiter[]>(
+    undefined
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -49,10 +49,10 @@ export default function Mitarbeiterübersicht() {
           </thead>
           <tbody>
             {Mitarbeiter?.map((mitarbeiter) => (
-              <tr key={mitarbeiter.ID}>
+              <tr key={mitarbeiter.Id}>
                 <th>
                   <Link
-                    to={"/Mitarbeiter/" + mitarbeiter.ID}
+                    to={"/Mitarbeiter/" + mitarbeiter.Id}
                     className="underline"
                   >
                     {mitarbeiter.Name}
@@ -69,46 +69,46 @@ export default function Mitarbeiterübersicht() {
                   )}
                 </td>
                 <td>{mitarbeiter.Gruppenwahl.String}</td>
-                <td>{mitarbeiter.Interntelefon1.String}</td>
-                <td>{mitarbeiter.Interntelefon2.String}</td>
+                <td>{mitarbeiter.InternTelefon1.String}</td>
+                <td>{mitarbeiter.InternTelefon2.String}</td>
                 <td>
-                  {mitarbeiter.Festnetzalternativ.Valid && (
+                  {mitarbeiter.FestnetzAlternativ.Valid && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.Festnetzalternativ.String}
+                      href={"tel:" + mitarbeiter.FestnetzAlternativ.String}
                     >
-                      {mitarbeiter.Festnetzalternativ.String}
+                      {mitarbeiter.FestnetzAlternativ.String}
                     </a>
                   )}
                 </td>
                 <td>
-                  {mitarbeiter.Festnetzprivat.Valid && (
+                  {mitarbeiter.FestnetzPrivat.Valid && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.Festnetzprivat.String}
+                      href={"tel:" + mitarbeiter.FestnetzPrivat.String}
                     >
-                      {mitarbeiter.Festnetzprivat.String}
+                      {mitarbeiter.FestnetzPrivat.String}
                     </a>
                   )}
                 </td>
-                <td>{mitarbeiter.Homeoffice.String}</td>
+                <td>{mitarbeiter.HomeOffice.String}</td>
                 <td>
-                  {mitarbeiter.Mobilbusiness.Valid && (
+                  {mitarbeiter.MobilBusiness.Valid && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.Mobilbusiness.String}
+                      href={"tel:" + mitarbeiter.MobilBusiness.String}
                     >
-                      {mitarbeiter.Mobilbusiness.String}
+                      {mitarbeiter.MobilBusiness.String}
                     </a>
                   )}
                 </td>
                 <td>
-                  {mitarbeiter.Mobilprivat.Valid && (
+                  {mitarbeiter.MobilPrivat.Valid && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.Mobilprivat.String}
+                      href={"tel:" + mitarbeiter.MobilPrivat.String}
                     >
-                      {mitarbeiter.Mobilprivat.String}
+                      {mitarbeiter.MobilPrivat.String}
                     </a>
                   )}
                 </td>

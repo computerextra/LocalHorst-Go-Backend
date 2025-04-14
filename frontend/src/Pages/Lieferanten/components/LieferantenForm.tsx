@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UpsertLieferant } from "../../../../wailsjs/go/main/App";
-import { main } from "../../../../wailsjs/go/models";
-import { Lieferant } from "../types";
+import { db } from "../../../../wailsjs/go/models";
 
 export default function LieferantenForm({
   lieferant,
 }: {
-  lieferant?: Lieferant;
+  lieferant?: db.Lieferant;
 }) {
   const [Firma, setFirma] = useState<string | undefined>(undefined);
   const [Kundennummer, setKundennummer] = useState<string | undefined>(
@@ -22,20 +21,24 @@ export default function LieferantenForm({
     if (lieferant == null) return;
     setLoading(true);
     setFirma(lieferant.Firma);
-    setKundennummer(lieferant.Kundennummer);
-    setWebsite(lieferant.Webseite);
+    setKundennummer(
+      lieferant.Kundennummer.Valid ? lieferant.Kundennummer.String : undefined
+    );
+    setWebsite(
+      lieferant.Webseite.Valid ? lieferant.Webseite.String : undefined
+    );
     setLoading(false);
   }, [lieferant]);
 
   const onSave = async () => {
     if (Firma == null) return;
     if (Firma.length < 1) return;
-    const params: main.LieferantenParams = {
+    const params: db.LieferantenParams = {
       Firma,
       Kundennummer,
       Webseite: Website,
     };
-    const res = await UpsertLieferant(params, lieferant?.id ?? "");
+    const res = await UpsertLieferant(params, lieferant?.Id ?? "");
     if (res) {
       navigate("/Lieferanten");
     } else {

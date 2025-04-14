@@ -4,11 +4,7 @@ import { CheckImage } from "../../../../wailsjs/go/main/App";
 import type { db, main } from "../../../../wailsjs/go/models";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
-export default function EinkaufCard({
-  einkauf,
-}: {
-  einkauf: db.GetEinkaufsListeRow;
-}) {
+export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
   const [bild1, setBild1] = useState<undefined | main.ImageResponse>(undefined);
   const [bild2, setBild2] = useState<undefined | main.ImageResponse>(undefined);
   const [bild3, setBild3] = useState<undefined | main.ImageResponse>(undefined);
@@ -17,9 +13,9 @@ export default function EinkaufCard({
   useEffect(() => {
     async function x() {
       setLoading(true);
-      const res1 = await CheckImage(einkauf.Mitarbeiterid, "1");
-      const res2 = await CheckImage(einkauf.Mitarbeiterid, "2");
-      const res3 = await CheckImage(einkauf.Mitarbeiterid, "3");
+      const res1 = await CheckImage(einkauf.MitarbeiterId, "1");
+      const res2 = await CheckImage(einkauf.MitarbeiterId, "2");
+      const res3 = await CheckImage(einkauf.MitarbeiterId, "3");
       setBild1(res1);
       setBild2(res2);
       setBild3(res3);
@@ -36,12 +32,9 @@ export default function EinkaufCard({
       <div className="card card-border bg-base-100 print:!hidden">
         <div className="card-body">
           <div className="flex justify-between">
-            <h2 className="card-title">{einkauf.Name.String}</h2>
+            <h2 className="card-title">{einkauf.Mitarbeiter.Name}</h2>
             <div className="card-actions justify-end">
-              <NavLink
-                to={`/Einkauf/${einkauf.ID_2}`}
-                className="btn btn-accent"
-              >
+              <NavLink to={`/Einkauf/${einkauf.Id}`} className="btn btn-accent">
                 Bearbeiten
               </NavLink>
             </div>
@@ -134,7 +127,7 @@ export default function EinkaufCard({
         </div>
       </div>
       <div className="hidden print:block my-4 text-xs" data-theme="light">
-        {einkauf.Name.String}
+        {einkauf.Mitarbeiter.Name}
         <br />
         Geld: {einkauf.Geld.String}
         <br />

@@ -6,9 +6,9 @@ import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function EinkaufAuswahl() {
-  const [mitarbeiter, setMitarbeiter] = useState<
-    db.GetAllMitarbeiterRow[] | undefined
-  >(undefined);
+  const [mitarbeiter, setMitarbeiter] = useState<db.Mitarbeiter[] | undefined>(
+    undefined
+  );
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState<string | undefined>(undefined);
 
@@ -55,7 +55,7 @@ export default function EinkaufAuswahl() {
                   Bitte wählen...
                 </option>
                 {mitarbeiter?.map((x) => (
-                  <option value={x.ID}>{x.Name}</option>
+                  <option value={x.Id}>{x.Name}</option>
                 ))}
               </select>
               <button

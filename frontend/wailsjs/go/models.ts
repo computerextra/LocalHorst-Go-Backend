@@ -279,8 +279,7 @@ export namespace db {
 	    MobilPrivat?: string;
 	    Email?: string;
 	    Azubi: boolean;
-	    // Go type: time
-	    Geburtstag?: any;
+	    Geburtstag?: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new MitarbeiterParams(source);
@@ -300,26 +299,8 @@ export namespace db {
 	        this.MobilPrivat = source["MobilPrivat"];
 	        this.Email = source["Email"];
 	        this.Azubi = source["Azubi"];
-	        this.Geburtstag = this.convertValues(source["Geburtstag"], null);
+	        this.Geburtstag = source["Geburtstag"];
 	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
 	}
 	export class Team {
 	    Id: number;

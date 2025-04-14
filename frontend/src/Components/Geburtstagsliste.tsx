@@ -4,9 +4,9 @@ import type { db } from "../../wailsjs/go/models";
 import LoadingSpinner from "./LoadingSpinner";
 
 export default function GeburtstagsListe() {
-  const [heute, setHeute] = useState<db.GetAllMitarbeiterRow[]>();
-  const [zukunft, setZukunft] = useState<db.GetAllMitarbeiterRow[]>();
-  const [vergangen, setVergangen] = useState<db.GetAllMitarbeiterRow[]>();
+  const [heute, setHeute] = useState<db.Mitarbeiter[]>();
+  const [zukunft, setZukunft] = useState<db.Mitarbeiter[]>();
+  const [vergangen, setVergangen] = useState<db.Mitarbeiter[]>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -14,9 +14,9 @@ export default function GeburtstagsListe() {
       setLoading(true);
       const ma = await GetAllMitarbeiter();
 
-      const heute: db.GetAllMitarbeiterRow[] = [];
-      const zukunft: db.GetAllMitarbeiterRow[] = [];
-      const vergangen: db.GetAllMitarbeiterRow[] = [];
+      const heute: db.Mitarbeiter[] = [];
+      const zukunft: db.Mitarbeiter[] = [];
+      const vergangen: db.Mitarbeiter[] = [];
 
       const today = new Date();
 
@@ -136,7 +136,7 @@ export default function GeburtstagsListe() {
           <div
             role="alert"
             className="w-full alert alert-error alert-soft"
-            key={x.ID}
+            key={x.Id}
           >
             <span>
               Heute gibt es ein Geburtstagskind! | Heute hat <b>{x.Name}</b>{" "}
@@ -166,7 +166,7 @@ export default function GeburtstagsListe() {
                     )
                   );
                   return (
-                    <tr key={user.ID}>
+                    <tr key={user.Id}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {
@@ -207,7 +207,7 @@ export default function GeburtstagsListe() {
                     )
                   );
                   return (
-                    <tr key={user.ID}>
+                    <tr key={user.Id}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {

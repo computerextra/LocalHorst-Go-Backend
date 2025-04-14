@@ -11,9 +11,7 @@ import AnsprechpartnerForm from "./components/ApForm";
 
 export default function ApDetails() {
   const { id, lid } = useParams();
-  const [lieferant, setLieferant] = useState<
-    undefined | db.Anschprechpartner
-  >();
+  const [lieferant, setLieferant] = useState<undefined | db.Ansprechpartner>();
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();

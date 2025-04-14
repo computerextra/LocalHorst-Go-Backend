@@ -7,9 +7,9 @@ import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function MitarbeiterDetails() {
   const { id } = useParams();
-  const [Mitarbeiter, setMitarbeiter] = useState<
-    undefined | db.GetMitarbeiterRow
-  >(undefined);
+  const [Mitarbeiter, setMitarbeiter] = useState<undefined | db.Mitarbeiter>(
+    undefined
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -59,73 +59,73 @@ export default function MitarbeiterDetails() {
                 <div></div>
                 <div>Interne Durchwahl</div>
                 <div>
-                  {Mitarbeiter?.Interntelefon1.Valid && (
-                    <p>{Mitarbeiter?.Interntelefon1.String}</p>
+                  {Mitarbeiter?.InternTelefon1.Valid && (
+                    <p>{Mitarbeiter?.InternTelefon1.String}</p>
                   )}
-                  {Mitarbeiter?.Interntelefon2.Valid && (
-                    <p>{Mitarbeiter?.Interntelefon2.String}</p>
+                  {Mitarbeiter?.InternTelefon2.Valid && (
+                    <p>{Mitarbeiter?.InternTelefon2.String}</p>
                   )}
                 </div>
               </li>
-              {Mitarbeiter?.Homeoffice.Valid && (
+              {Mitarbeiter?.HomeOffice.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Homeoffice</div>
-                  <div>{Mitarbeiter.Homeoffice.String}</div>
+                  <div>{Mitarbeiter.HomeOffice.String}</div>
                 </li>
               )}
-              {Mitarbeiter?.Festnetzalternativ.Valid && (
+              {Mitarbeiter?.FestnetzAlternativ.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Festnetz Geschäftlich</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.Festnetzalternativ.String}
+                      href={"tel:%s" + Mitarbeiter.FestnetzAlternativ.String}
                     >
-                      {Mitarbeiter.Festnetzalternativ.String}
+                      {Mitarbeiter.FestnetzAlternativ.String}
                     </a>
                   </div>
                 </li>
               )}
-              {Mitarbeiter?.Festnetzprivat.Valid && (
+              {Mitarbeiter?.FestnetzPrivat.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Festnetz Privat</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.Festnetzprivat.String}
+                      href={"tel:%s" + Mitarbeiter.FestnetzPrivat.String}
                     >
-                      {Mitarbeiter.Festnetzprivat.String}
+                      {Mitarbeiter.FestnetzPrivat.String}
                     </a>
                   </div>
                 </li>
               )}
-              {Mitarbeiter?.Mobilbusiness.Valid && (
+              {Mitarbeiter?.MobilBusiness.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Mobil Geschäftlich</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.Mobilbusiness.String}
+                      href={"tel:%s" + Mitarbeiter.MobilBusiness.String}
                     >
-                      {Mitarbeiter.Mobilbusiness.String}
+                      {Mitarbeiter.MobilBusiness.String}
                     </a>
                   </div>
                 </li>
               )}
-              {Mitarbeiter?.Mobilprivat.Valid && (
+              {Mitarbeiter?.MobilPrivat.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Mobil Privat</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.Mobilprivat.String}
+                      href={"tel:%s" + Mitarbeiter.MobilPrivat.String}
                     >
-                      {Mitarbeiter.Mobilprivat.String}
+                      {Mitarbeiter.MobilPrivat.String}
                     </a>
                   </div>
                 </li>

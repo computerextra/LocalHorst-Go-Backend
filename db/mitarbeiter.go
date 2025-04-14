@@ -120,7 +120,7 @@ type MitarbeiterParams struct {
 	MobilPrivat        *string
 	Email              *string
 	Azubi              bool
-	Geburtstag         *time.Time
+	Geburtstag         *string
 }
 
 func (d Database) UpsertMitarbeiter(params MitarbeiterParams, id *string) (sql.Result, error) {
@@ -204,11 +204,16 @@ func (d Database) createMitarbeiter(params MitarbeiterParams) (sql.Result, error
 	} else {
 		Email.Valid = false
 	}
-	if params.Geburtstag.IsZero() {
-		Geburtstag.Valid = false
+	if len(*params.Geburtstag) > 0 {
+		t, err := time.Parse("2006-01-02", *params.Geburtstag)
+		if err != nil {
+			Geburtstag.Valid = true
+			Geburtstag.Time = t
+		} else {
+			Geburtstag.Valid = false
+		}
 	} else {
-		Geburtstag.Valid = true
-		Geburtstag.Time = *params.Geburtstag
+		Geburtstag.Valid = false
 	}
 
 	conn, err := getConnection(d.connectionString)
@@ -308,11 +313,16 @@ func (d Database) updateMitarbeiter(params MitarbeiterParams, id string) (sql.Re
 	} else {
 		Email.Valid = false
 	}
-	if params.Geburtstag.IsZero() {
-		Geburtstag.Valid = false
+	if len(*params.Geburtstag) > 0 {
+		t, err := time.Parse("2006-01-02", *params.Geburtstag)
+		if err != nil {
+			Geburtstag.Valid = true
+			Geburtstag.Time = t
+		} else {
+			Geburtstag.Valid = false
+		}
 	} else {
-		Geburtstag.Valid = true
-		Geburtstag.Time = *params.Geburtstag
+		Geburtstag.Valid = false
 	}
 
 	conn, err := getConnection(d.connectionString)

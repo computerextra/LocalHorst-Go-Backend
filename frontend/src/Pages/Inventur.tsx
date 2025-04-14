@@ -8,28 +8,12 @@ import type { db } from "../../wailsjs/go/models";
 import BackButton from "../Components/BackButton";
 import LoadingSpinner from "../Components/LoadingSpinner";
 
-type Team = {
-  id: number;
-  Mitarbeiter: string;
-  Farbe: string;
-  Ort: string;
-  Jahr: string;
-  Artikel: Artikel[];
-};
-type Artikel = {
-  id: number;
-  Artikelnummer: string;
-  Suchbegriff: string;
-  Anzahl: number;
-  teamId: number;
-};
-
 export default function Inventur() {
   const [loading, setLoading] = useState(false);
   const [year, setYear] = useState<string | undefined>(undefined);
   const [team, setTeam] = useState<number | undefined>(undefined);
   const [years, setYears] = useState<string[] | undefined>(undefined);
-  const [teams, setTeams] = useState<Team[] | undefined>(undefined);
+  const [teams, setTeams] = useState<db.Team[] | undefined>(undefined);
   const [entries, setEntries] = useState<db.Artikel[] | undefined>(undefined);
 
   useEffect(() => {
@@ -48,38 +32,7 @@ export default function Inventur() {
     setTeam(undefined);
     setEntries(undefined);
     const res = await GetDataFromYear(year);
-    const teams: Team[] = [];
-    res.map((r) => {
-      const found = teams.find((x) => x.id == r.ID);
-      if (found == undefined) {
-        const artikel: Artikel = {
-          id: r.ID_2.Int32,
-          Anzahl: r.Anzahl.Int32,
-          Artikelnummer: r.Artikelnummer.String,
-          Suchbegriff: r.Suchbegriff.String,
-          teamId: r.ID,
-        };
-        teams.push({
-          Artikel: [artikel],
-          id: r.ID,
-          Farbe: r.Farbe,
-          Jahr: r.Farbe,
-          Mitarbeiter: r.Mitarbeiter,
-          Ort: r.Ort,
-        });
-      } else {
-        if (r.ID_2.Valid) {
-          found.Artikel.push({
-            id: r.ID_2.Int32,
-            Anzahl: r.Anzahl.Int32,
-            Artikelnummer: r.Artikelnummer.String,
-            Suchbegriff: r.Suchbegriff.String,
-            teamId: r.ID,
-          });
-        }
-      }
-    });
-    setTeams(teams);
+    setTeams(res);
     setLoading(false);
   };
 
@@ -135,10 +88,10 @@ export default function Inventur() {
                 {teams.map((x) => (
                   <tr
                     className="hover:bg-base-300"
-                    key={x.id}
-                    onClick={() => handleTeamClick(x.id)}
+                    key={x.Id}
+                    onClick={() => handleTeamClick(x.Id)}
                   >
-                    <td>{x.id}</td>
+                    <td>{x.Id}</td>
                     <td>{x.Mitarbeiter}</td>
                     <td>{x.Farbe}</td>
                     <td>{x.Ort}</td>
@@ -165,7 +118,7 @@ export default function Inventur() {
               </thead>
               <tbody>
                 {entries.map((x) => (
-                  <tr className="hover:bg-base-300" key={x.ID}>
+                  <tr className="hover:bg-base-300" key={x.Id}>
                     <td>{x.Artikelnummer}</td>
                     <td>{x.Suchbegriff}</td>
                     <td>{x.Anzahl}</td>
@@ -195,13 +148,13 @@ export default function Inventur() {
                     {team.Artikel?.map((item) => (
                       <tr
                         className="hover:bg-base-300"
-                        key={item.id}
-                        onClick={() => handleTeamClick(team.id)}
+                        key={item.Id}
+                        onClick={() => handleTeamClick(team.Id)}
                       >
                         <td>{item.Artikelnummer}</td>
                         <td>{item.Suchbegriff}</td>
                         <td>{item.Anzahl}</td>
-                        <td>{team.id}</td>
+                        <td>{team.Id}</td>
                       </tr>
                     ))}
                   </>

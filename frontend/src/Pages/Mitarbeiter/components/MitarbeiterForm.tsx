@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UpsertMitarbeiter } from "../../../../wailsjs/go/main/App";
-import { db, main } from "../../../../wailsjs/go/models";
+import { db } from "../../../../wailsjs/go/models";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 export default function MitarbeiterForm({
   mitarbeiter,
 }: {
-  mitarbeiter?: db.GetMitarbeiterRow;
+  mitarbeiter?: db.Mitarbeiter;
 }) {
   const [Name, setName] = useState<string | undefined>(undefined);
   const [Short, setShort] = useState<string | undefined>(undefined);
@@ -46,35 +46,35 @@ export default function MitarbeiterForm({
       mitarbeiter.Gruppenwahl.Valid ? mitarbeiter.Gruppenwahl.String : undefined
     );
     setInternTelefon1(
-      mitarbeiter.Interntelefon1.Valid
-        ? mitarbeiter.Interntelefon1.String
+      mitarbeiter.InternTelefon1.Valid
+        ? mitarbeiter.InternTelefon1.String
         : undefined
     );
     setInternTelefon2(
-      mitarbeiter.Interntelefon2.Valid
-        ? mitarbeiter.Interntelefon2.String
+      mitarbeiter.InternTelefon2.Valid
+        ? mitarbeiter.InternTelefon2.String
         : undefined
     );
     setFestnetzAlternativ(
-      mitarbeiter.Festnetzalternativ.Valid
-        ? mitarbeiter.Festnetzalternativ.String
+      mitarbeiter.FestnetzAlternativ.Valid
+        ? mitarbeiter.FestnetzAlternativ.String
         : undefined
     );
     setFestnetzPrivat(
-      mitarbeiter.Festnetzprivat.Valid
-        ? mitarbeiter.Festnetzprivat.String
+      mitarbeiter.FestnetzPrivat.Valid
+        ? mitarbeiter.FestnetzPrivat.String
         : undefined
     );
     setHomeOffice(
-      mitarbeiter.Homeoffice.Valid ? mitarbeiter.Homeoffice.String : undefined
+      mitarbeiter.HomeOffice.Valid ? mitarbeiter.HomeOffice.String : undefined
     );
     setMobilBusiness(
-      mitarbeiter.Mobilbusiness.Valid
-        ? mitarbeiter.Mobilbusiness.String
+      mitarbeiter.MobilBusiness.Valid
+        ? mitarbeiter.MobilBusiness.String
         : undefined
     );
     setMobilPrivat(
-      mitarbeiter.Mobilprivat.Valid ? mitarbeiter.Mobilprivat.String : undefined
+      mitarbeiter.MobilPrivat.Valid ? mitarbeiter.MobilPrivat.String : undefined
     );
     setEmail(mitarbeiter.Email.Valid ? mitarbeiter.Email.String : undefined);
     setAzubi(mitarbeiter.Azubi.Valid ? mitarbeiter.Azubi.Bool : undefined);
@@ -92,13 +92,13 @@ export default function MitarbeiterForm({
   const handleSave = async () => {
     if (Name == null) return;
     if (Name.length < 1) return;
-    const params: main.MitarbeiterParams = {
+    const params: db.MitarbeiterParams = {
       Name,
-      Azubi,
+      Azubi: Azubi != null ? Azubi : false,
       Email,
       FestnetzAlternativ,
       FestnetzPrivat,
-      Geburtstag,
+      Geburtstag: Geburtstag,
       HomeOffice,
       Gruppenwahl,
       InternTelefon1,
@@ -107,7 +107,7 @@ export default function MitarbeiterForm({
       MobilPrivat,
       Short,
     };
-    await UpsertMitarbeiter(params, mitarbeiter?.ID ?? "");
+    await UpsertMitarbeiter(params, mitarbeiter?.Id ?? "");
     navigate("/Mitarbeiter");
   };
 

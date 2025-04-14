@@ -7,7 +7,7 @@ import {
   UpdateEinkauf,
   UploadImage,
 } from "../../../wailsjs/go/main/App";
-import { main } from "../../../wailsjs/go/models";
+import { db } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
@@ -64,7 +64,7 @@ export default function EinkaufEingabe() {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const params: main.EinkaufResponse = {
+    const params: db.UpsertEinkaufParams = {
       Abonniert: Abonniert != null ? Abonniert : false,
       Paypal: Paypal != null ? Paypal : false,
       Bild1: Bild1 != null ? Bild1 : "",
@@ -75,7 +75,7 @@ export default function EinkaufEingabe() {
       Pfand: Pfand != null ? Pfand : "",
       MitarbeiterId: id!,
     };
-    if (await UpdateEinkauf(params)) {
+    if (await UpdateEinkauf(params, id)) {
       navigate("/Einkauf");
     } else {
       alert("Server Fehler");

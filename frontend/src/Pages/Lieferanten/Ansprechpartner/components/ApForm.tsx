@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UpsertAnsprechpartner } from "../../../../../wailsjs/go/main/App";
-import { db, main } from "../../../../../wailsjs/go/models";
+import { db } from "../../../../../wailsjs/go/models";
 
 export default function AnsprechpartnerForm({
   id,
   ap,
 }: {
   id: string;
-  ap?: db.Anschprechpartner;
+  ap?: db.Ansprechpartner;
 }) {
   const [Name, setName] = useState<string | undefined>(undefined);
   const [Telefon, setTelefon] = useState<string | undefined>(undefined);
@@ -32,13 +32,14 @@ export default function AnsprechpartnerForm({
     if (Name == null) return;
     if (Name.length < 1) return;
     setLoading(true);
-    const params: main.AnsprechpartnerParams = {
+    const params: db.AnsprechpartnerParams = {
       Name,
       Mail,
       Mobil,
       Telefon,
+      LieferantenId: id,
     };
-    await UpsertAnsprechpartner(id, ap?.ID ?? "", params);
+    await UpsertAnsprechpartner(ap?.Id ?? "", params);
 
     navigate("/Lieferanten/" + id);
   };
