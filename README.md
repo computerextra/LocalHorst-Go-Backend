@@ -17,3 +17,7 @@ to this in your browser, and you can call your Go code from devtools.
 ## Building
 
 To build a redistributable, production mode package, use `wails build`.
+
+## Prüfen
+
+- [ ] Inventur geht nicht korrekt, vllvielleicht mit ein wenig outputs schauen, was da passoert..-.
