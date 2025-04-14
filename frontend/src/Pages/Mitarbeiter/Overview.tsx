@@ -7,7 +7,7 @@ import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function Mitarbeiterübersicht() {
   const [Mitarbeiter, setMitarbeiter] = useState<
-    undefined | db.MitarbeiterModel[]
+    undefined | db.GetAllMitarbeiterRow[]
   >(undefined);
   const [loading, setLoading] = useState(false);
 
@@ -49,71 +49,71 @@ export default function Mitarbeiterübersicht() {
           </thead>
           <tbody>
             {Mitarbeiter?.map((mitarbeiter) => (
-              <tr key={mitarbeiter.id}>
+              <tr key={mitarbeiter.ID}>
                 <th>
                   <Link
-                    to={"/Mitarbeiter/" + mitarbeiter.id}
+                    to={"/Mitarbeiter/" + mitarbeiter.ID}
                     className="underline"
                   >
                     {mitarbeiter.Name}
                   </Link>
                 </th>
                 <td>
-                  {mitarbeiter.Email && (
+                  {mitarbeiter.Email.Valid && (
                     <a
                       className="text-error underline"
-                      href={"mailto:" + mitarbeiter.Email}
+                      href={"mailto:" + mitarbeiter.Email.String}
                     >
-                      {mitarbeiter.Email}
+                      {mitarbeiter.Email.String}
                     </a>
                   )}
                 </td>
-                <td>{mitarbeiter.Gruppenwahl}</td>
-                <td>{mitarbeiter.InternTelefon1}</td>
-                <td>{mitarbeiter.InternTelefon2}</td>
+                <td>{mitarbeiter.Gruppenwahl.String}</td>
+                <td>{mitarbeiter.Interntelefon1.String}</td>
+                <td>{mitarbeiter.Interntelefon2.String}</td>
                 <td>
-                  {mitarbeiter.FestnetzAlternativ && (
+                  {mitarbeiter.Festnetzalternativ.Valid && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.FestnetzAlternativ}
+                      href={"tel:" + mitarbeiter.Festnetzalternativ.String}
                     >
-                      {mitarbeiter.FestnetzAlternativ}
-                    </a>
-                  )}
-                </td>
-                <td>
-                  {mitarbeiter.FestnetzPrivat && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.FestnetzPrivat}
-                    >
-                      {mitarbeiter.FestnetzPrivat}
-                    </a>
-                  )}
-                </td>
-                <td>{mitarbeiter.HomeOffice}</td>
-                <td>
-                  {mitarbeiter.MobilBusiness && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.MobilBusiness}
-                    >
-                      {mitarbeiter.MobilBusiness}
+                      {mitarbeiter.Festnetzalternativ.String}
                     </a>
                   )}
                 </td>
                 <td>
-                  {mitarbeiter.MobilPrivat && (
+                  {mitarbeiter.Festnetzprivat.Valid && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.MobilPrivat}
+                      href={"tel:" + mitarbeiter.Festnetzprivat.String}
                     >
-                      {mitarbeiter.MobilPrivat}
+                      {mitarbeiter.Festnetzprivat.String}
+                    </a>
+                  )}
+                </td>
+                <td>{mitarbeiter.Homeoffice.String}</td>
+                <td>
+                  {mitarbeiter.Mobilbusiness.Valid && (
+                    <a
+                      className="text-error underline"
+                      href={"tel:" + mitarbeiter.Mobilbusiness.String}
+                    >
+                      {mitarbeiter.Mobilbusiness.String}
                     </a>
                   )}
                 </td>
                 <td>
-                  {mitarbeiter.Azubi ? (
+                  {mitarbeiter.Mobilprivat.Valid && (
+                    <a
+                      className="text-error underline"
+                      href={"tel:" + mitarbeiter.Mobilprivat.String}
+                    >
+                      {mitarbeiter.Mobilprivat.String}
+                    </a>
+                  )}
+                </td>
+                <td>
+                  {mitarbeiter.Azubi.Valid && mitarbeiter.Azubi.Bool ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"

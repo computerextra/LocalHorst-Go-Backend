@@ -7,7 +7,7 @@ import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function EinkaufAuswahl() {
   const [mitarbeiter, setMitarbeiter] = useState<
-    db.MitarbeiterModel[] | undefined
+    db.GetAllMitarbeiterRow[] | undefined
   >(undefined);
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState<string | undefined>(undefined);
@@ -55,7 +55,7 @@ export default function EinkaufAuswahl() {
                   Bitte wählen...
                 </option>
                 {mitarbeiter?.map((x) => (
-                  <option value={x.id}>{x.Name}</option>
+                  <option value={x.ID}>{x.Name}</option>
                 ))}
               </select>
               <button

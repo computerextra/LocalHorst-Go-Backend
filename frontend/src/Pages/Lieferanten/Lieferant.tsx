@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { GetLieferant } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import { GenerateLieferant, Lieferant } from "./types";
 
 export default function LieferantDetails() {
   const { id } = useParams();
-  const [Lieferant, setLieferant] = useState<db.LieferantenModel | undefined>(
-    undefined
-  );
+  const [Lieferant, setLieferant] = useState<Lieferant | undefined>(undefined);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function x() {
       if (id == null) return;
       setLoading(true);
-      setLieferant(await GetLieferant(id));
+      const lieferanten = await GetLieferant(id);
+      setLieferant(GenerateLieferant(lieferanten));
       setLoading(false);
     }
     x();
@@ -30,7 +29,7 @@ export default function LieferantDetails() {
       ) : (
         <>
           <h1 className="mt-5">{Lieferant?.Firma}</h1>
-          <p>Kundennummer: {Lieferant?.Kundennummer}</p>
+          <p>Webseite: {Lieferant?.Kundennummer}</p>
           <p>
             Webseite:{" "}
             <a
@@ -61,7 +60,7 @@ export default function LieferantDetails() {
                 </tr>
               </thead>
               <tbody>
-                {Lieferant?.Anschprechpartner?.map((ap) => (
+                {Lieferant?.Ansprechpartner?.map((ap) => (
                   <tr className="hover:bg-base-300">
                     <th>
                       <Link

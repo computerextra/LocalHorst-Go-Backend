@@ -6,7 +6,7 @@ import LoadingSpinner from "../Components/LoadingSpinner";
 
 export default function Archive() {
   const [search, setSearch] = useState<undefined | string>(undefined);
-  const [results, setResults] = useState<undefined | db.PdfsModel[]>(undefined);
+  const [results, setResults] = useState<undefined | db.Pdf[]>(undefined);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
@@ -71,9 +71,9 @@ export default function Archive() {
                       <th>
                         <a
                           className="cursor-pointer"
-                          onClick={() => handleClick(x.id.toString())}
+                          onClick={() => handleClick(x.ID.toString())}
                         >
-                          {x.title}
+                          {x.Title}
                         </a>
                       </th>
                     </tr>

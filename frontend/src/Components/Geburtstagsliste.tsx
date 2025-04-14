@@ -4,27 +4,25 @@ import type { db } from "../../wailsjs/go/models";
 import LoadingSpinner from "./LoadingSpinner";
 
 export default function GeburtstagsListe() {
-  const [heute, setHeute] = useState<db.MitarbeiterModel[]>();
-  const [zukunft, setZukunft] = useState<db.MitarbeiterModel[]>();
-  const [vergangen, setVergangen] = useState<db.MitarbeiterModel[]>();
-  const [loading, setLoading] = useState(true);
+  const [heute, setHeute] = useState<db.GetAllMitarbeiterRow[]>();
+  const [zukunft, setZukunft] = useState<db.GetAllMitarbeiterRow[]>();
+  const [vergangen, setVergangen] = useState<db.GetAllMitarbeiterRow[]>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function x() {
       setLoading(true);
       const ma = await GetAllMitarbeiter();
 
-      if (ma == null) return;
-
-      const heute: db.MitarbeiterModel[] = [];
-      const zukunft: db.MitarbeiterModel[] = [];
-      const vergangen: db.MitarbeiterModel[] = [];
+      const heute: db.GetAllMitarbeiterRow[] = [];
+      const zukunft: db.GetAllMitarbeiterRow[] = [];
+      const vergangen: db.GetAllMitarbeiterRow[] = [];
 
       const today = new Date();
 
       ma.map((i) => {
-        if (i.Geburtstag) {
-          const bday = new Date(i.Geburtstag);
+        if (i.Geburtstag.Valid) {
+          const bday = new Date(i.Geburtstag.Time);
           const temp = new Date(
             bday.setFullYear(
               new Date().getFullYear(),
@@ -46,13 +44,13 @@ export default function GeburtstagsListe() {
           }
 
           vergangen.sort((a, b) => {
-            const ba = new Date(a.Geburtstag);
+            const ba = new Date(a.Geburtstag.Time);
             const aDay = ba.setFullYear(
               new Date().getFullYear(),
               ba.getMonth(),
               ba.getDate()
             );
-            const bb = new Date(b.Geburtstag);
+            const bb = new Date(b.Geburtstag.Time);
             const bDay = bb.setFullYear(
               new Date().getFullYear(),
               bb.getMonth(),
@@ -70,13 +68,13 @@ export default function GeburtstagsListe() {
             }
           });
           zukunft.sort((a, b) => {
-            const ba = new Date(a.Geburtstag);
+            const ba = new Date(a.Geburtstag.Time);
             const aDay = ba.setFullYear(
               new Date().getFullYear(),
               ba.getMonth(),
               ba.getDate()
             );
-            const bb = new Date(b.Geburtstag);
+            const bb = new Date(b.Geburtstag.Time);
             const bDay = bb.setFullYear(
               new Date().getFullYear(),
               bb.getMonth(),
@@ -94,13 +92,13 @@ export default function GeburtstagsListe() {
             }
           });
           heute.sort((a, b) => {
-            const ba = new Date(a.Geburtstag);
+            const ba = new Date(a.Geburtstag.Time);
             const aDay = ba.setFullYear(
               new Date().getFullYear(),
               ba.getMonth(),
               ba.getDate()
             );
-            const bb = new Date(b.Geburtstag);
+            const bb = new Date(b.Geburtstag.Time);
             const bDay = bb.setFullYear(
               new Date().getFullYear(),
               bb.getMonth(),
@@ -138,7 +136,7 @@ export default function GeburtstagsListe() {
           <div
             role="alert"
             className="w-full alert alert-error alert-soft"
-            key={x.id}
+            key={x.ID}
           >
             <span>
               Heute gibt es ein Geburtstagskind! | Heute hat <b>{x.Name}</b>{" "}
@@ -159,7 +157,7 @@ export default function GeburtstagsListe() {
               </thead>
               <tbody>
                 {vergangen.map((user) => {
-                  const bday = new Date(user.Geburtstag);
+                  const bday = new Date(user.Geburtstag.Time);
                   const temp = new Date(
                     bday.setFullYear(
                       new Date().getFullYear(),
@@ -168,7 +166,7 @@ export default function GeburtstagsListe() {
                     )
                   );
                   return (
-                    <tr key={user.id}>
+                    <tr key={user.ID}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {
@@ -200,7 +198,7 @@ export default function GeburtstagsListe() {
               </thead>
               <tbody>
                 {zukunft.map((user) => {
-                  const bday = new Date(user.Geburtstag);
+                  const bday = new Date(user.Geburtstag.Time);
                   const temp = new Date(
                     bday.setFullYear(
                       new Date().getFullYear(),
@@ -209,7 +207,7 @@ export default function GeburtstagsListe() {
                     )
                   );
                   return (
-                    <tr key={user.id}>
+                    <tr key={user.ID}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {

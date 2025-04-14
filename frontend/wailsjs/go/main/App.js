@@ -86,16 +86,16 @@ export function SkipEinkauf(arg1) {
   return window['go']['main']['App']['SkipEinkauf'](arg1);
 }
 
-export function UpdateEinkauf(arg1) {
-  return window['go']['main']['App']['UpdateEinkauf'](arg1);
+export function UpdateEinkauf(arg1, arg2) {
+  return window['go']['main']['App']['UpdateEinkauf'](arg1, arg2);
 }
 
 export function UploadImage(arg1, arg2) {
   return window['go']['main']['App']['UploadImage'](arg1, arg2);
 }
 
-export function UpsertAnsprechpartner(arg1, arg2, arg3) {
-  return window['go']['main']['App']['UpsertAnsprechpartner'](arg1, arg2, arg3);
+export function UpsertAnsprechpartner(arg1, arg2) {
+  return window['go']['main']['App']['UpsertAnsprechpartner'](arg1, arg2);
 }
 
 export function UpsertLieferant(arg1, arg2) {

@@ -7,7 +7,7 @@ import LoadingSpinner from "../../../Components/LoadingSpinner";
 export default function MitarbeiterForm({
   mitarbeiter,
 }: {
-  mitarbeiter?: db.MitarbeiterModel;
+  mitarbeiter?: db.GetMitarbeiterRow;
 }) {
   const [Name, setName] = useState<string | undefined>(undefined);
   const [Short, setShort] = useState<string | undefined>(undefined);
@@ -41,18 +41,44 @@ export default function MitarbeiterForm({
     if (mitarbeiter == null) return;
     setLoading(true);
     setName(mitarbeiter.Name);
-    setShort(mitarbeiter.Short);
-    setGruppenwahl(mitarbeiter.Gruppenwahl);
-    setInternTelefon1(mitarbeiter.InternTelefon1);
-    setInternTelefon2(mitarbeiter.InternTelefon2);
-    setFestnetzAlternativ(mitarbeiter.FestnetzAlternativ);
-    setFestnetzPrivat(mitarbeiter.FestnetzPrivat);
-    setHomeOffice(mitarbeiter.HomeOffice);
-    setMobilBusiness(mitarbeiter.MobilBusiness);
-    setMobilPrivat(mitarbeiter.MobilPrivat);
-    setEmail(mitarbeiter.Email);
-    setAzubi(mitarbeiter.Azubi);
-    const bday = new Date(mitarbeiter.Geburtstag);
+    setShort(mitarbeiter.Short.Valid ? mitarbeiter.Short.String : undefined);
+    setGruppenwahl(
+      mitarbeiter.Gruppenwahl.Valid ? mitarbeiter.Gruppenwahl.String : undefined
+    );
+    setInternTelefon1(
+      mitarbeiter.Interntelefon1.Valid
+        ? mitarbeiter.Interntelefon1.String
+        : undefined
+    );
+    setInternTelefon2(
+      mitarbeiter.Interntelefon2.Valid
+        ? mitarbeiter.Interntelefon2.String
+        : undefined
+    );
+    setFestnetzAlternativ(
+      mitarbeiter.Festnetzalternativ.Valid
+        ? mitarbeiter.Festnetzalternativ.String
+        : undefined
+    );
+    setFestnetzPrivat(
+      mitarbeiter.Festnetzprivat.Valid
+        ? mitarbeiter.Festnetzprivat.String
+        : undefined
+    );
+    setHomeOffice(
+      mitarbeiter.Homeoffice.Valid ? mitarbeiter.Homeoffice.String : undefined
+    );
+    setMobilBusiness(
+      mitarbeiter.Mobilbusiness.Valid
+        ? mitarbeiter.Mobilbusiness.String
+        : undefined
+    );
+    setMobilPrivat(
+      mitarbeiter.Mobilprivat.Valid ? mitarbeiter.Mobilprivat.String : undefined
+    );
+    setEmail(mitarbeiter.Email.Valid ? mitarbeiter.Email.String : undefined);
+    setAzubi(mitarbeiter.Azubi.Valid ? mitarbeiter.Azubi.Bool : undefined);
+    const bday = new Date(mitarbeiter.Geburtstag.Time);
     const dateStr =
       bday.getFullYear() +
       "-" +
@@ -81,7 +107,7 @@ export default function MitarbeiterForm({
       MobilPrivat,
       Short,
     };
-    await UpsertMitarbeiter(params, mitarbeiter?.id ?? "");
+    await UpsertMitarbeiter(params, mitarbeiter?.ID ?? "");
     navigate("/Mitarbeiter");
   };
 

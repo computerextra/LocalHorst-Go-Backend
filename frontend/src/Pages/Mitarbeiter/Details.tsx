@@ -8,7 +8,7 @@ import LoadingSpinner from "../../Components/LoadingSpinner";
 export default function MitarbeiterDetails() {
   const { id } = useParams();
   const [Mitarbeiter, setMitarbeiter] = useState<
-    undefined | db.MitarbeiterModel
+    undefined | db.GetMitarbeiterRow
   >(undefined);
   const [loading, setLoading] = useState(false);
 
@@ -37,12 +37,12 @@ export default function MitarbeiterDetails() {
                   <div></div>
                   <div>Email</div>
                   <div>
-                    {Mitarbeiter?.Email && (
+                    {Mitarbeiter?.Email.Valid && (
                       <a
                         className="text-error underline"
                         href={"mailto:" + Mitarbeiter.Email}
                       >
-                        {Mitarbeiter.Email}
+                        {Mitarbeiter.Email.String}
                       </a>
                     )}
                   </div>
@@ -52,80 +52,80 @@ export default function MitarbeiterDetails() {
                 <li className="list-row">
                   <div></div>
                   <div>Gruppenwahl</div>
-                  <div>{Mitarbeiter?.Gruppenwahl}</div>
+                  <div>{Mitarbeiter?.Gruppenwahl.String}</div>
                 </li>
               }
               <li className="list-row">
                 <div></div>
                 <div>Interne Durchwahl</div>
                 <div>
-                  {Mitarbeiter?.InternTelefon1 && (
-                    <p>{Mitarbeiter?.InternTelefon1}</p>
+                  {Mitarbeiter?.Interntelefon1.Valid && (
+                    <p>{Mitarbeiter?.Interntelefon1.String}</p>
                   )}
-                  {Mitarbeiter?.InternTelefon2 && (
-                    <p>{Mitarbeiter?.InternTelefon2}</p>
+                  {Mitarbeiter?.Interntelefon2.Valid && (
+                    <p>{Mitarbeiter?.Interntelefon2.String}</p>
                   )}
                 </div>
               </li>
-              {Mitarbeiter?.HomeOffice && (
+              {Mitarbeiter?.Homeoffice.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Homeoffice</div>
-                  <div>{Mitarbeiter.HomeOffice}</div>
+                  <div>{Mitarbeiter.Homeoffice.String}</div>
                 </li>
               )}
-              {Mitarbeiter?.FestnetzAlternativ && (
+              {Mitarbeiter?.Festnetzalternativ.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Festnetz Geschäftlich</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.FestnetzAlternativ}
+                      href={"tel:%s" + Mitarbeiter.Festnetzalternativ.String}
                     >
-                      {Mitarbeiter.FestnetzAlternativ}
+                      {Mitarbeiter.Festnetzalternativ.String}
                     </a>
                   </div>
                 </li>
               )}
-              {Mitarbeiter?.FestnetzPrivat && (
+              {Mitarbeiter?.Festnetzprivat.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Festnetz Privat</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.FestnetzPrivat}
+                      href={"tel:%s" + Mitarbeiter.Festnetzprivat.String}
                     >
-                      {Mitarbeiter.FestnetzPrivat}
+                      {Mitarbeiter.Festnetzprivat.String}
                     </a>
                   </div>
                 </li>
               )}
-              {Mitarbeiter?.MobilBusiness && (
+              {Mitarbeiter?.Mobilbusiness.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Mobil Geschäftlich</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.MobilBusiness}
+                      href={"tel:%s" + Mitarbeiter.Mobilbusiness.String}
                     >
-                      {Mitarbeiter.MobilBusiness}
+                      {Mitarbeiter.Mobilbusiness.String}
                     </a>
                   </div>
                 </li>
               )}
-              {Mitarbeiter?.MobilPrivat && (
+              {Mitarbeiter?.Mobilprivat.Valid && (
                 <li className="list-row">
                   <div></div>
                   <div>Mobil Privat</div>
                   <div>
                     <a
                       className="text-error underline"
-                      href={"tel:%s" + Mitarbeiter.MobilPrivat}
+                      href={"tel:%s" + Mitarbeiter.Mobilprivat.String}
                     >
-                      {Mitarbeiter.MobilPrivat}
+                      {Mitarbeiter.Mobilprivat.String}
                     </a>
                   </div>
                 </li>

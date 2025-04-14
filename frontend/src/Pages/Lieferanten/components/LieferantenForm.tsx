@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UpsertLieferant } from "../../../../wailsjs/go/main/App";
-import { db, main } from "../../../../wailsjs/go/models";
+import { main } from "../../../../wailsjs/go/models";
+import { Lieferant } from "../types";
 
 export default function LieferantenForm({
   lieferant,
 }: {
-  lieferant?: db.LieferantenModel;
+  lieferant?: Lieferant;
 }) {
   const [Firma, setFirma] = useState<string | undefined>(undefined);
   const [Kundennummer, setKundennummer] = useState<string | undefined>(

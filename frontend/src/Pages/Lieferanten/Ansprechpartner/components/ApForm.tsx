@@ -8,7 +8,7 @@ export default function AnsprechpartnerForm({
   ap,
 }: {
   id: string;
-  ap?: db.AnschprechpartnerModel;
+  ap?: db.Anschprechpartner;
 }) {
   const [Name, setName] = useState<string | undefined>(undefined);
   const [Telefon, setTelefon] = useState<string | undefined>(undefined);
@@ -23,9 +23,9 @@ export default function AnsprechpartnerForm({
     if (ap == null) return;
 
     setName(ap.Name);
-    setTelefon(ap.Telefon);
-    setMobil(ap.Mobil);
-    setMail(ap.Mail);
+    setTelefon(ap.Telefon.Valid ? ap.Telefon.String : undefined);
+    setMobil(ap.Mobil.Valid ? ap.Mobil.String : undefined);
+    setMail(ap.Mail.Valid ? ap.Mail.String : undefined);
   }, [ap]);
 
   const handleSave = async () => {
@@ -38,7 +38,7 @@ export default function AnsprechpartnerForm({
       Mobil,
       Telefon,
     };
-    await UpsertAnsprechpartner(id, ap?.id ?? "", params);
+    await UpsertAnsprechpartner(id, ap?.ID ?? "", params);
 
     navigate("/Lieferanten/" + id);
   };

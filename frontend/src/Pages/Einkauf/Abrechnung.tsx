@@ -8,16 +8,18 @@ export default function EinkaufAbrechnung() {
   const [username, setUsername] = useState("");
   const [betrag, setBetrag] = useState<string | undefined>(undefined);
   const [mail, setMail] = useState<string | undefined>(undefined);
-  const [users, setUsers] = useState<undefined | db.EinkaufModel[]>(undefined);
+  const [users, setUsers] = useState<undefined | db.GetEinkaufsListeRow[]>(
+    undefined
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function x() {
       setLoading(true);
       const res = await GetEinkaufsListe();
-      const ma: db.EinkaufModel[] = [];
+      const ma: db.GetEinkaufsListeRow[] = [];
       res.forEach((x) => {
-        if (x.Mitarbeiter?.Email && x.Paypal) {
+        if (x.Email.Valid && x.Paypal) {
           ma.push(x);
         }
       });
@@ -35,9 +37,9 @@ export default function EinkaufAbrechnung() {
     setLoading(true);
     if (await SendAbrechnung(username, betrag, mail)) {
       setUsers((prev) => {
-        const x: db.EinkaufModel[] = [];
+        const x: db.GetEinkaufsListeRow[] = [];
         prev?.map((y) => {
-          if (y.Mitarbeiter?.Email != mail) {
+          if (y.Email.String != mail) {
             x.push(y);
           }
         });
@@ -101,8 +103,8 @@ export default function EinkaufAbrechnung() {
                 Bitte Wählen ...
               </option>
               {users?.map((x) => (
-                <option value={x.Mitarbeiter?.Email} key={x.id}>
-                  {x.Mitarbeiter?.Name}
+                <option value={x.Email.String} key={x.ID}>
+                  {x.Name.String}
                 </option>
               ))}
             </select>

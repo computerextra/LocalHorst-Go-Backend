@@ -6,7 +6,9 @@ import LoadingSpinner from "../../Components/LoadingSpinner";
 import EinkaufCard from "./components/EinkaufCard";
 
 export default function Einkaufsliste() {
-  const [liste, setListe] = useState<undefined | db.EinkaufModel[]>(undefined);
+  const [liste, setListe] = useState<undefined | db.GetEinkaufsListeRow[]>(
+    undefined
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

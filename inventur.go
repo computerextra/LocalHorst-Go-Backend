@@ -9,30 +9,27 @@ var (
 	RootPath = filepath.Join("inventur", "Data")
 )
 
-func (a *App) GetInventurYears() []db.InventurModel {
-	res, err := a.database.Inventur.FindMany().Exec(a.ctx)
+func (a *App) GetInventurYears() []string {
+	database := db.New(a.config.DATABASE_URL)
+	res, err := database.GetInventurYears()
 	if err != nil {
 		return nil
 	}
 	return res
 }
 
-func (a *App) GetDataFromYear(year string) []db.TeamModel {
-	res, err := a.database.Team.FindMany(
-		db.Team.InventurJahr.Equals(year),
-	).With(
-		db.Team.Artikel.Fetch(),
-	).Exec(a.ctx)
+func (a *App) GetDataFromYear(year string) []db.Team {
+	database := db.New(a.config.DATABASE_URL)
+	res, err := database.GetDataFromYear(year)
 	if err != nil {
 		return nil
 	}
 	return res
 }
 
-func (a *App) GetEntriesFromTeam(team int) []db.ArtikelModel {
-	res, err := a.database.Artikel.FindMany(
-		db.Artikel.TeamID.Equals(team),
-	).Exec(a.ctx)
+func (a *App) GetEntriesFromTeam(team int) []db.Artikel {
+	database := db.New(a.config.DATABASE_URL)
+	res, err := database.GetEntriesFromTeam(int32(team))
 	if err != nil {
 		return nil
 	}

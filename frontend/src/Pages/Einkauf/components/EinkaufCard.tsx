@@ -4,7 +4,11 @@ import { CheckImage } from "../../../../wailsjs/go/main/App";
 import type { db, main } from "../../../../wailsjs/go/models";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
-export default function EinkaufCard({ einkauf }: { einkauf: db.EinkaufModel }) {
+export default function EinkaufCard({
+  einkauf,
+}: {
+  einkauf: db.GetEinkaufsListeRow;
+}) {
   const [bild1, setBild1] = useState<undefined | main.ImageResponse>(undefined);
   const [bild2, setBild2] = useState<undefined | main.ImageResponse>(undefined);
   const [bild3, setBild3] = useState<undefined | main.ImageResponse>(undefined);
@@ -13,9 +17,9 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.EinkaufModel }) {
   useEffect(() => {
     async function x() {
       setLoading(true);
-      const res1 = await CheckImage(einkauf.mitarbeiterId, "1");
-      const res2 = await CheckImage(einkauf.mitarbeiterId, "2");
-      const res3 = await CheckImage(einkauf.mitarbeiterId, "3");
+      const res1 = await CheckImage(einkauf.Mitarbeiterid, "1");
+      const res2 = await CheckImage(einkauf.Mitarbeiterid, "2");
+      const res3 = await CheckImage(einkauf.Mitarbeiterid, "3");
       setBild1(res1);
       setBild2(res2);
       setBild3(res3);
@@ -32,10 +36,10 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.EinkaufModel }) {
       <div className="card card-border bg-base-100 print:!hidden">
         <div className="card-body">
           <div className="flex justify-between">
-            <h2 className="card-title">{einkauf.Mitarbeiter?.Name}</h2>
+            <h2 className="card-title">{einkauf.Name.String}</h2>
             <div className="card-actions justify-end">
               <NavLink
-                to={`/Einkauf/${einkauf.mitarbeiterId}`}
+                to={`/Einkauf/${einkauf.ID_2}`}
                 className="btn btn-accent"
               >
                 Bearbeiten
@@ -43,7 +47,7 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.EinkaufModel }) {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <span>Geld: {einkauf.Geld} </span>
+            <span>Geld: {einkauf.Geld.String} </span>
             <span className="flex items-center gap-1">
               Abonniert:{" "}
               {einkauf.Abonniert ? (
@@ -78,7 +82,7 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.EinkaufModel }) {
                 </svg>
               )}
             </span>
-            <span>Pfand: {einkauf.Pfand}</span>
+            <span>Pfand: {einkauf.Pfand.String}</span>
             <span className="flex items-center gap-1">
               Paypal:{" "}
               {einkauf.Paypal ? (
@@ -115,7 +119,7 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.EinkaufModel }) {
             </span>
           </div>
           <hr />
-          <pre className="font-geist text-wrap">{einkauf.Dinge}</pre>
+          <pre className="font-geist text-wrap">{einkauf.Dinge.String}</pre>
           <div className="grid grid-cols-3 gap-2">
             {bild1?.Valid && (
               <img className="max-h-[200px] rounded-md" src={bild1.Image} />
@@ -130,13 +134,13 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.EinkaufModel }) {
         </div>
       </div>
       <div className="hidden print:block my-4 text-xs" data-theme="light">
-        {einkauf.Mitarbeiter?.Name}
+        {einkauf.Name.String}
         <br />
-        Geld: {einkauf.Geld}
+        Geld: {einkauf.Geld.String}
         <br />
-        Pfand: {einkauf.Pfand}
+        Pfand: {einkauf.Pfand.String}
         <br />
-        <pre className="font-geist text-wrap">{einkauf.Dinge}</pre>
+        <pre className="font-geist text-wrap">{einkauf.Dinge.String}</pre>
         <div className="grid grid-cols-3 mb-2">
           {bild1?.Valid && (
             <img className="max-h-[200px] rounded-md" src={bild1.Image} />

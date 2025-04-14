@@ -1,20 +1,56 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { GetLieferanten } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import { Ansprechpartner, Lieferant } from "./types";
 
 export default function Lieferantenübersicht() {
-  const [Lieferanten, setLieferanten] = useState<
-    undefined | db.LieferantenModel[]
-  >(undefined);
+  const [Lieferanten, setLieferanten] = useState<undefined | Lieferant[]>(
+    undefined
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function x() {
       setLoading(true);
-      setLieferanten(await GetLieferanten());
+      const lieferanten: Lieferant[] = [];
+      const dbRes = await GetLieferanten();
+      dbRes.map((r) => {
+        const found = lieferanten.find((x) => x.id == r.ID);
+        if (found == undefined) {
+          const ap: Ansprechpartner = {
+            id: r.ID_2.String,
+            lieferantenId: r.ID,
+            Name: r.Name.String,
+            Mail: r.Mail.Valid ? r.Mail.String : undefined,
+            Mobil: r.Mobil.Valid ? r.Mobil.String : undefined,
+            Telefon: r.Telefon.Valid ? r.Telefon.String : undefined,
+          };
+          lieferanten.push({
+            Ansprechpartner: [ap],
+            Firma: r.Firma,
+            id: r.ID,
+            Kundennummer: r.Kundennummer.Valid
+              ? r.Kundennummer.String
+              : undefined,
+            Webseite: r.Webseite.Valid ? r.Webseite.String : undefined,
+          });
+        } else {
+          if (r.ID_2.Valid && r.Name.Valid) {
+            found.Ansprechpartner.push({
+              id: r.ID_2.String,
+              lieferantenId: r.ID,
+              Name: r.Name.String,
+              Mail: r.Mail.Valid ? r.Mail.String : undefined,
+              Mobil: r.Mobil.Valid ? r.Mobil.String : undefined,
+              Telefon: r.Telefon.Valid ? r.Telefon.String : undefined,
+            });
+          }
+        }
+      });
+
+      setLieferanten(lieferanten);
       setLoading(false);
     }
     x();
@@ -77,7 +113,7 @@ export default function Lieferantenübersicht() {
                         </tr>
                       </thead>
                       <tbody>
-                        {lieferant.Anschprechpartner?.map((ap) => (
+                        {lieferant.Ansprechpartner?.map((ap) => (
                           <tr>
                             <th>{ap.Name}</th>
                             <td>

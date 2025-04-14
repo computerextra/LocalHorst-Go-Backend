@@ -13,31 +13,31 @@ export function DeleteLieferant(arg1:string):Promise<boolean>;
 
 export function DeleteMitarbeiter(arg1:string):Promise<boolean>;
 
-export function GetAllMitarbeiter():Promise<Array<db.MitarbeiterModel>>;
+export function GetAllMitarbeiter():Promise<Array<db.Mitarbeiter>>;
 
-export function GetAnsprechpartner(arg1:string):Promise<db.AnschprechpartnerModel>;
+export function GetAnsprechpartner(arg1:string):Promise<db.Ansprechpartner>;
 
 export function GetArchive(arg1:string):Promise<string>;
 
-export function GetDataFromYear(arg1:string):Promise<Array<db.TeamModel>>;
+export function GetDataFromYear(arg1:string):Promise<Array<db.Team>>;
 
-export function GetEinkauf(arg1:string):Promise<db.MitarbeiterModel>;
+export function GetEinkauf(arg1:string):Promise<db.Einkauf>;
 
-export function GetEinkaufsListe():Promise<Array<db.EinkaufModel>>;
+export function GetEinkaufsListe():Promise<Array<db.Einkauf>>;
 
-export function GetEntriesFromTeam(arg1:number):Promise<Array<db.ArtikelModel>>;
+export function GetEntriesFromTeam(arg1:number):Promise<Array<db.Artikel>>;
 
-export function GetInventurYears():Promise<Array<db.InventurModel>>;
+export function GetInventurYears():Promise<Array<string>>;
 
 export function GetKunde(arg1:string):Promise<main.User>;
 
-export function GetLieferant(arg1:string):Promise<db.LieferantenModel>;
+export function GetLieferant(arg1:string):Promise<db.Lieferant>;
 
-export function GetLieferanten():Promise<Array<db.LieferantenModel>>;
+export function GetLieferanten():Promise<Array<db.Lieferant>>;
 
-export function GetMitarbeiter(arg1:string):Promise<db.MitarbeiterModel>;
+export function GetMitarbeiter(arg1:string):Promise<db.Mitarbeiter>;
 
-export function SearchArchive(arg1:string):Promise<Array<db.PdfsModel>>;
+export function SearchArchive(arg1:string):Promise<Array<db.Archive>>;
 
 export function SearchSage(arg1:string):Promise<Array<main.Sg_Adressen>>;
 
@@ -45,12 +45,12 @@ export function SendAbrechnung(arg1:string,arg2:string,arg3:string):Promise<bool
 
 export function SkipEinkauf(arg1:string):Promise<boolean>;
 
-export function UpdateEinkauf(arg1:main.EinkaufResponse):Promise<boolean>;
+export function UpdateEinkauf(arg1:db.UpsertEinkaufParams,arg2:any):Promise<boolean>;
 
 export function UploadImage(arg1:string,arg2:string):Promise<string>;
 
-export function UpsertAnsprechpartner(arg1:string,arg2:any,arg3:main.AnsprechpartnerParams):Promise<boolean>;
+export function UpsertAnsprechpartner(arg1:any,arg2:db.AnsprechpartnerParams):Promise<boolean>;
 
-export function UpsertLieferant(arg1:main.LieferantenParams,arg2:any):Promise<boolean>;
+export function UpsertLieferant(arg1:db.LieferantenParams,arg2:any):Promise<boolean>;
 
-export function UpsertMitarbeiter(arg1:main.MitarbeiterParams,arg2:any):Promise<boolean>;
+export function UpsertMitarbeiter(arg1:db.MitarbeiterParams,arg2:any):Promise<boolean>;

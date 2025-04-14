@@ -35,12 +35,12 @@ export default function EinkaufEingabe() {
       if (id == null) return;
       setLoading(true);
       const res = await GetEinkauf(id);
-      if (res.Einkauf) {
-        setDinge(res.Einkauf.Dinge);
-        setPfand(res.Einkauf.Pfand);
-        setGeld(res.Einkauf.Geld);
-        setPaypal(res.Einkauf.Paypal);
-        setAbonniert(res.Einkauf.Abonniert);
+      if (res) {
+        setDinge(res.Dinge.Valid ? res.Dinge.String : undefined);
+        setPfand(res.Pfand.Valid ? res.Pfand.String : undefined);
+        setGeld(res.Geld.Valid ? res.Geld.String : undefined);
+        setPaypal(res.Paypal);
+        setAbonniert(res.Abonniert);
       }
       setLoading(false);
     }

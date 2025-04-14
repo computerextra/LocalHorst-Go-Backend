@@ -2,14 +2,16 @@ package main
 
 import (
 	"context"
-	"golang-backend/db"
+	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
 type App struct {
-	ctx      context.Context
-	database *db.PrismaClient
-	config   *Config
+	ctx    context.Context
+	config *Config
 }
 
 // NewApp creates a new App application struct
@@ -23,20 +25,15 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 	config, err := GetConfig()
 	if err != nil {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          "error",
+			Title:         "Keine Config",
+			Message:       fmt.Sprintf("Config Fehler: %s", err.Error()),
+			Buttons:       []string{"Ok"},
+			DefaultButton: "Ok",
+		})
 		panic(err)
 	}
 
 	a.config = config
-
-	// TODO: Change to sqlc! https://sqlc.dev/
-	client := db.NewClient()
-	if err := client.Prisma.Connect(); err != nil {
-		panic(err)
-	}
-	defer func() {
-		if err := client.Prisma.Disconnect(); err != nil {
-			panic(err)
-		}
-	}()
-	a.database = client
 }

@@ -12,7 +12,7 @@ import MitarbeiterForm from "./components/MitarbeiterForm";
 export default function MitarbeiterBearbeiter() {
   const { id } = useParams();
   const [mitarbeiter, setMitarbeiter] = useState<
-    db.MitarbeiterModel | undefined
+    db.GetMitarbeiterRow | undefined
   >(undefined);
   const [loading, setLoading] = useState(false);
 
