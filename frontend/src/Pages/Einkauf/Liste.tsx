@@ -47,7 +47,7 @@ export default function Einkaufsliste() {
       ) : (
         <div className="grid grid-cols-2 gap-4 mb-5 mt-5 print:mb-0 print:mt-0 print:block">
           {liste?.map((einkauf) => (
-            <EinkaufCard einkauf={einkauf} />
+            <EinkaufCard einkauf={einkauf} key={einkauf.Id} />
           ))}
         </div>
       )}

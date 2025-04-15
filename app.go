@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os/user"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -36,4 +37,13 @@ func (a *App) startup(ctx context.Context) {
 	}
 
 	a.config = config
+}
+
+func (a App) GetUsername() string {
+	u, err := user.Current()
+	if err != nil {
+		return ""
+	}
+
+	return u.Name
 }

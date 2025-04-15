@@ -343,14 +343,14 @@ export namespace db {
 		}
 	}
 	export class UpsertEinkaufParams {
-	    Paypal?: boolean;
-	    Abonniert?: boolean;
-	    Geld?: string;
-	    Pfand?: string;
-	    Dinge?: string;
-	    Bild1?: string;
-	    Bild2?: string;
-	    Bild3?: string;
+	    Paypal: boolean;
+	    Abonniert: boolean;
+	    Geld: string;
+	    Pfand: string;
+	    Dinge: string;
+	    Bild1: string;
+	    Bild2: string;
+	    Bild3: string;
 	    MitarbeiterId: string;
 	
 	    static createFrom(source: any = {}) {

@@ -3,22 +3,31 @@ import { NavLink } from "react-router";
 import { CheckImage } from "../../../../wailsjs/go/main/App";
 import type { db, main } from "../../../../wailsjs/go/models";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
+import { getUser, User } from "../../../hooks/funcs";
 
 export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
   const [bild1, setBild1] = useState<undefined | main.ImageResponse>(undefined);
   const [bild2, setBild2] = useState<undefined | main.ImageResponse>(undefined);
   const [bild3, setBild3] = useState<undefined | main.ImageResponse>(undefined);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
     async function x() {
       setLoading(true);
+      setUser(getUser());
       const res1 = await CheckImage(einkauf.MitarbeiterId, "1");
       const res2 = await CheckImage(einkauf.MitarbeiterId, "2");
       const res3 = await CheckImage(einkauf.MitarbeiterId, "3");
-      setBild1(res1);
-      setBild2(res2);
-      setBild3(res3);
+      if (res1.Image.length > 0) {
+        setBild1(res1);
+      }
+      if (res2.Image.length > 0) {
+        setBild2(res2);
+      }
+      if (res3.Image.length > 0) {
+        setBild3(res3);
+      }
       setLoading(false);
     }
     x();
@@ -34,9 +43,25 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
           <div className="flex justify-between">
             <h2 className="card-title">{einkauf.Mitarbeiter.Name}</h2>
             <div className="card-actions justify-end">
-              <NavLink to={`/Einkauf/${einkauf.Id}`} className="btn btn-accent">
-                Bearbeiten
-              </NavLink>
+              {user ? (
+                <>
+                  {user.id == einkauf.MitarbeiterId && (
+                    <NavLink
+                      to={`/Einkauf/${einkauf.MitarbeiterId}`}
+                      className="btn btn-accent"
+                    >
+                      Bearbeiten
+                    </NavLink>
+                  )}
+                </>
+              ) : (
+                <NavLink
+                  to={`/Einkauf/${einkauf.MitarbeiterId}`}
+                  className="btn btn-accent"
+                >
+                  Bearbeiten
+                </NavLink>
+              )}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">

@@ -92,6 +92,8 @@ export default function MitarbeiterForm({
   const handleSave = async () => {
     if (Name == null) return;
     if (Name.length < 1) return;
+    localStorage.removeItem("geburtstage");
+    localStorage.removeItem("geburtstag-lastsync");
     const params: db.MitarbeiterParams = {
       Name,
       Azubi: Azubi != null ? Azubi : false,

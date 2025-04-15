@@ -30,6 +30,8 @@ export default function MitarbeiterBearbeiter() {
 
   const handleDelete = async () => {
     await DeleteMitarbeiter(id!);
+    localStorage.removeItem("geburtstage");
+    localStorage.removeItem("geburtstag-lastsync");
     navigate("/Mitarbeiter");
   };
 

@@ -25,7 +25,7 @@ func (a *App) GetEinkaufsListe() []db.Einkauf {
 	return res
 }
 
-func (a *App) UpdateEinkauf(values db.UpsertEinkaufParams, id *string) bool {
+func (a *App) UpdateEinkauf(values db.UpsertEinkaufParams, id string) bool {
 	if len(values.MitarbeiterId) == 0 {
 		return false
 	}
@@ -152,6 +152,7 @@ func checkImage(date time.Time, data string) ImageResponse {
 		res.Image = imageToBase64(data)
 	} else {
 		res.Valid = false
+		res.Image = ""
 	}
 	return res
 }

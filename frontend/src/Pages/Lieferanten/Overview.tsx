@@ -14,7 +14,36 @@ export default function Lieferantenübersicht() {
   useEffect(() => {
     async function x() {
       setLoading(true);
-      const dbRes = await GetLieferanten();
+
+      let dbRes: db.Lieferant[] = [];
+
+      const today = new Date();
+      const localData = localStorage.getItem("lieferanten");
+      const lastUpdate = localStorage.getItem("lieferanten-lastsync");
+      if (localData != null && lastUpdate != null) {
+        const date = new Date(JSON.parse(lastUpdate));
+        const diff = Math.trunc(
+          //   @ts-expect-error Das geht!
+          Math.round(today - date) / (1000 * 60 * 60 * 24)
+        );
+        if (diff < 30) {
+          dbRes = JSON.parse(localData);
+        } else {
+          dbRes = await GetLieferanten();
+          localStorage.setItem("lieferanten", JSON.stringify(dbRes));
+          localStorage.setItem(
+            "lieferanten-lastsync",
+            JSON.stringify(new Date())
+          );
+        }
+      } else {
+        dbRes = await GetLieferanten();
+        localStorage.setItem("lieferanten", JSON.stringify(dbRes));
+        localStorage.setItem(
+          "lieferanten-lastsync",
+          JSON.stringify(new Date())
+        );
+      }
 
       setLieferanten(dbRes);
       setLoading(false);
@@ -44,7 +73,7 @@ export default function Lieferantenübersicht() {
             </thead>
             <tbody>
               {Lieferanten?.map((lieferant) => (
-                <tr>
+                <tr key={lieferant.Id}>
                   <th>
                     <Link
                       to={"/Lieferanten/" + lieferant.Id}
@@ -80,7 +109,7 @@ export default function Lieferantenübersicht() {
                       </thead>
                       <tbody>
                         {lieferant.Ansprechpartner?.map((ap) => (
-                          <tr>
+                          <tr key={ap.Id}>
                             <th>{ap.Name}</th>
                             <td>
                               {ap.Telefon.Valid &&

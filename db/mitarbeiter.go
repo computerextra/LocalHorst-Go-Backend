@@ -59,6 +59,28 @@ func (d Database) GetMitarbeiter(id string) (*Mitarbeiter, error) {
 	return &x, nil
 }
 
+func (d Database) GetMitarbeiterIdByName(name string) (string, error) {
+	conn, err := getConnection(d.connectionString)
+	if err != nil {
+		return "", err
+	}
+	defer conn.Close()
+
+	stmt, err := conn.Prepare("SELECT id FROM Mitarbeiter WHERE Name LIKE ?;")
+	if err != nil {
+		return "", err
+	}
+	defer stmt.Close()
+
+	var id string
+
+	err = stmt.QueryRow(name).Scan(&id)
+	if err != nil {
+		return "", err
+	}
+	return id, nil
+}
+
 func (d Database) GetAllMitarbeiter() ([]Mitarbeiter, error) {
 	conn, err := getConnection(d.connectionString)
 	if err != nil {

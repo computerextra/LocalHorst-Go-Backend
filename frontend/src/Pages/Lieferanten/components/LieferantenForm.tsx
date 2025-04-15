@@ -33,6 +33,8 @@ export default function LieferantenForm({
   const onSave = async () => {
     if (Firma == null) return;
     if (Firma.length < 1) return;
+    localStorage.removeItem("lieferanten");
+    localStorage.removeItem("lieferanten-lastsync");
     const params: db.LieferantenParams = {
       Firma,
       Kundennummer,

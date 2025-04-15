@@ -70,6 +70,14 @@ export function GetMitarbeiter(arg1) {
   return window['go']['main']['App']['GetMitarbeiter'](arg1);
 }
 
+export function GetMitarbeiterIdByName(arg1) {
+  return window['go']['main']['App']['GetMitarbeiterIdByName'](arg1);
+}
+
+export function GetUsername() {
+  return window['go']['main']['App']['GetUsername']();
+}
+
 export function SearchArchive(arg1) {
   return window['go']['main']['App']['SearchArchive'](arg1);
 }

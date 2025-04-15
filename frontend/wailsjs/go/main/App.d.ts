@@ -37,6 +37,10 @@ export function GetLieferanten():Promise<Array<db.Lieferant>>;
 
 export function GetMitarbeiter(arg1:string):Promise<db.Mitarbeiter>;
 
+export function GetMitarbeiterIdByName(arg1:string):Promise<string>;
+
+export function GetUsername():Promise<string>;
+
 export function SearchArchive(arg1:string):Promise<Array<db.Archive>>;
 
 export function SearchSage(arg1:string):Promise<Array<main.Sg_Adressen>>;
@@ -45,7 +49,7 @@ export function SendAbrechnung(arg1:string,arg2:string,arg3:string):Promise<bool
 
 export function SkipEinkauf(arg1:string):Promise<boolean>;
 
-export function UpdateEinkauf(arg1:db.UpsertEinkaufParams,arg2:any):Promise<boolean>;
+export function UpdateEinkauf(arg1:db.UpsertEinkaufParams,arg2:string):Promise<boolean>;
 
 export function UploadImage(arg1:string,arg2:string):Promise<string>;
 

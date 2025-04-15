@@ -1,13 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router";
 import { themeChange } from "theme-change";
+import { getUser, Login, Logout, User } from "./hooks/funcs";
+import useUsername from "./hooks/useUsername";
 import { Themes } from "./themes";
 
 export default function Layout() {
+  const [user, setUser] = useState<User | undefined>(undefined);
+
+  useUsername();
+
   useEffect(() => {
     themeChange(false);
     // 👆 false parameter is required for react project
   }, []);
+
+  useEffect(() => {
+    const user = getUser();
+    if (user != null) setUser(user);
+  }, []);
+
+  const handleLogout = () => {
+    Logout();
+    setUser(undefined);
+  };
+
+  const handleLogin = () => {
+    Login();
+    location.reload();
+  };
 
   return (
     <main className="bg-base-100 text-base-content min-h-[100vh] print:min-h-min print:bg-neutral print:text-neutral-content antialiased">
@@ -16,6 +37,15 @@ export default function Layout() {
           <Link to="/" className="text-xl btn btn-ghost">
             Viktor App
           </Link>
+          {user ? (
+            <span className="text-xl btn btn-info" onClick={handleLogout}>
+              User: {user.Username.split(" ")[0]} ( Abmelden? )
+            </span>
+          ) : (
+            <span className="text-xl btn btn-info" onClick={handleLogin}>
+              Kein Benutzer oder nicht erlaubt ( Anmelden? )
+            </span>
+          )}
         </div>
         <div className="flex-none">
           <NavLinks />

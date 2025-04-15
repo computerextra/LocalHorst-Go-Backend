@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"github.com/lucsky/cuid"
@@ -32,7 +33,7 @@ func (d Database) GetEinkaufsliste() ([]Einkauf, error) {
 	}
 	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE DATE(Abgeschickt) = curdate() OR Abonniert = 1 ORDER BY Abgeschickt ASC;")
+	stmt, err := conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE DATE(Abgeschickt) = curdate() OR Abonniert = 1 ORDER BY Abgeschickt DESC;")
 	if err != nil {
 		return nil, err
 	}
@@ -79,80 +80,66 @@ func (d Database) GetEinkaufsliste() ([]Einkauf, error) {
 }
 
 type UpsertEinkaufParams struct {
-	Paypal        *bool
-	Abonniert     *bool
-	Geld          *string
-	Pfand         *string
-	Dinge         *string
-	Bild1         *string
-	Bild2         *string
-	Bild3         *string
+	Paypal        bool
+	Abonniert     bool
+	Geld          string
+	Pfand         string
+	Dinge         string
+	Bild1         string
+	Bild2         string
+	Bild3         string
 	MitarbeiterId string
 }
 
-func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id *string) (sql.Result, error) {
+func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id string) (sql.Result, error) {
+	fmt.Println("Starting Upsert")
 	conn, err := getConnection(d.connectionString)
 	if err != nil {
 		return nil, err
 	}
 	defer conn.Close()
 
-	var Paypal bool
-	var Abonniert bool
-
-	if *params.Abonniert {
-		Abonniert = true
-	} else {
-		Abonniert = false
-	}
-	if *params.Paypal {
-		Paypal = true
-	} else {
-		Paypal = false
-	}
-
 	var Geld sql.NullString
-	if len(*params.Geld) > 0 {
+	if len(params.Geld) > 0 {
 		Geld.Valid = true
-		Geld.String = *params.Geld
+		Geld.String = params.Geld
 	} else {
 		Geld.Valid = false
+		Geld.String = ""
 	}
 
 	var Pfand sql.NullString
-	if len(*params.Pfand) > 0 {
+	if len(params.Pfand) > 0 {
 		Pfand.Valid = true
-		Pfand.String = *params.Pfand
+		Pfand.String = params.Pfand
 	} else {
 		Pfand.Valid = false
+		Pfand.String = ""
 	}
 
-	var Dinge string
-	if len(*params.Dinge) > 0 {
-		Dinge = *params.Dinge
-	} else {
-		Dinge = ""
-	}
 	var Bild1 sql.NullString
-	if len(*params.Bild1) > 0 {
+	if len(params.Bild1) > 0 {
 		Bild1.Valid = true
-		Bild1.String = *params.Bild1
+		Bild1.String = params.Bild1
 	} else {
 		Bild1.Valid = false
+		Bild1.String = ""
 	}
 	var Bild2 sql.NullString
-	if len(*params.Bild2) > 0 {
+	if len(params.Bild2) > 0 {
 		Bild2.Valid = true
-		Bild2.String = *params.Bild2
+		Bild2.String = params.Bild2
 	} else {
 		Bild2.Valid = false
+		Bild2.String = ""
 	}
 	var Bild3 sql.NullString
-	if len(*params.Bild3) > 0 {
+	if len(params.Bild3) > 0 {
 		Bild3.Valid = true
-		Bild3.String = *params.Bild3
+		Bild3.String = params.Bild3
 	} else {
 		Bild3.Valid = false
+		Bild3.String = ""
 	}
 	var Bild1Date sql.NullTime
 	if Bild1.Valid {
@@ -161,6 +148,7 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id *string) (sql.Res
 	} else {
 		Bild1Date.Valid = false
 	}
+
 	var Bild2Date sql.NullTime
 	if Bild2.Valid {
 		Bild2Date.Valid = true
@@ -168,6 +156,7 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id *string) (sql.Res
 	} else {
 		Bild2Date.Valid = false
 	}
+
 	var Bild3Date sql.NullTime
 	if Bild3.Valid {
 		Bild3Date.Valid = true
@@ -176,30 +165,33 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id *string) (sql.Res
 		Bild3Date.Valid = false
 	}
 
-	if len(*id) > 0 {
-
+	if len(id) > 0 {
+		fmt.Println("UPDATE")
 		stmt, err := conn.Prepare("UPDATE Einkauf SET Paypal = ?, Abonniert = ?, Geld = ?, Pfand = ?, Dinge = ?, Abgeschickt = NOW(), Bild1 = ?, Bild2 = ?, Bild3 = ?, Bild1Date = ?, Bild2Date = ?, Bild3Date = ? WHERE id = ?;")
 		if err != nil {
 			return nil, err
 		}
 		defer stmt.Close()
 		// Update
-		return stmt.Exec(
-			Paypal,
-			Abonniert,
+		res, err := stmt.Exec(
+			params.Paypal,
+			params.Abonniert,
 			Geld,
 			Pfand,
-			Dinge,
+			params.Dinge,
 			Bild1,
 			Bild2,
 			Bild3,
 			Bild1Date,
 			Bild2Date,
 			Bild3Date,
-			*id,
+			id,
 		)
-	} else {
+		fmt.Println(res.RowsAffected())
 
+		return res, err
+	} else {
+		fmt.Println("CREATE")
 		stmt, err := conn.Prepare("INSERT INTO Einkauf ( id, Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);")
 		if err != nil {
 			return nil, err
@@ -208,11 +200,11 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id *string) (sql.Res
 		// Create
 		return stmt.Exec(
 			cuid.New(),
-			Paypal,
-			Abonniert,
+			params.Paypal,
+			params.Abonniert,
 			Geld,
 			Pfand,
-			Dinge,
+			params.Dinge,
 			Bild1,
 			Bild2,
 			Bild3,

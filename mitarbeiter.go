@@ -33,3 +33,12 @@ func (a *App) DeleteMitarbeiter(id string) bool {
 	_, err := database.DeleteMitarbeiter(id)
 	return err == nil
 }
+
+func (a *App) GetMitarbeiterIdByName(name string) string {
+	databas := db.New(a.config.DATABASE_URL)
+	ma, err := databas.GetMitarbeiterIdByName(name)
+	if err != nil {
+		return ""
+	}
+	return ma
+}

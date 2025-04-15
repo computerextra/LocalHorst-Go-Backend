@@ -28,6 +28,8 @@ export default function ApDetails() {
 
   const handleDelete = async () => {
     if (lid == null) return;
+    localStorage.removeItem("lieferanten");
+    localStorage.removeItem("lieferanten-lastsync");
     await DeleteAnsprechpartner(lid);
     navigate("/Lieferanten/" + id);
   };

@@ -12,13 +12,37 @@ export default function GeburtstagsListe() {
   useEffect(() => {
     async function x() {
       setLoading(true);
-      const ma = await GetAllMitarbeiter();
-
       const heute: db.Mitarbeiter[] = [];
       const zukunft: db.Mitarbeiter[] = [];
       const vergangen: db.Mitarbeiter[] = [];
 
       const today = new Date();
+
+      let ma: db.Mitarbeiter[] = [];
+
+      const localData = localStorage.getItem("geburtstage");
+      const lastUpdate = localStorage.getItem("geburtstag-lastsync");
+      if (localData != null && lastUpdate != null) {
+        const date = new Date(JSON.parse(lastUpdate));
+        const diff = Math.trunc(
+          //   @ts-expect-error Das geht!
+          Math.round(today - date) / (1000 * 60 * 60 * 24)
+        );
+        if (diff < 30) {
+          ma = JSON.parse(localData);
+        } else {
+          ma = await GetAllMitarbeiter();
+          localStorage.setItem("geburtstage", JSON.stringify(ma));
+          localStorage.setItem(
+            "geburtstag-lastsync",
+            JSON.stringify(new Date())
+          );
+        }
+      } else {
+        ma = await GetAllMitarbeiter();
+        localStorage.setItem("geburtstage", JSON.stringify(ma));
+        localStorage.setItem("geburtstag-lastsync", JSON.stringify(new Date()));
+      }
 
       ma.map((i) => {
         if (i.Geburtstag.Valid) {

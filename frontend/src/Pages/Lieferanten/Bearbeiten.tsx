@@ -26,6 +26,8 @@ export default function LieferantBearbeiten() {
 
   const handleDelete = async () => {
     if (id == null) return;
+    localStorage.removeItem("lieferanten");
+    localStorage.removeItem("lieferanten-lastsync");
     const res = await DeleteLieferant(id);
     if (res) {
       navigate("/Lieferanten");

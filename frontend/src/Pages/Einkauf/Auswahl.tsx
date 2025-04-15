@@ -4,6 +4,7 @@ import { GetAllMitarbeiter } from "../../../wailsjs/go/main/App";
 import { db } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import { getUser } from "../../hooks/funcs";
 
 export default function EinkaufAuswahl() {
   const [mitarbeiter, setMitarbeiter] = useState<db.Mitarbeiter[] | undefined>(
@@ -20,8 +21,13 @@ export default function EinkaufAuswahl() {
       const res = await GetAllMitarbeiter();
       setMitarbeiter(res);
       setLoading(false);
+      const user = getUser();
+      if (user != null) {
+        navigate(`/Einkauf/${user.id}`);
+      }
     }
     x();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = () => {
@@ -50,12 +56,15 @@ export default function EinkaufAuswahl() {
               <select
                 className="select"
                 onChange={(e) => setId(e.target.value)}
+                defaultValue={""}
               >
-                <option disabled selected>
+                <option disabled value={""}>
                   Bitte wählen...
                 </option>
                 {mitarbeiter?.map((x) => (
-                  <option value={x.Id}>{x.Name}</option>
+                  <option value={x.Id} key={x.Id}>
+                    {x.Name}
+                  </option>
                 ))}
               </select>
               <button

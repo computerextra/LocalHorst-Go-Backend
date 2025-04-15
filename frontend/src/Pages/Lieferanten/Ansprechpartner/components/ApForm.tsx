@@ -32,6 +32,8 @@ export default function AnsprechpartnerForm({
     if (Name == null) return;
     if (Name.length < 1) return;
     setLoading(true);
+    localStorage.removeItem("lieferanten");
+    localStorage.removeItem("lieferanten-lastsync");
     const params: db.AnsprechpartnerParams = {
       Name,
       Mail,

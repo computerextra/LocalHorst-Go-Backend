@@ -19,9 +19,14 @@ export default function Inventur() {
   useEffect(() => {
     async function x() {
       setLoading(true);
-      const years = await GetInventurYears();
-
-      setYears(years);
+      const localYears = localStorage.getItem("years");
+      if (localYears != null) {
+        setYears(JSON.parse(localYears));
+      } else {
+        const years = await GetInventurYears();
+        localStorage.setItem("years", JSON.stringify(years));
+        setYears(years);
+      }
       setLoading(false);
     }
     x();
@@ -32,9 +37,16 @@ export default function Inventur() {
     setYear(year);
     setTeam(undefined);
     setEntries(undefined);
-    const res = await GetDataFromYear(year);
 
-    setTeams(res);
+    const localData = localStorage.getItem(`${year}-team`);
+    if (localData != null) {
+      setTeams(JSON.parse(localData));
+    } else {
+      const res = await GetDataFromYear(year);
+      localStorage.setItem(`${year}-team`, JSON.stringify(res));
+      setTeams(res);
+    }
+
     setLoading(false);
   };
 
@@ -42,9 +54,16 @@ export default function Inventur() {
     if (year == null) return;
     setLoading(true);
     setTeam(team);
-    const res = await GetEntriesFromTeam(team);
 
-    setEntries(res);
+    const localData = localStorage.getItem(`${team}-data`);
+    if (localData != null) {
+      setEntries(JSON.parse(localData));
+    } else {
+      const res = await GetEntriesFromTeam(team);
+      setEntries(res);
+      localStorage.setItem(`${team}-data`, JSON.stringify(res));
+    }
+
     setLoading(false);
   };
 

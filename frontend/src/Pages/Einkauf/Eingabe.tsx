@@ -21,6 +21,7 @@ export default function EinkaufEingabe() {
   const [Bild3, setBild3] = useState<string | undefined>(undefined);
   const [Paypal, setPaypal] = useState<boolean | undefined>(undefined);
   const [Abonniert, setAbonniert] = useState<boolean | undefined>(undefined);
+  const [EinkaufId, setEinkaufId] = useState<string | undefined>(undefined);
 
   const [loading, setLoading] = useState(false);
 
@@ -40,6 +41,7 @@ export default function EinkaufEingabe() {
         setPfand(res.Pfand.Valid ? res.Pfand.String : undefined);
         setGeld(res.Geld.Valid ? res.Geld.String : undefined);
         setPaypal(res.Paypal);
+        setEinkaufId(res.Id);
         setAbonniert(res.Abonniert);
       }
       setLoading(false);
@@ -75,7 +77,7 @@ export default function EinkaufEingabe() {
       Pfand: Pfand != null ? Pfand : "",
       MitarbeiterId: id!,
     };
-    if (await UpdateEinkauf(params, id)) {
+    if (await UpdateEinkauf(params, EinkaufId ?? "")) {
       navigate("/Einkauf");
     } else {
       alert("Server Fehler");
@@ -84,7 +86,7 @@ export default function EinkaufEingabe() {
 
   return (
     <>
-      <BackButton href="/Einkauf/Auswahl" />
+      <BackButton href="/Einkauf" />
 
       <h1>Einkauf Eingabe</h1>
       {loading ? (
