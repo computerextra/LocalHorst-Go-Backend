@@ -653,9 +653,7 @@ function GoogleForm() {
             <p id="print-p2">
               <b>Name:</b>
               <br />
-              {Kundendaten?.Vorname}
-              {""}
-              {Kundendaten?.Name}
+              {Kundendaten?.Vorname} {Kundendaten?.Name}
             </p>
             <p id="print-p3">
               <b>Benutzername:</b>
