@@ -1,7 +1,6 @@
 package main
 
 import (
-	"golang-backend/db"
 	"path/filepath"
 )
 

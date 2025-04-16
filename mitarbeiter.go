@@ -1,9 +1,5 @@
 package main
 
-import (
-	"golang-backend/db"
-)
-
 func (a *App) GetAllMitarbeiter() []db.Mitarbeiter {
 
 	ma, err := a.db.GetAllMitarbeiter()

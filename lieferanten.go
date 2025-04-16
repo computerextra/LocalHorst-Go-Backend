@@ -1,9 +1,5 @@
 package main
 
-import (
-	"golang-backend/db"
-)
-
 func (a *App) GetLieferanten() []db.Lieferant {
 
 	res, err := a.db.GetLieferanten()

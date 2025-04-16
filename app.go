@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"golang-backend/db"
 	"os/user"
 
-	_ "github.com/go-sql-driver/mysql"
+	"golang-backend/ent"
+
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -14,7 +15,7 @@ import (
 type App struct {
 	ctx    context.Context
 	config *Config
-	db     *db.PrismaClient
+	db     *ent.Client
 }
 
 // NewApp creates a new App application struct
@@ -38,38 +39,20 @@ func (a *App) startup(ctx context.Context) {
 		panic(err)
 	}
 
-	client := db.NewClient()
-	if err := client.Prisma.Connect(); err != nil {
+	a.config = config
+
+	client, err := ent.Open("sqlite3", fmt.Sprintf("file:%s\\viktor.db?cache=shared&mode=rwc&_fk=1", config.UPLOAD_FOLDER))
+	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
 			Type:          "error",
-			Title:         "Datenbank",
-			Message:       fmt.Sprintf("Datenbank Fehler: %s", err.Error()),
+			Title:         "Database",
+			Message:       fmt.Sprintf("Datenbank fehler: %s", err.Error()),
 			Buttons:       []string{"Ok"},
 			DefaultButton: "Ok",
 		})
 		panic(err)
 	}
-	// conn, err := db.GetConnection(config.DATABASE_URL)
-	// if err != nil {
-	// 	runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-	// 		Type:          "error",
-	// 		Title:         "Datenbank",
-	// 		Message:       fmt.Sprintf("Datenbank Fehler: %s", err.Error()),
-	// 		Buttons:       []string{"Ok"},
-	// 		DefaultButton: "Ok",
-	// 	})
-	// 	panic(err)
-	// }
-
 	a.db = client
-
-	a.config = config
-
-	defer func() {
-		if err := client.Prisma.Disconnect(); err != nil {
-			panic(err)
-		}
-	}()
 }
 
 func (a App) GetUsername() string {

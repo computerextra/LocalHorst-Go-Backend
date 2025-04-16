@@ -10,3 +10,6 @@ installer:
 all:
 	wails build -o="Victor.exe" -devtools
 	wails build -nsis -o="Victor-Installer.exe" -webview2=embed
+
+generate:
+	go generate ./ent
