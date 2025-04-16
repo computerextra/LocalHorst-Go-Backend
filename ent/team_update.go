@@ -92,19 +92,19 @@ func (tu *TeamUpdate) SetNillableOrt(s *string) *TeamUpdate {
 	return tu
 }
 
-// AddTeamNameIDs adds the "teamName" edge to the Artikel entity by IDs.
-func (tu *TeamUpdate) AddTeamNameIDs(ids ...int) *TeamUpdate {
-	tu.mutation.AddTeamNameIDs(ids...)
+// AddArtikelIDs adds the "artikel" edge to the Artikel entity by IDs.
+func (tu *TeamUpdate) AddArtikelIDs(ids ...int) *TeamUpdate {
+	tu.mutation.AddArtikelIDs(ids...)
 	return tu
 }
 
-// AddTeamName adds the "teamName" edges to the Artikel entity.
-func (tu *TeamUpdate) AddTeamName(a ...*Artikel) *TeamUpdate {
+// AddArtikel adds the "artikel" edges to the Artikel entity.
+func (tu *TeamUpdate) AddArtikel(a ...*Artikel) *TeamUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
 		ids[i] = a[i].ID
 	}
-	return tu.AddTeamNameIDs(ids...)
+	return tu.AddArtikelIDs(ids...)
 }
 
 // SetJahrID sets the "Jahr" edge to the Inventur entity by ID.
@@ -131,25 +131,25 @@ func (tu *TeamUpdate) Mutation() *TeamMutation {
 	return tu.mutation
 }
 
-// ClearTeamName clears all "teamName" edges to the Artikel entity.
-func (tu *TeamUpdate) ClearTeamName() *TeamUpdate {
-	tu.mutation.ClearTeamName()
+// ClearArtikel clears all "artikel" edges to the Artikel entity.
+func (tu *TeamUpdate) ClearArtikel() *TeamUpdate {
+	tu.mutation.ClearArtikel()
 	return tu
 }
 
-// RemoveTeamNameIDs removes the "teamName" edge to Artikel entities by IDs.
-func (tu *TeamUpdate) RemoveTeamNameIDs(ids ...int) *TeamUpdate {
-	tu.mutation.RemoveTeamNameIDs(ids...)
+// RemoveArtikelIDs removes the "artikel" edge to Artikel entities by IDs.
+func (tu *TeamUpdate) RemoveArtikelIDs(ids ...int) *TeamUpdate {
+	tu.mutation.RemoveArtikelIDs(ids...)
 	return tu
 }
 
-// RemoveTeamName removes "teamName" edges to Artikel entities.
-func (tu *TeamUpdate) RemoveTeamName(a ...*Artikel) *TeamUpdate {
+// RemoveArtikel removes "artikel" edges to Artikel entities.
+func (tu *TeamUpdate) RemoveArtikel(a ...*Artikel) *TeamUpdate {
 	ids := make([]int, len(a))
 	for i := range a {
 		ids[i] = a[i].ID
 	}
-	return tu.RemoveTeamNameIDs(ids...)
+	return tu.RemoveArtikelIDs(ids...)
 }
 
 // ClearJahr clears the "Jahr" edge to the Inventur entity.
@@ -209,12 +209,12 @@ func (tu *TeamUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := tu.mutation.Ort(); ok {
 		_spec.SetField(team.FieldOrt, field.TypeString, value)
 	}
-	if tu.mutation.TeamNameCleared() {
+	if tu.mutation.ArtikelCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   team.TeamNameTable,
-			Columns: []string{team.TeamNameColumn},
+			Table:   team.ArtikelTable,
+			Columns: []string{team.ArtikelColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(artikel.FieldID, field.TypeInt),
@@ -222,12 +222,12 @@ func (tu *TeamUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tu.mutation.RemovedTeamNameIDs(); len(nodes) > 0 && !tu.mutation.TeamNameCleared() {
+	if nodes := tu.mutation.RemovedArtikelIDs(); len(nodes) > 0 && !tu.mutation.ArtikelCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   team.TeamNameTable,
-			Columns: []string{team.TeamNameColumn},
+			Table:   team.ArtikelTable,
+			Columns: []string{team.ArtikelColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(artikel.FieldID, field.TypeInt),
@@ -238,12 +238,12 @@ func (tu *TeamUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tu.mutation.TeamNameIDs(); len(nodes) > 0 {
+	if nodes := tu.mutation.ArtikelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   team.TeamNameTable,
-			Columns: []string{team.TeamNameColumn},
+			Table:   team.ArtikelTable,
+			Columns: []string{team.ArtikelColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(artikel.FieldID, field.TypeInt),
@@ -366,19 +366,19 @@ func (tuo *TeamUpdateOne) SetNillableOrt(s *string) *TeamUpdateOne {
 	return tuo
 }
 
-// AddTeamNameIDs adds the "teamName" edge to the Artikel entity by IDs.
-func (tuo *TeamUpdateOne) AddTeamNameIDs(ids ...int) *TeamUpdateOne {
-	tuo.mutation.AddTeamNameIDs(ids...)
+// AddArtikelIDs adds the "artikel" edge to the Artikel entity by IDs.
+func (tuo *TeamUpdateOne) AddArtikelIDs(ids ...int) *TeamUpdateOne {
+	tuo.mutation.AddArtikelIDs(ids...)
 	return tuo
 }
 
-// AddTeamName adds the "teamName" edges to the Artikel entity.
-func (tuo *TeamUpdateOne) AddTeamName(a ...*Artikel) *TeamUpdateOne {
+// AddArtikel adds the "artikel" edges to the Artikel entity.
+func (tuo *TeamUpdateOne) AddArtikel(a ...*Artikel) *TeamUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
 		ids[i] = a[i].ID
 	}
-	return tuo.AddTeamNameIDs(ids...)
+	return tuo.AddArtikelIDs(ids...)
 }
 
 // SetJahrID sets the "Jahr" edge to the Inventur entity by ID.
@@ -405,25 +405,25 @@ func (tuo *TeamUpdateOne) Mutation() *TeamMutation {
 	return tuo.mutation
 }
 
-// ClearTeamName clears all "teamName" edges to the Artikel entity.
-func (tuo *TeamUpdateOne) ClearTeamName() *TeamUpdateOne {
-	tuo.mutation.ClearTeamName()
+// ClearArtikel clears all "artikel" edges to the Artikel entity.
+func (tuo *TeamUpdateOne) ClearArtikel() *TeamUpdateOne {
+	tuo.mutation.ClearArtikel()
 	return tuo
 }
 
-// RemoveTeamNameIDs removes the "teamName" edge to Artikel entities by IDs.
-func (tuo *TeamUpdateOne) RemoveTeamNameIDs(ids ...int) *TeamUpdateOne {
-	tuo.mutation.RemoveTeamNameIDs(ids...)
+// RemoveArtikelIDs removes the "artikel" edge to Artikel entities by IDs.
+func (tuo *TeamUpdateOne) RemoveArtikelIDs(ids ...int) *TeamUpdateOne {
+	tuo.mutation.RemoveArtikelIDs(ids...)
 	return tuo
 }
 
-// RemoveTeamName removes "teamName" edges to Artikel entities.
-func (tuo *TeamUpdateOne) RemoveTeamName(a ...*Artikel) *TeamUpdateOne {
+// RemoveArtikel removes "artikel" edges to Artikel entities.
+func (tuo *TeamUpdateOne) RemoveArtikel(a ...*Artikel) *TeamUpdateOne {
 	ids := make([]int, len(a))
 	for i := range a {
 		ids[i] = a[i].ID
 	}
-	return tuo.RemoveTeamNameIDs(ids...)
+	return tuo.RemoveArtikelIDs(ids...)
 }
 
 // ClearJahr clears the "Jahr" edge to the Inventur entity.
@@ -513,12 +513,12 @@ func (tuo *TeamUpdateOne) sqlSave(ctx context.Context) (_node *Team, err error) 
 	if value, ok := tuo.mutation.Ort(); ok {
 		_spec.SetField(team.FieldOrt, field.TypeString, value)
 	}
-	if tuo.mutation.TeamNameCleared() {
+	if tuo.mutation.ArtikelCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   team.TeamNameTable,
-			Columns: []string{team.TeamNameColumn},
+			Table:   team.ArtikelTable,
+			Columns: []string{team.ArtikelColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(artikel.FieldID, field.TypeInt),
@@ -526,12 +526,12 @@ func (tuo *TeamUpdateOne) sqlSave(ctx context.Context) (_node *Team, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tuo.mutation.RemovedTeamNameIDs(); len(nodes) > 0 && !tuo.mutation.TeamNameCleared() {
+	if nodes := tuo.mutation.RemovedArtikelIDs(); len(nodes) > 0 && !tuo.mutation.ArtikelCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   team.TeamNameTable,
-			Columns: []string{team.TeamNameColumn},
+			Table:   team.ArtikelTable,
+			Columns: []string{team.ArtikelColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(artikel.FieldID, field.TypeInt),
@@ -542,12 +542,12 @@ func (tuo *TeamUpdateOne) sqlSave(ctx context.Context) (_node *Team, err error) 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := tuo.mutation.TeamNameIDs(); len(nodes) > 0 {
+	if nodes := tuo.mutation.ArtikelIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   team.TeamNameTable,
-			Columns: []string{team.TeamNameColumn},
+			Table:   team.ArtikelTable,
+			Columns: []string{team.ArtikelColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(artikel.FieldID, field.TypeInt),

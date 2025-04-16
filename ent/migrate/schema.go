@@ -11,7 +11,7 @@ var (
 	// AnsprechpartnersColumns holds the columns for the "ansprechpartners" table.
 	AnsprechpartnersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "telefon", Type: field.TypeString},
 		{Name: "mobil", Type: field.TypeString},
 		{Name: "mail", Type: field.TypeString},
@@ -37,7 +37,7 @@ var (
 		{Name: "artikelnummer", Type: field.TypeString},
 		{Name: "suchbegriff", Type: field.TypeString},
 		{Name: "anzahl", Type: field.TypeInt},
-		{Name: "team_team_name", Type: field.TypeInt, Nullable: true},
+		{Name: "team_artikel", Type: field.TypeInt, Nullable: true},
 	}
 	// ArtikelsTable holds the schema information for the "artikels" table.
 	ArtikelsTable = &schema.Table{
@@ -46,7 +46,7 @@ var (
 		PrimaryKey: []*schema.Column{ArtikelsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "artikels_teams_teamName",
+				Symbol:     "artikels_teams_artikel",
 				Columns:    []*schema.Column{ArtikelsColumns[4]},
 				RefColumns: []*schema.Column{TeamsColumns[0]},
 				OnDelete:   schema.SetNull,

@@ -9,6 +9,7 @@ import (
 	"golang-backend/ent/inventur"
 	"golang-backend/ent/team"
 
+	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 )
@@ -18,6 +19,7 @@ type InventurCreate struct {
 	config
 	mutation *InventurMutation
 	hooks    []Hook
+	conflict []sql.ConflictOption
 }
 
 // SetJahr sets the "Jahr" field.
@@ -104,6 +106,7 @@ func (ic *InventurCreate) createSpec() (*Inventur, *sqlgraph.CreateSpec) {
 		_node = &Inventur{config: ic.config}
 		_spec = sqlgraph.NewCreateSpec(inventur.Table, sqlgraph.NewFieldSpec(inventur.FieldID, field.TypeInt))
 	)
+	_spec.OnConflict = ic.conflict
 	if value, ok := ic.mutation.Jahr(); ok {
 		_spec.SetField(inventur.FieldJahr, field.TypeInt, value)
 		_node.Jahr = value
@@ -127,11 +130,173 @@ func (ic *InventurCreate) createSpec() (*Inventur, *sqlgraph.CreateSpec) {
 	return _node, _spec
 }
 
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Inventur.Create().
+//		SetJahr(v).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.InventurUpsert) {
+//			SetJahr(v+v).
+//		}).
+//		Exec(ctx)
+func (ic *InventurCreate) OnConflict(opts ...sql.ConflictOption) *InventurUpsertOne {
+	ic.conflict = opts
+	return &InventurUpsertOne{
+		create: ic,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Inventur.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (ic *InventurCreate) OnConflictColumns(columns ...string) *InventurUpsertOne {
+	ic.conflict = append(ic.conflict, sql.ConflictColumns(columns...))
+	return &InventurUpsertOne{
+		create: ic,
+	}
+}
+
+type (
+	// InventurUpsertOne is the builder for "upsert"-ing
+	//  one Inventur node.
+	InventurUpsertOne struct {
+		create *InventurCreate
+	}
+
+	// InventurUpsert is the "OnConflict" setter.
+	InventurUpsert struct {
+		*sql.UpdateSet
+	}
+)
+
+// SetJahr sets the "Jahr" field.
+func (u *InventurUpsert) SetJahr(v int) *InventurUpsert {
+	u.Set(inventur.FieldJahr, v)
+	return u
+}
+
+// UpdateJahr sets the "Jahr" field to the value that was provided on create.
+func (u *InventurUpsert) UpdateJahr() *InventurUpsert {
+	u.SetExcluded(inventur.FieldJahr)
+	return u
+}
+
+// AddJahr adds v to the "Jahr" field.
+func (u *InventurUpsert) AddJahr(v int) *InventurUpsert {
+	u.Add(inventur.FieldJahr, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create.
+// Using this option is equivalent to using:
+//
+//	client.Inventur.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *InventurUpsertOne) UpdateNewValues() *InventurUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Inventur.Create().
+//	    OnConflict(sql.ResolveWithIgnore()).
+//	    Exec(ctx)
+func (u *InventurUpsertOne) Ignore() *InventurUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *InventurUpsertOne) DoNothing() *InventurUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the InventurCreate.OnConflict
+// documentation for more info.
+func (u *InventurUpsertOne) Update(set func(*InventurUpsert)) *InventurUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&InventurUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetJahr sets the "Jahr" field.
+func (u *InventurUpsertOne) SetJahr(v int) *InventurUpsertOne {
+	return u.Update(func(s *InventurUpsert) {
+		s.SetJahr(v)
+	})
+}
+
+// AddJahr adds v to the "Jahr" field.
+func (u *InventurUpsertOne) AddJahr(v int) *InventurUpsertOne {
+	return u.Update(func(s *InventurUpsert) {
+		s.AddJahr(v)
+	})
+}
+
+// UpdateJahr sets the "Jahr" field to the value that was provided on create.
+func (u *InventurUpsertOne) UpdateJahr() *InventurUpsertOne {
+	return u.Update(func(s *InventurUpsert) {
+		s.UpdateJahr()
+	})
+}
+
+// Exec executes the query.
+func (u *InventurUpsertOne) Exec(ctx context.Context) error {
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for InventurCreate.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *InventurUpsertOne) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// Exec executes the UPSERT query and returns the inserted/updated ID.
+func (u *InventurUpsertOne) ID(ctx context.Context) (id int, err error) {
+	node, err := u.create.Save(ctx)
+	if err != nil {
+		return id, err
+	}
+	return node.ID, nil
+}
+
+// IDX is like ID, but panics if an error occurs.
+func (u *InventurUpsertOne) IDX(ctx context.Context) int {
+	id, err := u.ID(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return id
+}
+
 // InventurCreateBulk is the builder for creating many Inventur entities in bulk.
 type InventurCreateBulk struct {
 	config
 	err      error
 	builders []*InventurCreate
+	conflict []sql.ConflictOption
 }
 
 // Save creates the Inventur entities in the database.
@@ -160,6 +325,7 @@ func (icb *InventurCreateBulk) Save(ctx context.Context) ([]*Inventur, error) {
 					_, err = mutators[i+1].Mutate(root, icb.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
+					spec.OnConflict = icb.conflict
 					// Invoke the actual operation on the latest mutation in the chain.
 					if err = sqlgraph.BatchCreate(ctx, icb.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
@@ -210,6 +376,131 @@ func (icb *InventurCreateBulk) Exec(ctx context.Context) error {
 // ExecX is like Exec, but panics if an error occurs.
 func (icb *InventurCreateBulk) ExecX(ctx context.Context) {
 	if err := icb.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Inventur.CreateBulk(builders...).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.InventurUpsert) {
+//			SetJahr(v+v).
+//		}).
+//		Exec(ctx)
+func (icb *InventurCreateBulk) OnConflict(opts ...sql.ConflictOption) *InventurUpsertBulk {
+	icb.conflict = opts
+	return &InventurUpsertBulk{
+		create: icb,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Inventur.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (icb *InventurCreateBulk) OnConflictColumns(columns ...string) *InventurUpsertBulk {
+	icb.conflict = append(icb.conflict, sql.ConflictColumns(columns...))
+	return &InventurUpsertBulk{
+		create: icb,
+	}
+}
+
+// InventurUpsertBulk is the builder for "upsert"-ing
+// a bulk of Inventur nodes.
+type InventurUpsertBulk struct {
+	create *InventurCreateBulk
+}
+
+// UpdateNewValues updates the mutable fields using the new values that
+// were set on create. Using this option is equivalent to using:
+//
+//	client.Inventur.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *InventurUpsertBulk) UpdateNewValues() *InventurUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Inventur.Create().
+//		OnConflict(sql.ResolveWithIgnore()).
+//		Exec(ctx)
+func (u *InventurUpsertBulk) Ignore() *InventurUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *InventurUpsertBulk) DoNothing() *InventurUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the InventurCreateBulk.OnConflict
+// documentation for more info.
+func (u *InventurUpsertBulk) Update(set func(*InventurUpsert)) *InventurUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&InventurUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetJahr sets the "Jahr" field.
+func (u *InventurUpsertBulk) SetJahr(v int) *InventurUpsertBulk {
+	return u.Update(func(s *InventurUpsert) {
+		s.SetJahr(v)
+	})
+}
+
+// AddJahr adds v to the "Jahr" field.
+func (u *InventurUpsertBulk) AddJahr(v int) *InventurUpsertBulk {
+	return u.Update(func(s *InventurUpsert) {
+		s.AddJahr(v)
+	})
+}
+
+// UpdateJahr sets the "Jahr" field to the value that was provided on create.
+func (u *InventurUpsertBulk) UpdateJahr() *InventurUpsertBulk {
+	return u.Update(func(s *InventurUpsert) {
+		s.UpdateJahr()
+	})
+}
+
+// Exec executes the query.
+func (u *InventurUpsertBulk) Exec(ctx context.Context) error {
+	if u.create.err != nil {
+		return u.create.err
+	}
+	for i, b := range u.create.builders {
+		if len(b.conflict) != 0 {
+			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the InventurCreateBulk instead", i)
+		}
+	}
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for InventurCreateBulk.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *InventurUpsertBulk) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

@@ -3790,23 +3790,23 @@ func (m *MitarbeiterMutation) ResetEdge(name string) error {
 // TeamMutation represents an operation that mutates the Team nodes in the graph.
 type TeamMutation struct {
 	config
-	op              Op
-	typ             string
-	id              *int
-	_Team           *int
-	add_Team        *int
-	_Mitarbeiter    *string
-	_Farbe          *string
-	_Ort            *string
-	clearedFields   map[string]struct{}
-	teamName        map[int]struct{}
-	removedteamName map[int]struct{}
-	clearedteamName bool
-	_Jahr           *int
-	cleared_Jahr    bool
-	done            bool
-	oldValue        func(context.Context) (*Team, error)
-	predicates      []predicate.Team
+	op             Op
+	typ            string
+	id             *int
+	_Team          *int
+	add_Team       *int
+	_Mitarbeiter   *string
+	_Farbe         *string
+	_Ort           *string
+	clearedFields  map[string]struct{}
+	artikel        map[int]struct{}
+	removedartikel map[int]struct{}
+	clearedartikel bool
+	_Jahr          *int
+	cleared_Jahr   bool
+	done           bool
+	oldValue       func(context.Context) (*Team, error)
+	predicates     []predicate.Team
 }
 
 var _ ent.Mutation = (*TeamMutation)(nil)
@@ -4071,58 +4071,58 @@ func (m *TeamMutation) ResetOrt() {
 	m._Ort = nil
 }
 
-// AddTeamNameIDs adds the "teamName" edge to the Artikel entity by ids.
-func (m *TeamMutation) AddTeamNameIDs(ids ...int) {
-	if m.teamName == nil {
-		m.teamName = make(map[int]struct{})
+// AddArtikelIDs adds the "artikel" edge to the Artikel entity by ids.
+func (m *TeamMutation) AddArtikelIDs(ids ...int) {
+	if m.artikel == nil {
+		m.artikel = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.teamName[ids[i]] = struct{}{}
+		m.artikel[ids[i]] = struct{}{}
 	}
 }
 
-// ClearTeamName clears the "teamName" edge to the Artikel entity.
-func (m *TeamMutation) ClearTeamName() {
-	m.clearedteamName = true
+// ClearArtikel clears the "artikel" edge to the Artikel entity.
+func (m *TeamMutation) ClearArtikel() {
+	m.clearedartikel = true
 }
 
-// TeamNameCleared reports if the "teamName" edge to the Artikel entity was cleared.
-func (m *TeamMutation) TeamNameCleared() bool {
-	return m.clearedteamName
+// ArtikelCleared reports if the "artikel" edge to the Artikel entity was cleared.
+func (m *TeamMutation) ArtikelCleared() bool {
+	return m.clearedartikel
 }
 
-// RemoveTeamNameIDs removes the "teamName" edge to the Artikel entity by IDs.
-func (m *TeamMutation) RemoveTeamNameIDs(ids ...int) {
-	if m.removedteamName == nil {
-		m.removedteamName = make(map[int]struct{})
+// RemoveArtikelIDs removes the "artikel" edge to the Artikel entity by IDs.
+func (m *TeamMutation) RemoveArtikelIDs(ids ...int) {
+	if m.removedartikel == nil {
+		m.removedartikel = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.teamName, ids[i])
-		m.removedteamName[ids[i]] = struct{}{}
+		delete(m.artikel, ids[i])
+		m.removedartikel[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedTeamName returns the removed IDs of the "teamName" edge to the Artikel entity.
-func (m *TeamMutation) RemovedTeamNameIDs() (ids []int) {
-	for id := range m.removedteamName {
+// RemovedArtikel returns the removed IDs of the "artikel" edge to the Artikel entity.
+func (m *TeamMutation) RemovedArtikelIDs() (ids []int) {
+	for id := range m.removedartikel {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// TeamNameIDs returns the "teamName" edge IDs in the mutation.
-func (m *TeamMutation) TeamNameIDs() (ids []int) {
-	for id := range m.teamName {
+// ArtikelIDs returns the "artikel" edge IDs in the mutation.
+func (m *TeamMutation) ArtikelIDs() (ids []int) {
+	for id := range m.artikel {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetTeamName resets all changes to the "teamName" edge.
-func (m *TeamMutation) ResetTeamName() {
-	m.teamName = nil
-	m.clearedteamName = false
-	m.removedteamName = nil
+// ResetArtikel resets all changes to the "artikel" edge.
+func (m *TeamMutation) ResetArtikel() {
+	m.artikel = nil
+	m.clearedartikel = false
+	m.removedartikel = nil
 }
 
 // SetJahrID sets the "Jahr" edge to the Inventur entity by id.
@@ -4364,8 +4364,8 @@ func (m *TeamMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *TeamMutation) AddedEdges() []string {
 	edges := make([]string, 0, 2)
-	if m.teamName != nil {
-		edges = append(edges, team.EdgeTeamName)
+	if m.artikel != nil {
+		edges = append(edges, team.EdgeArtikel)
 	}
 	if m._Jahr != nil {
 		edges = append(edges, team.EdgeJahr)
@@ -4377,9 +4377,9 @@ func (m *TeamMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *TeamMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case team.EdgeTeamName:
-		ids := make([]ent.Value, 0, len(m.teamName))
-		for id := range m.teamName {
+	case team.EdgeArtikel:
+		ids := make([]ent.Value, 0, len(m.artikel))
+		for id := range m.artikel {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4394,8 +4394,8 @@ func (m *TeamMutation) AddedIDs(name string) []ent.Value {
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *TeamMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 2)
-	if m.removedteamName != nil {
-		edges = append(edges, team.EdgeTeamName)
+	if m.removedartikel != nil {
+		edges = append(edges, team.EdgeArtikel)
 	}
 	return edges
 }
@@ -4404,9 +4404,9 @@ func (m *TeamMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *TeamMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case team.EdgeTeamName:
-		ids := make([]ent.Value, 0, len(m.removedteamName))
-		for id := range m.removedteamName {
+	case team.EdgeArtikel:
+		ids := make([]ent.Value, 0, len(m.removedartikel))
+		for id := range m.removedartikel {
 			ids = append(ids, id)
 		}
 		return ids
@@ -4417,8 +4417,8 @@ func (m *TeamMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *TeamMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 2)
-	if m.clearedteamName {
-		edges = append(edges, team.EdgeTeamName)
+	if m.clearedartikel {
+		edges = append(edges, team.EdgeArtikel)
 	}
 	if m.cleared_Jahr {
 		edges = append(edges, team.EdgeJahr)
@@ -4430,8 +4430,8 @@ func (m *TeamMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *TeamMutation) EdgeCleared(name string) bool {
 	switch name {
-	case team.EdgeTeamName:
-		return m.clearedteamName
+	case team.EdgeArtikel:
+		return m.clearedartikel
 	case team.EdgeJahr:
 		return m.cleared_Jahr
 	}
@@ -4453,8 +4453,8 @@ func (m *TeamMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *TeamMutation) ResetEdge(name string) error {
 	switch name {
-	case team.EdgeTeamName:
-		m.ResetTeamName()
+	case team.EdgeArtikel:
+		m.ResetArtikel()
 		return nil
 	case team.EdgeJahr:
 		m.ResetJahr()

@@ -25,9 +25,9 @@ type Artikel struct {
 	Anzahl int `json:"Anzahl,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ArtikelQuery when eager-loading is set.
-	Edges          ArtikelEdges `json:"edges"`
-	team_team_name *int
-	selectValues   sql.SelectValues
+	Edges        ArtikelEdges `json:"edges"`
+	team_artikel *int
+	selectValues sql.SelectValues
 }
 
 // ArtikelEdges holds the relations/edges for other nodes in the graph.
@@ -59,7 +59,7 @@ func (*Artikel) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case artikel.FieldArtikelnummer, artikel.FieldSuchbegriff:
 			values[i] = new(sql.NullString)
-		case artikel.ForeignKeys[0]: // team_team_name
+		case artikel.ForeignKeys[0]: // team_artikel
 			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -102,10 +102,10 @@ func (a *Artikel) assignValues(columns []string, values []any) error {
 			}
 		case artikel.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field team_team_name", value)
+				return fmt.Errorf("unexpected type %T for edge-field team_artikel", value)
 			} else if value.Valid {
-				a.team_team_name = new(int)
-				*a.team_team_name = int(value.Int64)
+				a.team_artikel = new(int)
+				*a.team_artikel = int(value.Int64)
 			}
 		default:
 			a.selectValues.Set(columns[i], values[i])

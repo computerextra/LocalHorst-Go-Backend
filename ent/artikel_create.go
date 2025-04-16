@@ -9,6 +9,7 @@ import (
 	"golang-backend/ent/artikel"
 	"golang-backend/ent/team"
 
+	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 )
@@ -18,6 +19,7 @@ type ArtikelCreate struct {
 	config
 	mutation *ArtikelMutation
 	hooks    []Hook
+	conflict []sql.ConflictOption
 }
 
 // SetArtikelnummer sets the "Artikelnummer" field.
@@ -126,6 +128,7 @@ func (ac *ArtikelCreate) createSpec() (*Artikel, *sqlgraph.CreateSpec) {
 		_node = &Artikel{config: ac.config}
 		_spec = sqlgraph.NewCreateSpec(artikel.Table, sqlgraph.NewFieldSpec(artikel.FieldID, field.TypeInt))
 	)
+	_spec.OnConflict = ac.conflict
 	if value, ok := ac.mutation.Artikelnummer(); ok {
 		_spec.SetField(artikel.FieldArtikelnummer, field.TypeString, value)
 		_node.Artikelnummer = value
@@ -152,10 +155,223 @@ func (ac *ArtikelCreate) createSpec() (*Artikel, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.team_team_name = &nodes[0]
+		_node.team_artikel = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
+}
+
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Artikel.Create().
+//		SetArtikelnummer(v).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.ArtikelUpsert) {
+//			SetArtikelnummer(v+v).
+//		}).
+//		Exec(ctx)
+func (ac *ArtikelCreate) OnConflict(opts ...sql.ConflictOption) *ArtikelUpsertOne {
+	ac.conflict = opts
+	return &ArtikelUpsertOne{
+		create: ac,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Artikel.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (ac *ArtikelCreate) OnConflictColumns(columns ...string) *ArtikelUpsertOne {
+	ac.conflict = append(ac.conflict, sql.ConflictColumns(columns...))
+	return &ArtikelUpsertOne{
+		create: ac,
+	}
+}
+
+type (
+	// ArtikelUpsertOne is the builder for "upsert"-ing
+	//  one Artikel node.
+	ArtikelUpsertOne struct {
+		create *ArtikelCreate
+	}
+
+	// ArtikelUpsert is the "OnConflict" setter.
+	ArtikelUpsert struct {
+		*sql.UpdateSet
+	}
+)
+
+// SetArtikelnummer sets the "Artikelnummer" field.
+func (u *ArtikelUpsert) SetArtikelnummer(v string) *ArtikelUpsert {
+	u.Set(artikel.FieldArtikelnummer, v)
+	return u
+}
+
+// UpdateArtikelnummer sets the "Artikelnummer" field to the value that was provided on create.
+func (u *ArtikelUpsert) UpdateArtikelnummer() *ArtikelUpsert {
+	u.SetExcluded(artikel.FieldArtikelnummer)
+	return u
+}
+
+// SetSuchbegriff sets the "Suchbegriff" field.
+func (u *ArtikelUpsert) SetSuchbegriff(v string) *ArtikelUpsert {
+	u.Set(artikel.FieldSuchbegriff, v)
+	return u
+}
+
+// UpdateSuchbegriff sets the "Suchbegriff" field to the value that was provided on create.
+func (u *ArtikelUpsert) UpdateSuchbegriff() *ArtikelUpsert {
+	u.SetExcluded(artikel.FieldSuchbegriff)
+	return u
+}
+
+// SetAnzahl sets the "Anzahl" field.
+func (u *ArtikelUpsert) SetAnzahl(v int) *ArtikelUpsert {
+	u.Set(artikel.FieldAnzahl, v)
+	return u
+}
+
+// UpdateAnzahl sets the "Anzahl" field to the value that was provided on create.
+func (u *ArtikelUpsert) UpdateAnzahl() *ArtikelUpsert {
+	u.SetExcluded(artikel.FieldAnzahl)
+	return u
+}
+
+// AddAnzahl adds v to the "Anzahl" field.
+func (u *ArtikelUpsert) AddAnzahl(v int) *ArtikelUpsert {
+	u.Add(artikel.FieldAnzahl, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create.
+// Using this option is equivalent to using:
+//
+//	client.Artikel.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *ArtikelUpsertOne) UpdateNewValues() *ArtikelUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Artikel.Create().
+//	    OnConflict(sql.ResolveWithIgnore()).
+//	    Exec(ctx)
+func (u *ArtikelUpsertOne) Ignore() *ArtikelUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *ArtikelUpsertOne) DoNothing() *ArtikelUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the ArtikelCreate.OnConflict
+// documentation for more info.
+func (u *ArtikelUpsertOne) Update(set func(*ArtikelUpsert)) *ArtikelUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&ArtikelUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetArtikelnummer sets the "Artikelnummer" field.
+func (u *ArtikelUpsertOne) SetArtikelnummer(v string) *ArtikelUpsertOne {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.SetArtikelnummer(v)
+	})
+}
+
+// UpdateArtikelnummer sets the "Artikelnummer" field to the value that was provided on create.
+func (u *ArtikelUpsertOne) UpdateArtikelnummer() *ArtikelUpsertOne {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.UpdateArtikelnummer()
+	})
+}
+
+// SetSuchbegriff sets the "Suchbegriff" field.
+func (u *ArtikelUpsertOne) SetSuchbegriff(v string) *ArtikelUpsertOne {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.SetSuchbegriff(v)
+	})
+}
+
+// UpdateSuchbegriff sets the "Suchbegriff" field to the value that was provided on create.
+func (u *ArtikelUpsertOne) UpdateSuchbegriff() *ArtikelUpsertOne {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.UpdateSuchbegriff()
+	})
+}
+
+// SetAnzahl sets the "Anzahl" field.
+func (u *ArtikelUpsertOne) SetAnzahl(v int) *ArtikelUpsertOne {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.SetAnzahl(v)
+	})
+}
+
+// AddAnzahl adds v to the "Anzahl" field.
+func (u *ArtikelUpsertOne) AddAnzahl(v int) *ArtikelUpsertOne {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.AddAnzahl(v)
+	})
+}
+
+// UpdateAnzahl sets the "Anzahl" field to the value that was provided on create.
+func (u *ArtikelUpsertOne) UpdateAnzahl() *ArtikelUpsertOne {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.UpdateAnzahl()
+	})
+}
+
+// Exec executes the query.
+func (u *ArtikelUpsertOne) Exec(ctx context.Context) error {
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for ArtikelCreate.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *ArtikelUpsertOne) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// Exec executes the UPSERT query and returns the inserted/updated ID.
+func (u *ArtikelUpsertOne) ID(ctx context.Context) (id int, err error) {
+	node, err := u.create.Save(ctx)
+	if err != nil {
+		return id, err
+	}
+	return node.ID, nil
+}
+
+// IDX is like ID, but panics if an error occurs.
+func (u *ArtikelUpsertOne) IDX(ctx context.Context) int {
+	id, err := u.ID(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return id
 }
 
 // ArtikelCreateBulk is the builder for creating many Artikel entities in bulk.
@@ -163,6 +379,7 @@ type ArtikelCreateBulk struct {
 	config
 	err      error
 	builders []*ArtikelCreate
+	conflict []sql.ConflictOption
 }
 
 // Save creates the Artikel entities in the database.
@@ -191,6 +408,7 @@ func (acb *ArtikelCreateBulk) Save(ctx context.Context) ([]*Artikel, error) {
 					_, err = mutators[i+1].Mutate(root, acb.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
+					spec.OnConflict = acb.conflict
 					// Invoke the actual operation on the latest mutation in the chain.
 					if err = sqlgraph.BatchCreate(ctx, acb.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
@@ -241,6 +459,159 @@ func (acb *ArtikelCreateBulk) Exec(ctx context.Context) error {
 // ExecX is like Exec, but panics if an error occurs.
 func (acb *ArtikelCreateBulk) ExecX(ctx context.Context) {
 	if err := acb.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Artikel.CreateBulk(builders...).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.ArtikelUpsert) {
+//			SetArtikelnummer(v+v).
+//		}).
+//		Exec(ctx)
+func (acb *ArtikelCreateBulk) OnConflict(opts ...sql.ConflictOption) *ArtikelUpsertBulk {
+	acb.conflict = opts
+	return &ArtikelUpsertBulk{
+		create: acb,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Artikel.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (acb *ArtikelCreateBulk) OnConflictColumns(columns ...string) *ArtikelUpsertBulk {
+	acb.conflict = append(acb.conflict, sql.ConflictColumns(columns...))
+	return &ArtikelUpsertBulk{
+		create: acb,
+	}
+}
+
+// ArtikelUpsertBulk is the builder for "upsert"-ing
+// a bulk of Artikel nodes.
+type ArtikelUpsertBulk struct {
+	create *ArtikelCreateBulk
+}
+
+// UpdateNewValues updates the mutable fields using the new values that
+// were set on create. Using this option is equivalent to using:
+//
+//	client.Artikel.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *ArtikelUpsertBulk) UpdateNewValues() *ArtikelUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Artikel.Create().
+//		OnConflict(sql.ResolveWithIgnore()).
+//		Exec(ctx)
+func (u *ArtikelUpsertBulk) Ignore() *ArtikelUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *ArtikelUpsertBulk) DoNothing() *ArtikelUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the ArtikelCreateBulk.OnConflict
+// documentation for more info.
+func (u *ArtikelUpsertBulk) Update(set func(*ArtikelUpsert)) *ArtikelUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&ArtikelUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetArtikelnummer sets the "Artikelnummer" field.
+func (u *ArtikelUpsertBulk) SetArtikelnummer(v string) *ArtikelUpsertBulk {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.SetArtikelnummer(v)
+	})
+}
+
+// UpdateArtikelnummer sets the "Artikelnummer" field to the value that was provided on create.
+func (u *ArtikelUpsertBulk) UpdateArtikelnummer() *ArtikelUpsertBulk {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.UpdateArtikelnummer()
+	})
+}
+
+// SetSuchbegriff sets the "Suchbegriff" field.
+func (u *ArtikelUpsertBulk) SetSuchbegriff(v string) *ArtikelUpsertBulk {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.SetSuchbegriff(v)
+	})
+}
+
+// UpdateSuchbegriff sets the "Suchbegriff" field to the value that was provided on create.
+func (u *ArtikelUpsertBulk) UpdateSuchbegriff() *ArtikelUpsertBulk {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.UpdateSuchbegriff()
+	})
+}
+
+// SetAnzahl sets the "Anzahl" field.
+func (u *ArtikelUpsertBulk) SetAnzahl(v int) *ArtikelUpsertBulk {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.SetAnzahl(v)
+	})
+}
+
+// AddAnzahl adds v to the "Anzahl" field.
+func (u *ArtikelUpsertBulk) AddAnzahl(v int) *ArtikelUpsertBulk {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.AddAnzahl(v)
+	})
+}
+
+// UpdateAnzahl sets the "Anzahl" field to the value that was provided on create.
+func (u *ArtikelUpsertBulk) UpdateAnzahl() *ArtikelUpsertBulk {
+	return u.Update(func(s *ArtikelUpsert) {
+		s.UpdateAnzahl()
+	})
+}
+
+// Exec executes the query.
+func (u *ArtikelUpsertBulk) Exec(ctx context.Context) error {
+	if u.create.err != nil {
+		return u.create.err
+	}
+	for i, b := range u.create.builders {
+		if len(b.conflict) != 0 {
+			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the ArtikelCreateBulk instead", i)
+		}
+	}
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for ArtikelCreateBulk.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *ArtikelUpsertBulk) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

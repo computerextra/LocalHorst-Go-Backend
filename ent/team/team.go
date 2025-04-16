@@ -20,19 +20,19 @@ const (
 	FieldFarbe = "farbe"
 	// FieldOrt holds the string denoting the ort field in the database.
 	FieldOrt = "ort"
-	// EdgeTeamName holds the string denoting the teamname edge name in mutations.
-	EdgeTeamName = "teamName"
+	// EdgeArtikel holds the string denoting the artikel edge name in mutations.
+	EdgeArtikel = "artikel"
 	// EdgeJahr holds the string denoting the jahr edge name in mutations.
 	EdgeJahr = "Jahr"
 	// Table holds the table name of the team in the database.
 	Table = "teams"
-	// TeamNameTable is the table that holds the teamName relation/edge.
-	TeamNameTable = "artikels"
-	// TeamNameInverseTable is the table name for the Artikel entity.
+	// ArtikelTable is the table that holds the artikel relation/edge.
+	ArtikelTable = "artikels"
+	// ArtikelInverseTable is the table name for the Artikel entity.
 	// It exists in this package in order to avoid circular dependency with the "artikel" package.
-	TeamNameInverseTable = "artikels"
-	// TeamNameColumn is the table column denoting the teamName relation/edge.
-	TeamNameColumn = "team_team_name"
+	ArtikelInverseTable = "artikels"
+	// ArtikelColumn is the table column denoting the artikel relation/edge.
+	ArtikelColumn = "team_artikel"
 	// JahrTable is the table that holds the Jahr relation/edge.
 	JahrTable = "teams"
 	// JahrInverseTable is the table name for the Inventur entity.
@@ -100,17 +100,17 @@ func ByOrt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldOrt, opts...).ToFunc()
 }
 
-// ByTeamNameCount orders the results by teamName count.
-func ByTeamNameCount(opts ...sql.OrderTermOption) OrderOption {
+// ByArtikelCount orders the results by artikel count.
+func ByArtikelCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newTeamNameStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newArtikelStep(), opts...)
 	}
 }
 
-// ByTeamName orders the results by teamName terms.
-func ByTeamName(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByArtikel orders the results by artikel terms.
+func ByArtikel(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newTeamNameStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newArtikelStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 
@@ -120,11 +120,11 @@ func ByJahrField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newJahrStep(), sql.OrderByField(field, opts...))
 	}
 }
-func newTeamNameStep() *sqlgraph.Step {
+func newArtikelStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(TeamNameInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, TeamNameTable, TeamNameColumn),
+		sqlgraph.To(ArtikelInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ArtikelTable, ArtikelColumn),
 	)
 }
 func newJahrStep() *sqlgraph.Step {

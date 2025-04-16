@@ -28,7 +28,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "team" package.
 	TeamInverseTable = "teams"
 	// TeamColumn is the table column denoting the team relation/edge.
-	TeamColumn = "team_team_name"
+	TeamColumn = "team_artikel"
 )
 
 // Columns holds all SQL columns for artikel fields.
@@ -42,7 +42,7 @@ var Columns = []string{
 // ForeignKeys holds the SQL foreign-keys that are owned by the "artikels"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
-	"team_team_name",
+	"team_artikel",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

@@ -24,7 +24,7 @@ func (Team) Fields() []ent.Field {
 // Edges of the Team.
 func (Team) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("teamName", Artikel.Type),
+		edge.To("artikel", Artikel.Type),
 		edge.From("Jahr", Inventur.Type).Ref("Teams").Unique(),
 	}
 }

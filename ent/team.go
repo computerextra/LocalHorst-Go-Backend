@@ -34,8 +34,8 @@ type Team struct {
 
 // TeamEdges holds the relations/edges for other nodes in the graph.
 type TeamEdges struct {
-	// TeamName holds the value of the teamName edge.
-	TeamName []*Artikel `json:"teamName,omitempty"`
+	// Artikel holds the value of the artikel edge.
+	Artikel []*Artikel `json:"artikel,omitempty"`
 	// Jahr holds the value of the Jahr edge.
 	Jahr *Inventur `json:"Jahr,omitempty"`
 	// loadedTypes holds the information for reporting if a
@@ -43,13 +43,13 @@ type TeamEdges struct {
 	loadedTypes [2]bool
 }
 
-// TeamNameOrErr returns the TeamName value or an error if the edge
+// ArtikelOrErr returns the Artikel value or an error if the edge
 // was not loaded in eager-loading.
-func (e TeamEdges) TeamNameOrErr() ([]*Artikel, error) {
+func (e TeamEdges) ArtikelOrErr() ([]*Artikel, error) {
 	if e.loadedTypes[0] {
-		return e.TeamName, nil
+		return e.Artikel, nil
 	}
-	return nil, &NotLoadedError{edge: "teamName"}
+	return nil, &NotLoadedError{edge: "artikel"}
 }
 
 // JahrOrErr returns the Jahr value or an error if the edge
@@ -139,9 +139,9 @@ func (t *Team) Value(name string) (ent.Value, error) {
 	return t.selectValues.Get(name)
 }
 
-// QueryTeamName queries the "teamName" edge of the Team entity.
-func (t *Team) QueryTeamName() *ArtikelQuery {
-	return NewTeamClient(t.config).QueryTeamName(t)
+// QueryArtikel queries the "artikel" edge of the Team entity.
+func (t *Team) QueryArtikel() *ArtikelQuery {
+	return NewTeamClient(t.config).QueryArtikel(t)
 }
 
 // QueryJahr queries the "Jahr" edge of the Team entity.

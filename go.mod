@@ -6,8 +6,6 @@ require (
 	entgo.io/ent v0.14.4
 	github.com/denisenkom/go-mssqldb v0.12.3
 	github.com/go-sql-driver/mysql v1.9.2
-	github.com/jmoiron/sqlx v1.4.0
-	github.com/lucsky/cuid v1.2.1
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/wailsapp/wails/v2 v2.10.1
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df

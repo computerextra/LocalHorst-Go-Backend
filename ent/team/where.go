@@ -309,21 +309,21 @@ func OrtContainsFold(v string) predicate.Team {
 	return predicate.Team(sql.FieldContainsFold(FieldOrt, v))
 }
 
-// HasTeamName applies the HasEdge predicate on the "teamName" edge.
-func HasTeamName() predicate.Team {
+// HasArtikel applies the HasEdge predicate on the "artikel" edge.
+func HasArtikel() predicate.Team {
 	return predicate.Team(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, TeamNameTable, TeamNameColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, ArtikelTable, ArtikelColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasTeamNameWith applies the HasEdge predicate on the "teamName" edge with a given conditions (other predicates).
-func HasTeamNameWith(preds ...predicate.Artikel) predicate.Team {
+// HasArtikelWith applies the HasEdge predicate on the "artikel" edge with a given conditions (other predicates).
+func HasArtikelWith(preds ...predicate.Artikel) predicate.Team {
 	return predicate.Team(func(s *sql.Selector) {
-		step := newTeamNameStep()
+		step := newArtikelStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

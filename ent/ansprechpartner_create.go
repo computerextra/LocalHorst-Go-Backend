@@ -9,6 +9,7 @@ import (
 	"golang-backend/ent/ansprechpartner"
 	"golang-backend/ent/lieferant"
 
+	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 )
@@ -18,6 +19,7 @@ type AnsprechpartnerCreate struct {
 	config
 	mutation *AnsprechpartnerMutation
 	hooks    []Hook
+	conflict []sql.ConflictOption
 }
 
 // SetName sets the "Name" field.
@@ -140,6 +142,7 @@ func (ac *AnsprechpartnerCreate) createSpec() (*Ansprechpartner, *sqlgraph.Creat
 		_node = &Ansprechpartner{config: ac.config}
 		_spec = sqlgraph.NewCreateSpec(ansprechpartner.Table, sqlgraph.NewFieldSpec(ansprechpartner.FieldID, field.TypeInt))
 	)
+	_spec.OnConflict = ac.conflict
 	if value, ok := ac.mutation.Name(); ok {
 		_spec.SetField(ansprechpartner.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -176,11 +179,238 @@ func (ac *AnsprechpartnerCreate) createSpec() (*Ansprechpartner, *sqlgraph.Creat
 	return _node, _spec
 }
 
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Ansprechpartner.Create().
+//		SetName(v).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.AnsprechpartnerUpsert) {
+//			SetName(v+v).
+//		}).
+//		Exec(ctx)
+func (ac *AnsprechpartnerCreate) OnConflict(opts ...sql.ConflictOption) *AnsprechpartnerUpsertOne {
+	ac.conflict = opts
+	return &AnsprechpartnerUpsertOne{
+		create: ac,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Ansprechpartner.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (ac *AnsprechpartnerCreate) OnConflictColumns(columns ...string) *AnsprechpartnerUpsertOne {
+	ac.conflict = append(ac.conflict, sql.ConflictColumns(columns...))
+	return &AnsprechpartnerUpsertOne{
+		create: ac,
+	}
+}
+
+type (
+	// AnsprechpartnerUpsertOne is the builder for "upsert"-ing
+	//  one Ansprechpartner node.
+	AnsprechpartnerUpsertOne struct {
+		create *AnsprechpartnerCreate
+	}
+
+	// AnsprechpartnerUpsert is the "OnConflict" setter.
+	AnsprechpartnerUpsert struct {
+		*sql.UpdateSet
+	}
+)
+
+// SetName sets the "Name" field.
+func (u *AnsprechpartnerUpsert) SetName(v string) *AnsprechpartnerUpsert {
+	u.Set(ansprechpartner.FieldName, v)
+	return u
+}
+
+// UpdateName sets the "Name" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsert) UpdateName() *AnsprechpartnerUpsert {
+	u.SetExcluded(ansprechpartner.FieldName)
+	return u
+}
+
+// SetTelefon sets the "Telefon" field.
+func (u *AnsprechpartnerUpsert) SetTelefon(v string) *AnsprechpartnerUpsert {
+	u.Set(ansprechpartner.FieldTelefon, v)
+	return u
+}
+
+// UpdateTelefon sets the "Telefon" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsert) UpdateTelefon() *AnsprechpartnerUpsert {
+	u.SetExcluded(ansprechpartner.FieldTelefon)
+	return u
+}
+
+// SetMobil sets the "Mobil" field.
+func (u *AnsprechpartnerUpsert) SetMobil(v string) *AnsprechpartnerUpsert {
+	u.Set(ansprechpartner.FieldMobil, v)
+	return u
+}
+
+// UpdateMobil sets the "Mobil" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsert) UpdateMobil() *AnsprechpartnerUpsert {
+	u.SetExcluded(ansprechpartner.FieldMobil)
+	return u
+}
+
+// SetMail sets the "Mail" field.
+func (u *AnsprechpartnerUpsert) SetMail(v string) *AnsprechpartnerUpsert {
+	u.Set(ansprechpartner.FieldMail, v)
+	return u
+}
+
+// UpdateMail sets the "Mail" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsert) UpdateMail() *AnsprechpartnerUpsert {
+	u.SetExcluded(ansprechpartner.FieldMail)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create.
+// Using this option is equivalent to using:
+//
+//	client.Ansprechpartner.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *AnsprechpartnerUpsertOne) UpdateNewValues() *AnsprechpartnerUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Ansprechpartner.Create().
+//	    OnConflict(sql.ResolveWithIgnore()).
+//	    Exec(ctx)
+func (u *AnsprechpartnerUpsertOne) Ignore() *AnsprechpartnerUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *AnsprechpartnerUpsertOne) DoNothing() *AnsprechpartnerUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the AnsprechpartnerCreate.OnConflict
+// documentation for more info.
+func (u *AnsprechpartnerUpsertOne) Update(set func(*AnsprechpartnerUpsert)) *AnsprechpartnerUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&AnsprechpartnerUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetName sets the "Name" field.
+func (u *AnsprechpartnerUpsertOne) SetName(v string) *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "Name" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertOne) UpdateName() *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateName()
+	})
+}
+
+// SetTelefon sets the "Telefon" field.
+func (u *AnsprechpartnerUpsertOne) SetTelefon(v string) *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetTelefon(v)
+	})
+}
+
+// UpdateTelefon sets the "Telefon" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertOne) UpdateTelefon() *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateTelefon()
+	})
+}
+
+// SetMobil sets the "Mobil" field.
+func (u *AnsprechpartnerUpsertOne) SetMobil(v string) *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetMobil(v)
+	})
+}
+
+// UpdateMobil sets the "Mobil" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertOne) UpdateMobil() *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateMobil()
+	})
+}
+
+// SetMail sets the "Mail" field.
+func (u *AnsprechpartnerUpsertOne) SetMail(v string) *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetMail(v)
+	})
+}
+
+// UpdateMail sets the "Mail" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertOne) UpdateMail() *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateMail()
+	})
+}
+
+// Exec executes the query.
+func (u *AnsprechpartnerUpsertOne) Exec(ctx context.Context) error {
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for AnsprechpartnerCreate.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *AnsprechpartnerUpsertOne) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// Exec executes the UPSERT query and returns the inserted/updated ID.
+func (u *AnsprechpartnerUpsertOne) ID(ctx context.Context) (id int, err error) {
+	node, err := u.create.Save(ctx)
+	if err != nil {
+		return id, err
+	}
+	return node.ID, nil
+}
+
+// IDX is like ID, but panics if an error occurs.
+func (u *AnsprechpartnerUpsertOne) IDX(ctx context.Context) int {
+	id, err := u.ID(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return id
+}
+
 // AnsprechpartnerCreateBulk is the builder for creating many Ansprechpartner entities in bulk.
 type AnsprechpartnerCreateBulk struct {
 	config
 	err      error
 	builders []*AnsprechpartnerCreate
+	conflict []sql.ConflictOption
 }
 
 // Save creates the Ansprechpartner entities in the database.
@@ -209,6 +439,7 @@ func (acb *AnsprechpartnerCreateBulk) Save(ctx context.Context) ([]*Ansprechpart
 					_, err = mutators[i+1].Mutate(root, acb.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
+					spec.OnConflict = acb.conflict
 					// Invoke the actual operation on the latest mutation in the chain.
 					if err = sqlgraph.BatchCreate(ctx, acb.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
@@ -259,6 +490,166 @@ func (acb *AnsprechpartnerCreateBulk) Exec(ctx context.Context) error {
 // ExecX is like Exec, but panics if an error occurs.
 func (acb *AnsprechpartnerCreateBulk) ExecX(ctx context.Context) {
 	if err := acb.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Ansprechpartner.CreateBulk(builders...).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.AnsprechpartnerUpsert) {
+//			SetName(v+v).
+//		}).
+//		Exec(ctx)
+func (acb *AnsprechpartnerCreateBulk) OnConflict(opts ...sql.ConflictOption) *AnsprechpartnerUpsertBulk {
+	acb.conflict = opts
+	return &AnsprechpartnerUpsertBulk{
+		create: acb,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Ansprechpartner.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (acb *AnsprechpartnerCreateBulk) OnConflictColumns(columns ...string) *AnsprechpartnerUpsertBulk {
+	acb.conflict = append(acb.conflict, sql.ConflictColumns(columns...))
+	return &AnsprechpartnerUpsertBulk{
+		create: acb,
+	}
+}
+
+// AnsprechpartnerUpsertBulk is the builder for "upsert"-ing
+// a bulk of Ansprechpartner nodes.
+type AnsprechpartnerUpsertBulk struct {
+	create *AnsprechpartnerCreateBulk
+}
+
+// UpdateNewValues updates the mutable fields using the new values that
+// were set on create. Using this option is equivalent to using:
+//
+//	client.Ansprechpartner.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *AnsprechpartnerUpsertBulk) UpdateNewValues() *AnsprechpartnerUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Ansprechpartner.Create().
+//		OnConflict(sql.ResolveWithIgnore()).
+//		Exec(ctx)
+func (u *AnsprechpartnerUpsertBulk) Ignore() *AnsprechpartnerUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *AnsprechpartnerUpsertBulk) DoNothing() *AnsprechpartnerUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the AnsprechpartnerCreateBulk.OnConflict
+// documentation for more info.
+func (u *AnsprechpartnerUpsertBulk) Update(set func(*AnsprechpartnerUpsert)) *AnsprechpartnerUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&AnsprechpartnerUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetName sets the "Name" field.
+func (u *AnsprechpartnerUpsertBulk) SetName(v string) *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "Name" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertBulk) UpdateName() *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateName()
+	})
+}
+
+// SetTelefon sets the "Telefon" field.
+func (u *AnsprechpartnerUpsertBulk) SetTelefon(v string) *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetTelefon(v)
+	})
+}
+
+// UpdateTelefon sets the "Telefon" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertBulk) UpdateTelefon() *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateTelefon()
+	})
+}
+
+// SetMobil sets the "Mobil" field.
+func (u *AnsprechpartnerUpsertBulk) SetMobil(v string) *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetMobil(v)
+	})
+}
+
+// UpdateMobil sets the "Mobil" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertBulk) UpdateMobil() *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateMobil()
+	})
+}
+
+// SetMail sets the "Mail" field.
+func (u *AnsprechpartnerUpsertBulk) SetMail(v string) *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.SetMail(v)
+	})
+}
+
+// UpdateMail sets the "Mail" field to the value that was provided on create.
+func (u *AnsprechpartnerUpsertBulk) UpdateMail() *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.UpdateMail()
+	})
+}
+
+// Exec executes the query.
+func (u *AnsprechpartnerUpsertBulk) Exec(ctx context.Context) error {
+	if u.create.err != nil {
+		return u.create.err
+	}
+	for i, b := range u.create.builders {
+		if len(b.conflict) != 0 {
+			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the AnsprechpartnerCreateBulk instead", i)
+		}
+	}
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for AnsprechpartnerCreateBulk.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *AnsprechpartnerUpsertBulk) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

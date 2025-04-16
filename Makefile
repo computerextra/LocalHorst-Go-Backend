@@ -12,4 +12,4 @@ all:
 	wails build -nsis -o="Victor-Installer.exe" -webview2=embed
 
 generate:
-	go generate ./ent
+	go run -mod=mod entgo.io/ent/cmd/ent generate --feature sql/upsert ./ent/schema

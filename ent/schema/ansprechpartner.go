@@ -14,7 +14,7 @@ type Ansprechpartner struct {
 // Fields of the Ansprechpartner.
 func (Ansprechpartner) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("Name").NotEmpty(),
+		field.String("Name").NotEmpty().Unique(),
 		field.String("Telefon").Nillable(),
 		field.String("Mobil").Nillable(),
 		field.String("Mail").Nillable(),

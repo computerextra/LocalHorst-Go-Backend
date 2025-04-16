@@ -9,6 +9,7 @@ import (
 	"golang-backend/ent/mitarbeiter"
 	"time"
 
+	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 )
@@ -18,6 +19,7 @@ type MitarbeiterCreate struct {
 	config
 	mutation *MitarbeiterMutation
 	hooks    []Hook
+	conflict []sql.ConflictOption
 }
 
 // SetName sets the "Name" field.
@@ -360,6 +362,7 @@ func (mc *MitarbeiterCreate) createSpec() (*Mitarbeiter, *sqlgraph.CreateSpec) {
 		_node = &Mitarbeiter{config: mc.config}
 		_spec = sqlgraph.NewCreateSpec(mitarbeiter.Table, sqlgraph.NewFieldSpec(mitarbeiter.FieldID, field.TypeInt))
 	)
+	_spec.OnConflict = mc.conflict
 	if value, ok := mc.mutation.Name(); ok {
 		_spec.SetField(mitarbeiter.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -467,11 +470,810 @@ func (mc *MitarbeiterCreate) createSpec() (*Mitarbeiter, *sqlgraph.CreateSpec) {
 	return _node, _spec
 }
 
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Mitarbeiter.Create().
+//		SetName(v).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.MitarbeiterUpsert) {
+//			SetName(v+v).
+//		}).
+//		Exec(ctx)
+func (mc *MitarbeiterCreate) OnConflict(opts ...sql.ConflictOption) *MitarbeiterUpsertOne {
+	mc.conflict = opts
+	return &MitarbeiterUpsertOne{
+		create: mc,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Mitarbeiter.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (mc *MitarbeiterCreate) OnConflictColumns(columns ...string) *MitarbeiterUpsertOne {
+	mc.conflict = append(mc.conflict, sql.ConflictColumns(columns...))
+	return &MitarbeiterUpsertOne{
+		create: mc,
+	}
+}
+
+type (
+	// MitarbeiterUpsertOne is the builder for "upsert"-ing
+	//  one Mitarbeiter node.
+	MitarbeiterUpsertOne struct {
+		create *MitarbeiterCreate
+	}
+
+	// MitarbeiterUpsert is the "OnConflict" setter.
+	MitarbeiterUpsert struct {
+		*sql.UpdateSet
+	}
+)
+
+// SetName sets the "Name" field.
+func (u *MitarbeiterUpsert) SetName(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldName, v)
+	return u
+}
+
+// UpdateName sets the "Name" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateName() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldName)
+	return u
+}
+
+// SetShort sets the "Short" field.
+func (u *MitarbeiterUpsert) SetShort(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldShort, v)
+	return u
+}
+
+// UpdateShort sets the "Short" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateShort() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldShort)
+	return u
+}
+
+// SetGruppenwahl sets the "Gruppenwahl" field.
+func (u *MitarbeiterUpsert) SetGruppenwahl(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldGruppenwahl, v)
+	return u
+}
+
+// UpdateGruppenwahl sets the "Gruppenwahl" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateGruppenwahl() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldGruppenwahl)
+	return u
+}
+
+// SetInternTelefon1 sets the "InternTelefon1" field.
+func (u *MitarbeiterUpsert) SetInternTelefon1(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldInternTelefon1, v)
+	return u
+}
+
+// UpdateInternTelefon1 sets the "InternTelefon1" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateInternTelefon1() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldInternTelefon1)
+	return u
+}
+
+// SetInternTelefon2 sets the "InternTelefon2" field.
+func (u *MitarbeiterUpsert) SetInternTelefon2(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldInternTelefon2, v)
+	return u
+}
+
+// UpdateInternTelefon2 sets the "InternTelefon2" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateInternTelefon2() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldInternTelefon2)
+	return u
+}
+
+// SetFestnetzPrivat sets the "FestnetzPrivat" field.
+func (u *MitarbeiterUpsert) SetFestnetzPrivat(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldFestnetzPrivat, v)
+	return u
+}
+
+// UpdateFestnetzPrivat sets the "FestnetzPrivat" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateFestnetzPrivat() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldFestnetzPrivat)
+	return u
+}
+
+// SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
+func (u *MitarbeiterUpsert) SetFestnetzAlternativ(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldFestnetzAlternativ, v)
+	return u
+}
+
+// UpdateFestnetzAlternativ sets the "FestnetzAlternativ" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateFestnetzAlternativ() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldFestnetzAlternativ)
+	return u
+}
+
+// SetHomeOffice sets the "HomeOffice" field.
+func (u *MitarbeiterUpsert) SetHomeOffice(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldHomeOffice, v)
+	return u
+}
+
+// UpdateHomeOffice sets the "HomeOffice" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateHomeOffice() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldHomeOffice)
+	return u
+}
+
+// SetMobilBusiness sets the "MobilBusiness" field.
+func (u *MitarbeiterUpsert) SetMobilBusiness(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldMobilBusiness, v)
+	return u
+}
+
+// UpdateMobilBusiness sets the "MobilBusiness" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateMobilBusiness() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldMobilBusiness)
+	return u
+}
+
+// SetMobilPrivat sets the "MobilPrivat" field.
+func (u *MitarbeiterUpsert) SetMobilPrivat(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldMobilPrivat, v)
+	return u
+}
+
+// UpdateMobilPrivat sets the "MobilPrivat" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateMobilPrivat() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldMobilPrivat)
+	return u
+}
+
+// SetEmail sets the "Email" field.
+func (u *MitarbeiterUpsert) SetEmail(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldEmail, v)
+	return u
+}
+
+// UpdateEmail sets the "Email" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateEmail() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldEmail)
+	return u
+}
+
+// SetAzubi sets the "Azubi" field.
+func (u *MitarbeiterUpsert) SetAzubi(v bool) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldAzubi, v)
+	return u
+}
+
+// UpdateAzubi sets the "Azubi" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateAzubi() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldAzubi)
+	return u
+}
+
+// SetGeburtstag sets the "Geburtstag" field.
+func (u *MitarbeiterUpsert) SetGeburtstag(v time.Time) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldGeburtstag, v)
+	return u
+}
+
+// UpdateGeburtstag sets the "Geburtstag" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateGeburtstag() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldGeburtstag)
+	return u
+}
+
+// SetPaypal sets the "Paypal" field.
+func (u *MitarbeiterUpsert) SetPaypal(v bool) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldPaypal, v)
+	return u
+}
+
+// UpdatePaypal sets the "Paypal" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdatePaypal() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldPaypal)
+	return u
+}
+
+// SetAbonniert sets the "Abonniert" field.
+func (u *MitarbeiterUpsert) SetAbonniert(v bool) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldAbonniert, v)
+	return u
+}
+
+// UpdateAbonniert sets the "Abonniert" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateAbonniert() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldAbonniert)
+	return u
+}
+
+// SetGeld sets the "Geld" field.
+func (u *MitarbeiterUpsert) SetGeld(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldGeld, v)
+	return u
+}
+
+// UpdateGeld sets the "Geld" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateGeld() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldGeld)
+	return u
+}
+
+// SetPfand sets the "Pfand" field.
+func (u *MitarbeiterUpsert) SetPfand(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldPfand, v)
+	return u
+}
+
+// UpdatePfand sets the "Pfand" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdatePfand() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldPfand)
+	return u
+}
+
+// SetDinge sets the "Dinge" field.
+func (u *MitarbeiterUpsert) SetDinge(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldDinge, v)
+	return u
+}
+
+// UpdateDinge sets the "Dinge" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateDinge() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldDinge)
+	return u
+}
+
+// SetAbgeschickt sets the "Abgeschickt" field.
+func (u *MitarbeiterUpsert) SetAbgeschickt(v time.Time) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldAbgeschickt, v)
+	return u
+}
+
+// UpdateAbgeschickt sets the "Abgeschickt" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateAbgeschickt() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldAbgeschickt)
+	return u
+}
+
+// SetBild1 sets the "Bild1" field.
+func (u *MitarbeiterUpsert) SetBild1(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldBild1, v)
+	return u
+}
+
+// UpdateBild1 sets the "Bild1" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateBild1() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldBild1)
+	return u
+}
+
+// SetBild2 sets the "Bild2" field.
+func (u *MitarbeiterUpsert) SetBild2(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldBild2, v)
+	return u
+}
+
+// UpdateBild2 sets the "Bild2" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateBild2() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldBild2)
+	return u
+}
+
+// SetBild3 sets the "Bild3" field.
+func (u *MitarbeiterUpsert) SetBild3(v string) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldBild3, v)
+	return u
+}
+
+// UpdateBild3 sets the "Bild3" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateBild3() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldBild3)
+	return u
+}
+
+// SetBild1Date sets the "Bild1Date" field.
+func (u *MitarbeiterUpsert) SetBild1Date(v time.Time) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldBild1Date, v)
+	return u
+}
+
+// UpdateBild1Date sets the "Bild1Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateBild1Date() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldBild1Date)
+	return u
+}
+
+// SetBild2Date sets the "Bild2Date" field.
+func (u *MitarbeiterUpsert) SetBild2Date(v time.Time) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldBild2Date, v)
+	return u
+}
+
+// UpdateBild2Date sets the "Bild2Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateBild2Date() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldBild2Date)
+	return u
+}
+
+// SetBild3Date sets the "Bild3Date" field.
+func (u *MitarbeiterUpsert) SetBild3Date(v time.Time) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldBild3Date, v)
+	return u
+}
+
+// UpdateBild3Date sets the "Bild3Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateBild3Date() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldBild3Date)
+	return u
+}
+
+// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
+func (u *MitarbeiterUpsert) SetAbgescBild3Datehickt(v time.Time) *MitarbeiterUpsert {
+	u.Set(mitarbeiter.FieldAbgescBild3Datehickt, v)
+	return u
+}
+
+// UpdateAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field to the value that was provided on create.
+func (u *MitarbeiterUpsert) UpdateAbgescBild3Datehickt() *MitarbeiterUpsert {
+	u.SetExcluded(mitarbeiter.FieldAbgescBild3Datehickt)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create.
+// Using this option is equivalent to using:
+//
+//	client.Mitarbeiter.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *MitarbeiterUpsertOne) UpdateNewValues() *MitarbeiterUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Mitarbeiter.Create().
+//	    OnConflict(sql.ResolveWithIgnore()).
+//	    Exec(ctx)
+func (u *MitarbeiterUpsertOne) Ignore() *MitarbeiterUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *MitarbeiterUpsertOne) DoNothing() *MitarbeiterUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the MitarbeiterCreate.OnConflict
+// documentation for more info.
+func (u *MitarbeiterUpsertOne) Update(set func(*MitarbeiterUpsert)) *MitarbeiterUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&MitarbeiterUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetName sets the "Name" field.
+func (u *MitarbeiterUpsertOne) SetName(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "Name" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateName() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateName()
+	})
+}
+
+// SetShort sets the "Short" field.
+func (u *MitarbeiterUpsertOne) SetShort(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "Short" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateShort() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateShort()
+	})
+}
+
+// SetGruppenwahl sets the "Gruppenwahl" field.
+func (u *MitarbeiterUpsertOne) SetGruppenwahl(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetGruppenwahl(v)
+	})
+}
+
+// UpdateGruppenwahl sets the "Gruppenwahl" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateGruppenwahl() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateGruppenwahl()
+	})
+}
+
+// SetInternTelefon1 sets the "InternTelefon1" field.
+func (u *MitarbeiterUpsertOne) SetInternTelefon1(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetInternTelefon1(v)
+	})
+}
+
+// UpdateInternTelefon1 sets the "InternTelefon1" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateInternTelefon1() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateInternTelefon1()
+	})
+}
+
+// SetInternTelefon2 sets the "InternTelefon2" field.
+func (u *MitarbeiterUpsertOne) SetInternTelefon2(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetInternTelefon2(v)
+	})
+}
+
+// UpdateInternTelefon2 sets the "InternTelefon2" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateInternTelefon2() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateInternTelefon2()
+	})
+}
+
+// SetFestnetzPrivat sets the "FestnetzPrivat" field.
+func (u *MitarbeiterUpsertOne) SetFestnetzPrivat(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetFestnetzPrivat(v)
+	})
+}
+
+// UpdateFestnetzPrivat sets the "FestnetzPrivat" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateFestnetzPrivat() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateFestnetzPrivat()
+	})
+}
+
+// SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
+func (u *MitarbeiterUpsertOne) SetFestnetzAlternativ(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetFestnetzAlternativ(v)
+	})
+}
+
+// UpdateFestnetzAlternativ sets the "FestnetzAlternativ" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateFestnetzAlternativ() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateFestnetzAlternativ()
+	})
+}
+
+// SetHomeOffice sets the "HomeOffice" field.
+func (u *MitarbeiterUpsertOne) SetHomeOffice(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetHomeOffice(v)
+	})
+}
+
+// UpdateHomeOffice sets the "HomeOffice" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateHomeOffice() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateHomeOffice()
+	})
+}
+
+// SetMobilBusiness sets the "MobilBusiness" field.
+func (u *MitarbeiterUpsertOne) SetMobilBusiness(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetMobilBusiness(v)
+	})
+}
+
+// UpdateMobilBusiness sets the "MobilBusiness" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateMobilBusiness() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateMobilBusiness()
+	})
+}
+
+// SetMobilPrivat sets the "MobilPrivat" field.
+func (u *MitarbeiterUpsertOne) SetMobilPrivat(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetMobilPrivat(v)
+	})
+}
+
+// UpdateMobilPrivat sets the "MobilPrivat" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateMobilPrivat() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateMobilPrivat()
+	})
+}
+
+// SetEmail sets the "Email" field.
+func (u *MitarbeiterUpsertOne) SetEmail(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "Email" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateEmail() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateEmail()
+	})
+}
+
+// SetAzubi sets the "Azubi" field.
+func (u *MitarbeiterUpsertOne) SetAzubi(v bool) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAzubi(v)
+	})
+}
+
+// UpdateAzubi sets the "Azubi" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateAzubi() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAzubi()
+	})
+}
+
+// SetGeburtstag sets the "Geburtstag" field.
+func (u *MitarbeiterUpsertOne) SetGeburtstag(v time.Time) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetGeburtstag(v)
+	})
+}
+
+// UpdateGeburtstag sets the "Geburtstag" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateGeburtstag() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateGeburtstag()
+	})
+}
+
+// SetPaypal sets the "Paypal" field.
+func (u *MitarbeiterUpsertOne) SetPaypal(v bool) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetPaypal(v)
+	})
+}
+
+// UpdatePaypal sets the "Paypal" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdatePaypal() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdatePaypal()
+	})
+}
+
+// SetAbonniert sets the "Abonniert" field.
+func (u *MitarbeiterUpsertOne) SetAbonniert(v bool) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAbonniert(v)
+	})
+}
+
+// UpdateAbonniert sets the "Abonniert" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateAbonniert() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAbonniert()
+	})
+}
+
+// SetGeld sets the "Geld" field.
+func (u *MitarbeiterUpsertOne) SetGeld(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetGeld(v)
+	})
+}
+
+// UpdateGeld sets the "Geld" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateGeld() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateGeld()
+	})
+}
+
+// SetPfand sets the "Pfand" field.
+func (u *MitarbeiterUpsertOne) SetPfand(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetPfand(v)
+	})
+}
+
+// UpdatePfand sets the "Pfand" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdatePfand() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdatePfand()
+	})
+}
+
+// SetDinge sets the "Dinge" field.
+func (u *MitarbeiterUpsertOne) SetDinge(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetDinge(v)
+	})
+}
+
+// UpdateDinge sets the "Dinge" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateDinge() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateDinge()
+	})
+}
+
+// SetAbgeschickt sets the "Abgeschickt" field.
+func (u *MitarbeiterUpsertOne) SetAbgeschickt(v time.Time) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAbgeschickt(v)
+	})
+}
+
+// UpdateAbgeschickt sets the "Abgeschickt" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateAbgeschickt() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAbgeschickt()
+	})
+}
+
+// SetBild1 sets the "Bild1" field.
+func (u *MitarbeiterUpsertOne) SetBild1(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild1(v)
+	})
+}
+
+// UpdateBild1 sets the "Bild1" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateBild1() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild1()
+	})
+}
+
+// SetBild2 sets the "Bild2" field.
+func (u *MitarbeiterUpsertOne) SetBild2(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild2(v)
+	})
+}
+
+// UpdateBild2 sets the "Bild2" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateBild2() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild2()
+	})
+}
+
+// SetBild3 sets the "Bild3" field.
+func (u *MitarbeiterUpsertOne) SetBild3(v string) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild3(v)
+	})
+}
+
+// UpdateBild3 sets the "Bild3" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateBild3() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild3()
+	})
+}
+
+// SetBild1Date sets the "Bild1Date" field.
+func (u *MitarbeiterUpsertOne) SetBild1Date(v time.Time) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild1Date(v)
+	})
+}
+
+// UpdateBild1Date sets the "Bild1Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateBild1Date() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild1Date()
+	})
+}
+
+// SetBild2Date sets the "Bild2Date" field.
+func (u *MitarbeiterUpsertOne) SetBild2Date(v time.Time) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild2Date(v)
+	})
+}
+
+// UpdateBild2Date sets the "Bild2Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateBild2Date() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild2Date()
+	})
+}
+
+// SetBild3Date sets the "Bild3Date" field.
+func (u *MitarbeiterUpsertOne) SetBild3Date(v time.Time) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild3Date(v)
+	})
+}
+
+// UpdateBild3Date sets the "Bild3Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateBild3Date() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild3Date()
+	})
+}
+
+// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
+func (u *MitarbeiterUpsertOne) SetAbgescBild3Datehickt(v time.Time) *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAbgescBild3Datehickt(v)
+	})
+}
+
+// UpdateAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field to the value that was provided on create.
+func (u *MitarbeiterUpsertOne) UpdateAbgescBild3Datehickt() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAbgescBild3Datehickt()
+	})
+}
+
+// Exec executes the query.
+func (u *MitarbeiterUpsertOne) Exec(ctx context.Context) error {
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for MitarbeiterCreate.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *MitarbeiterUpsertOne) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// Exec executes the UPSERT query and returns the inserted/updated ID.
+func (u *MitarbeiterUpsertOne) ID(ctx context.Context) (id int, err error) {
+	node, err := u.create.Save(ctx)
+	if err != nil {
+		return id, err
+	}
+	return node.ID, nil
+}
+
+// IDX is like ID, but panics if an error occurs.
+func (u *MitarbeiterUpsertOne) IDX(ctx context.Context) int {
+	id, err := u.ID(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return id
+}
+
 // MitarbeiterCreateBulk is the builder for creating many Mitarbeiter entities in bulk.
 type MitarbeiterCreateBulk struct {
 	config
 	err      error
 	builders []*MitarbeiterCreate
+	conflict []sql.ConflictOption
 }
 
 // Save creates the Mitarbeiter entities in the database.
@@ -501,6 +1303,7 @@ func (mcb *MitarbeiterCreateBulk) Save(ctx context.Context) ([]*Mitarbeiter, err
 					_, err = mutators[i+1].Mutate(root, mcb.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
+					spec.OnConflict = mcb.conflict
 					// Invoke the actual operation on the latest mutation in the chain.
 					if err = sqlgraph.BatchCreate(ctx, mcb.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
@@ -551,6 +1354,474 @@ func (mcb *MitarbeiterCreateBulk) Exec(ctx context.Context) error {
 // ExecX is like Exec, but panics if an error occurs.
 func (mcb *MitarbeiterCreateBulk) ExecX(ctx context.Context) {
 	if err := mcb.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.Mitarbeiter.CreateBulk(builders...).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.MitarbeiterUpsert) {
+//			SetName(v+v).
+//		}).
+//		Exec(ctx)
+func (mcb *MitarbeiterCreateBulk) OnConflict(opts ...sql.ConflictOption) *MitarbeiterUpsertBulk {
+	mcb.conflict = opts
+	return &MitarbeiterUpsertBulk{
+		create: mcb,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.Mitarbeiter.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+func (mcb *MitarbeiterCreateBulk) OnConflictColumns(columns ...string) *MitarbeiterUpsertBulk {
+	mcb.conflict = append(mcb.conflict, sql.ConflictColumns(columns...))
+	return &MitarbeiterUpsertBulk{
+		create: mcb,
+	}
+}
+
+// MitarbeiterUpsertBulk is the builder for "upsert"-ing
+// a bulk of Mitarbeiter nodes.
+type MitarbeiterUpsertBulk struct {
+	create *MitarbeiterCreateBulk
+}
+
+// UpdateNewValues updates the mutable fields using the new values that
+// were set on create. Using this option is equivalent to using:
+//
+//	client.Mitarbeiter.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//		).
+//		Exec(ctx)
+func (u *MitarbeiterUpsertBulk) UpdateNewValues() *MitarbeiterUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.Mitarbeiter.Create().
+//		OnConflict(sql.ResolveWithIgnore()).
+//		Exec(ctx)
+func (u *MitarbeiterUpsertBulk) Ignore() *MitarbeiterUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *MitarbeiterUpsertBulk) DoNothing() *MitarbeiterUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the MitarbeiterCreateBulk.OnConflict
+// documentation for more info.
+func (u *MitarbeiterUpsertBulk) Update(set func(*MitarbeiterUpsert)) *MitarbeiterUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&MitarbeiterUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetName sets the "Name" field.
+func (u *MitarbeiterUpsertBulk) SetName(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "Name" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateName() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateName()
+	})
+}
+
+// SetShort sets the "Short" field.
+func (u *MitarbeiterUpsertBulk) SetShort(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "Short" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateShort() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateShort()
+	})
+}
+
+// SetGruppenwahl sets the "Gruppenwahl" field.
+func (u *MitarbeiterUpsertBulk) SetGruppenwahl(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetGruppenwahl(v)
+	})
+}
+
+// UpdateGruppenwahl sets the "Gruppenwahl" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateGruppenwahl() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateGruppenwahl()
+	})
+}
+
+// SetInternTelefon1 sets the "InternTelefon1" field.
+func (u *MitarbeiterUpsertBulk) SetInternTelefon1(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetInternTelefon1(v)
+	})
+}
+
+// UpdateInternTelefon1 sets the "InternTelefon1" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateInternTelefon1() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateInternTelefon1()
+	})
+}
+
+// SetInternTelefon2 sets the "InternTelefon2" field.
+func (u *MitarbeiterUpsertBulk) SetInternTelefon2(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetInternTelefon2(v)
+	})
+}
+
+// UpdateInternTelefon2 sets the "InternTelefon2" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateInternTelefon2() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateInternTelefon2()
+	})
+}
+
+// SetFestnetzPrivat sets the "FestnetzPrivat" field.
+func (u *MitarbeiterUpsertBulk) SetFestnetzPrivat(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetFestnetzPrivat(v)
+	})
+}
+
+// UpdateFestnetzPrivat sets the "FestnetzPrivat" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateFestnetzPrivat() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateFestnetzPrivat()
+	})
+}
+
+// SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
+func (u *MitarbeiterUpsertBulk) SetFestnetzAlternativ(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetFestnetzAlternativ(v)
+	})
+}
+
+// UpdateFestnetzAlternativ sets the "FestnetzAlternativ" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateFestnetzAlternativ() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateFestnetzAlternativ()
+	})
+}
+
+// SetHomeOffice sets the "HomeOffice" field.
+func (u *MitarbeiterUpsertBulk) SetHomeOffice(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetHomeOffice(v)
+	})
+}
+
+// UpdateHomeOffice sets the "HomeOffice" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateHomeOffice() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateHomeOffice()
+	})
+}
+
+// SetMobilBusiness sets the "MobilBusiness" field.
+func (u *MitarbeiterUpsertBulk) SetMobilBusiness(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetMobilBusiness(v)
+	})
+}
+
+// UpdateMobilBusiness sets the "MobilBusiness" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateMobilBusiness() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateMobilBusiness()
+	})
+}
+
+// SetMobilPrivat sets the "MobilPrivat" field.
+func (u *MitarbeiterUpsertBulk) SetMobilPrivat(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetMobilPrivat(v)
+	})
+}
+
+// UpdateMobilPrivat sets the "MobilPrivat" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateMobilPrivat() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateMobilPrivat()
+	})
+}
+
+// SetEmail sets the "Email" field.
+func (u *MitarbeiterUpsertBulk) SetEmail(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "Email" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateEmail() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateEmail()
+	})
+}
+
+// SetAzubi sets the "Azubi" field.
+func (u *MitarbeiterUpsertBulk) SetAzubi(v bool) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAzubi(v)
+	})
+}
+
+// UpdateAzubi sets the "Azubi" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateAzubi() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAzubi()
+	})
+}
+
+// SetGeburtstag sets the "Geburtstag" field.
+func (u *MitarbeiterUpsertBulk) SetGeburtstag(v time.Time) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetGeburtstag(v)
+	})
+}
+
+// UpdateGeburtstag sets the "Geburtstag" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateGeburtstag() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateGeburtstag()
+	})
+}
+
+// SetPaypal sets the "Paypal" field.
+func (u *MitarbeiterUpsertBulk) SetPaypal(v bool) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetPaypal(v)
+	})
+}
+
+// UpdatePaypal sets the "Paypal" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdatePaypal() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdatePaypal()
+	})
+}
+
+// SetAbonniert sets the "Abonniert" field.
+func (u *MitarbeiterUpsertBulk) SetAbonniert(v bool) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAbonniert(v)
+	})
+}
+
+// UpdateAbonniert sets the "Abonniert" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateAbonniert() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAbonniert()
+	})
+}
+
+// SetGeld sets the "Geld" field.
+func (u *MitarbeiterUpsertBulk) SetGeld(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetGeld(v)
+	})
+}
+
+// UpdateGeld sets the "Geld" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateGeld() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateGeld()
+	})
+}
+
+// SetPfand sets the "Pfand" field.
+func (u *MitarbeiterUpsertBulk) SetPfand(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetPfand(v)
+	})
+}
+
+// UpdatePfand sets the "Pfand" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdatePfand() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdatePfand()
+	})
+}
+
+// SetDinge sets the "Dinge" field.
+func (u *MitarbeiterUpsertBulk) SetDinge(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetDinge(v)
+	})
+}
+
+// UpdateDinge sets the "Dinge" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateDinge() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateDinge()
+	})
+}
+
+// SetAbgeschickt sets the "Abgeschickt" field.
+func (u *MitarbeiterUpsertBulk) SetAbgeschickt(v time.Time) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAbgeschickt(v)
+	})
+}
+
+// UpdateAbgeschickt sets the "Abgeschickt" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateAbgeschickt() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAbgeschickt()
+	})
+}
+
+// SetBild1 sets the "Bild1" field.
+func (u *MitarbeiterUpsertBulk) SetBild1(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild1(v)
+	})
+}
+
+// UpdateBild1 sets the "Bild1" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateBild1() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild1()
+	})
+}
+
+// SetBild2 sets the "Bild2" field.
+func (u *MitarbeiterUpsertBulk) SetBild2(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild2(v)
+	})
+}
+
+// UpdateBild2 sets the "Bild2" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateBild2() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild2()
+	})
+}
+
+// SetBild3 sets the "Bild3" field.
+func (u *MitarbeiterUpsertBulk) SetBild3(v string) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild3(v)
+	})
+}
+
+// UpdateBild3 sets the "Bild3" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateBild3() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild3()
+	})
+}
+
+// SetBild1Date sets the "Bild1Date" field.
+func (u *MitarbeiterUpsertBulk) SetBild1Date(v time.Time) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild1Date(v)
+	})
+}
+
+// UpdateBild1Date sets the "Bild1Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateBild1Date() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild1Date()
+	})
+}
+
+// SetBild2Date sets the "Bild2Date" field.
+func (u *MitarbeiterUpsertBulk) SetBild2Date(v time.Time) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild2Date(v)
+	})
+}
+
+// UpdateBild2Date sets the "Bild2Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateBild2Date() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild2Date()
+	})
+}
+
+// SetBild3Date sets the "Bild3Date" field.
+func (u *MitarbeiterUpsertBulk) SetBild3Date(v time.Time) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetBild3Date(v)
+	})
+}
+
+// UpdateBild3Date sets the "Bild3Date" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateBild3Date() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateBild3Date()
+	})
+}
+
+// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
+func (u *MitarbeiterUpsertBulk) SetAbgescBild3Datehickt(v time.Time) *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.SetAbgescBild3Datehickt(v)
+	})
+}
+
+// UpdateAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field to the value that was provided on create.
+func (u *MitarbeiterUpsertBulk) UpdateAbgescBild3Datehickt() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.UpdateAbgescBild3Datehickt()
+	})
+}
+
+// Exec executes the query.
+func (u *MitarbeiterUpsertBulk) Exec(ctx context.Context) error {
+	if u.create.err != nil {
+		return u.create.err
+	}
+	for i, b := range u.create.builders {
+		if len(b.conflict) != 0 {
+			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the MitarbeiterCreateBulk instead", i)
+		}
+	}
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for MitarbeiterCreateBulk.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *MitarbeiterUpsertBulk) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

@@ -413,10 +413,10 @@ func (aq *ArtikelQuery) loadTeam(ctx context.Context, query *TeamQuery, nodes []
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Artikel)
 	for i := range nodes {
-		if nodes[i].team_team_name == nil {
+		if nodes[i].team_artikel == nil {
 			continue
 		}
-		fk := *nodes[i].team_team_name
+		fk := *nodes[i].team_artikel
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -433,7 +433,7 @@ func (aq *ArtikelQuery) loadTeam(ctx context.Context, query *TeamQuery, nodes []
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "team_team_name" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "team_artikel" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

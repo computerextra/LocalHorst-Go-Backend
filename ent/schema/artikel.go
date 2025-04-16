@@ -23,6 +23,6 @@ func (Artikel) Fields() []ent.Field {
 // Edges of the Artikel.
 func (Artikel) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("team", Team.Type).Ref("teamName").Unique(),
+		edge.From("team", Team.Type).Ref("artikel").Unique(),
 	}
 }

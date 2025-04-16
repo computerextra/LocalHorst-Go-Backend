@@ -21,13 +21,13 @@ import (
 // TeamQuery is the builder for querying Team entities.
 type TeamQuery struct {
 	config
-	ctx          *QueryContext
-	order        []team.OrderOption
-	inters       []Interceptor
-	predicates   []predicate.Team
-	withTeamName *ArtikelQuery
-	withJahr     *InventurQuery
-	withFKs      bool
+	ctx         *QueryContext
+	order       []team.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.Team
+	withArtikel *ArtikelQuery
+	withJahr    *InventurQuery
+	withFKs     bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -64,8 +64,8 @@ func (tq *TeamQuery) Order(o ...team.OrderOption) *TeamQuery {
 	return tq
 }
 
-// QueryTeamName chains the current query on the "teamName" edge.
-func (tq *TeamQuery) QueryTeamName() *ArtikelQuery {
+// QueryArtikel chains the current query on the "artikel" edge.
+func (tq *TeamQuery) QueryArtikel() *ArtikelQuery {
 	query := (&ArtikelClient{config: tq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := tq.prepareQuery(ctx); err != nil {
@@ -78,7 +78,7 @@ func (tq *TeamQuery) QueryTeamName() *ArtikelQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(team.Table, team.FieldID, selector),
 			sqlgraph.To(artikel.Table, artikel.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, team.TeamNameTable, team.TeamNameColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, team.ArtikelTable, team.ArtikelColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(tq.driver.Dialect(), step)
 		return fromU, nil
@@ -295,27 +295,27 @@ func (tq *TeamQuery) Clone() *TeamQuery {
 		return nil
 	}
 	return &TeamQuery{
-		config:       tq.config,
-		ctx:          tq.ctx.Clone(),
-		order:        append([]team.OrderOption{}, tq.order...),
-		inters:       append([]Interceptor{}, tq.inters...),
-		predicates:   append([]predicate.Team{}, tq.predicates...),
-		withTeamName: tq.withTeamName.Clone(),
-		withJahr:     tq.withJahr.Clone(),
+		config:      tq.config,
+		ctx:         tq.ctx.Clone(),
+		order:       append([]team.OrderOption{}, tq.order...),
+		inters:      append([]Interceptor{}, tq.inters...),
+		predicates:  append([]predicate.Team{}, tq.predicates...),
+		withArtikel: tq.withArtikel.Clone(),
+		withJahr:    tq.withJahr.Clone(),
 		// clone intermediate query.
 		sql:  tq.sql.Clone(),
 		path: tq.path,
 	}
 }
 
-// WithTeamName tells the query-builder to eager-load the nodes that are connected to
-// the "teamName" edge. The optional arguments are used to configure the query builder of the edge.
-func (tq *TeamQuery) WithTeamName(opts ...func(*ArtikelQuery)) *TeamQuery {
+// WithArtikel tells the query-builder to eager-load the nodes that are connected to
+// the "artikel" edge. The optional arguments are used to configure the query builder of the edge.
+func (tq *TeamQuery) WithArtikel(opts ...func(*ArtikelQuery)) *TeamQuery {
 	query := (&ArtikelClient{config: tq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	tq.withTeamName = query
+	tq.withArtikel = query
 	return tq
 }
 
@@ -410,7 +410,7 @@ func (tq *TeamQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Team, e
 		withFKs     = tq.withFKs
 		_spec       = tq.querySpec()
 		loadedTypes = [2]bool{
-			tq.withTeamName != nil,
+			tq.withArtikel != nil,
 			tq.withJahr != nil,
 		}
 	)
@@ -438,10 +438,10 @@ func (tq *TeamQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Team, e
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := tq.withTeamName; query != nil {
-		if err := tq.loadTeamName(ctx, query, nodes,
-			func(n *Team) { n.Edges.TeamName = []*Artikel{} },
-			func(n *Team, e *Artikel) { n.Edges.TeamName = append(n.Edges.TeamName, e) }); err != nil {
+	if query := tq.withArtikel; query != nil {
+		if err := tq.loadArtikel(ctx, query, nodes,
+			func(n *Team) { n.Edges.Artikel = []*Artikel{} },
+			func(n *Team, e *Artikel) { n.Edges.Artikel = append(n.Edges.Artikel, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -454,7 +454,7 @@ func (tq *TeamQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Team, e
 	return nodes, nil
 }
 
-func (tq *TeamQuery) loadTeamName(ctx context.Context, query *ArtikelQuery, nodes []*Team, init func(*Team), assign func(*Team, *Artikel)) error {
+func (tq *TeamQuery) loadArtikel(ctx context.Context, query *ArtikelQuery, nodes []*Team, init func(*Team), assign func(*Team, *Artikel)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[int]*Team)
 	for i := range nodes {
@@ -466,20 +466,20 @@ func (tq *TeamQuery) loadTeamName(ctx context.Context, query *ArtikelQuery, node
 	}
 	query.withFKs = true
 	query.Where(predicate.Artikel(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(team.TeamNameColumn), fks...))
+		s.Where(sql.InValues(s.C(team.ArtikelColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.team_team_name
+		fk := n.team_artikel
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "team_team_name" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "team_artikel" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "team_team_name" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "team_artikel" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
