@@ -5,7 +5,11 @@ go 1.23
 require (
 	github.com/denisenkom/go-mssqldb v0.12.3
 	github.com/go-sql-driver/mysql v1.9.2
+	github.com/jmoiron/sqlx v1.4.0
+	github.com/joho/godotenv v1.5.1
 	github.com/lucsky/cuid v1.2.1
+	github.com/shopspring/decimal v1.4.0
+	github.com/steebchen/prisma-client-go v0.47.0
 	github.com/wailsapp/wails/v2 v2.10.1
 	gopkg.in/mail.v2 v2.3.1
 )
@@ -36,6 +40,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/wailsapp/go-webview2 v1.0.19 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
+	go.mongodb.org/mongo-driver/v2 v2.0.1 // indirect
 	golang.org/x/crypto v0.33.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect

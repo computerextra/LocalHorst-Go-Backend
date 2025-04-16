@@ -36,9 +36,9 @@ export default function AnsprechpartnerForm({
     localStorage.removeItem("lieferanten-lastsync");
     const params: db.AnsprechpartnerParams = {
       Name,
-      Mail,
-      Mobil,
-      Telefon,
+      Mail: Mail ?? "",
+      Mobil: Mobil ?? "",
+      Telefon: Telefon ?? "",
       LieferantenId: id,
     };
     await UpsertAnsprechpartner(ap?.Id ?? "", params);

@@ -42,9 +42,9 @@ export namespace db {
 	}
 	export class AnsprechpartnerParams {
 	    Name: string;
-	    Telefon?: string;
-	    Mobil?: string;
-	    Mail?: string;
+	    Telefon: string;
+	    Mobil: string;
+	    Mail: string;
 	    LieferantenId: string;
 	
 	    static createFrom(source: any = {}) {
@@ -251,8 +251,8 @@ export namespace db {
 	}
 	export class LieferantenParams {
 	    Firma: string;
-	    Kundennummer?: string;
-	    Webseite?: string;
+	    Kundennummer: string;
+	    Webseite: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new LieferantenParams(source);

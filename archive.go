@@ -10,10 +10,15 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (a *App) SearchArchive(search string) []db.Archive {
-	database := db.New(a.config.DATABASE_URL)
+func (a *App) SearchArchive(search string) []db.PdfsModel {
+	res, err := a.db.Pdfs.FindMany(
+		db.Pdfs.Or(
+			db.Pdfs.Title.Contains(search),
+			db.Pdfs.Body.Contains(search),
+		),
+	).Exec(a.ctx)
 
-	res, err := database.SearchArchive(search)
+	// res, err := a.db.SearchArchive(search)
 	if err != nil {
 		return nil
 	}
@@ -25,8 +30,10 @@ func (a *App) GetArchive(id string) string {
 	if err != nil {
 		return "Incorrect ID"
 	}
-	database := db.New(a.config.DATABASE_URL)
-	pdf, err := database.GetArchive(int32(idInt))
+
+	pdf, err := a.db.Pdfs.FindUnique(db.Pdfs.ID.Equals(idInt)).Exec(a.ctx)
+
+	// pdf, err := a.db.GetArchive(int32(idInt))
 	if err != nil {
 		return "Document not found"
 	}

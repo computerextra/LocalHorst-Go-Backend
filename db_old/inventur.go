@@ -1,13 +1,8 @@
 package db
 
 func (d Database) GetInventurYears() ([]string, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT Jahr FROM Inventur ORDER BY Jahr ASC;")
+	stmt, err := d.conn.Prepare("SELECT Jahr FROM Inventur ORDER BY Jahr ASC;")
 	if err != nil {
 		return nil, err
 	}
@@ -50,14 +45,8 @@ type Artikel struct {
 }
 
 func (d Database) GetDataFromYear(year string) ([]Team, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
 
-		return nil, err
-	}
-	defer conn.Close()
-
-	stmt, err := conn.Prepare("SELECT id, Mitarbeiter, Farbe, Ort, inventurJahr FROM Team WHERE inventurJahr = ?;")
+	stmt, err := d.conn.Prepare("SELECT id, Mitarbeiter, Farbe, Ort, inventurJahr FROM Team WHERE inventurJahr = ?;")
 	if err != nil {
 		return nil, err
 	}
@@ -98,14 +87,8 @@ func (d Database) GetDataFromYear(year string) ([]Team, error) {
 }
 
 func (d Database) GetEntriesFromTeam(id int32) ([]Artikel, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
 
-		return nil, err
-	}
-	defer conn.Close()
-
-	stmt, err := conn.Prepare("SELECT id, Artikelnummer, Suchbegriff, Anzahl, teamId FROM Artikel WHERE teamId = ?;")
+	stmt, err := d.conn.Prepare("SELECT id, Artikelnummer, Suchbegriff, Anzahl, teamId FROM Artikel WHERE teamId = ?;")
 	if err != nil {
 		return nil, err
 	}

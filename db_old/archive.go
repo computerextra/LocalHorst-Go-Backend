@@ -7,13 +7,8 @@ type Archive struct {
 }
 
 func (d Database) SearchArchive(searchTerm string) ([]Archive, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT id, title, body FROM pdfs WHERE body LIKE ? OR title LIKE ?;")
+	stmt, err := d.conn.Prepare("SELECT id, title, body FROM pdfs WHERE body LIKE ? OR title LIKE ?;")
 	if err != nil {
 		return nil, err
 	}
@@ -39,13 +34,7 @@ func (d Database) SearchArchive(searchTerm string) ([]Archive, error) {
 }
 
 func (d Database) GetArchive(id int32) (*Archive, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
-
-	stmt, err := conn.Prepare("SELECT id, title, body FROM pdfs WHERE id= ?;")
+	stmt, err := d.conn.Prepare("SELECT id, title, body FROM pdfs WHERE id= ?;")
 	if err != nil {
 		return nil, err
 	}

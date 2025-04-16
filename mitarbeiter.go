@@ -5,8 +5,8 @@ import (
 )
 
 func (a *App) GetAllMitarbeiter() []db.Mitarbeiter {
-	database := db.New(a.config.DATABASE_URL)
-	ma, err := database.GetAllMitarbeiter()
+
+	ma, err := a.db.GetAllMitarbeiter()
 	if err != nil {
 		return nil
 	}
@@ -14,8 +14,8 @@ func (a *App) GetAllMitarbeiter() []db.Mitarbeiter {
 }
 
 func (a *App) GetMitarbeiter(id string) *db.Mitarbeiter {
-	database := db.New(a.config.DATABASE_URL)
-	ma, err := database.GetMitarbeiter(id)
+
+	ma, err := a.db.GetMitarbeiter(id)
 	if err != nil {
 		return nil
 	}
@@ -23,20 +23,20 @@ func (a *App) GetMitarbeiter(id string) *db.Mitarbeiter {
 }
 
 func (a *App) UpsertMitarbeiter(params db.MitarbeiterParams, id *string) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.UpsertMitarbeiter(params, id)
+
+	_, err := a.db.UpsertMitarbeiter(params, id)
 	return err == nil
 }
 
 func (a *App) DeleteMitarbeiter(id string) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.DeleteMitarbeiter(id)
+
+	_, err := a.db.DeleteMitarbeiter(id)
 	return err == nil
 }
 
 func (a *App) GetMitarbeiterIdByName(name string) string {
-	databas := db.New(a.config.DATABASE_URL)
-	ma, err := databas.GetMitarbeiterIdByName(name)
+
+	ma, err := a.db.GetMitarbeiterIdByName(name)
 	if err != nil {
 		return ""
 	}

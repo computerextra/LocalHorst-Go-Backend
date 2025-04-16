@@ -53,8 +53,8 @@ export function UpdateEinkauf(arg1:db.UpsertEinkaufParams,arg2:string):Promise<b
 
 export function UploadImage(arg1:string,arg2:string):Promise<string>;
 
-export function UpsertAnsprechpartner(arg1:any,arg2:db.AnsprechpartnerParams):Promise<boolean>;
+export function UpsertAnsprechpartner(arg1:string,arg2:db.AnsprechpartnerParams):Promise<boolean>;
 
-export function UpsertLieferant(arg1:db.LieferantenParams,arg2:any):Promise<boolean>;
+export function UpsertLieferant(arg1:db.LieferantenParams,arg2:string):Promise<boolean>;
 
 export function UpsertMitarbeiter(arg1:db.MitarbeiterParams,arg2:any):Promise<boolean>;

@@ -25,13 +25,8 @@ type Mitarbeiter struct {
 }
 
 func (d Database) GetMitarbeiter(id string) (*Mitarbeiter, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter WHERE id = ?;")
+	stmt, err := d.conn.Prepare("SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter WHERE id = ?;")
 	if err != nil {
 		return nil, err
 	}
@@ -60,13 +55,8 @@ func (d Database) GetMitarbeiter(id string) (*Mitarbeiter, error) {
 }
 
 func (d Database) GetMitarbeiterIdByName(name string) (string, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return "", err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT id FROM Mitarbeiter WHERE Name LIKE ?;")
+	stmt, err := d.conn.Prepare("SELECT id FROM Mitarbeiter WHERE Name LIKE ?;")
 	if err != nil {
 		return "", err
 	}
@@ -82,13 +72,8 @@ func (d Database) GetMitarbeiterIdByName(name string) (string, error) {
 }
 
 func (d Database) GetAllMitarbeiter() ([]Mitarbeiter, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter ORDER BY Name ASC;")
+	stmt, err := d.conn.Prepare("SELECT id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag FROM Mitarbeiter ORDER BY Name ASC;")
 	if err != nil {
 		return nil, err
 	}
@@ -236,13 +221,7 @@ func (d Database) createMitarbeiter(params MitarbeiterParams) (sql.Result, error
 		Geburtstag.Valid = false
 	}
 
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
-
-	stmt, err := conn.Prepare("INSERT INTO Mitarbeiter ( id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := d.conn.Prepare("INSERT INTO Mitarbeiter ( id, Name, Short, Gruppenwahl, InternTelefon1, InternTelefon2, FestnetzAlternativ, FestnetzPrivat, HomeOffice, MobilBusiness, MobilPrivat, Email, Azubi, Geburtstag) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return nil, err
 	}
@@ -350,13 +329,7 @@ func (d Database) updateMitarbeiter(params MitarbeiterParams, id string) (sql.Re
 		Geburtstag.Valid = false
 	}
 
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
-
-	stmt, err := conn.Prepare("UPDATE Mitarbeiter SET Name = ?, Short = ?, Gruppenwahl = ?, InternTelefon1 = ?, InternTelefon2 = ?, FestnetzAlternativ = ?, FestnetzPrivat = ?, HomeOffice = ?, MobilBusiness = ?, MobilPrivat = ?, Email = ?, Azubi = ?, Geburtstag = ? WHERE id = ?;")
+	stmt, err := d.conn.Prepare("UPDATE Mitarbeiter SET Name = ?, Short = ?, Gruppenwahl = ?, InternTelefon1 = ?, InternTelefon2 = ?, FestnetzAlternativ = ?, FestnetzPrivat = ?, HomeOffice = ?, MobilBusiness = ?, MobilPrivat = ?, Email = ?, Azubi = ?, Geburtstag = ? WHERE id = ?;")
 	if err != nil {
 		return nil, err
 	}
@@ -381,13 +354,8 @@ func (d Database) updateMitarbeiter(params MitarbeiterParams, id string) (sql.Re
 }
 
 func (d Database) DeleteMitarbeiter(id string) (sql.Result, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("DELETE FROM Mitarbeiter WHERE id = ?;")
+	stmt, err := d.conn.Prepare("DELETE FROM Mitarbeiter WHERE id = ?;")
 	if err != nil {
 		return nil, err
 	}

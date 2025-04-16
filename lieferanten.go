@@ -5,8 +5,8 @@ import (
 )
 
 func (a *App) GetLieferanten() []db.Lieferant {
-	database := db.New(a.config.DATABASE_URL)
-	res, err := database.GetLieferanten()
+
+	res, err := a.db.GetLieferanten()
 
 	if err != nil {
 		return nil
@@ -15,45 +15,45 @@ func (a *App) GetLieferanten() []db.Lieferant {
 }
 
 func (a *App) GetLieferant(id string) *db.Lieferant {
-	database := db.New(a.config.DATABASE_URL)
-	res, err := database.GetLieferant(id)
+
+	res, err := a.db.GetLieferant(id)
 	if err != nil {
 		return nil
 	}
 	return res
 }
 
-func (a *App) UpsertLieferant(params db.LieferantenParams, id *string) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.UpsertLieferant(params, id)
+func (a *App) UpsertLieferant(params db.LieferantenParams, id string) bool {
+
+	_, err := a.db.UpsertLieferant(params, id)
 
 	return err == nil
 
 }
 
 func (a *App) DeleteLieferant(id string) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.DeleteLieferant(id)
+
+	_, err := a.db.DeleteLieferant(id)
 	return err == nil
 }
 
 func (a *App) GetAnsprechpartner(id string) *db.Ansprechpartner {
-	database := db.New(a.config.DATABASE_URL)
-	res, err := database.GetAnsprechpartner(id)
+
+	res, err := a.db.GetAnsprechpartner(id)
 	if err != nil {
 		return nil
 	}
 	return res
 }
 
-func (a *App) UpsertAnsprechpartner(id *string, params db.AnsprechpartnerParams) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.UpsertAnsprechpartner(params, id)
+func (a *App) UpsertAnsprechpartner(id string, params db.AnsprechpartnerParams) bool {
+
+	_, err := a.db.UpsertAnsprechpartner(params, id)
 	return err == nil
 }
 
 func (a *App) DeleteAnsprechpartner(id string) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.DeleteAnsprechpartner(id)
+
+	_, err := a.db.DeleteAnsprechpartner(id)
 	return err == nil
 }

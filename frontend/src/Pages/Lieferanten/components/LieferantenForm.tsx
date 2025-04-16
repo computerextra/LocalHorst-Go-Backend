@@ -37,8 +37,8 @@ export default function LieferantenForm({
     localStorage.removeItem("lieferanten-lastsync");
     const params: db.LieferantenParams = {
       Firma,
-      Kundennummer,
-      Webseite: Website,
+      Kundennummer: Kundennummer ?? "",
+      Webseite: Website ?? "",
     };
     const res = await UpsertLieferant(params, lieferant?.Id ?? "");
     if (res) {

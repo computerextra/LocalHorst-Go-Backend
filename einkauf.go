@@ -11,28 +11,121 @@ import (
 	"strings"
 	"time"
 
+	"github.com/lucsky/cuid"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	gomail "gopkg.in/mail.v2"
 )
 
-func (a *App) GetEinkaufsListe() []db.Einkauf {
-	database := db.New(a.config.DATABASE_URL)
+func (a *App) GetEinkaufsListe() []db.EinkaufModel {
+	res, err := a.db.Einkauf.FindMany(
+		db.Einkauf.Or(
+			db.Einkauf.Abonniert.Equals(true),
+			db.Einkauf.And(
+				db.Einkauf.Abgeschickt.BeforeEquals(time.Now()),
+				db.Einkauf.Abgeschickt.After(
+					time.Date(
+						time.Now().Year(),
+						time.Now().Month(),
+						time.Now().Add(
+							time.Duration(-24)*time.Hour,
+						).Day(),
+						0,
+						0,
+						0,
+						0,
+						time.Local,
+					),
+				),
+			),
+		),
+	).With(
+		db.Einkauf.Mitarbeiter.Fetch(),
+	).Exec(a.ctx)
 
-	res, err := database.GetEinkaufsliste()
+	// res, err := a.db.GetEinkaufsliste()
 	if err != nil {
 		return nil
 	}
 	return res
 }
 
-func (a *App) UpdateEinkauf(values db.UpsertEinkaufParams, id string) bool {
-	if len(values.MitarbeiterId) == 0 {
-		return false
+type UpsertEinkaufParams struct {
+	Paypal        bool
+	Abonniert     bool
+	Geld          string
+	Pfand         string
+	Dinge         string
+	Bild1         string
+	Bild2         string
+	Bild3         string
+	MitarbeiterId string
+}
+
+func (a *App) UpdateEinkauf(values UpsertEinkaufParams, id *string) bool {
+
+	var Bild1 string
+	if len(values.Bild1) > 0 {
+
+		Bild1 = values.Bild1
+	}
+	var Bild2 string
+	if len(values.Bild2) > 0 {
+
+		Bild2 = values.Bild2
+	}
+	var Bild3 string
+	if len(values.Bild3) > 0 {
+
+		Bild3 = values.Bild3
+	}
+	var Bild1Date db.DateTime
+	if len(Bild1) > 0 {
+		Bild1Date = time.Now()
 	}
 
-	database := db.New(a.config.DATABASE_URL)
+	var Bild2Date db.DateTime
+	if len(Bild2) > 0 {
+		Bild2Date = time.Now()
+	}
 
-	_, err := database.UpsertEinkauf(values, id)
+	var Bild3Date db.DateTime
+	if len(Bild3) > 0 {
+		Bild3Date = time.Now()
+	}
+
+	_, err := a.db.Einkauf.UpsertOne(
+		db.Einkauf.MitarbeiterID.Equals(values.MitarbeiterId),
+	).Create(
+		db.Einkauf.ID.Set(cuid.New()),
+		db.Einkauf.Paypal.Set(values.Paypal),
+		db.Einkauf.Abonniert.Set(values.Abonniert),
+		db.Einkauf.Mitarbeiter.Link(db.Mitarbeiter.ID.Equals(values.MitarbeiterId)),
+		db.Einkauf.Dinge.Set(values.Dinge),
+		db.Einkauf.Geld.Set(values.Geld),
+		db.Einkauf.Pfand.Set(values.Pfand),
+		db.Einkauf.Bild1.SetIfPresent(&Bild1),
+		db.Einkauf.Bild2.SetIfPresent(&Bild2),
+		db.Einkauf.Bild3.SetIfPresent(&Bild3),
+		db.Einkauf.Bild1Date.SetIfPresent(&Bild1Date),
+		db.Einkauf.Bild2Date.SetIfPresent(&Bild2Date),
+		db.Einkauf.Bild3Date.SetIfPresent(&Bild3Date),
+		db.Einkauf.Abgeschickt.Set(time.Now()),
+	).Update(
+		db.Einkauf.Abgeschickt.Set(time.Now()),
+		db.Einkauf.Paypal.Set(values.Paypal),
+		db.Einkauf.Abonniert.Set(values.Abonniert),
+		db.Einkauf.Geld.Set(values.Geld),
+		db.Einkauf.Pfand.Set(values.Pfand),
+		db.Einkauf.Dinge.Set(values.Dinge),
+		db.Einkauf.Bild1.SetIfPresent(&Bild1),
+		db.Einkauf.Bild2.SetIfPresent(&Bild2),
+		db.Einkauf.Bild3.SetIfPresent(&Bild3),
+		db.Einkauf.Bild1Date.SetIfPresent(&Bild1Date),
+		db.Einkauf.Bild2Date.SetIfPresent(&Bild2Date),
+		db.Einkauf.Bild3Date.SetIfPresent(&Bild3Date),
+	).Exec(a.ctx)
+
+	// _, err := a.db.UpsertEinkauf(values, id)
 	return err == nil
 }
 
@@ -65,9 +158,11 @@ func (a *App) UploadImage(mitarbeiter string, imageNr string) string {
 	return fileName
 }
 
-func (a *App) GetEinkauf(id string) *db.Einkauf {
-	database := db.New(a.config.DATABASE_URL)
-	res, err := database.GetEinkauf(id)
+func (a *App) GetEinkauf(id string) *db.EinkaufModel {
+
+	res, err := a.db.Einkauf.FindUnique(db.Einkauf.ID.Equals(id)).Exec(a.ctx)
+
+	// res, err := a.db.GetEinkauf(id)
 	if err != nil {
 		return nil
 	}
@@ -75,14 +170,23 @@ func (a *App) GetEinkauf(id string) *db.Einkauf {
 }
 
 func (a *App) SkipEinkauf(id string) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.SkipEinkauf(id)
+
+	_, err := a.db.Einkauf.FindUnique(
+		db.Einkauf.ID.Equals(id),
+	).Update(
+		db.Einkauf.Abgeschickt.Set(time.Now().Add(time.Duration(24) * time.Hour)),
+	).Exec(a.ctx)
+	// _, err := a.db.SkipEinkauf(id)
 	return err == nil
 }
 
 func (a *App) DeleteEinkauf(id string) bool {
-	database := db.New(a.config.DATABASE_URL)
-	_, err := database.DeleteEinkauf(id)
+
+	_, err := a.db.Einkauf.FindUnique(
+		db.Einkauf.ID.Equals(id),
+	).Delete().Exec(a.ctx)
+
+	// _, err := a.db.DeleteEinkauf(id)
 	return err == nil
 }
 
@@ -115,8 +219,9 @@ type ImageResponse struct {
 }
 
 func (a *App) CheckImage(id string, Nr string) ImageResponse {
-	database := db.New(a.config.DATABASE_URL)
-	ma, err := database.GetEinkauf(id)
+	ma, err := a.db.Einkauf.FindUnique(db.Einkauf.ID.Equals(id)).Exec(a.ctx)
+
+	// ma, err := a.db.GetEinkauf(id)
 	if err != nil {
 		return ImageResponse{
 			Valid: false,
@@ -124,16 +229,22 @@ func (a *App) CheckImage(id string, Nr string) ImageResponse {
 	}
 	switch Nr {
 	case "1":
-		if ma.Bild1.Valid && ma.Bild1Date.Valid {
-			return checkImage(ma.Bild1Date.Time, filepath.Join(a.config.UPLOAD_FOLDER, ma.Bild1.String))
+		bild, bild_ok := ma.Bild1()
+		date, date_ok := ma.Bild1Date()
+		if bild_ok && date_ok {
+			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, bild))
 		}
 	case "2":
-		if ma.Bild2.Valid && ma.Bild2Date.Valid {
-			return checkImage(ma.Bild2Date.Time, filepath.Join(a.config.UPLOAD_FOLDER, ma.Bild2.String))
+		bild, bild_ok := ma.Bild2()
+		date, date_ok := ma.Bild2Date()
+		if bild_ok && date_ok {
+			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, bild))
 		}
 	case "3":
-		if ma.Bild3.Valid && ma.Bild3Date.Valid {
-			return checkImage(ma.Bild3Date.Time, filepath.Join(a.config.UPLOAD_FOLDER, ma.Bild3.String))
+		bild, bild_ok := ma.Bild3()
+		date, date_ok := ma.Bild3Date()
+		if bild_ok && date_ok {
+			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, bild))
 		}
 	}
 	return ImageResponse{

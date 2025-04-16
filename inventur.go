@@ -10,8 +10,8 @@ var (
 )
 
 func (a *App) GetInventurYears() []string {
-	database := db.New(a.config.DATABASE_URL)
-	res, err := database.GetInventurYears()
+
+	res, err := a.db.GetInventurYears()
 	if err != nil {
 		return nil
 	}
@@ -19,8 +19,8 @@ func (a *App) GetInventurYears() []string {
 }
 
 func (a *App) GetDataFromYear(year string) []db.Team {
-	database := db.New(a.config.DATABASE_URL)
-	res, err := database.GetDataFromYear(year)
+
+	res, err := a.db.GetDataFromYear(year)
 	if err != nil {
 		return nil
 	}
@@ -28,8 +28,8 @@ func (a *App) GetDataFromYear(year string) []db.Team {
 }
 
 func (a *App) GetEntriesFromTeam(team int) []db.Artikel {
-	database := db.New(a.config.DATABASE_URL)
-	res, err := database.GetEntriesFromTeam(int32(team))
+
+	res, err := a.db.GetEntriesFromTeam(int32(team))
 	if err != nil {
 		return nil
 	}

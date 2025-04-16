@@ -27,13 +27,8 @@ type Einkauf struct {
 }
 
 func (d Database) GetEinkaufsliste() ([]Einkauf, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE DATE(Abgeschickt) = curdate() OR Abonniert = 1 ORDER BY Abgeschickt DESC;")
+	stmt, err := d.conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE DATE(Abgeschickt) = curdate() OR Abonniert = 1 ORDER BY Abgeschickt DESC;")
 	if err != nil {
 		return nil, err
 	}
@@ -92,12 +87,6 @@ type UpsertEinkaufParams struct {
 }
 
 func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id string) (sql.Result, error) {
-	fmt.Println("Starting Upsert")
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
 	var Geld sql.NullString
 	if len(params.Geld) > 0 {
@@ -167,7 +156,7 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id string) (sql.Resu
 
 	if len(id) > 0 {
 		fmt.Println("UPDATE")
-		stmt, err := conn.Prepare("UPDATE Einkauf SET Paypal = ?, Abonniert = ?, Geld = ?, Pfand = ?, Dinge = ?, Abgeschickt = NOW(), Bild1 = ?, Bild2 = ?, Bild3 = ?, Bild1Date = ?, Bild2Date = ?, Bild3Date = ? WHERE id = ?;")
+		stmt, err := d.conn.Prepare("UPDATE Einkauf SET Paypal = ?, Abonniert = ?, Geld = ?, Pfand = ?, Dinge = ?, Abgeschickt = NOW(), Bild1 = ?, Bild2 = ?, Bild3 = ?, Bild1Date = ?, Bild2Date = ?, Bild3Date = ? WHERE id = ?;")
 		if err != nil {
 			return nil, err
 		}
@@ -192,7 +181,7 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id string) (sql.Resu
 		return res, err
 	} else {
 		fmt.Println("CREATE")
-		stmt, err := conn.Prepare("INSERT INTO Einkauf ( id, Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);")
+		stmt, err := d.conn.Prepare("INSERT INTO Einkauf ( id, Paypal, Abonniert, Geld, Pfand, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?);")
 		if err != nil {
 			return nil, err
 		}
@@ -217,13 +206,8 @@ func (d Database) UpsertEinkauf(params UpsertEinkaufParams, id string) (sql.Resu
 }
 
 func (d Database) GetEinkauf(id string) (*Einkauf, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE mitarbeiterid = ?;")
+	stmt, err := d.conn.Prepare("SELECT id, Paypal, Abonniert, Geld, Dinge, mitarbeiterId, Abgeschickt, Bild1, Bild2, Bild3, Bild1Date, Bild2Date, Bild3Date FROM Einkauf WHERE mitarbeiterid = ?;")
 	if err != nil {
 		return nil, err
 	}
@@ -256,13 +240,8 @@ func (d Database) GetEinkauf(id string) (*Einkauf, error) {
 }
 
 func (d Database) SkipEinkauf(id string) (sql.Result, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("UPDATE Einkauf SET Abgeschickt = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE mitarbeiterId = ?;")
+	stmt, err := d.conn.Prepare("UPDATE Einkauf SET Abgeschickt = DATE_ADD(NOW(), INTERVAL 1 DAY) WHERE mitarbeiterId = ?;")
 	if err != nil {
 		return nil, err
 	}
@@ -271,13 +250,8 @@ func (d Database) SkipEinkauf(id string) (sql.Result, error) {
 }
 
 func (d Database) DeleteEinkauf(id string) (sql.Result, error) {
-	conn, err := getConnection(d.connectionString)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
 
-	stmt, err := conn.Prepare("DELETE FROM Einkauf WHERE mitarbeiterId = ?;")
+	stmt, err := d.conn.Prepare("DELETE FROM Einkauf WHERE mitarbeiterId = ?;")
 	if err != nil {
 		return nil, err
 	}

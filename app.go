@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"golang-backend/db"
 	"os/user"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,6 +14,7 @@ import (
 type App struct {
 	ctx    context.Context
 	config *Config
+	db     *db.PrismaClient
 }
 
 // NewApp creates a new App application struct
@@ -36,7 +38,38 @@ func (a *App) startup(ctx context.Context) {
 		panic(err)
 	}
 
+	client := db.NewClient()
+	if err := client.Prisma.Connect(); err != nil {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          "error",
+			Title:         "Datenbank",
+			Message:       fmt.Sprintf("Datenbank Fehler: %s", err.Error()),
+			Buttons:       []string{"Ok"},
+			DefaultButton: "Ok",
+		})
+		panic(err)
+	}
+	// conn, err := db.GetConnection(config.DATABASE_URL)
+	// if err != nil {
+	// 	runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+	// 		Type:          "error",
+	// 		Title:         "Datenbank",
+	// 		Message:       fmt.Sprintf("Datenbank Fehler: %s", err.Error()),
+	// 		Buttons:       []string{"Ok"},
+	// 		DefaultButton: "Ok",
+	// 	})
+	// 	panic(err)
+	// }
+
+	a.db = client
+
 	a.config = config
+
+	defer func() {
+		if err := client.Prisma.Disconnect(); err != nil {
+			panic(err)
+		}
+	}()
 }
 
 func (a App) GetUsername() string {

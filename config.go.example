@@ -30,17 +30,11 @@ func getConfig() *Config {
 	// Database for Prisma
 	cfg.DATABASE_URL = ""
 
-	// Database for CMS Functions
-	cfg.CMS_DATABASE_URL = ""
-
 	// CE Archive Path
 	cfg.ARCHIVE_PATH = ""
 
 	// Folder to Upload images to
 	cfg.UPLOAD_FOLDER = ""
-
-	// Label Database
-	cfg.ACCESS_DB = ""
 
 	// Send Mails
 	cfg.MAIL_FROM = ""
@@ -65,17 +59,11 @@ func GetConfig() (*Config, error) {
 	if len(cfg.DATABASE_URL) == 0 {
 		return nil, fmt.Errorf("env error: DATABASE_URL not set")
 	}
-	if len(cfg.CMS_DATABASE_URL) == 0 {
-		return nil, fmt.Errorf("env error: CMS_DATABASE_URL not set")
-	}
 	if len(cfg.ARCHIVE_PATH) == 0 {
 		return nil, fmt.Errorf("env error: ARCHIVE_PATH not set")
 	}
 	if len(cfg.UPLOAD_FOLDER) == 0 {
 		return nil, fmt.Errorf("env error: UPLOAD_FOLDER not set")
-	}
-	if len(cfg.ACCESS_DB) == 0 {
-		return nil, fmt.Errorf("env error: ACCESS_DB not set")
 	}
 	if len(cfg.MAIL_FROM) == 0 {
 		return nil, fmt.Errorf("env error: MAIL_FROM not set")
