@@ -21,3 +21,6 @@ To build a redistributable, production mode package, use `wails build`.
 ## Prüfen
 
 - [ ] Inventur geht nicht korrekt, vllvielleicht mit ein wenig outputs schauen, was da passoert..-.
+- [ ] Archive geht nicht korrekt, findet nicht alles. Sucht scheinbar falsch. Anpassen!
+- [ ] Alles auf ENT umbauen auf lokale datenbank
+- [ ] Extra Suche nur für Archive einbauen über die mysql db
