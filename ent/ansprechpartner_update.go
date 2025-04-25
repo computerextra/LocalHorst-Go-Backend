@@ -56,6 +56,12 @@ func (au *AnsprechpartnerUpdate) SetNillableTelefon(s *string) *AnsprechpartnerU
 	return au
 }
 
+// ClearTelefon clears the value of the "Telefon" field.
+func (au *AnsprechpartnerUpdate) ClearTelefon() *AnsprechpartnerUpdate {
+	au.mutation.ClearTelefon()
+	return au
+}
+
 // SetMobil sets the "Mobil" field.
 func (au *AnsprechpartnerUpdate) SetMobil(s string) *AnsprechpartnerUpdate {
 	au.mutation.SetMobil(s)
@@ -70,6 +76,12 @@ func (au *AnsprechpartnerUpdate) SetNillableMobil(s *string) *AnsprechpartnerUpd
 	return au
 }
 
+// ClearMobil clears the value of the "Mobil" field.
+func (au *AnsprechpartnerUpdate) ClearMobil() *AnsprechpartnerUpdate {
+	au.mutation.ClearMobil()
+	return au
+}
+
 // SetMail sets the "Mail" field.
 func (au *AnsprechpartnerUpdate) SetMail(s string) *AnsprechpartnerUpdate {
 	au.mutation.SetMail(s)
@@ -81,6 +93,12 @@ func (au *AnsprechpartnerUpdate) SetNillableMail(s *string) *AnsprechpartnerUpda
 	if s != nil {
 		au.SetMail(*s)
 	}
+	return au
+}
+
+// ClearMail clears the value of the "Mail" field.
+func (au *AnsprechpartnerUpdate) ClearMail() *AnsprechpartnerUpdate {
+	au.mutation.ClearMail()
 	return au
 }
 
@@ -169,11 +187,20 @@ func (au *AnsprechpartnerUpdate) sqlSave(ctx context.Context) (n int, err error)
 	if value, ok := au.mutation.Telefon(); ok {
 		_spec.SetField(ansprechpartner.FieldTelefon, field.TypeString, value)
 	}
+	if au.mutation.TelefonCleared() {
+		_spec.ClearField(ansprechpartner.FieldTelefon, field.TypeString)
+	}
 	if value, ok := au.mutation.Mobil(); ok {
 		_spec.SetField(ansprechpartner.FieldMobil, field.TypeString, value)
 	}
+	if au.mutation.MobilCleared() {
+		_spec.ClearField(ansprechpartner.FieldMobil, field.TypeString)
+	}
 	if value, ok := au.mutation.Mail(); ok {
 		_spec.SetField(ansprechpartner.FieldMail, field.TypeString, value)
+	}
+	if au.mutation.MailCleared() {
+		_spec.ClearField(ansprechpartner.FieldMail, field.TypeString)
 	}
 	if au.mutation.LieferantCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -252,6 +279,12 @@ func (auo *AnsprechpartnerUpdateOne) SetNillableTelefon(s *string) *Ansprechpart
 	return auo
 }
 
+// ClearTelefon clears the value of the "Telefon" field.
+func (auo *AnsprechpartnerUpdateOne) ClearTelefon() *AnsprechpartnerUpdateOne {
+	auo.mutation.ClearTelefon()
+	return auo
+}
+
 // SetMobil sets the "Mobil" field.
 func (auo *AnsprechpartnerUpdateOne) SetMobil(s string) *AnsprechpartnerUpdateOne {
 	auo.mutation.SetMobil(s)
@@ -266,6 +299,12 @@ func (auo *AnsprechpartnerUpdateOne) SetNillableMobil(s *string) *Ansprechpartne
 	return auo
 }
 
+// ClearMobil clears the value of the "Mobil" field.
+func (auo *AnsprechpartnerUpdateOne) ClearMobil() *AnsprechpartnerUpdateOne {
+	auo.mutation.ClearMobil()
+	return auo
+}
+
 // SetMail sets the "Mail" field.
 func (auo *AnsprechpartnerUpdateOne) SetMail(s string) *AnsprechpartnerUpdateOne {
 	auo.mutation.SetMail(s)
@@ -277,6 +316,12 @@ func (auo *AnsprechpartnerUpdateOne) SetNillableMail(s *string) *Ansprechpartner
 	if s != nil {
 		auo.SetMail(*s)
 	}
+	return auo
+}
+
+// ClearMail clears the value of the "Mail" field.
+func (auo *AnsprechpartnerUpdateOne) ClearMail() *AnsprechpartnerUpdateOne {
+	auo.mutation.ClearMail()
 	return auo
 }
 
@@ -395,11 +440,20 @@ func (auo *AnsprechpartnerUpdateOne) sqlSave(ctx context.Context) (_node *Anspre
 	if value, ok := auo.mutation.Telefon(); ok {
 		_spec.SetField(ansprechpartner.FieldTelefon, field.TypeString, value)
 	}
+	if auo.mutation.TelefonCleared() {
+		_spec.ClearField(ansprechpartner.FieldTelefon, field.TypeString)
+	}
 	if value, ok := auo.mutation.Mobil(); ok {
 		_spec.SetField(ansprechpartner.FieldMobil, field.TypeString, value)
 	}
+	if auo.mutation.MobilCleared() {
+		_spec.ClearField(ansprechpartner.FieldMobil, field.TypeString)
+	}
 	if value, ok := auo.mutation.Mail(); ok {
 		_spec.SetField(ansprechpartner.FieldMail, field.TypeString, value)
+	}
+	if auo.mutation.MailCleared() {
+		_spec.ClearField(ansprechpartner.FieldMail, field.TypeString)
 	}
 	if auo.mutation.LieferantCleared() {
 		edge := &sqlgraph.EdgeSpec{

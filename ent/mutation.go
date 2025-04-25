@@ -220,9 +220,22 @@ func (m *AnsprechpartnerMutation) OldTelefon(ctx context.Context) (v *string, er
 	return oldValue.Telefon, nil
 }
 
+// ClearTelefon clears the value of the "Telefon" field.
+func (m *AnsprechpartnerMutation) ClearTelefon() {
+	m._Telefon = nil
+	m.clearedFields[ansprechpartner.FieldTelefon] = struct{}{}
+}
+
+// TelefonCleared returns if the "Telefon" field was cleared in this mutation.
+func (m *AnsprechpartnerMutation) TelefonCleared() bool {
+	_, ok := m.clearedFields[ansprechpartner.FieldTelefon]
+	return ok
+}
+
 // ResetTelefon resets all changes to the "Telefon" field.
 func (m *AnsprechpartnerMutation) ResetTelefon() {
 	m._Telefon = nil
+	delete(m.clearedFields, ansprechpartner.FieldTelefon)
 }
 
 // SetMobil sets the "Mobil" field.
@@ -256,9 +269,22 @@ func (m *AnsprechpartnerMutation) OldMobil(ctx context.Context) (v *string, err 
 	return oldValue.Mobil, nil
 }
 
+// ClearMobil clears the value of the "Mobil" field.
+func (m *AnsprechpartnerMutation) ClearMobil() {
+	m._Mobil = nil
+	m.clearedFields[ansprechpartner.FieldMobil] = struct{}{}
+}
+
+// MobilCleared returns if the "Mobil" field was cleared in this mutation.
+func (m *AnsprechpartnerMutation) MobilCleared() bool {
+	_, ok := m.clearedFields[ansprechpartner.FieldMobil]
+	return ok
+}
+
 // ResetMobil resets all changes to the "Mobil" field.
 func (m *AnsprechpartnerMutation) ResetMobil() {
 	m._Mobil = nil
+	delete(m.clearedFields, ansprechpartner.FieldMobil)
 }
 
 // SetMail sets the "Mail" field.
@@ -292,9 +318,22 @@ func (m *AnsprechpartnerMutation) OldMail(ctx context.Context) (v *string, err e
 	return oldValue.Mail, nil
 }
 
+// ClearMail clears the value of the "Mail" field.
+func (m *AnsprechpartnerMutation) ClearMail() {
+	m._Mail = nil
+	m.clearedFields[ansprechpartner.FieldMail] = struct{}{}
+}
+
+// MailCleared returns if the "Mail" field was cleared in this mutation.
+func (m *AnsprechpartnerMutation) MailCleared() bool {
+	_, ok := m.clearedFields[ansprechpartner.FieldMail]
+	return ok
+}
+
 // ResetMail resets all changes to the "Mail" field.
 func (m *AnsprechpartnerMutation) ResetMail() {
 	m._Mail = nil
+	delete(m.clearedFields, ansprechpartner.FieldMail)
 }
 
 // SetLieferantID sets the "Lieferant" edge to the Lieferant entity by id.
@@ -482,7 +521,17 @@ func (m *AnsprechpartnerMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *AnsprechpartnerMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(ansprechpartner.FieldTelefon) {
+		fields = append(fields, ansprechpartner.FieldTelefon)
+	}
+	if m.FieldCleared(ansprechpartner.FieldMobil) {
+		fields = append(fields, ansprechpartner.FieldMobil)
+	}
+	if m.FieldCleared(ansprechpartner.FieldMail) {
+		fields = append(fields, ansprechpartner.FieldMail)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -495,6 +544,17 @@ func (m *AnsprechpartnerMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *AnsprechpartnerMutation) ClearField(name string) error {
+	switch name {
+	case ansprechpartner.FieldTelefon:
+		m.ClearTelefon()
+		return nil
+	case ansprechpartner.FieldMobil:
+		m.ClearMobil()
+		return nil
+	case ansprechpartner.FieldMail:
+		m.ClearMail()
+		return nil
+	}
 	return fmt.Errorf("unknown Ansprechpartner nullable field %s", name)
 }
 
@@ -1767,9 +1827,22 @@ func (m *LieferantMutation) OldKundennummer(ctx context.Context) (v *string, err
 	return oldValue.Kundennummer, nil
 }
 
+// ClearKundennummer clears the value of the "Kundennummer" field.
+func (m *LieferantMutation) ClearKundennummer() {
+	m._Kundennummer = nil
+	m.clearedFields[lieferant.FieldKundennummer] = struct{}{}
+}
+
+// KundennummerCleared returns if the "Kundennummer" field was cleared in this mutation.
+func (m *LieferantMutation) KundennummerCleared() bool {
+	_, ok := m.clearedFields[lieferant.FieldKundennummer]
+	return ok
+}
+
 // ResetKundennummer resets all changes to the "Kundennummer" field.
 func (m *LieferantMutation) ResetKundennummer() {
 	m._Kundennummer = nil
+	delete(m.clearedFields, lieferant.FieldKundennummer)
 }
 
 // SetWebseite sets the "Webseite" field.
@@ -1803,9 +1876,22 @@ func (m *LieferantMutation) OldWebseite(ctx context.Context) (v *string, err err
 	return oldValue.Webseite, nil
 }
 
+// ClearWebseite clears the value of the "Webseite" field.
+func (m *LieferantMutation) ClearWebseite() {
+	m._Webseite = nil
+	m.clearedFields[lieferant.FieldWebseite] = struct{}{}
+}
+
+// WebseiteCleared returns if the "Webseite" field was cleared in this mutation.
+func (m *LieferantMutation) WebseiteCleared() bool {
+	_, ok := m.clearedFields[lieferant.FieldWebseite]
+	return ok
+}
+
 // ResetWebseite resets all changes to the "Webseite" field.
 func (m *LieferantMutation) ResetWebseite() {
 	m._Webseite = nil
+	delete(m.clearedFields, lieferant.FieldWebseite)
 }
 
 // AddAnsprechpartnerIDs adds the "Ansprechpartner" edge to the Ansprechpartner entity by ids.
@@ -1994,7 +2080,14 @@ func (m *LieferantMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *LieferantMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(lieferant.FieldKundennummer) {
+		fields = append(fields, lieferant.FieldKundennummer)
+	}
+	if m.FieldCleared(lieferant.FieldWebseite) {
+		fields = append(fields, lieferant.FieldWebseite)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -2007,6 +2100,14 @@ func (m *LieferantMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *LieferantMutation) ClearField(name string) error {
+	switch name {
+	case lieferant.FieldKundennummer:
+		m.ClearKundennummer()
+		return nil
+	case lieferant.FieldWebseite:
+		m.ClearWebseite()
+		return nil
+	}
 	return fmt.Errorf("unknown Lieferant nullable field %s", name)
 }
 
@@ -2114,39 +2215,38 @@ func (m *LieferantMutation) ResetEdge(name string) error {
 // MitarbeiterMutation represents an operation that mutates the Mitarbeiter nodes in the graph.
 type MitarbeiterMutation struct {
 	config
-	op                    Op
-	typ                   string
-	id                    *int
-	_Name                 *string
-	_Short                *string
-	_Gruppenwahl          *string
-	_InternTelefon1       *string
-	_InternTelefon2       *string
-	_FestnetzPrivat       *string
-	_FestnetzAlternativ   *string
-	_HomeOffice           *string
-	_MobilBusiness        *string
-	_MobilPrivat          *string
-	_Email                *string
-	_Azubi                *bool
-	_Geburtstag           *time.Time
-	_Paypal               *bool
-	_Abonniert            *bool
-	_Geld                 *string
-	_Pfand                *string
-	_Dinge                *string
-	_Abgeschickt          *time.Time
-	_Bild1                *string
-	_Bild2                *string
-	_Bild3                *string
-	_Bild1Date            *time.Time
-	_Bild2Date            *time.Time
-	_Bild3Date            *time.Time
-	_AbgescBild3Datehickt *time.Time
-	clearedFields         map[string]struct{}
-	done                  bool
-	oldValue              func(context.Context) (*Mitarbeiter, error)
-	predicates            []predicate.Mitarbeiter
+	op                  Op
+	typ                 string
+	id                  *int
+	_Name               *string
+	_Short              *string
+	_Gruppenwahl        *string
+	_InternTelefon1     *string
+	_InternTelefon2     *string
+	_FestnetzPrivat     *string
+	_FestnetzAlternativ *string
+	_HomeOffice         *string
+	_MobilBusiness      *string
+	_MobilPrivat        *string
+	_Email              *string
+	_Azubi              *bool
+	_Geburtstag         *time.Time
+	_Paypal             *bool
+	_Abonniert          *bool
+	_Geld               *string
+	_Pfand              *string
+	_Dinge              *string
+	_Abgeschickt        *time.Time
+	_Bild1              *string
+	_Bild2              *string
+	_Bild3              *string
+	_Bild1Date          *time.Time
+	_Bild2Date          *time.Time
+	_Bild3Date          *time.Time
+	clearedFields       map[string]struct{}
+	done                bool
+	oldValue            func(context.Context) (*Mitarbeiter, error)
+	predicates          []predicate.Mitarbeiter
 }
 
 var _ ent.Mutation = (*MitarbeiterMutation)(nil)
@@ -2314,9 +2414,22 @@ func (m *MitarbeiterMutation) OldShort(ctx context.Context) (v *string, err erro
 	return oldValue.Short, nil
 }
 
+// ClearShort clears the value of the "Short" field.
+func (m *MitarbeiterMutation) ClearShort() {
+	m._Short = nil
+	m.clearedFields[mitarbeiter.FieldShort] = struct{}{}
+}
+
+// ShortCleared returns if the "Short" field was cleared in this mutation.
+func (m *MitarbeiterMutation) ShortCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldShort]
+	return ok
+}
+
 // ResetShort resets all changes to the "Short" field.
 func (m *MitarbeiterMutation) ResetShort() {
 	m._Short = nil
+	delete(m.clearedFields, mitarbeiter.FieldShort)
 }
 
 // SetGruppenwahl sets the "Gruppenwahl" field.
@@ -2350,9 +2463,22 @@ func (m *MitarbeiterMutation) OldGruppenwahl(ctx context.Context) (v *string, er
 	return oldValue.Gruppenwahl, nil
 }
 
+// ClearGruppenwahl clears the value of the "Gruppenwahl" field.
+func (m *MitarbeiterMutation) ClearGruppenwahl() {
+	m._Gruppenwahl = nil
+	m.clearedFields[mitarbeiter.FieldGruppenwahl] = struct{}{}
+}
+
+// GruppenwahlCleared returns if the "Gruppenwahl" field was cleared in this mutation.
+func (m *MitarbeiterMutation) GruppenwahlCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldGruppenwahl]
+	return ok
+}
+
 // ResetGruppenwahl resets all changes to the "Gruppenwahl" field.
 func (m *MitarbeiterMutation) ResetGruppenwahl() {
 	m._Gruppenwahl = nil
+	delete(m.clearedFields, mitarbeiter.FieldGruppenwahl)
 }
 
 // SetInternTelefon1 sets the "InternTelefon1" field.
@@ -2386,9 +2512,22 @@ func (m *MitarbeiterMutation) OldInternTelefon1(ctx context.Context) (v *string,
 	return oldValue.InternTelefon1, nil
 }
 
+// ClearInternTelefon1 clears the value of the "InternTelefon1" field.
+func (m *MitarbeiterMutation) ClearInternTelefon1() {
+	m._InternTelefon1 = nil
+	m.clearedFields[mitarbeiter.FieldInternTelefon1] = struct{}{}
+}
+
+// InternTelefon1Cleared returns if the "InternTelefon1" field was cleared in this mutation.
+func (m *MitarbeiterMutation) InternTelefon1Cleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldInternTelefon1]
+	return ok
+}
+
 // ResetInternTelefon1 resets all changes to the "InternTelefon1" field.
 func (m *MitarbeiterMutation) ResetInternTelefon1() {
 	m._InternTelefon1 = nil
+	delete(m.clearedFields, mitarbeiter.FieldInternTelefon1)
 }
 
 // SetInternTelefon2 sets the "InternTelefon2" field.
@@ -2422,9 +2561,22 @@ func (m *MitarbeiterMutation) OldInternTelefon2(ctx context.Context) (v *string,
 	return oldValue.InternTelefon2, nil
 }
 
+// ClearInternTelefon2 clears the value of the "InternTelefon2" field.
+func (m *MitarbeiterMutation) ClearInternTelefon2() {
+	m._InternTelefon2 = nil
+	m.clearedFields[mitarbeiter.FieldInternTelefon2] = struct{}{}
+}
+
+// InternTelefon2Cleared returns if the "InternTelefon2" field was cleared in this mutation.
+func (m *MitarbeiterMutation) InternTelefon2Cleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldInternTelefon2]
+	return ok
+}
+
 // ResetInternTelefon2 resets all changes to the "InternTelefon2" field.
 func (m *MitarbeiterMutation) ResetInternTelefon2() {
 	m._InternTelefon2 = nil
+	delete(m.clearedFields, mitarbeiter.FieldInternTelefon2)
 }
 
 // SetFestnetzPrivat sets the "FestnetzPrivat" field.
@@ -2458,9 +2610,22 @@ func (m *MitarbeiterMutation) OldFestnetzPrivat(ctx context.Context) (v *string,
 	return oldValue.FestnetzPrivat, nil
 }
 
+// ClearFestnetzPrivat clears the value of the "FestnetzPrivat" field.
+func (m *MitarbeiterMutation) ClearFestnetzPrivat() {
+	m._FestnetzPrivat = nil
+	m.clearedFields[mitarbeiter.FieldFestnetzPrivat] = struct{}{}
+}
+
+// FestnetzPrivatCleared returns if the "FestnetzPrivat" field was cleared in this mutation.
+func (m *MitarbeiterMutation) FestnetzPrivatCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldFestnetzPrivat]
+	return ok
+}
+
 // ResetFestnetzPrivat resets all changes to the "FestnetzPrivat" field.
 func (m *MitarbeiterMutation) ResetFestnetzPrivat() {
 	m._FestnetzPrivat = nil
+	delete(m.clearedFields, mitarbeiter.FieldFestnetzPrivat)
 }
 
 // SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
@@ -2494,9 +2659,22 @@ func (m *MitarbeiterMutation) OldFestnetzAlternativ(ctx context.Context) (v *str
 	return oldValue.FestnetzAlternativ, nil
 }
 
+// ClearFestnetzAlternativ clears the value of the "FestnetzAlternativ" field.
+func (m *MitarbeiterMutation) ClearFestnetzAlternativ() {
+	m._FestnetzAlternativ = nil
+	m.clearedFields[mitarbeiter.FieldFestnetzAlternativ] = struct{}{}
+}
+
+// FestnetzAlternativCleared returns if the "FestnetzAlternativ" field was cleared in this mutation.
+func (m *MitarbeiterMutation) FestnetzAlternativCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldFestnetzAlternativ]
+	return ok
+}
+
 // ResetFestnetzAlternativ resets all changes to the "FestnetzAlternativ" field.
 func (m *MitarbeiterMutation) ResetFestnetzAlternativ() {
 	m._FestnetzAlternativ = nil
+	delete(m.clearedFields, mitarbeiter.FieldFestnetzAlternativ)
 }
 
 // SetHomeOffice sets the "HomeOffice" field.
@@ -2530,9 +2708,22 @@ func (m *MitarbeiterMutation) OldHomeOffice(ctx context.Context) (v *string, err
 	return oldValue.HomeOffice, nil
 }
 
+// ClearHomeOffice clears the value of the "HomeOffice" field.
+func (m *MitarbeiterMutation) ClearHomeOffice() {
+	m._HomeOffice = nil
+	m.clearedFields[mitarbeiter.FieldHomeOffice] = struct{}{}
+}
+
+// HomeOfficeCleared returns if the "HomeOffice" field was cleared in this mutation.
+func (m *MitarbeiterMutation) HomeOfficeCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldHomeOffice]
+	return ok
+}
+
 // ResetHomeOffice resets all changes to the "HomeOffice" field.
 func (m *MitarbeiterMutation) ResetHomeOffice() {
 	m._HomeOffice = nil
+	delete(m.clearedFields, mitarbeiter.FieldHomeOffice)
 }
 
 // SetMobilBusiness sets the "MobilBusiness" field.
@@ -2566,9 +2757,22 @@ func (m *MitarbeiterMutation) OldMobilBusiness(ctx context.Context) (v *string, 
 	return oldValue.MobilBusiness, nil
 }
 
+// ClearMobilBusiness clears the value of the "MobilBusiness" field.
+func (m *MitarbeiterMutation) ClearMobilBusiness() {
+	m._MobilBusiness = nil
+	m.clearedFields[mitarbeiter.FieldMobilBusiness] = struct{}{}
+}
+
+// MobilBusinessCleared returns if the "MobilBusiness" field was cleared in this mutation.
+func (m *MitarbeiterMutation) MobilBusinessCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldMobilBusiness]
+	return ok
+}
+
 // ResetMobilBusiness resets all changes to the "MobilBusiness" field.
 func (m *MitarbeiterMutation) ResetMobilBusiness() {
 	m._MobilBusiness = nil
+	delete(m.clearedFields, mitarbeiter.FieldMobilBusiness)
 }
 
 // SetMobilPrivat sets the "MobilPrivat" field.
@@ -2602,9 +2806,22 @@ func (m *MitarbeiterMutation) OldMobilPrivat(ctx context.Context) (v *string, er
 	return oldValue.MobilPrivat, nil
 }
 
+// ClearMobilPrivat clears the value of the "MobilPrivat" field.
+func (m *MitarbeiterMutation) ClearMobilPrivat() {
+	m._MobilPrivat = nil
+	m.clearedFields[mitarbeiter.FieldMobilPrivat] = struct{}{}
+}
+
+// MobilPrivatCleared returns if the "MobilPrivat" field was cleared in this mutation.
+func (m *MitarbeiterMutation) MobilPrivatCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldMobilPrivat]
+	return ok
+}
+
 // ResetMobilPrivat resets all changes to the "MobilPrivat" field.
 func (m *MitarbeiterMutation) ResetMobilPrivat() {
 	m._MobilPrivat = nil
+	delete(m.clearedFields, mitarbeiter.FieldMobilPrivat)
 }
 
 // SetEmail sets the "Email" field.
@@ -2638,9 +2855,22 @@ func (m *MitarbeiterMutation) OldEmail(ctx context.Context) (v *string, err erro
 	return oldValue.Email, nil
 }
 
+// ClearEmail clears the value of the "Email" field.
+func (m *MitarbeiterMutation) ClearEmail() {
+	m._Email = nil
+	m.clearedFields[mitarbeiter.FieldEmail] = struct{}{}
+}
+
+// EmailCleared returns if the "Email" field was cleared in this mutation.
+func (m *MitarbeiterMutation) EmailCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldEmail]
+	return ok
+}
+
 // ResetEmail resets all changes to the "Email" field.
 func (m *MitarbeiterMutation) ResetEmail() {
 	m._Email = nil
+	delete(m.clearedFields, mitarbeiter.FieldEmail)
 }
 
 // SetAzubi sets the "Azubi" field.
@@ -2710,9 +2940,22 @@ func (m *MitarbeiterMutation) OldGeburtstag(ctx context.Context) (v *time.Time, 
 	return oldValue.Geburtstag, nil
 }
 
+// ClearGeburtstag clears the value of the "Geburtstag" field.
+func (m *MitarbeiterMutation) ClearGeburtstag() {
+	m._Geburtstag = nil
+	m.clearedFields[mitarbeiter.FieldGeburtstag] = struct{}{}
+}
+
+// GeburtstagCleared returns if the "Geburtstag" field was cleared in this mutation.
+func (m *MitarbeiterMutation) GeburtstagCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldGeburtstag]
+	return ok
+}
+
 // ResetGeburtstag resets all changes to the "Geburtstag" field.
 func (m *MitarbeiterMutation) ResetGeburtstag() {
 	m._Geburtstag = nil
+	delete(m.clearedFields, mitarbeiter.FieldGeburtstag)
 }
 
 // SetPaypal sets the "Paypal" field.
@@ -2818,9 +3061,22 @@ func (m *MitarbeiterMutation) OldGeld(ctx context.Context) (v *string, err error
 	return oldValue.Geld, nil
 }
 
+// ClearGeld clears the value of the "Geld" field.
+func (m *MitarbeiterMutation) ClearGeld() {
+	m._Geld = nil
+	m.clearedFields[mitarbeiter.FieldGeld] = struct{}{}
+}
+
+// GeldCleared returns if the "Geld" field was cleared in this mutation.
+func (m *MitarbeiterMutation) GeldCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldGeld]
+	return ok
+}
+
 // ResetGeld resets all changes to the "Geld" field.
 func (m *MitarbeiterMutation) ResetGeld() {
 	m._Geld = nil
+	delete(m.clearedFields, mitarbeiter.FieldGeld)
 }
 
 // SetPfand sets the "Pfand" field.
@@ -2854,9 +3110,22 @@ func (m *MitarbeiterMutation) OldPfand(ctx context.Context) (v *string, err erro
 	return oldValue.Pfand, nil
 }
 
+// ClearPfand clears the value of the "Pfand" field.
+func (m *MitarbeiterMutation) ClearPfand() {
+	m._Pfand = nil
+	m.clearedFields[mitarbeiter.FieldPfand] = struct{}{}
+}
+
+// PfandCleared returns if the "Pfand" field was cleared in this mutation.
+func (m *MitarbeiterMutation) PfandCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldPfand]
+	return ok
+}
+
 // ResetPfand resets all changes to the "Pfand" field.
 func (m *MitarbeiterMutation) ResetPfand() {
 	m._Pfand = nil
+	delete(m.clearedFields, mitarbeiter.FieldPfand)
 }
 
 // SetDinge sets the "Dinge" field.
@@ -2890,9 +3159,22 @@ func (m *MitarbeiterMutation) OldDinge(ctx context.Context) (v *string, err erro
 	return oldValue.Dinge, nil
 }
 
+// ClearDinge clears the value of the "Dinge" field.
+func (m *MitarbeiterMutation) ClearDinge() {
+	m._Dinge = nil
+	m.clearedFields[mitarbeiter.FieldDinge] = struct{}{}
+}
+
+// DingeCleared returns if the "Dinge" field was cleared in this mutation.
+func (m *MitarbeiterMutation) DingeCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldDinge]
+	return ok
+}
+
 // ResetDinge resets all changes to the "Dinge" field.
 func (m *MitarbeiterMutation) ResetDinge() {
 	m._Dinge = nil
+	delete(m.clearedFields, mitarbeiter.FieldDinge)
 }
 
 // SetAbgeschickt sets the "Abgeschickt" field.
@@ -2926,9 +3208,22 @@ func (m *MitarbeiterMutation) OldAbgeschickt(ctx context.Context) (v *time.Time,
 	return oldValue.Abgeschickt, nil
 }
 
+// ClearAbgeschickt clears the value of the "Abgeschickt" field.
+func (m *MitarbeiterMutation) ClearAbgeschickt() {
+	m._Abgeschickt = nil
+	m.clearedFields[mitarbeiter.FieldAbgeschickt] = struct{}{}
+}
+
+// AbgeschicktCleared returns if the "Abgeschickt" field was cleared in this mutation.
+func (m *MitarbeiterMutation) AbgeschicktCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldAbgeschickt]
+	return ok
+}
+
 // ResetAbgeschickt resets all changes to the "Abgeschickt" field.
 func (m *MitarbeiterMutation) ResetAbgeschickt() {
 	m._Abgeschickt = nil
+	delete(m.clearedFields, mitarbeiter.FieldAbgeschickt)
 }
 
 // SetBild1 sets the "Bild1" field.
@@ -2962,9 +3257,22 @@ func (m *MitarbeiterMutation) OldBild1(ctx context.Context) (v *string, err erro
 	return oldValue.Bild1, nil
 }
 
+// ClearBild1 clears the value of the "Bild1" field.
+func (m *MitarbeiterMutation) ClearBild1() {
+	m._Bild1 = nil
+	m.clearedFields[mitarbeiter.FieldBild1] = struct{}{}
+}
+
+// Bild1Cleared returns if the "Bild1" field was cleared in this mutation.
+func (m *MitarbeiterMutation) Bild1Cleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldBild1]
+	return ok
+}
+
 // ResetBild1 resets all changes to the "Bild1" field.
 func (m *MitarbeiterMutation) ResetBild1() {
 	m._Bild1 = nil
+	delete(m.clearedFields, mitarbeiter.FieldBild1)
 }
 
 // SetBild2 sets the "Bild2" field.
@@ -2998,9 +3306,22 @@ func (m *MitarbeiterMutation) OldBild2(ctx context.Context) (v *string, err erro
 	return oldValue.Bild2, nil
 }
 
+// ClearBild2 clears the value of the "Bild2" field.
+func (m *MitarbeiterMutation) ClearBild2() {
+	m._Bild2 = nil
+	m.clearedFields[mitarbeiter.FieldBild2] = struct{}{}
+}
+
+// Bild2Cleared returns if the "Bild2" field was cleared in this mutation.
+func (m *MitarbeiterMutation) Bild2Cleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldBild2]
+	return ok
+}
+
 // ResetBild2 resets all changes to the "Bild2" field.
 func (m *MitarbeiterMutation) ResetBild2() {
 	m._Bild2 = nil
+	delete(m.clearedFields, mitarbeiter.FieldBild2)
 }
 
 // SetBild3 sets the "Bild3" field.
@@ -3034,9 +3355,22 @@ func (m *MitarbeiterMutation) OldBild3(ctx context.Context) (v *string, err erro
 	return oldValue.Bild3, nil
 }
 
+// ClearBild3 clears the value of the "Bild3" field.
+func (m *MitarbeiterMutation) ClearBild3() {
+	m._Bild3 = nil
+	m.clearedFields[mitarbeiter.FieldBild3] = struct{}{}
+}
+
+// Bild3Cleared returns if the "Bild3" field was cleared in this mutation.
+func (m *MitarbeiterMutation) Bild3Cleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldBild3]
+	return ok
+}
+
 // ResetBild3 resets all changes to the "Bild3" field.
 func (m *MitarbeiterMutation) ResetBild3() {
 	m._Bild3 = nil
+	delete(m.clearedFields, mitarbeiter.FieldBild3)
 }
 
 // SetBild1Date sets the "Bild1Date" field.
@@ -3070,9 +3404,22 @@ func (m *MitarbeiterMutation) OldBild1Date(ctx context.Context) (v *time.Time, e
 	return oldValue.Bild1Date, nil
 }
 
+// ClearBild1Date clears the value of the "Bild1Date" field.
+func (m *MitarbeiterMutation) ClearBild1Date() {
+	m._Bild1Date = nil
+	m.clearedFields[mitarbeiter.FieldBild1Date] = struct{}{}
+}
+
+// Bild1DateCleared returns if the "Bild1Date" field was cleared in this mutation.
+func (m *MitarbeiterMutation) Bild1DateCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldBild1Date]
+	return ok
+}
+
 // ResetBild1Date resets all changes to the "Bild1Date" field.
 func (m *MitarbeiterMutation) ResetBild1Date() {
 	m._Bild1Date = nil
+	delete(m.clearedFields, mitarbeiter.FieldBild1Date)
 }
 
 // SetBild2Date sets the "Bild2Date" field.
@@ -3106,9 +3453,22 @@ func (m *MitarbeiterMutation) OldBild2Date(ctx context.Context) (v *time.Time, e
 	return oldValue.Bild2Date, nil
 }
 
+// ClearBild2Date clears the value of the "Bild2Date" field.
+func (m *MitarbeiterMutation) ClearBild2Date() {
+	m._Bild2Date = nil
+	m.clearedFields[mitarbeiter.FieldBild2Date] = struct{}{}
+}
+
+// Bild2DateCleared returns if the "Bild2Date" field was cleared in this mutation.
+func (m *MitarbeiterMutation) Bild2DateCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldBild2Date]
+	return ok
+}
+
 // ResetBild2Date resets all changes to the "Bild2Date" field.
 func (m *MitarbeiterMutation) ResetBild2Date() {
 	m._Bild2Date = nil
+	delete(m.clearedFields, mitarbeiter.FieldBild2Date)
 }
 
 // SetBild3Date sets the "Bild3Date" field.
@@ -3142,45 +3502,22 @@ func (m *MitarbeiterMutation) OldBild3Date(ctx context.Context) (v *time.Time, e
 	return oldValue.Bild3Date, nil
 }
 
+// ClearBild3Date clears the value of the "Bild3Date" field.
+func (m *MitarbeiterMutation) ClearBild3Date() {
+	m._Bild3Date = nil
+	m.clearedFields[mitarbeiter.FieldBild3Date] = struct{}{}
+}
+
+// Bild3DateCleared returns if the "Bild3Date" field was cleared in this mutation.
+func (m *MitarbeiterMutation) Bild3DateCleared() bool {
+	_, ok := m.clearedFields[mitarbeiter.FieldBild3Date]
+	return ok
+}
+
 // ResetBild3Date resets all changes to the "Bild3Date" field.
 func (m *MitarbeiterMutation) ResetBild3Date() {
 	m._Bild3Date = nil
-}
-
-// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
-func (m *MitarbeiterMutation) SetAbgescBild3Datehickt(t time.Time) {
-	m._AbgescBild3Datehickt = &t
-}
-
-// AbgescBild3Datehickt returns the value of the "AbgescBild3Datehickt" field in the mutation.
-func (m *MitarbeiterMutation) AbgescBild3Datehickt() (r time.Time, exists bool) {
-	v := m._AbgescBild3Datehickt
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAbgescBild3Datehickt returns the old "AbgescBild3Datehickt" field's value of the Mitarbeiter entity.
-// If the Mitarbeiter object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MitarbeiterMutation) OldAbgescBild3Datehickt(ctx context.Context) (v *time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAbgescBild3Datehickt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAbgescBild3Datehickt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAbgescBild3Datehickt: %w", err)
-	}
-	return oldValue.AbgescBild3Datehickt, nil
-}
-
-// ResetAbgescBild3Datehickt resets all changes to the "AbgescBild3Datehickt" field.
-func (m *MitarbeiterMutation) ResetAbgescBild3Datehickt() {
-	m._AbgescBild3Datehickt = nil
+	delete(m.clearedFields, mitarbeiter.FieldBild3Date)
 }
 
 // Where appends a list predicates to the MitarbeiterMutation builder.
@@ -3217,7 +3554,7 @@ func (m *MitarbeiterMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MitarbeiterMutation) Fields() []string {
-	fields := make([]string, 0, 26)
+	fields := make([]string, 0, 25)
 	if m._Name != nil {
 		fields = append(fields, mitarbeiter.FieldName)
 	}
@@ -3293,9 +3630,6 @@ func (m *MitarbeiterMutation) Fields() []string {
 	if m._Bild3Date != nil {
 		fields = append(fields, mitarbeiter.FieldBild3Date)
 	}
-	if m._AbgescBild3Datehickt != nil {
-		fields = append(fields, mitarbeiter.FieldAbgescBild3Datehickt)
-	}
 	return fields
 }
 
@@ -3354,8 +3688,6 @@ func (m *MitarbeiterMutation) Field(name string) (ent.Value, bool) {
 		return m.Bild2Date()
 	case mitarbeiter.FieldBild3Date:
 		return m.Bild3Date()
-	case mitarbeiter.FieldAbgescBild3Datehickt:
-		return m.AbgescBild3Datehickt()
 	}
 	return nil, false
 }
@@ -3415,8 +3747,6 @@ func (m *MitarbeiterMutation) OldField(ctx context.Context, name string) (ent.Va
 		return m.OldBild2Date(ctx)
 	case mitarbeiter.FieldBild3Date:
 		return m.OldBild3Date(ctx)
-	case mitarbeiter.FieldAbgescBild3Datehickt:
-		return m.OldAbgescBild3Datehickt(ctx)
 	}
 	return nil, fmt.Errorf("unknown Mitarbeiter field %s", name)
 }
@@ -3601,13 +3931,6 @@ func (m *MitarbeiterMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetBild3Date(v)
 		return nil
-	case mitarbeiter.FieldAbgescBild3Datehickt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAbgescBild3Datehickt(v)
-		return nil
 	}
 	return fmt.Errorf("unknown Mitarbeiter field %s", name)
 }
@@ -3637,7 +3960,71 @@ func (m *MitarbeiterMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *MitarbeiterMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(mitarbeiter.FieldShort) {
+		fields = append(fields, mitarbeiter.FieldShort)
+	}
+	if m.FieldCleared(mitarbeiter.FieldGruppenwahl) {
+		fields = append(fields, mitarbeiter.FieldGruppenwahl)
+	}
+	if m.FieldCleared(mitarbeiter.FieldInternTelefon1) {
+		fields = append(fields, mitarbeiter.FieldInternTelefon1)
+	}
+	if m.FieldCleared(mitarbeiter.FieldInternTelefon2) {
+		fields = append(fields, mitarbeiter.FieldInternTelefon2)
+	}
+	if m.FieldCleared(mitarbeiter.FieldFestnetzPrivat) {
+		fields = append(fields, mitarbeiter.FieldFestnetzPrivat)
+	}
+	if m.FieldCleared(mitarbeiter.FieldFestnetzAlternativ) {
+		fields = append(fields, mitarbeiter.FieldFestnetzAlternativ)
+	}
+	if m.FieldCleared(mitarbeiter.FieldHomeOffice) {
+		fields = append(fields, mitarbeiter.FieldHomeOffice)
+	}
+	if m.FieldCleared(mitarbeiter.FieldMobilBusiness) {
+		fields = append(fields, mitarbeiter.FieldMobilBusiness)
+	}
+	if m.FieldCleared(mitarbeiter.FieldMobilPrivat) {
+		fields = append(fields, mitarbeiter.FieldMobilPrivat)
+	}
+	if m.FieldCleared(mitarbeiter.FieldEmail) {
+		fields = append(fields, mitarbeiter.FieldEmail)
+	}
+	if m.FieldCleared(mitarbeiter.FieldGeburtstag) {
+		fields = append(fields, mitarbeiter.FieldGeburtstag)
+	}
+	if m.FieldCleared(mitarbeiter.FieldGeld) {
+		fields = append(fields, mitarbeiter.FieldGeld)
+	}
+	if m.FieldCleared(mitarbeiter.FieldPfand) {
+		fields = append(fields, mitarbeiter.FieldPfand)
+	}
+	if m.FieldCleared(mitarbeiter.FieldDinge) {
+		fields = append(fields, mitarbeiter.FieldDinge)
+	}
+	if m.FieldCleared(mitarbeiter.FieldAbgeschickt) {
+		fields = append(fields, mitarbeiter.FieldAbgeschickt)
+	}
+	if m.FieldCleared(mitarbeiter.FieldBild1) {
+		fields = append(fields, mitarbeiter.FieldBild1)
+	}
+	if m.FieldCleared(mitarbeiter.FieldBild2) {
+		fields = append(fields, mitarbeiter.FieldBild2)
+	}
+	if m.FieldCleared(mitarbeiter.FieldBild3) {
+		fields = append(fields, mitarbeiter.FieldBild3)
+	}
+	if m.FieldCleared(mitarbeiter.FieldBild1Date) {
+		fields = append(fields, mitarbeiter.FieldBild1Date)
+	}
+	if m.FieldCleared(mitarbeiter.FieldBild2Date) {
+		fields = append(fields, mitarbeiter.FieldBild2Date)
+	}
+	if m.FieldCleared(mitarbeiter.FieldBild3Date) {
+		fields = append(fields, mitarbeiter.FieldBild3Date)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -3650,6 +4037,71 @@ func (m *MitarbeiterMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *MitarbeiterMutation) ClearField(name string) error {
+	switch name {
+	case mitarbeiter.FieldShort:
+		m.ClearShort()
+		return nil
+	case mitarbeiter.FieldGruppenwahl:
+		m.ClearGruppenwahl()
+		return nil
+	case mitarbeiter.FieldInternTelefon1:
+		m.ClearInternTelefon1()
+		return nil
+	case mitarbeiter.FieldInternTelefon2:
+		m.ClearInternTelefon2()
+		return nil
+	case mitarbeiter.FieldFestnetzPrivat:
+		m.ClearFestnetzPrivat()
+		return nil
+	case mitarbeiter.FieldFestnetzAlternativ:
+		m.ClearFestnetzAlternativ()
+		return nil
+	case mitarbeiter.FieldHomeOffice:
+		m.ClearHomeOffice()
+		return nil
+	case mitarbeiter.FieldMobilBusiness:
+		m.ClearMobilBusiness()
+		return nil
+	case mitarbeiter.FieldMobilPrivat:
+		m.ClearMobilPrivat()
+		return nil
+	case mitarbeiter.FieldEmail:
+		m.ClearEmail()
+		return nil
+	case mitarbeiter.FieldGeburtstag:
+		m.ClearGeburtstag()
+		return nil
+	case mitarbeiter.FieldGeld:
+		m.ClearGeld()
+		return nil
+	case mitarbeiter.FieldPfand:
+		m.ClearPfand()
+		return nil
+	case mitarbeiter.FieldDinge:
+		m.ClearDinge()
+		return nil
+	case mitarbeiter.FieldAbgeschickt:
+		m.ClearAbgeschickt()
+		return nil
+	case mitarbeiter.FieldBild1:
+		m.ClearBild1()
+		return nil
+	case mitarbeiter.FieldBild2:
+		m.ClearBild2()
+		return nil
+	case mitarbeiter.FieldBild3:
+		m.ClearBild3()
+		return nil
+	case mitarbeiter.FieldBild1Date:
+		m.ClearBild1Date()
+		return nil
+	case mitarbeiter.FieldBild2Date:
+		m.ClearBild2Date()
+		return nil
+	case mitarbeiter.FieldBild3Date:
+		m.ClearBild3Date()
+		return nil
+	}
 	return fmt.Errorf("unknown Mitarbeiter nullable field %s", name)
 }
 
@@ -3731,9 +4183,6 @@ func (m *MitarbeiterMutation) ResetField(name string) error {
 		return nil
 	case mitarbeiter.FieldBild3Date:
 		m.ResetBild3Date()
-		return nil
-	case mitarbeiter.FieldAbgescBild3Datehickt:
-		m.ResetAbgescBild3Datehickt()
 		return nil
 	}
 	return fmt.Errorf("unknown Mitarbeiter field %s", name)

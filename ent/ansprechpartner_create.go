@@ -34,15 +34,39 @@ func (ac *AnsprechpartnerCreate) SetTelefon(s string) *AnsprechpartnerCreate {
 	return ac
 }
 
+// SetNillableTelefon sets the "Telefon" field if the given value is not nil.
+func (ac *AnsprechpartnerCreate) SetNillableTelefon(s *string) *AnsprechpartnerCreate {
+	if s != nil {
+		ac.SetTelefon(*s)
+	}
+	return ac
+}
+
 // SetMobil sets the "Mobil" field.
 func (ac *AnsprechpartnerCreate) SetMobil(s string) *AnsprechpartnerCreate {
 	ac.mutation.SetMobil(s)
 	return ac
 }
 
+// SetNillableMobil sets the "Mobil" field if the given value is not nil.
+func (ac *AnsprechpartnerCreate) SetNillableMobil(s *string) *AnsprechpartnerCreate {
+	if s != nil {
+		ac.SetMobil(*s)
+	}
+	return ac
+}
+
 // SetMail sets the "Mail" field.
 func (ac *AnsprechpartnerCreate) SetMail(s string) *AnsprechpartnerCreate {
 	ac.mutation.SetMail(s)
+	return ac
+}
+
+// SetNillableMail sets the "Mail" field if the given value is not nil.
+func (ac *AnsprechpartnerCreate) SetNillableMail(s *string) *AnsprechpartnerCreate {
+	if s != nil {
+		ac.SetMail(*s)
+	}
 	return ac
 }
 
@@ -106,15 +130,6 @@ func (ac *AnsprechpartnerCreate) check() error {
 		if err := ansprechpartner.NameValidator(v); err != nil {
 			return &ValidationError{Name: "Name", err: fmt.Errorf(`ent: validator failed for field "Ansprechpartner.Name": %w`, err)}
 		}
-	}
-	if _, ok := ac.mutation.Telefon(); !ok {
-		return &ValidationError{Name: "Telefon", err: errors.New(`ent: missing required field "Ansprechpartner.Telefon"`)}
-	}
-	if _, ok := ac.mutation.Mobil(); !ok {
-		return &ValidationError{Name: "Mobil", err: errors.New(`ent: missing required field "Ansprechpartner.Mobil"`)}
-	}
-	if _, ok := ac.mutation.Mail(); !ok {
-		return &ValidationError{Name: "Mail", err: errors.New(`ent: missing required field "Ansprechpartner.Mail"`)}
 	}
 	return nil
 }
@@ -252,6 +267,12 @@ func (u *AnsprechpartnerUpsert) UpdateTelefon() *AnsprechpartnerUpsert {
 	return u
 }
 
+// ClearTelefon clears the value of the "Telefon" field.
+func (u *AnsprechpartnerUpsert) ClearTelefon() *AnsprechpartnerUpsert {
+	u.SetNull(ansprechpartner.FieldTelefon)
+	return u
+}
+
 // SetMobil sets the "Mobil" field.
 func (u *AnsprechpartnerUpsert) SetMobil(v string) *AnsprechpartnerUpsert {
 	u.Set(ansprechpartner.FieldMobil, v)
@@ -264,6 +285,12 @@ func (u *AnsprechpartnerUpsert) UpdateMobil() *AnsprechpartnerUpsert {
 	return u
 }
 
+// ClearMobil clears the value of the "Mobil" field.
+func (u *AnsprechpartnerUpsert) ClearMobil() *AnsprechpartnerUpsert {
+	u.SetNull(ansprechpartner.FieldMobil)
+	return u
+}
+
 // SetMail sets the "Mail" field.
 func (u *AnsprechpartnerUpsert) SetMail(v string) *AnsprechpartnerUpsert {
 	u.Set(ansprechpartner.FieldMail, v)
@@ -273,6 +300,12 @@ func (u *AnsprechpartnerUpsert) SetMail(v string) *AnsprechpartnerUpsert {
 // UpdateMail sets the "Mail" field to the value that was provided on create.
 func (u *AnsprechpartnerUpsert) UpdateMail() *AnsprechpartnerUpsert {
 	u.SetExcluded(ansprechpartner.FieldMail)
+	return u
+}
+
+// ClearMail clears the value of the "Mail" field.
+func (u *AnsprechpartnerUpsert) ClearMail() *AnsprechpartnerUpsert {
+	u.SetNull(ansprechpartner.FieldMail)
 	return u
 }
 
@@ -344,6 +377,13 @@ func (u *AnsprechpartnerUpsertOne) UpdateTelefon() *AnsprechpartnerUpsertOne {
 	})
 }
 
+// ClearTelefon clears the value of the "Telefon" field.
+func (u *AnsprechpartnerUpsertOne) ClearTelefon() *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.ClearTelefon()
+	})
+}
+
 // SetMobil sets the "Mobil" field.
 func (u *AnsprechpartnerUpsertOne) SetMobil(v string) *AnsprechpartnerUpsertOne {
 	return u.Update(func(s *AnsprechpartnerUpsert) {
@@ -358,6 +398,13 @@ func (u *AnsprechpartnerUpsertOne) UpdateMobil() *AnsprechpartnerUpsertOne {
 	})
 }
 
+// ClearMobil clears the value of the "Mobil" field.
+func (u *AnsprechpartnerUpsertOne) ClearMobil() *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.ClearMobil()
+	})
+}
+
 // SetMail sets the "Mail" field.
 func (u *AnsprechpartnerUpsertOne) SetMail(v string) *AnsprechpartnerUpsertOne {
 	return u.Update(func(s *AnsprechpartnerUpsert) {
@@ -369,6 +416,13 @@ func (u *AnsprechpartnerUpsertOne) SetMail(v string) *AnsprechpartnerUpsertOne {
 func (u *AnsprechpartnerUpsertOne) UpdateMail() *AnsprechpartnerUpsertOne {
 	return u.Update(func(s *AnsprechpartnerUpsert) {
 		s.UpdateMail()
+	})
+}
+
+// ClearMail clears the value of the "Mail" field.
+func (u *AnsprechpartnerUpsertOne) ClearMail() *AnsprechpartnerUpsertOne {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.ClearMail()
 	})
 }
 
@@ -603,6 +657,13 @@ func (u *AnsprechpartnerUpsertBulk) UpdateTelefon() *AnsprechpartnerUpsertBulk {
 	})
 }
 
+// ClearTelefon clears the value of the "Telefon" field.
+func (u *AnsprechpartnerUpsertBulk) ClearTelefon() *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.ClearTelefon()
+	})
+}
+
 // SetMobil sets the "Mobil" field.
 func (u *AnsprechpartnerUpsertBulk) SetMobil(v string) *AnsprechpartnerUpsertBulk {
 	return u.Update(func(s *AnsprechpartnerUpsert) {
@@ -617,6 +678,13 @@ func (u *AnsprechpartnerUpsertBulk) UpdateMobil() *AnsprechpartnerUpsertBulk {
 	})
 }
 
+// ClearMobil clears the value of the "Mobil" field.
+func (u *AnsprechpartnerUpsertBulk) ClearMobil() *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.ClearMobil()
+	})
+}
+
 // SetMail sets the "Mail" field.
 func (u *AnsprechpartnerUpsertBulk) SetMail(v string) *AnsprechpartnerUpsertBulk {
 	return u.Update(func(s *AnsprechpartnerUpsert) {
@@ -628,6 +696,13 @@ func (u *AnsprechpartnerUpsertBulk) SetMail(v string) *AnsprechpartnerUpsertBulk
 func (u *AnsprechpartnerUpsertBulk) UpdateMail() *AnsprechpartnerUpsertBulk {
 	return u.Update(func(s *AnsprechpartnerUpsert) {
 		s.UpdateMail()
+	})
+}
+
+// ClearMail clears the value of the "Mail" field.
+func (u *AnsprechpartnerUpsertBulk) ClearMail() *AnsprechpartnerUpsertBulk {
+	return u.Update(func(s *AnsprechpartnerUpsert) {
+		s.ClearMail()
 	})
 }
 

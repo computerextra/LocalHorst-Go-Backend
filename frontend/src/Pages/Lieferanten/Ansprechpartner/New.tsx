@@ -8,7 +8,7 @@ export default function ApNew() {
     <>
       <BackButton href={"/Lieferanten/" + id} />
       <h1>Neuen Ansprechpartner anlegen</h1>
-      <AnsprechpartnerForm id={id!} />
+      <AnsprechpartnerForm id={parseInt(id!)} />
     </>
   );
 }

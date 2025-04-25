@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { CheckImage } from "../../../../wailsjs/go/main/App";
-import type { db, main } from "../../../../wailsjs/go/models";
+import type { ent, main } from "../../../../wailsjs/go/models";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 import { getUser, User } from "../../../hooks/funcs";
 
-export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
+export default function EinkaufCard({ einkauf }: { einkauf: ent.Mitarbeiter }) {
   const [bild1, setBild1] = useState<undefined | main.ImageResponse>(undefined);
   const [bild2, setBild2] = useState<undefined | main.ImageResponse>(undefined);
   const [bild3, setBild3] = useState<undefined | main.ImageResponse>(undefined);
@@ -16,9 +16,10 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
     async function x() {
       setLoading(true);
       setUser(getUser());
-      const res1 = await CheckImage(einkauf.MitarbeiterId, "1");
-      const res2 = await CheckImage(einkauf.MitarbeiterId, "2");
-      const res3 = await CheckImage(einkauf.MitarbeiterId, "3");
+      if (einkauf == null) return;
+      const res1 = await CheckImage(einkauf.id!, "1");
+      const res2 = await CheckImage(einkauf.id!, "2");
+      const res3 = await CheckImage(einkauf.id!, "3");
       if (res1.Image.length > 0) {
         setBild1(res1);
       }
@@ -41,13 +42,13 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
       <div className="card card-border bg-base-100 print:!hidden">
         <div className="card-body">
           <div className="flex justify-between">
-            <h2 className="card-title">{einkauf.Mitarbeiter.Name}</h2>
+            <h2 className="card-title">{einkauf.Name}</h2>
             <div className="card-actions justify-end">
               {user ? (
                 <>
-                  {user.id == einkauf.MitarbeiterId && (
+                  {user.id == einkauf.id && (
                     <NavLink
-                      to={`/Einkauf/${einkauf.MitarbeiterId}`}
+                      to={`/Einkauf/${einkauf.id}`}
                       className="btn btn-accent"
                     >
                       Bearbeiten
@@ -56,7 +57,7 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
                 </>
               ) : (
                 <NavLink
-                  to={`/Einkauf/${einkauf.MitarbeiterId}`}
+                  to={`/Einkauf/${einkauf.id}`}
                   className="btn btn-accent"
                 >
                   Bearbeiten
@@ -65,7 +66,7 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <span>Geld: {einkauf.Geld.String} </span>
+            <span>Geld: {einkauf.Geld} </span>
             <span className="flex items-center gap-1">
               Abonniert:{" "}
               {einkauf.Abonniert ? (
@@ -100,7 +101,7 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
                 </svg>
               )}
             </span>
-            <span>Pfand: {einkauf.Pfand.String}</span>
+            <span>Pfand: {einkauf.Pfand}</span>
             <span className="flex items-center gap-1">
               Paypal:{" "}
               {einkauf.Paypal ? (
@@ -137,7 +138,7 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
             </span>
           </div>
           <hr />
-          <pre className="font-geist text-wrap">{einkauf.Dinge.String}</pre>
+          <pre className="font-geist text-wrap">{einkauf.Dinge}</pre>
           <div className="grid grid-cols-3 gap-2">
             {bild1?.Valid && (
               <img className="max-h-[200px] rounded-md" src={bild1.Image} />
@@ -152,13 +153,13 @@ export default function EinkaufCard({ einkauf }: { einkauf: db.Einkauf }) {
         </div>
       </div>
       <div className="hidden print:block my-4 text-xs" data-theme="light">
-        {einkauf.Mitarbeiter.Name}
+        {einkauf.Name}
         <br />
-        Geld: {einkauf.Geld.String}
+        Geld: {einkauf.Geld}
         <br />
-        Pfand: {einkauf.Pfand.String}
+        Pfand: {einkauf.Pfand}
         <br />
-        <pre className="font-geist text-wrap">{einkauf.Dinge.String}</pre>
+        <pre className="font-geist text-wrap">{einkauf.Dinge}</pre>
         <div className="grid grid-cols-3 mb-2">
           {bild1?.Valid && (
             <img className="max-h-[200px] rounded-md" src={bild1.Image} />

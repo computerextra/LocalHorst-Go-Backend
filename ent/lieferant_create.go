@@ -34,9 +34,25 @@ func (lc *LieferantCreate) SetKundennummer(s string) *LieferantCreate {
 	return lc
 }
 
+// SetNillableKundennummer sets the "Kundennummer" field if the given value is not nil.
+func (lc *LieferantCreate) SetNillableKundennummer(s *string) *LieferantCreate {
+	if s != nil {
+		lc.SetKundennummer(*s)
+	}
+	return lc
+}
+
 // SetWebseite sets the "Webseite" field.
 func (lc *LieferantCreate) SetWebseite(s string) *LieferantCreate {
 	lc.mutation.SetWebseite(s)
+	return lc
+}
+
+// SetNillableWebseite sets the "Webseite" field if the given value is not nil.
+func (lc *LieferantCreate) SetNillableWebseite(s *string) *LieferantCreate {
+	if s != nil {
+		lc.SetWebseite(*s)
+	}
 	return lc
 }
 
@@ -96,12 +112,6 @@ func (lc *LieferantCreate) check() error {
 		if err := lieferant.FirmaValidator(v); err != nil {
 			return &ValidationError{Name: "Firma", err: fmt.Errorf(`ent: validator failed for field "Lieferant.Firma": %w`, err)}
 		}
-	}
-	if _, ok := lc.mutation.Kundennummer(); !ok {
-		return &ValidationError{Name: "Kundennummer", err: errors.New(`ent: missing required field "Lieferant.Kundennummer"`)}
-	}
-	if _, ok := lc.mutation.Webseite(); !ok {
-		return &ValidationError{Name: "Webseite", err: errors.New(`ent: missing required field "Lieferant.Webseite"`)}
 	}
 	return nil
 }
@@ -234,6 +244,12 @@ func (u *LieferantUpsert) UpdateKundennummer() *LieferantUpsert {
 	return u
 }
 
+// ClearKundennummer clears the value of the "Kundennummer" field.
+func (u *LieferantUpsert) ClearKundennummer() *LieferantUpsert {
+	u.SetNull(lieferant.FieldKundennummer)
+	return u
+}
+
 // SetWebseite sets the "Webseite" field.
 func (u *LieferantUpsert) SetWebseite(v string) *LieferantUpsert {
 	u.Set(lieferant.FieldWebseite, v)
@@ -243,6 +259,12 @@ func (u *LieferantUpsert) SetWebseite(v string) *LieferantUpsert {
 // UpdateWebseite sets the "Webseite" field to the value that was provided on create.
 func (u *LieferantUpsert) UpdateWebseite() *LieferantUpsert {
 	u.SetExcluded(lieferant.FieldWebseite)
+	return u
+}
+
+// ClearWebseite clears the value of the "Webseite" field.
+func (u *LieferantUpsert) ClearWebseite() *LieferantUpsert {
+	u.SetNull(lieferant.FieldWebseite)
 	return u
 }
 
@@ -314,6 +336,13 @@ func (u *LieferantUpsertOne) UpdateKundennummer() *LieferantUpsertOne {
 	})
 }
 
+// ClearKundennummer clears the value of the "Kundennummer" field.
+func (u *LieferantUpsertOne) ClearKundennummer() *LieferantUpsertOne {
+	return u.Update(func(s *LieferantUpsert) {
+		s.ClearKundennummer()
+	})
+}
+
 // SetWebseite sets the "Webseite" field.
 func (u *LieferantUpsertOne) SetWebseite(v string) *LieferantUpsertOne {
 	return u.Update(func(s *LieferantUpsert) {
@@ -325,6 +354,13 @@ func (u *LieferantUpsertOne) SetWebseite(v string) *LieferantUpsertOne {
 func (u *LieferantUpsertOne) UpdateWebseite() *LieferantUpsertOne {
 	return u.Update(func(s *LieferantUpsert) {
 		s.UpdateWebseite()
+	})
+}
+
+// ClearWebseite clears the value of the "Webseite" field.
+func (u *LieferantUpsertOne) ClearWebseite() *LieferantUpsertOne {
+	return u.Update(func(s *LieferantUpsert) {
+		s.ClearWebseite()
 	})
 }
 
@@ -559,6 +595,13 @@ func (u *LieferantUpsertBulk) UpdateKundennummer() *LieferantUpsertBulk {
 	})
 }
 
+// ClearKundennummer clears the value of the "Kundennummer" field.
+func (u *LieferantUpsertBulk) ClearKundennummer() *LieferantUpsertBulk {
+	return u.Update(func(s *LieferantUpsert) {
+		s.ClearKundennummer()
+	})
+}
+
 // SetWebseite sets the "Webseite" field.
 func (u *LieferantUpsertBulk) SetWebseite(v string) *LieferantUpsertBulk {
 	return u.Update(func(s *LieferantUpsert) {
@@ -570,6 +613,13 @@ func (u *LieferantUpsertBulk) SetWebseite(v string) *LieferantUpsertBulk {
 func (u *LieferantUpsertBulk) UpdateWebseite() *LieferantUpsertBulk {
 	return u.Update(func(s *LieferantUpsert) {
 		s.UpdateWebseite()
+	})
+}
+
+// ClearWebseite clears the value of the "Webseite" field.
+func (u *LieferantUpsertBulk) ClearWebseite() *LieferantUpsertBulk {
+	return u.Update(func(s *LieferantUpsert) {
+		s.ClearWebseite()
 	})
 }
 

@@ -194,6 +194,16 @@ func TelefonHasSuffix(v string) predicate.Ansprechpartner {
 	return predicate.Ansprechpartner(sql.FieldHasSuffix(FieldTelefon, v))
 }
 
+// TelefonIsNil applies the IsNil predicate on the "Telefon" field.
+func TelefonIsNil() predicate.Ansprechpartner {
+	return predicate.Ansprechpartner(sql.FieldIsNull(FieldTelefon))
+}
+
+// TelefonNotNil applies the NotNil predicate on the "Telefon" field.
+func TelefonNotNil() predicate.Ansprechpartner {
+	return predicate.Ansprechpartner(sql.FieldNotNull(FieldTelefon))
+}
+
 // TelefonEqualFold applies the EqualFold predicate on the "Telefon" field.
 func TelefonEqualFold(v string) predicate.Ansprechpartner {
 	return predicate.Ansprechpartner(sql.FieldEqualFold(FieldTelefon, v))
@@ -259,6 +269,16 @@ func MobilHasSuffix(v string) predicate.Ansprechpartner {
 	return predicate.Ansprechpartner(sql.FieldHasSuffix(FieldMobil, v))
 }
 
+// MobilIsNil applies the IsNil predicate on the "Mobil" field.
+func MobilIsNil() predicate.Ansprechpartner {
+	return predicate.Ansprechpartner(sql.FieldIsNull(FieldMobil))
+}
+
+// MobilNotNil applies the NotNil predicate on the "Mobil" field.
+func MobilNotNil() predicate.Ansprechpartner {
+	return predicate.Ansprechpartner(sql.FieldNotNull(FieldMobil))
+}
+
 // MobilEqualFold applies the EqualFold predicate on the "Mobil" field.
 func MobilEqualFold(v string) predicate.Ansprechpartner {
 	return predicate.Ansprechpartner(sql.FieldEqualFold(FieldMobil, v))
@@ -322,6 +342,16 @@ func MailHasPrefix(v string) predicate.Ansprechpartner {
 // MailHasSuffix applies the HasSuffix predicate on the "Mail" field.
 func MailHasSuffix(v string) predicate.Ansprechpartner {
 	return predicate.Ansprechpartner(sql.FieldHasSuffix(FieldMail, v))
+}
+
+// MailIsNil applies the IsNil predicate on the "Mail" field.
+func MailIsNil() predicate.Ansprechpartner {
+	return predicate.Ansprechpartner(sql.FieldIsNull(FieldMail))
+}
+
+// MailNotNil applies the NotNil predicate on the "Mail" field.
+func MailNotNil() predicate.Ansprechpartner {
+	return predicate.Ansprechpartner(sql.FieldNotNull(FieldMail))
 }
 
 // MailEqualFold applies the EqualFold predicate on the "Mail" field.

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UpsertLieferant } from "../../../../wailsjs/go/main/App";
-import { db } from "../../../../wailsjs/go/models";
+import { ent, main } from "../../../../wailsjs/go/models";
 
 export default function LieferantenForm({
   lieferant,
 }: {
-  lieferant?: db.Lieferant;
+  lieferant?: ent.Lieferant;
 }) {
   const [Firma, setFirma] = useState<string | undefined>(undefined);
   const [Kundennummer, setKundennummer] = useState<string | undefined>(
@@ -21,12 +21,8 @@ export default function LieferantenForm({
     if (lieferant == null) return;
     setLoading(true);
     setFirma(lieferant.Firma);
-    setKundennummer(
-      lieferant.Kundennummer.Valid ? lieferant.Kundennummer.String : undefined
-    );
-    setWebsite(
-      lieferant.Webseite.Valid ? lieferant.Webseite.String : undefined
-    );
+    setKundennummer(lieferant.Kundennummer ?? undefined);
+    setWebsite(lieferant.Webseite ?? undefined);
     setLoading(false);
   }, [lieferant]);
 
@@ -35,12 +31,12 @@ export default function LieferantenForm({
     if (Firma.length < 1) return;
     localStorage.removeItem("lieferanten");
     localStorage.removeItem("lieferanten-lastsync");
-    const params: db.LieferantenParams = {
+    const params: main.LieferantenParams = {
       Firma,
       Kundennummer: Kundennummer ?? "",
       Webseite: Website ?? "",
     };
-    const res = await UpsertLieferant(params, lieferant?.Id ?? "");
+    const res = await UpsertLieferant(params);
     if (res) {
       navigate("/Lieferanten");
     } else {

@@ -102,14 +102,14 @@ export function UploadImage(arg1, arg2) {
   return window['go']['main']['App']['UploadImage'](arg1, arg2);
 }
 
-export function UpsertAnsprechpartner(arg1, arg2) {
-  return window['go']['main']['App']['UpsertAnsprechpartner'](arg1, arg2);
+export function UpsertAnsprechpartner(arg1) {
+  return window['go']['main']['App']['UpsertAnsprechpartner'](arg1);
 }
 
-export function UpsertLieferant(arg1, arg2) {
-  return window['go']['main']['App']['UpsertLieferant'](arg1, arg2);
+export function UpsertLieferant(arg1) {
+  return window['go']['main']['App']['UpsertLieferant'](arg1);
 }
 
-export function UpsertMitarbeiter(arg1, arg2) {
-  return window['go']['main']['App']['UpsertMitarbeiter'](arg1, arg2);
+export function UpsertMitarbeiter(arg1) {
+  return window['go']['main']['App']['UpsertMitarbeiter'](arg1);
 }

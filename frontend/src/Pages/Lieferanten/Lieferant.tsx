@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { GetLieferant } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { main } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function LieferantDetails() {
   const { id } = useParams();
-  const [Lieferant, setLieferant] = useState<db.Lieferant | undefined>(
+  const [Lieferant, setLieferant] = useState<main.Lieferant | undefined>(
     undefined
   );
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ export default function LieferantDetails() {
     async function x() {
       if (id == null) return;
       setLoading(true);
-      const lieferanten = await GetLieferant(id);
+      const lieferanten = await GetLieferant(parseInt(id));
       setLieferant(lieferanten);
       setLoading(false);
     }
@@ -31,20 +31,20 @@ export default function LieferantDetails() {
       ) : (
         <>
           <h1 className="mt-5">{Lieferant?.Firma}</h1>
-          <p>Webseite: {Lieferant?.Kundennummer.String}</p>
+          <p>Webseite: {Lieferant?.Kundennummer}</p>
           <p>
             Webseite:{" "}
             <a
-              href={Lieferant?.Webseite.String}
+              href={Lieferant?.Webseite}
               target="_blank"
               className="underline text-error"
               rel="noopener noreferrer"
             >
-              {Lieferant?.Webseite.String}
+              {Lieferant?.Webseite}
             </a>
           </p>
           <Link
-            to={`/Lieferanten/${Lieferant?.Id}/edit`}
+            to={`/Lieferanten/${Lieferant?.id}/edit`}
             className="btn btn-neutral my-4"
           >
             Lieferant bearbeiten
@@ -66,39 +66,39 @@ export default function LieferantDetails() {
                   <tr className="hover:bg-base-300">
                     <th>
                       <Link
-                        to={`/Lieferanten/${Lieferant.Id}/${ap.Id}`}
+                        to={`/Lieferanten/${Lieferant.id}/${ap.id}`}
                         className="underline"
                       >
                         {ap.Name}
                       </Link>
                     </th>
                     <td>
-                      {ap.Telefon.Valid && ap.Telefon.String.length > 1 && (
+                      {ap.Telefon && ap.Telefon.length > 1 && (
                         <a
-                          href={"tel:" + ap.Telefon.String}
+                          href={"tel:" + ap.Telefon}
                           className="underline text-error"
                         >
-                          {ap.Telefon.String}
+                          {ap.Telefon}
                         </a>
                       )}
                     </td>
                     <td>
-                      {ap.Mobil.Valid && ap.Mobil.String.length > 1 && (
+                      {ap.Mobil && ap.Mobil.length > 1 && (
                         <a
-                          href={"tel:" + ap.Mobil.String}
+                          href={"tel:" + ap.Mobil}
                           className="underline text-error"
                         >
-                          {ap.Mobil.String}
+                          {ap.Mobil}
                         </a>
                       )}
                     </td>
                     <td>
-                      {ap.Mail.Valid && ap.Mail.String.length > 1 && (
+                      {ap.Mail && ap.Mail.length > 1 && (
                         <a
                           className="underline text-error"
-                          href={"mailto:" + ap.Mail.String}
+                          href={"mailto:" + ap.Mail}
                         >
-                          {ap.Mail.String}
+                          {ap.Mail}
                         </a>
                       )}
                     </td>
@@ -108,7 +108,7 @@ export default function LieferantDetails() {
             </table>
             <Link
               className="btn btn-neutral my-4"
-              to={`/Lieferanten/${Lieferant?.Id}/Neu`}
+              to={`/Lieferanten/${Lieferant?.id}/Neu`}
             >
               Neuen Ansprechparner anlegen
             </Link>

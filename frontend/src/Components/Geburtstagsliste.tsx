@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { GetAllMitarbeiter } from "../../wailsjs/go/main/App";
-import type { db } from "../../wailsjs/go/models";
+import type { ent } from "../../wailsjs/go/models";
 import LoadingSpinner from "./LoadingSpinner";
 
 export default function GeburtstagsListe() {
-  const [heute, setHeute] = useState<db.Mitarbeiter[]>();
-  const [zukunft, setZukunft] = useState<db.Mitarbeiter[]>();
-  const [vergangen, setVergangen] = useState<db.Mitarbeiter[]>();
+  const [heute, setHeute] = useState<ent.Mitarbeiter[]>();
+  const [zukunft, setZukunft] = useState<ent.Mitarbeiter[]>();
+  const [vergangen, setVergangen] = useState<ent.Mitarbeiter[]>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function x() {
       setLoading(true);
-      const heute: db.Mitarbeiter[] = [];
-      const zukunft: db.Mitarbeiter[] = [];
-      const vergangen: db.Mitarbeiter[] = [];
+      const heute: ent.Mitarbeiter[] = [];
+      const zukunft: ent.Mitarbeiter[] = [];
+      const vergangen: ent.Mitarbeiter[] = [];
 
       const today = new Date();
 
-      let ma: db.Mitarbeiter[] = [];
+      let ma: ent.Mitarbeiter[] = [];
 
       const localData = localStorage.getItem("geburtstage");
       const lastUpdate = localStorage.getItem("geburtstag-lastsync");
@@ -44,103 +44,106 @@ export default function GeburtstagsListe() {
         localStorage.setItem("geburtstag-lastsync", JSON.stringify(new Date()));
       }
 
-      ma.map((i) => {
-        if (i.Geburtstag.Valid) {
-          const bday = new Date(i.Geburtstag.Time);
-          const temp = new Date(
-            bday.setFullYear(
-              new Date().getFullYear(),
-              bday.getMonth(),
-              bday.getDate()
-            )
-          );
-          const diff = Math.trunc(
-            //   @ts-expect-error Das geht!
-            Math.round(today - temp) / (1000 * 60 * 60 * 24)
-          );
+      if (ma != null && ma.length > 0)
+        ma.map((i) => {
+          if (i.Geburtstag) {
+            const x = i.Geburtstag as string;
 
-          if (diff < 0) {
-            zukunft.push(i);
-          } else if (diff > 0) {
-            vergangen.push(i);
-          } else {
-            heute.push(i);
+            const bday = new Date(x);
+            const temp = new Date(
+              bday.setFullYear(
+                new Date().getFullYear(),
+                bday.getMonth(),
+                bday.getDate() + 1
+              )
+            );
+            const diff = Math.trunc(
+              //   @ts-expect-error Das geht!
+              Math.round(today - temp) / (1000 * 60 * 60 * 24)
+            );
+
+            if (diff < 0) {
+              zukunft.push(i);
+            } else if (diff > 0) {
+              vergangen.push(i);
+            } else {
+              heute.push(i);
+            }
+
+            vergangen.sort((a, b) => {
+              const ba = new Date(a.Geburtstag);
+              const aDay = ba.setFullYear(
+                new Date().getFullYear(),
+                ba.getMonth(),
+                ba.getDate()
+              );
+              const bb = new Date(b.Geburtstag);
+              const bDay = bb.setFullYear(
+                new Date().getFullYear(),
+                bb.getMonth(),
+                bb.getDate()
+              );
+              const diff = Math.trunc(
+                Math.round(aDay - bDay) / (1000 * 60 * 60 * 24)
+              );
+              if (diff < 0) {
+                return -1;
+              } else if (diff > 0) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
+            zukunft.sort((a, b) => {
+              const ba = new Date(a.Geburtstag);
+              const aDay = ba.setFullYear(
+                new Date().getFullYear(),
+                ba.getMonth(),
+                ba.getDate()
+              );
+              const bb = new Date(b.Geburtstag);
+              const bDay = bb.setFullYear(
+                new Date().getFullYear(),
+                bb.getMonth(),
+                bb.getDate()
+              );
+              const diff = Math.trunc(
+                Math.round(aDay - bDay) / (1000 * 60 * 60 * 24)
+              );
+              if (diff < 0) {
+                return -1;
+              } else if (diff > 0) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
+            heute.sort((a, b) => {
+              const ba = new Date(a.Geburtstag);
+              const aDay = ba.setFullYear(
+                new Date().getFullYear(),
+                ba.getMonth(),
+                ba.getDate()
+              );
+              const bb = new Date(b.Geburtstag);
+              const bDay = bb.setFullYear(
+                new Date().getFullYear(),
+                bb.getMonth(),
+                bb.getDate()
+              );
+              const diff = Math.trunc(
+                Math.round(aDay - bDay) / (1000 * 60 * 60 * 24)
+              );
+              if (diff < 0) {
+                return -1;
+              } else if (diff > 0) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
           }
-
-          vergangen.sort((a, b) => {
-            const ba = new Date(a.Geburtstag.Time);
-            const aDay = ba.setFullYear(
-              new Date().getFullYear(),
-              ba.getMonth(),
-              ba.getDate()
-            );
-            const bb = new Date(b.Geburtstag.Time);
-            const bDay = bb.setFullYear(
-              new Date().getFullYear(),
-              bb.getMonth(),
-              bb.getDate()
-            );
-            const diff = Math.trunc(
-              Math.round(aDay - bDay) / (1000 * 60 * 60 * 24)
-            );
-            if (diff < 0) {
-              return -1;
-            } else if (diff > 0) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-          zukunft.sort((a, b) => {
-            const ba = new Date(a.Geburtstag.Time);
-            const aDay = ba.setFullYear(
-              new Date().getFullYear(),
-              ba.getMonth(),
-              ba.getDate()
-            );
-            const bb = new Date(b.Geburtstag.Time);
-            const bDay = bb.setFullYear(
-              new Date().getFullYear(),
-              bb.getMonth(),
-              bb.getDate()
-            );
-            const diff = Math.trunc(
-              Math.round(aDay - bDay) / (1000 * 60 * 60 * 24)
-            );
-            if (diff < 0) {
-              return -1;
-            } else if (diff > 0) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-          heute.sort((a, b) => {
-            const ba = new Date(a.Geburtstag.Time);
-            const aDay = ba.setFullYear(
-              new Date().getFullYear(),
-              ba.getMonth(),
-              ba.getDate()
-            );
-            const bb = new Date(b.Geburtstag.Time);
-            const bDay = bb.setFullYear(
-              new Date().getFullYear(),
-              bb.getMonth(),
-              bb.getDate()
-            );
-            const diff = Math.trunc(
-              Math.round(aDay - bDay) / (1000 * 60 * 60 * 24)
-            );
-            if (diff < 0) {
-              return -1;
-            } else if (diff > 0) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        }
-      });
+        });
 
       setHeute(heute);
       setZukunft(zukunft);
@@ -160,7 +163,7 @@ export default function GeburtstagsListe() {
           <div
             role="alert"
             className="w-full alert alert-error alert-soft"
-            key={x.Id}
+            key={x.id}
           >
             <span>
               Heute gibt es ein Geburtstagskind! | Heute hat <b>{x.Name}</b>{" "}
@@ -181,16 +184,16 @@ export default function GeburtstagsListe() {
               </thead>
               <tbody>
                 {vergangen.map((user) => {
-                  const bday = new Date(user.Geburtstag.Time);
+                  const bday = new Date(user.Geburtstag);
                   const temp = new Date(
                     bday.setFullYear(
                       new Date().getFullYear(),
                       bday.getMonth(),
-                      bday.getDate()
+                      bday.getDate() + 1
                     )
                   );
                   return (
-                    <tr key={user.Id}>
+                    <tr key={user.id}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {
@@ -222,16 +225,16 @@ export default function GeburtstagsListe() {
               </thead>
               <tbody>
                 {zukunft.map((user) => {
-                  const bday = new Date(user.Geburtstag.Time);
+                  const bday = new Date(user.Geburtstag);
                   const temp = new Date(
                     bday.setFullYear(
                       new Date().getFullYear(),
                       bday.getMonth(),
-                      bday.getDate()
+                      bday.getDate() + 1
                     )
                   );
                   return (
-                    <tr key={user.Id}>
+                    <tr key={user.id}>
                       <th>{user.Name}</th>
                       <td>
                         {temp.toLocaleDateString("de-DE", {

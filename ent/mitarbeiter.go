@@ -66,10 +66,8 @@ type Mitarbeiter struct {
 	// Bild2Date holds the value of the "Bild2Date" field.
 	Bild2Date *time.Time `json:"Bild2Date,omitempty"`
 	// Bild3Date holds the value of the "Bild3Date" field.
-	Bild3Date *time.Time `json:"Bild3Date,omitempty"`
-	// AbgescBild3Datehickt holds the value of the "AbgescBild3Datehickt" field.
-	AbgescBild3Datehickt *time.Time `json:"AbgescBild3Datehickt,omitempty"`
-	selectValues         sql.SelectValues
+	Bild3Date    *time.Time `json:"Bild3Date,omitempty"`
+	selectValues sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -83,7 +81,7 @@ func (*Mitarbeiter) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case mitarbeiter.FieldName, mitarbeiter.FieldShort, mitarbeiter.FieldGruppenwahl, mitarbeiter.FieldInternTelefon1, mitarbeiter.FieldInternTelefon2, mitarbeiter.FieldFestnetzPrivat, mitarbeiter.FieldFestnetzAlternativ, mitarbeiter.FieldHomeOffice, mitarbeiter.FieldMobilBusiness, mitarbeiter.FieldMobilPrivat, mitarbeiter.FieldEmail, mitarbeiter.FieldGeld, mitarbeiter.FieldPfand, mitarbeiter.FieldDinge, mitarbeiter.FieldBild1, mitarbeiter.FieldBild2, mitarbeiter.FieldBild3:
 			values[i] = new(sql.NullString)
-		case mitarbeiter.FieldGeburtstag, mitarbeiter.FieldAbgeschickt, mitarbeiter.FieldBild1Date, mitarbeiter.FieldBild2Date, mitarbeiter.FieldBild3Date, mitarbeiter.FieldAbgescBild3Datehickt:
+		case mitarbeiter.FieldGeburtstag, mitarbeiter.FieldAbgeschickt, mitarbeiter.FieldBild1Date, mitarbeiter.FieldBild2Date, mitarbeiter.FieldBild3Date:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -277,13 +275,6 @@ func (m *Mitarbeiter) assignValues(columns []string, values []any) error {
 				m.Bild3Date = new(time.Time)
 				*m.Bild3Date = value.Time
 			}
-		case mitarbeiter.FieldAbgescBild3Datehickt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field AbgescBild3Datehickt", values[i])
-			} else if value.Valid {
-				m.AbgescBild3Datehickt = new(time.Time)
-				*m.AbgescBild3Datehickt = value.Time
-			}
 		default:
 			m.selectValues.Set(columns[i], values[i])
 		}
@@ -434,11 +425,6 @@ func (m *Mitarbeiter) String() string {
 	builder.WriteString(", ")
 	if v := m.Bild3Date; v != nil {
 		builder.WriteString("Bild3Date=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	if v := m.AbgescBild3Datehickt; v != nil {
-		builder.WriteString("AbgescBild3Datehickt=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}
 	builder.WriteByte(')')

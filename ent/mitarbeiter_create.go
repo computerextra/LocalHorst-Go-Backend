@@ -34,9 +34,25 @@ func (mc *MitarbeiterCreate) SetShort(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableShort sets the "Short" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableShort(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetShort(*s)
+	}
+	return mc
+}
+
 // SetGruppenwahl sets the "Gruppenwahl" field.
 func (mc *MitarbeiterCreate) SetGruppenwahl(s string) *MitarbeiterCreate {
 	mc.mutation.SetGruppenwahl(s)
+	return mc
+}
+
+// SetNillableGruppenwahl sets the "Gruppenwahl" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableGruppenwahl(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetGruppenwahl(*s)
+	}
 	return mc
 }
 
@@ -46,9 +62,25 @@ func (mc *MitarbeiterCreate) SetInternTelefon1(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableInternTelefon1 sets the "InternTelefon1" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableInternTelefon1(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetInternTelefon1(*s)
+	}
+	return mc
+}
+
 // SetInternTelefon2 sets the "InternTelefon2" field.
 func (mc *MitarbeiterCreate) SetInternTelefon2(s string) *MitarbeiterCreate {
 	mc.mutation.SetInternTelefon2(s)
+	return mc
+}
+
+// SetNillableInternTelefon2 sets the "InternTelefon2" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableInternTelefon2(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetInternTelefon2(*s)
+	}
 	return mc
 }
 
@@ -58,9 +90,25 @@ func (mc *MitarbeiterCreate) SetFestnetzPrivat(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableFestnetzPrivat sets the "FestnetzPrivat" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableFestnetzPrivat(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetFestnetzPrivat(*s)
+	}
+	return mc
+}
+
 // SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
 func (mc *MitarbeiterCreate) SetFestnetzAlternativ(s string) *MitarbeiterCreate {
 	mc.mutation.SetFestnetzAlternativ(s)
+	return mc
+}
+
+// SetNillableFestnetzAlternativ sets the "FestnetzAlternativ" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableFestnetzAlternativ(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetFestnetzAlternativ(*s)
+	}
 	return mc
 }
 
@@ -70,9 +118,25 @@ func (mc *MitarbeiterCreate) SetHomeOffice(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableHomeOffice sets the "HomeOffice" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableHomeOffice(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetHomeOffice(*s)
+	}
+	return mc
+}
+
 // SetMobilBusiness sets the "MobilBusiness" field.
 func (mc *MitarbeiterCreate) SetMobilBusiness(s string) *MitarbeiterCreate {
 	mc.mutation.SetMobilBusiness(s)
+	return mc
+}
+
+// SetNillableMobilBusiness sets the "MobilBusiness" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableMobilBusiness(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetMobilBusiness(*s)
+	}
 	return mc
 }
 
@@ -82,9 +146,25 @@ func (mc *MitarbeiterCreate) SetMobilPrivat(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableMobilPrivat sets the "MobilPrivat" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableMobilPrivat(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetMobilPrivat(*s)
+	}
+	return mc
+}
+
 // SetEmail sets the "Email" field.
 func (mc *MitarbeiterCreate) SetEmail(s string) *MitarbeiterCreate {
 	mc.mutation.SetEmail(s)
+	return mc
+}
+
+// SetNillableEmail sets the "Email" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableEmail(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetEmail(*s)
+	}
 	return mc
 }
 
@@ -105,6 +185,14 @@ func (mc *MitarbeiterCreate) SetNillableAzubi(b *bool) *MitarbeiterCreate {
 // SetGeburtstag sets the "Geburtstag" field.
 func (mc *MitarbeiterCreate) SetGeburtstag(t time.Time) *MitarbeiterCreate {
 	mc.mutation.SetGeburtstag(t)
+	return mc
+}
+
+// SetNillableGeburtstag sets the "Geburtstag" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableGeburtstag(t *time.Time) *MitarbeiterCreate {
+	if t != nil {
+		mc.SetGeburtstag(*t)
+	}
 	return mc
 }
 
@@ -142,9 +230,25 @@ func (mc *MitarbeiterCreate) SetGeld(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableGeld sets the "Geld" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableGeld(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetGeld(*s)
+	}
+	return mc
+}
+
 // SetPfand sets the "Pfand" field.
 func (mc *MitarbeiterCreate) SetPfand(s string) *MitarbeiterCreate {
 	mc.mutation.SetPfand(s)
+	return mc
+}
+
+// SetNillablePfand sets the "Pfand" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillablePfand(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetPfand(*s)
+	}
 	return mc
 }
 
@@ -154,9 +258,25 @@ func (mc *MitarbeiterCreate) SetDinge(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableDinge sets the "Dinge" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableDinge(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetDinge(*s)
+	}
+	return mc
+}
+
 // SetAbgeschickt sets the "Abgeschickt" field.
 func (mc *MitarbeiterCreate) SetAbgeschickt(t time.Time) *MitarbeiterCreate {
 	mc.mutation.SetAbgeschickt(t)
+	return mc
+}
+
+// SetNillableAbgeschickt sets the "Abgeschickt" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableAbgeschickt(t *time.Time) *MitarbeiterCreate {
+	if t != nil {
+		mc.SetAbgeschickt(*t)
+	}
 	return mc
 }
 
@@ -166,9 +286,25 @@ func (mc *MitarbeiterCreate) SetBild1(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableBild1 sets the "Bild1" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableBild1(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetBild1(*s)
+	}
+	return mc
+}
+
 // SetBild2 sets the "Bild2" field.
 func (mc *MitarbeiterCreate) SetBild2(s string) *MitarbeiterCreate {
 	mc.mutation.SetBild2(s)
+	return mc
+}
+
+// SetNillableBild2 sets the "Bild2" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableBild2(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetBild2(*s)
+	}
 	return mc
 }
 
@@ -178,9 +314,25 @@ func (mc *MitarbeiterCreate) SetBild3(s string) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableBild3 sets the "Bild3" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableBild3(s *string) *MitarbeiterCreate {
+	if s != nil {
+		mc.SetBild3(*s)
+	}
+	return mc
+}
+
 // SetBild1Date sets the "Bild1Date" field.
 func (mc *MitarbeiterCreate) SetBild1Date(t time.Time) *MitarbeiterCreate {
 	mc.mutation.SetBild1Date(t)
+	return mc
+}
+
+// SetNillableBild1Date sets the "Bild1Date" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableBild1Date(t *time.Time) *MitarbeiterCreate {
+	if t != nil {
+		mc.SetBild1Date(*t)
+	}
 	return mc
 }
 
@@ -190,15 +342,25 @@ func (mc *MitarbeiterCreate) SetBild2Date(t time.Time) *MitarbeiterCreate {
 	return mc
 }
 
+// SetNillableBild2Date sets the "Bild2Date" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableBild2Date(t *time.Time) *MitarbeiterCreate {
+	if t != nil {
+		mc.SetBild2Date(*t)
+	}
+	return mc
+}
+
 // SetBild3Date sets the "Bild3Date" field.
 func (mc *MitarbeiterCreate) SetBild3Date(t time.Time) *MitarbeiterCreate {
 	mc.mutation.SetBild3Date(t)
 	return mc
 }
 
-// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
-func (mc *MitarbeiterCreate) SetAbgescBild3Datehickt(t time.Time) *MitarbeiterCreate {
-	mc.mutation.SetAbgescBild3Datehickt(t)
+// SetNillableBild3Date sets the "Bild3Date" field if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableBild3Date(t *time.Time) *MitarbeiterCreate {
+	if t != nil {
+		mc.SetBild3Date(*t)
+	}
 	return mc
 }
 
@@ -261,80 +423,14 @@ func (mc *MitarbeiterCreate) check() error {
 			return &ValidationError{Name: "Name", err: fmt.Errorf(`ent: validator failed for field "Mitarbeiter.Name": %w`, err)}
 		}
 	}
-	if _, ok := mc.mutation.Short(); !ok {
-		return &ValidationError{Name: "Short", err: errors.New(`ent: missing required field "Mitarbeiter.Short"`)}
-	}
-	if _, ok := mc.mutation.Gruppenwahl(); !ok {
-		return &ValidationError{Name: "Gruppenwahl", err: errors.New(`ent: missing required field "Mitarbeiter.Gruppenwahl"`)}
-	}
-	if _, ok := mc.mutation.InternTelefon1(); !ok {
-		return &ValidationError{Name: "InternTelefon1", err: errors.New(`ent: missing required field "Mitarbeiter.InternTelefon1"`)}
-	}
-	if _, ok := mc.mutation.InternTelefon2(); !ok {
-		return &ValidationError{Name: "InternTelefon2", err: errors.New(`ent: missing required field "Mitarbeiter.InternTelefon2"`)}
-	}
-	if _, ok := mc.mutation.FestnetzPrivat(); !ok {
-		return &ValidationError{Name: "FestnetzPrivat", err: errors.New(`ent: missing required field "Mitarbeiter.FestnetzPrivat"`)}
-	}
-	if _, ok := mc.mutation.FestnetzAlternativ(); !ok {
-		return &ValidationError{Name: "FestnetzAlternativ", err: errors.New(`ent: missing required field "Mitarbeiter.FestnetzAlternativ"`)}
-	}
-	if _, ok := mc.mutation.HomeOffice(); !ok {
-		return &ValidationError{Name: "HomeOffice", err: errors.New(`ent: missing required field "Mitarbeiter.HomeOffice"`)}
-	}
-	if _, ok := mc.mutation.MobilBusiness(); !ok {
-		return &ValidationError{Name: "MobilBusiness", err: errors.New(`ent: missing required field "Mitarbeiter.MobilBusiness"`)}
-	}
-	if _, ok := mc.mutation.MobilPrivat(); !ok {
-		return &ValidationError{Name: "MobilPrivat", err: errors.New(`ent: missing required field "Mitarbeiter.MobilPrivat"`)}
-	}
-	if _, ok := mc.mutation.Email(); !ok {
-		return &ValidationError{Name: "Email", err: errors.New(`ent: missing required field "Mitarbeiter.Email"`)}
-	}
 	if _, ok := mc.mutation.Azubi(); !ok {
 		return &ValidationError{Name: "Azubi", err: errors.New(`ent: missing required field "Mitarbeiter.Azubi"`)}
-	}
-	if _, ok := mc.mutation.Geburtstag(); !ok {
-		return &ValidationError{Name: "Geburtstag", err: errors.New(`ent: missing required field "Mitarbeiter.Geburtstag"`)}
 	}
 	if _, ok := mc.mutation.Paypal(); !ok {
 		return &ValidationError{Name: "Paypal", err: errors.New(`ent: missing required field "Mitarbeiter.Paypal"`)}
 	}
 	if _, ok := mc.mutation.Abonniert(); !ok {
 		return &ValidationError{Name: "Abonniert", err: errors.New(`ent: missing required field "Mitarbeiter.Abonniert"`)}
-	}
-	if _, ok := mc.mutation.Geld(); !ok {
-		return &ValidationError{Name: "Geld", err: errors.New(`ent: missing required field "Mitarbeiter.Geld"`)}
-	}
-	if _, ok := mc.mutation.Pfand(); !ok {
-		return &ValidationError{Name: "Pfand", err: errors.New(`ent: missing required field "Mitarbeiter.Pfand"`)}
-	}
-	if _, ok := mc.mutation.Dinge(); !ok {
-		return &ValidationError{Name: "Dinge", err: errors.New(`ent: missing required field "Mitarbeiter.Dinge"`)}
-	}
-	if _, ok := mc.mutation.Abgeschickt(); !ok {
-		return &ValidationError{Name: "Abgeschickt", err: errors.New(`ent: missing required field "Mitarbeiter.Abgeschickt"`)}
-	}
-	if _, ok := mc.mutation.Bild1(); !ok {
-		return &ValidationError{Name: "Bild1", err: errors.New(`ent: missing required field "Mitarbeiter.Bild1"`)}
-	}
-	if _, ok := mc.mutation.Bild2(); !ok {
-		return &ValidationError{Name: "Bild2", err: errors.New(`ent: missing required field "Mitarbeiter.Bild2"`)}
-	}
-	if _, ok := mc.mutation.Bild3(); !ok {
-		return &ValidationError{Name: "Bild3", err: errors.New(`ent: missing required field "Mitarbeiter.Bild3"`)}
-	}
-	if _, ok := mc.mutation.Bild1Date(); !ok {
-		return &ValidationError{Name: "Bild1Date", err: errors.New(`ent: missing required field "Mitarbeiter.Bild1Date"`)}
-	}
-	if _, ok := mc.mutation.Bild2Date(); !ok {
-		return &ValidationError{Name: "Bild2Date", err: errors.New(`ent: missing required field "Mitarbeiter.Bild2Date"`)}
-	}
-	if _, ok := mc.mutation.Bild3Date(); !ok {
-		return &ValidationError{Name: "Bild3Date", err: errors.New(`ent: missing required field "Mitarbeiter.Bild3Date"`)}
-	}
-	if _, ok := mc.mutation.AbgescBild3Datehickt(); !ok {
-		return &ValidationError{Name: "AbgescBild3Datehickt", err: errors.New(`ent: missing required field "Mitarbeiter.AbgescBild3Datehickt"`)}
 	}
 	return nil
 }
@@ -463,10 +559,6 @@ func (mc *MitarbeiterCreate) createSpec() (*Mitarbeiter, *sqlgraph.CreateSpec) {
 		_spec.SetField(mitarbeiter.FieldBild3Date, field.TypeTime, value)
 		_node.Bild3Date = &value
 	}
-	if value, ok := mc.mutation.AbgescBild3Datehickt(); ok {
-		_spec.SetField(mitarbeiter.FieldAbgescBild3Datehickt, field.TypeTime, value)
-		_node.AbgescBild3Datehickt = &value
-	}
 	return _node, _spec
 }
 
@@ -543,6 +635,12 @@ func (u *MitarbeiterUpsert) UpdateShort() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearShort clears the value of the "Short" field.
+func (u *MitarbeiterUpsert) ClearShort() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldShort)
+	return u
+}
+
 // SetGruppenwahl sets the "Gruppenwahl" field.
 func (u *MitarbeiterUpsert) SetGruppenwahl(v string) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldGruppenwahl, v)
@@ -552,6 +650,12 @@ func (u *MitarbeiterUpsert) SetGruppenwahl(v string) *MitarbeiterUpsert {
 // UpdateGruppenwahl sets the "Gruppenwahl" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateGruppenwahl() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldGruppenwahl)
+	return u
+}
+
+// ClearGruppenwahl clears the value of the "Gruppenwahl" field.
+func (u *MitarbeiterUpsert) ClearGruppenwahl() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldGruppenwahl)
 	return u
 }
 
@@ -567,6 +671,12 @@ func (u *MitarbeiterUpsert) UpdateInternTelefon1() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearInternTelefon1 clears the value of the "InternTelefon1" field.
+func (u *MitarbeiterUpsert) ClearInternTelefon1() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldInternTelefon1)
+	return u
+}
+
 // SetInternTelefon2 sets the "InternTelefon2" field.
 func (u *MitarbeiterUpsert) SetInternTelefon2(v string) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldInternTelefon2, v)
@@ -576,6 +686,12 @@ func (u *MitarbeiterUpsert) SetInternTelefon2(v string) *MitarbeiterUpsert {
 // UpdateInternTelefon2 sets the "InternTelefon2" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateInternTelefon2() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldInternTelefon2)
+	return u
+}
+
+// ClearInternTelefon2 clears the value of the "InternTelefon2" field.
+func (u *MitarbeiterUpsert) ClearInternTelefon2() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldInternTelefon2)
 	return u
 }
 
@@ -591,6 +707,12 @@ func (u *MitarbeiterUpsert) UpdateFestnetzPrivat() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearFestnetzPrivat clears the value of the "FestnetzPrivat" field.
+func (u *MitarbeiterUpsert) ClearFestnetzPrivat() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldFestnetzPrivat)
+	return u
+}
+
 // SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
 func (u *MitarbeiterUpsert) SetFestnetzAlternativ(v string) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldFestnetzAlternativ, v)
@@ -600,6 +722,12 @@ func (u *MitarbeiterUpsert) SetFestnetzAlternativ(v string) *MitarbeiterUpsert {
 // UpdateFestnetzAlternativ sets the "FestnetzAlternativ" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateFestnetzAlternativ() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldFestnetzAlternativ)
+	return u
+}
+
+// ClearFestnetzAlternativ clears the value of the "FestnetzAlternativ" field.
+func (u *MitarbeiterUpsert) ClearFestnetzAlternativ() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldFestnetzAlternativ)
 	return u
 }
 
@@ -615,6 +743,12 @@ func (u *MitarbeiterUpsert) UpdateHomeOffice() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearHomeOffice clears the value of the "HomeOffice" field.
+func (u *MitarbeiterUpsert) ClearHomeOffice() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldHomeOffice)
+	return u
+}
+
 // SetMobilBusiness sets the "MobilBusiness" field.
 func (u *MitarbeiterUpsert) SetMobilBusiness(v string) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldMobilBusiness, v)
@@ -624,6 +758,12 @@ func (u *MitarbeiterUpsert) SetMobilBusiness(v string) *MitarbeiterUpsert {
 // UpdateMobilBusiness sets the "MobilBusiness" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateMobilBusiness() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldMobilBusiness)
+	return u
+}
+
+// ClearMobilBusiness clears the value of the "MobilBusiness" field.
+func (u *MitarbeiterUpsert) ClearMobilBusiness() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldMobilBusiness)
 	return u
 }
 
@@ -639,6 +779,12 @@ func (u *MitarbeiterUpsert) UpdateMobilPrivat() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearMobilPrivat clears the value of the "MobilPrivat" field.
+func (u *MitarbeiterUpsert) ClearMobilPrivat() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldMobilPrivat)
+	return u
+}
+
 // SetEmail sets the "Email" field.
 func (u *MitarbeiterUpsert) SetEmail(v string) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldEmail, v)
@@ -648,6 +794,12 @@ func (u *MitarbeiterUpsert) SetEmail(v string) *MitarbeiterUpsert {
 // UpdateEmail sets the "Email" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateEmail() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldEmail)
+	return u
+}
+
+// ClearEmail clears the value of the "Email" field.
+func (u *MitarbeiterUpsert) ClearEmail() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldEmail)
 	return u
 }
 
@@ -672,6 +824,12 @@ func (u *MitarbeiterUpsert) SetGeburtstag(v time.Time) *MitarbeiterUpsert {
 // UpdateGeburtstag sets the "Geburtstag" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateGeburtstag() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldGeburtstag)
+	return u
+}
+
+// ClearGeburtstag clears the value of the "Geburtstag" field.
+func (u *MitarbeiterUpsert) ClearGeburtstag() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldGeburtstag)
 	return u
 }
 
@@ -711,6 +869,12 @@ func (u *MitarbeiterUpsert) UpdateGeld() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearGeld clears the value of the "Geld" field.
+func (u *MitarbeiterUpsert) ClearGeld() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldGeld)
+	return u
+}
+
 // SetPfand sets the "Pfand" field.
 func (u *MitarbeiterUpsert) SetPfand(v string) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldPfand, v)
@@ -720,6 +884,12 @@ func (u *MitarbeiterUpsert) SetPfand(v string) *MitarbeiterUpsert {
 // UpdatePfand sets the "Pfand" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdatePfand() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldPfand)
+	return u
+}
+
+// ClearPfand clears the value of the "Pfand" field.
+func (u *MitarbeiterUpsert) ClearPfand() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldPfand)
 	return u
 }
 
@@ -735,6 +905,12 @@ func (u *MitarbeiterUpsert) UpdateDinge() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearDinge clears the value of the "Dinge" field.
+func (u *MitarbeiterUpsert) ClearDinge() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldDinge)
+	return u
+}
+
 // SetAbgeschickt sets the "Abgeschickt" field.
 func (u *MitarbeiterUpsert) SetAbgeschickt(v time.Time) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldAbgeschickt, v)
@@ -744,6 +920,12 @@ func (u *MitarbeiterUpsert) SetAbgeschickt(v time.Time) *MitarbeiterUpsert {
 // UpdateAbgeschickt sets the "Abgeschickt" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateAbgeschickt() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldAbgeschickt)
+	return u
+}
+
+// ClearAbgeschickt clears the value of the "Abgeschickt" field.
+func (u *MitarbeiterUpsert) ClearAbgeschickt() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldAbgeschickt)
 	return u
 }
 
@@ -759,6 +941,12 @@ func (u *MitarbeiterUpsert) UpdateBild1() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearBild1 clears the value of the "Bild1" field.
+func (u *MitarbeiterUpsert) ClearBild1() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldBild1)
+	return u
+}
+
 // SetBild2 sets the "Bild2" field.
 func (u *MitarbeiterUpsert) SetBild2(v string) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldBild2, v)
@@ -768,6 +956,12 @@ func (u *MitarbeiterUpsert) SetBild2(v string) *MitarbeiterUpsert {
 // UpdateBild2 sets the "Bild2" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateBild2() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldBild2)
+	return u
+}
+
+// ClearBild2 clears the value of the "Bild2" field.
+func (u *MitarbeiterUpsert) ClearBild2() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldBild2)
 	return u
 }
 
@@ -783,6 +977,12 @@ func (u *MitarbeiterUpsert) UpdateBild3() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearBild3 clears the value of the "Bild3" field.
+func (u *MitarbeiterUpsert) ClearBild3() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldBild3)
+	return u
+}
+
 // SetBild1Date sets the "Bild1Date" field.
 func (u *MitarbeiterUpsert) SetBild1Date(v time.Time) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldBild1Date, v)
@@ -792,6 +992,12 @@ func (u *MitarbeiterUpsert) SetBild1Date(v time.Time) *MitarbeiterUpsert {
 // UpdateBild1Date sets the "Bild1Date" field to the value that was provided on create.
 func (u *MitarbeiterUpsert) UpdateBild1Date() *MitarbeiterUpsert {
 	u.SetExcluded(mitarbeiter.FieldBild1Date)
+	return u
+}
+
+// ClearBild1Date clears the value of the "Bild1Date" field.
+func (u *MitarbeiterUpsert) ClearBild1Date() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldBild1Date)
 	return u
 }
 
@@ -807,6 +1013,12 @@ func (u *MitarbeiterUpsert) UpdateBild2Date() *MitarbeiterUpsert {
 	return u
 }
 
+// ClearBild2Date clears the value of the "Bild2Date" field.
+func (u *MitarbeiterUpsert) ClearBild2Date() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldBild2Date)
+	return u
+}
+
 // SetBild3Date sets the "Bild3Date" field.
 func (u *MitarbeiterUpsert) SetBild3Date(v time.Time) *MitarbeiterUpsert {
 	u.Set(mitarbeiter.FieldBild3Date, v)
@@ -819,15 +1031,9 @@ func (u *MitarbeiterUpsert) UpdateBild3Date() *MitarbeiterUpsert {
 	return u
 }
 
-// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
-func (u *MitarbeiterUpsert) SetAbgescBild3Datehickt(v time.Time) *MitarbeiterUpsert {
-	u.Set(mitarbeiter.FieldAbgescBild3Datehickt, v)
-	return u
-}
-
-// UpdateAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field to the value that was provided on create.
-func (u *MitarbeiterUpsert) UpdateAbgescBild3Datehickt() *MitarbeiterUpsert {
-	u.SetExcluded(mitarbeiter.FieldAbgescBild3Datehickt)
+// ClearBild3Date clears the value of the "Bild3Date" field.
+func (u *MitarbeiterUpsert) ClearBild3Date() *MitarbeiterUpsert {
+	u.SetNull(mitarbeiter.FieldBild3Date)
 	return u
 }
 
@@ -899,6 +1105,13 @@ func (u *MitarbeiterUpsertOne) UpdateShort() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearShort clears the value of the "Short" field.
+func (u *MitarbeiterUpsertOne) ClearShort() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearShort()
+	})
+}
+
 // SetGruppenwahl sets the "Gruppenwahl" field.
 func (u *MitarbeiterUpsertOne) SetGruppenwahl(v string) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -910,6 +1123,13 @@ func (u *MitarbeiterUpsertOne) SetGruppenwahl(v string) *MitarbeiterUpsertOne {
 func (u *MitarbeiterUpsertOne) UpdateGruppenwahl() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateGruppenwahl()
+	})
+}
+
+// ClearGruppenwahl clears the value of the "Gruppenwahl" field.
+func (u *MitarbeiterUpsertOne) ClearGruppenwahl() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearGruppenwahl()
 	})
 }
 
@@ -927,6 +1147,13 @@ func (u *MitarbeiterUpsertOne) UpdateInternTelefon1() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearInternTelefon1 clears the value of the "InternTelefon1" field.
+func (u *MitarbeiterUpsertOne) ClearInternTelefon1() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearInternTelefon1()
+	})
+}
+
 // SetInternTelefon2 sets the "InternTelefon2" field.
 func (u *MitarbeiterUpsertOne) SetInternTelefon2(v string) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -938,6 +1165,13 @@ func (u *MitarbeiterUpsertOne) SetInternTelefon2(v string) *MitarbeiterUpsertOne
 func (u *MitarbeiterUpsertOne) UpdateInternTelefon2() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateInternTelefon2()
+	})
+}
+
+// ClearInternTelefon2 clears the value of the "InternTelefon2" field.
+func (u *MitarbeiterUpsertOne) ClearInternTelefon2() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearInternTelefon2()
 	})
 }
 
@@ -955,6 +1189,13 @@ func (u *MitarbeiterUpsertOne) UpdateFestnetzPrivat() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearFestnetzPrivat clears the value of the "FestnetzPrivat" field.
+func (u *MitarbeiterUpsertOne) ClearFestnetzPrivat() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearFestnetzPrivat()
+	})
+}
+
 // SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
 func (u *MitarbeiterUpsertOne) SetFestnetzAlternativ(v string) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -966,6 +1207,13 @@ func (u *MitarbeiterUpsertOne) SetFestnetzAlternativ(v string) *MitarbeiterUpser
 func (u *MitarbeiterUpsertOne) UpdateFestnetzAlternativ() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateFestnetzAlternativ()
+	})
+}
+
+// ClearFestnetzAlternativ clears the value of the "FestnetzAlternativ" field.
+func (u *MitarbeiterUpsertOne) ClearFestnetzAlternativ() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearFestnetzAlternativ()
 	})
 }
 
@@ -983,6 +1231,13 @@ func (u *MitarbeiterUpsertOne) UpdateHomeOffice() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearHomeOffice clears the value of the "HomeOffice" field.
+func (u *MitarbeiterUpsertOne) ClearHomeOffice() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearHomeOffice()
+	})
+}
+
 // SetMobilBusiness sets the "MobilBusiness" field.
 func (u *MitarbeiterUpsertOne) SetMobilBusiness(v string) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -994,6 +1249,13 @@ func (u *MitarbeiterUpsertOne) SetMobilBusiness(v string) *MitarbeiterUpsertOne 
 func (u *MitarbeiterUpsertOne) UpdateMobilBusiness() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateMobilBusiness()
+	})
+}
+
+// ClearMobilBusiness clears the value of the "MobilBusiness" field.
+func (u *MitarbeiterUpsertOne) ClearMobilBusiness() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearMobilBusiness()
 	})
 }
 
@@ -1011,6 +1273,13 @@ func (u *MitarbeiterUpsertOne) UpdateMobilPrivat() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearMobilPrivat clears the value of the "MobilPrivat" field.
+func (u *MitarbeiterUpsertOne) ClearMobilPrivat() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearMobilPrivat()
+	})
+}
+
 // SetEmail sets the "Email" field.
 func (u *MitarbeiterUpsertOne) SetEmail(v string) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1022,6 +1291,13 @@ func (u *MitarbeiterUpsertOne) SetEmail(v string) *MitarbeiterUpsertOne {
 func (u *MitarbeiterUpsertOne) UpdateEmail() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateEmail()
+	})
+}
+
+// ClearEmail clears the value of the "Email" field.
+func (u *MitarbeiterUpsertOne) ClearEmail() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearEmail()
 	})
 }
 
@@ -1050,6 +1326,13 @@ func (u *MitarbeiterUpsertOne) SetGeburtstag(v time.Time) *MitarbeiterUpsertOne 
 func (u *MitarbeiterUpsertOne) UpdateGeburtstag() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateGeburtstag()
+	})
+}
+
+// ClearGeburtstag clears the value of the "Geburtstag" field.
+func (u *MitarbeiterUpsertOne) ClearGeburtstag() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearGeburtstag()
 	})
 }
 
@@ -1095,6 +1378,13 @@ func (u *MitarbeiterUpsertOne) UpdateGeld() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearGeld clears the value of the "Geld" field.
+func (u *MitarbeiterUpsertOne) ClearGeld() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearGeld()
+	})
+}
+
 // SetPfand sets the "Pfand" field.
 func (u *MitarbeiterUpsertOne) SetPfand(v string) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1106,6 +1396,13 @@ func (u *MitarbeiterUpsertOne) SetPfand(v string) *MitarbeiterUpsertOne {
 func (u *MitarbeiterUpsertOne) UpdatePfand() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdatePfand()
+	})
+}
+
+// ClearPfand clears the value of the "Pfand" field.
+func (u *MitarbeiterUpsertOne) ClearPfand() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearPfand()
 	})
 }
 
@@ -1123,6 +1420,13 @@ func (u *MitarbeiterUpsertOne) UpdateDinge() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearDinge clears the value of the "Dinge" field.
+func (u *MitarbeiterUpsertOne) ClearDinge() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearDinge()
+	})
+}
+
 // SetAbgeschickt sets the "Abgeschickt" field.
 func (u *MitarbeiterUpsertOne) SetAbgeschickt(v time.Time) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1134,6 +1438,13 @@ func (u *MitarbeiterUpsertOne) SetAbgeschickt(v time.Time) *MitarbeiterUpsertOne
 func (u *MitarbeiterUpsertOne) UpdateAbgeschickt() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateAbgeschickt()
+	})
+}
+
+// ClearAbgeschickt clears the value of the "Abgeschickt" field.
+func (u *MitarbeiterUpsertOne) ClearAbgeschickt() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearAbgeschickt()
 	})
 }
 
@@ -1151,6 +1462,13 @@ func (u *MitarbeiterUpsertOne) UpdateBild1() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearBild1 clears the value of the "Bild1" field.
+func (u *MitarbeiterUpsertOne) ClearBild1() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild1()
+	})
+}
+
 // SetBild2 sets the "Bild2" field.
 func (u *MitarbeiterUpsertOne) SetBild2(v string) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1162,6 +1480,13 @@ func (u *MitarbeiterUpsertOne) SetBild2(v string) *MitarbeiterUpsertOne {
 func (u *MitarbeiterUpsertOne) UpdateBild2() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateBild2()
+	})
+}
+
+// ClearBild2 clears the value of the "Bild2" field.
+func (u *MitarbeiterUpsertOne) ClearBild2() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild2()
 	})
 }
 
@@ -1179,6 +1504,13 @@ func (u *MitarbeiterUpsertOne) UpdateBild3() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearBild3 clears the value of the "Bild3" field.
+func (u *MitarbeiterUpsertOne) ClearBild3() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild3()
+	})
+}
+
 // SetBild1Date sets the "Bild1Date" field.
 func (u *MitarbeiterUpsertOne) SetBild1Date(v time.Time) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1190,6 +1522,13 @@ func (u *MitarbeiterUpsertOne) SetBild1Date(v time.Time) *MitarbeiterUpsertOne {
 func (u *MitarbeiterUpsertOne) UpdateBild1Date() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateBild1Date()
+	})
+}
+
+// ClearBild1Date clears the value of the "Bild1Date" field.
+func (u *MitarbeiterUpsertOne) ClearBild1Date() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild1Date()
 	})
 }
 
@@ -1207,6 +1546,13 @@ func (u *MitarbeiterUpsertOne) UpdateBild2Date() *MitarbeiterUpsertOne {
 	})
 }
 
+// ClearBild2Date clears the value of the "Bild2Date" field.
+func (u *MitarbeiterUpsertOne) ClearBild2Date() *MitarbeiterUpsertOne {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild2Date()
+	})
+}
+
 // SetBild3Date sets the "Bild3Date" field.
 func (u *MitarbeiterUpsertOne) SetBild3Date(v time.Time) *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1221,17 +1567,10 @@ func (u *MitarbeiterUpsertOne) UpdateBild3Date() *MitarbeiterUpsertOne {
 	})
 }
 
-// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
-func (u *MitarbeiterUpsertOne) SetAbgescBild3Datehickt(v time.Time) *MitarbeiterUpsertOne {
+// ClearBild3Date clears the value of the "Bild3Date" field.
+func (u *MitarbeiterUpsertOne) ClearBild3Date() *MitarbeiterUpsertOne {
 	return u.Update(func(s *MitarbeiterUpsert) {
-		s.SetAbgescBild3Datehickt(v)
-	})
-}
-
-// UpdateAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field to the value that was provided on create.
-func (u *MitarbeiterUpsertOne) UpdateAbgescBild3Datehickt() *MitarbeiterUpsertOne {
-	return u.Update(func(s *MitarbeiterUpsert) {
-		s.UpdateAbgescBild3Datehickt()
+		s.ClearBild3Date()
 	})
 }
 
@@ -1467,6 +1806,13 @@ func (u *MitarbeiterUpsertBulk) UpdateShort() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearShort clears the value of the "Short" field.
+func (u *MitarbeiterUpsertBulk) ClearShort() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearShort()
+	})
+}
+
 // SetGruppenwahl sets the "Gruppenwahl" field.
 func (u *MitarbeiterUpsertBulk) SetGruppenwahl(v string) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1478,6 +1824,13 @@ func (u *MitarbeiterUpsertBulk) SetGruppenwahl(v string) *MitarbeiterUpsertBulk 
 func (u *MitarbeiterUpsertBulk) UpdateGruppenwahl() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateGruppenwahl()
+	})
+}
+
+// ClearGruppenwahl clears the value of the "Gruppenwahl" field.
+func (u *MitarbeiterUpsertBulk) ClearGruppenwahl() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearGruppenwahl()
 	})
 }
 
@@ -1495,6 +1848,13 @@ func (u *MitarbeiterUpsertBulk) UpdateInternTelefon1() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearInternTelefon1 clears the value of the "InternTelefon1" field.
+func (u *MitarbeiterUpsertBulk) ClearInternTelefon1() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearInternTelefon1()
+	})
+}
+
 // SetInternTelefon2 sets the "InternTelefon2" field.
 func (u *MitarbeiterUpsertBulk) SetInternTelefon2(v string) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1506,6 +1866,13 @@ func (u *MitarbeiterUpsertBulk) SetInternTelefon2(v string) *MitarbeiterUpsertBu
 func (u *MitarbeiterUpsertBulk) UpdateInternTelefon2() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateInternTelefon2()
+	})
+}
+
+// ClearInternTelefon2 clears the value of the "InternTelefon2" field.
+func (u *MitarbeiterUpsertBulk) ClearInternTelefon2() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearInternTelefon2()
 	})
 }
 
@@ -1523,6 +1890,13 @@ func (u *MitarbeiterUpsertBulk) UpdateFestnetzPrivat() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearFestnetzPrivat clears the value of the "FestnetzPrivat" field.
+func (u *MitarbeiterUpsertBulk) ClearFestnetzPrivat() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearFestnetzPrivat()
+	})
+}
+
 // SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
 func (u *MitarbeiterUpsertBulk) SetFestnetzAlternativ(v string) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1534,6 +1908,13 @@ func (u *MitarbeiterUpsertBulk) SetFestnetzAlternativ(v string) *MitarbeiterUpse
 func (u *MitarbeiterUpsertBulk) UpdateFestnetzAlternativ() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateFestnetzAlternativ()
+	})
+}
+
+// ClearFestnetzAlternativ clears the value of the "FestnetzAlternativ" field.
+func (u *MitarbeiterUpsertBulk) ClearFestnetzAlternativ() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearFestnetzAlternativ()
 	})
 }
 
@@ -1551,6 +1932,13 @@ func (u *MitarbeiterUpsertBulk) UpdateHomeOffice() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearHomeOffice clears the value of the "HomeOffice" field.
+func (u *MitarbeiterUpsertBulk) ClearHomeOffice() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearHomeOffice()
+	})
+}
+
 // SetMobilBusiness sets the "MobilBusiness" field.
 func (u *MitarbeiterUpsertBulk) SetMobilBusiness(v string) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1562,6 +1950,13 @@ func (u *MitarbeiterUpsertBulk) SetMobilBusiness(v string) *MitarbeiterUpsertBul
 func (u *MitarbeiterUpsertBulk) UpdateMobilBusiness() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateMobilBusiness()
+	})
+}
+
+// ClearMobilBusiness clears the value of the "MobilBusiness" field.
+func (u *MitarbeiterUpsertBulk) ClearMobilBusiness() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearMobilBusiness()
 	})
 }
 
@@ -1579,6 +1974,13 @@ func (u *MitarbeiterUpsertBulk) UpdateMobilPrivat() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearMobilPrivat clears the value of the "MobilPrivat" field.
+func (u *MitarbeiterUpsertBulk) ClearMobilPrivat() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearMobilPrivat()
+	})
+}
+
 // SetEmail sets the "Email" field.
 func (u *MitarbeiterUpsertBulk) SetEmail(v string) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1590,6 +1992,13 @@ func (u *MitarbeiterUpsertBulk) SetEmail(v string) *MitarbeiterUpsertBulk {
 func (u *MitarbeiterUpsertBulk) UpdateEmail() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateEmail()
+	})
+}
+
+// ClearEmail clears the value of the "Email" field.
+func (u *MitarbeiterUpsertBulk) ClearEmail() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearEmail()
 	})
 }
 
@@ -1618,6 +2027,13 @@ func (u *MitarbeiterUpsertBulk) SetGeburtstag(v time.Time) *MitarbeiterUpsertBul
 func (u *MitarbeiterUpsertBulk) UpdateGeburtstag() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateGeburtstag()
+	})
+}
+
+// ClearGeburtstag clears the value of the "Geburtstag" field.
+func (u *MitarbeiterUpsertBulk) ClearGeburtstag() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearGeburtstag()
 	})
 }
 
@@ -1663,6 +2079,13 @@ func (u *MitarbeiterUpsertBulk) UpdateGeld() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearGeld clears the value of the "Geld" field.
+func (u *MitarbeiterUpsertBulk) ClearGeld() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearGeld()
+	})
+}
+
 // SetPfand sets the "Pfand" field.
 func (u *MitarbeiterUpsertBulk) SetPfand(v string) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1674,6 +2097,13 @@ func (u *MitarbeiterUpsertBulk) SetPfand(v string) *MitarbeiterUpsertBulk {
 func (u *MitarbeiterUpsertBulk) UpdatePfand() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdatePfand()
+	})
+}
+
+// ClearPfand clears the value of the "Pfand" field.
+func (u *MitarbeiterUpsertBulk) ClearPfand() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearPfand()
 	})
 }
 
@@ -1691,6 +2121,13 @@ func (u *MitarbeiterUpsertBulk) UpdateDinge() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearDinge clears the value of the "Dinge" field.
+func (u *MitarbeiterUpsertBulk) ClearDinge() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearDinge()
+	})
+}
+
 // SetAbgeschickt sets the "Abgeschickt" field.
 func (u *MitarbeiterUpsertBulk) SetAbgeschickt(v time.Time) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1702,6 +2139,13 @@ func (u *MitarbeiterUpsertBulk) SetAbgeschickt(v time.Time) *MitarbeiterUpsertBu
 func (u *MitarbeiterUpsertBulk) UpdateAbgeschickt() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateAbgeschickt()
+	})
+}
+
+// ClearAbgeschickt clears the value of the "Abgeschickt" field.
+func (u *MitarbeiterUpsertBulk) ClearAbgeschickt() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearAbgeschickt()
 	})
 }
 
@@ -1719,6 +2163,13 @@ func (u *MitarbeiterUpsertBulk) UpdateBild1() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearBild1 clears the value of the "Bild1" field.
+func (u *MitarbeiterUpsertBulk) ClearBild1() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild1()
+	})
+}
+
 // SetBild2 sets the "Bild2" field.
 func (u *MitarbeiterUpsertBulk) SetBild2(v string) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1730,6 +2181,13 @@ func (u *MitarbeiterUpsertBulk) SetBild2(v string) *MitarbeiterUpsertBulk {
 func (u *MitarbeiterUpsertBulk) UpdateBild2() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateBild2()
+	})
+}
+
+// ClearBild2 clears the value of the "Bild2" field.
+func (u *MitarbeiterUpsertBulk) ClearBild2() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild2()
 	})
 }
 
@@ -1747,6 +2205,13 @@ func (u *MitarbeiterUpsertBulk) UpdateBild3() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearBild3 clears the value of the "Bild3" field.
+func (u *MitarbeiterUpsertBulk) ClearBild3() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild3()
+	})
+}
+
 // SetBild1Date sets the "Bild1Date" field.
 func (u *MitarbeiterUpsertBulk) SetBild1Date(v time.Time) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1758,6 +2223,13 @@ func (u *MitarbeiterUpsertBulk) SetBild1Date(v time.Time) *MitarbeiterUpsertBulk
 func (u *MitarbeiterUpsertBulk) UpdateBild1Date() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
 		s.UpdateBild1Date()
+	})
+}
+
+// ClearBild1Date clears the value of the "Bild1Date" field.
+func (u *MitarbeiterUpsertBulk) ClearBild1Date() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild1Date()
 	})
 }
 
@@ -1775,6 +2247,13 @@ func (u *MitarbeiterUpsertBulk) UpdateBild2Date() *MitarbeiterUpsertBulk {
 	})
 }
 
+// ClearBild2Date clears the value of the "Bild2Date" field.
+func (u *MitarbeiterUpsertBulk) ClearBild2Date() *MitarbeiterUpsertBulk {
+	return u.Update(func(s *MitarbeiterUpsert) {
+		s.ClearBild2Date()
+	})
+}
+
 // SetBild3Date sets the "Bild3Date" field.
 func (u *MitarbeiterUpsertBulk) SetBild3Date(v time.Time) *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
@@ -1789,17 +2268,10 @@ func (u *MitarbeiterUpsertBulk) UpdateBild3Date() *MitarbeiterUpsertBulk {
 	})
 }
 
-// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
-func (u *MitarbeiterUpsertBulk) SetAbgescBild3Datehickt(v time.Time) *MitarbeiterUpsertBulk {
+// ClearBild3Date clears the value of the "Bild3Date" field.
+func (u *MitarbeiterUpsertBulk) ClearBild3Date() *MitarbeiterUpsertBulk {
 	return u.Update(func(s *MitarbeiterUpsert) {
-		s.SetAbgescBild3Datehickt(v)
-	})
-}
-
-// UpdateAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field to the value that was provided on create.
-func (u *MitarbeiterUpsertBulk) UpdateAbgescBild3Datehickt() *MitarbeiterUpsertBulk {
-	return u.Update(func(s *MitarbeiterUpsert) {
-		s.UpdateAbgescBild3Datehickt()
+		s.ClearBild3Date()
 	})
 }
 

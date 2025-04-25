@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { DeleteLieferant, GetLieferant } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { ent } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import LieferantenForm from "./components/LieferantenForm";
 
 export default function LieferantBearbeiten() {
   const { id } = useParams();
-  const [lieferant, setLieferant] = useState<undefined | db.Lieferant>(
+  const [lieferant, setLieferant] = useState<undefined | ent.Lieferant>(
     undefined
   );
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function LieferantBearbeiten() {
     async function x() {
       if (id == null) return;
       setLoading(true);
-      setLieferant(await GetLieferant(id));
+      setLieferant(await GetLieferant(parseInt(id)));
       setLoading(false);
     }
     x();
@@ -28,7 +28,7 @@ export default function LieferantBearbeiten() {
     if (id == null) return;
     localStorage.removeItem("lieferanten");
     localStorage.removeItem("lieferanten-lastsync");
-    const res = await DeleteLieferant(id);
+    const res = await DeleteLieferant(parseInt(id));
     if (res) {
       navigate("/Lieferanten");
     } else {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { GetEinkaufsListe } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { ent } from "../../../wailsjs/go/models";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import EinkaufCard from "./components/EinkaufCard";
 
 export default function Einkaufsliste() {
-  const [liste, setListe] = useState<undefined | db.Einkauf[]>(undefined);
+  const [liste, setListe] = useState<undefined | ent.Mitarbeiter[]>(undefined);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Einkaufsliste() {
       ) : (
         <div className="grid grid-cols-2 gap-4 mb-5 mt-5 print:mb-0 print:mt-0 print:block">
           {liste?.map((einkauf) => (
-            <EinkaufCard einkauf={einkauf} key={einkauf.Id} />
+            <EinkaufCard einkauf={einkauf} key={einkauf.id} />
           ))}
         </div>
       )}

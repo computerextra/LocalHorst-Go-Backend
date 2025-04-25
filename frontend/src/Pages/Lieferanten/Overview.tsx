@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { GetLieferanten } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { main } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function Lieferantenübersicht() {
-  const [Lieferanten, setLieferanten] = useState<undefined | db.Lieferant[]>(
+  const [Lieferanten, setLieferanten] = useState<undefined | main.Lieferant[]>(
     undefined
   );
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export default function Lieferantenübersicht() {
     async function x() {
       setLoading(true);
 
-      let dbRes: db.Lieferant[] = [];
+      let dbRes: main.Lieferant[] = [];
 
       const today = new Date();
       const localData = localStorage.getItem("lieferanten");
@@ -73,25 +73,25 @@ export default function Lieferantenübersicht() {
             </thead>
             <tbody>
               {Lieferanten?.map((lieferant) => (
-                <tr key={lieferant.Id}>
+                <tr key={lieferant.id}>
                   <th>
                     <Link
-                      to={"/Lieferanten/" + lieferant.Id}
+                      to={"/Lieferanten/" + lieferant.id}
                       className="underline"
                     >
                       {lieferant.Firma}
                     </Link>
                   </th>
-                  <td>{lieferant.Kundennummer.String}</td>
+                  <td>{lieferant.Kundennummer}</td>
                   <td>
-                    {lieferant.Webseite.Valid ? (
+                    {lieferant.Webseite && lieferant.Webseite.length > 0 ? (
                       <a
                         className="underline text-error"
-                        href={lieferant.Webseite.String}
+                        href={lieferant.Webseite}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {lieferant.Webseite.String}
+                        {lieferant.Webseite}
                       </a>
                     ) : (
                       <span>-</span>
@@ -109,40 +109,39 @@ export default function Lieferantenübersicht() {
                       </thead>
                       <tbody>
                         {lieferant.Ansprechpartner?.map((ap) => (
-                          <tr key={ap.Id}>
+                          <tr key={ap.id}>
                             <th>{ap.Name}</th>
                             <td>
-                              {ap.Telefon.Valid &&
-                              ap.Telefon.String.length > 1 ? (
+                              {ap.Telefon && ap.Telefon.length > 1 ? (
                                 <a
                                   className="underline text-error"
-                                  href={"tel:" + ap.Telefon.String}
+                                  href={"tel:" + ap.Telefon}
                                 >
-                                  {ap.Telefon.String}
+                                  {ap.Telefon}
                                 </a>
                               ) : (
                                 <span>-</span>
                               )}
                             </td>
                             <td>
-                              {ap.Mobil.Valid && ap.Mobil.String.length > 1 ? (
+                              {ap.Mobil && ap.Mobil.length > 1 ? (
                                 <a
                                   className="underline text-error"
-                                  href={"tel:" + ap.Mobil.String}
+                                  href={"tel:" + ap.Mobil}
                                 >
-                                  {ap.Mobil.String}
+                                  {ap.Mobil}
                                 </a>
                               ) : (
                                 <span>-</span>
                               )}
                             </td>
                             <td>
-                              {ap.Mail.Valid && ap.Mail.String.length > 1 ? (
+                              {ap.Mail && ap.Mail.length > 1 ? (
                                 <a
                                   className="underline text-error"
-                                  href={"mailto:" + ap.Mail.String}
+                                  href={"mailto:" + ap.Mail}
                                 >
-                                  {ap.Mail.String}
+                                  {ap.Mail}
                                 </a>
                               ) : (
                                 <span>-</span>

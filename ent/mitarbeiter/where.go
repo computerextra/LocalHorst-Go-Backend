@@ -179,11 +179,6 @@ func Bild3Date(v time.Time) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEQ(FieldBild3Date, v))
 }
 
-// AbgescBild3Datehickt applies equality check predicate on the "AbgescBild3Datehickt" field. It's identical to AbgescBild3DatehicktEQ.
-func AbgescBild3Datehickt(v time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldEQ(FieldAbgescBild3Datehickt, v))
-}
-
 // NameEQ applies the EQ predicate on the "Name" field.
 func NameEQ(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEQ(FieldName, v))
@@ -304,6 +299,16 @@ func ShortHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldShort, v))
 }
 
+// ShortIsNil applies the IsNil predicate on the "Short" field.
+func ShortIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldShort))
+}
+
+// ShortNotNil applies the NotNil predicate on the "Short" field.
+func ShortNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldShort))
+}
+
 // ShortEqualFold applies the EqualFold predicate on the "Short" field.
 func ShortEqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldShort, v))
@@ -367,6 +372,16 @@ func GruppenwahlHasPrefix(v string) predicate.Mitarbeiter {
 // GruppenwahlHasSuffix applies the HasSuffix predicate on the "Gruppenwahl" field.
 func GruppenwahlHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldGruppenwahl, v))
+}
+
+// GruppenwahlIsNil applies the IsNil predicate on the "Gruppenwahl" field.
+func GruppenwahlIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldGruppenwahl))
+}
+
+// GruppenwahlNotNil applies the NotNil predicate on the "Gruppenwahl" field.
+func GruppenwahlNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldGruppenwahl))
 }
 
 // GruppenwahlEqualFold applies the EqualFold predicate on the "Gruppenwahl" field.
@@ -434,6 +449,16 @@ func InternTelefon1HasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldInternTelefon1, v))
 }
 
+// InternTelefon1IsNil applies the IsNil predicate on the "InternTelefon1" field.
+func InternTelefon1IsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldInternTelefon1))
+}
+
+// InternTelefon1NotNil applies the NotNil predicate on the "InternTelefon1" field.
+func InternTelefon1NotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldInternTelefon1))
+}
+
 // InternTelefon1EqualFold applies the EqualFold predicate on the "InternTelefon1" field.
 func InternTelefon1EqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldInternTelefon1, v))
@@ -497,6 +522,16 @@ func InternTelefon2HasPrefix(v string) predicate.Mitarbeiter {
 // InternTelefon2HasSuffix applies the HasSuffix predicate on the "InternTelefon2" field.
 func InternTelefon2HasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldInternTelefon2, v))
+}
+
+// InternTelefon2IsNil applies the IsNil predicate on the "InternTelefon2" field.
+func InternTelefon2IsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldInternTelefon2))
+}
+
+// InternTelefon2NotNil applies the NotNil predicate on the "InternTelefon2" field.
+func InternTelefon2NotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldInternTelefon2))
 }
 
 // InternTelefon2EqualFold applies the EqualFold predicate on the "InternTelefon2" field.
@@ -564,6 +599,16 @@ func FestnetzPrivatHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldFestnetzPrivat, v))
 }
 
+// FestnetzPrivatIsNil applies the IsNil predicate on the "FestnetzPrivat" field.
+func FestnetzPrivatIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldFestnetzPrivat))
+}
+
+// FestnetzPrivatNotNil applies the NotNil predicate on the "FestnetzPrivat" field.
+func FestnetzPrivatNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldFestnetzPrivat))
+}
+
 // FestnetzPrivatEqualFold applies the EqualFold predicate on the "FestnetzPrivat" field.
 func FestnetzPrivatEqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldFestnetzPrivat, v))
@@ -627,6 +672,16 @@ func FestnetzAlternativHasPrefix(v string) predicate.Mitarbeiter {
 // FestnetzAlternativHasSuffix applies the HasSuffix predicate on the "FestnetzAlternativ" field.
 func FestnetzAlternativHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldFestnetzAlternativ, v))
+}
+
+// FestnetzAlternativIsNil applies the IsNil predicate on the "FestnetzAlternativ" field.
+func FestnetzAlternativIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldFestnetzAlternativ))
+}
+
+// FestnetzAlternativNotNil applies the NotNil predicate on the "FestnetzAlternativ" field.
+func FestnetzAlternativNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldFestnetzAlternativ))
 }
 
 // FestnetzAlternativEqualFold applies the EqualFold predicate on the "FestnetzAlternativ" field.
@@ -694,6 +749,16 @@ func HomeOfficeHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldHomeOffice, v))
 }
 
+// HomeOfficeIsNil applies the IsNil predicate on the "HomeOffice" field.
+func HomeOfficeIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldHomeOffice))
+}
+
+// HomeOfficeNotNil applies the NotNil predicate on the "HomeOffice" field.
+func HomeOfficeNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldHomeOffice))
+}
+
 // HomeOfficeEqualFold applies the EqualFold predicate on the "HomeOffice" field.
 func HomeOfficeEqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldHomeOffice, v))
@@ -757,6 +822,16 @@ func MobilBusinessHasPrefix(v string) predicate.Mitarbeiter {
 // MobilBusinessHasSuffix applies the HasSuffix predicate on the "MobilBusiness" field.
 func MobilBusinessHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldMobilBusiness, v))
+}
+
+// MobilBusinessIsNil applies the IsNil predicate on the "MobilBusiness" field.
+func MobilBusinessIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldMobilBusiness))
+}
+
+// MobilBusinessNotNil applies the NotNil predicate on the "MobilBusiness" field.
+func MobilBusinessNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldMobilBusiness))
 }
 
 // MobilBusinessEqualFold applies the EqualFold predicate on the "MobilBusiness" field.
@@ -824,6 +899,16 @@ func MobilPrivatHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldMobilPrivat, v))
 }
 
+// MobilPrivatIsNil applies the IsNil predicate on the "MobilPrivat" field.
+func MobilPrivatIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldMobilPrivat))
+}
+
+// MobilPrivatNotNil applies the NotNil predicate on the "MobilPrivat" field.
+func MobilPrivatNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldMobilPrivat))
+}
+
 // MobilPrivatEqualFold applies the EqualFold predicate on the "MobilPrivat" field.
 func MobilPrivatEqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldMobilPrivat, v))
@@ -889,6 +974,16 @@ func EmailHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldEmail, v))
 }
 
+// EmailIsNil applies the IsNil predicate on the "Email" field.
+func EmailIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldEmail))
+}
+
+// EmailNotNil applies the NotNil predicate on the "Email" field.
+func EmailNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldEmail))
+}
+
 // EmailEqualFold applies the EqualFold predicate on the "Email" field.
 func EmailEqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldEmail, v))
@@ -947,6 +1042,16 @@ func GeburtstagLT(v time.Time) predicate.Mitarbeiter {
 // GeburtstagLTE applies the LTE predicate on the "Geburtstag" field.
 func GeburtstagLTE(v time.Time) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldLTE(FieldGeburtstag, v))
+}
+
+// GeburtstagIsNil applies the IsNil predicate on the "Geburtstag" field.
+func GeburtstagIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldGeburtstag))
+}
+
+// GeburtstagNotNil applies the NotNil predicate on the "Geburtstag" field.
+func GeburtstagNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldGeburtstag))
 }
 
 // PaypalEQ applies the EQ predicate on the "Paypal" field.
@@ -1024,6 +1129,16 @@ func GeldHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldGeld, v))
 }
 
+// GeldIsNil applies the IsNil predicate on the "Geld" field.
+func GeldIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldGeld))
+}
+
+// GeldNotNil applies the NotNil predicate on the "Geld" field.
+func GeldNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldGeld))
+}
+
 // GeldEqualFold applies the EqualFold predicate on the "Geld" field.
 func GeldEqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldGeld, v))
@@ -1087,6 +1202,16 @@ func PfandHasPrefix(v string) predicate.Mitarbeiter {
 // PfandHasSuffix applies the HasSuffix predicate on the "Pfand" field.
 func PfandHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldPfand, v))
+}
+
+// PfandIsNil applies the IsNil predicate on the "Pfand" field.
+func PfandIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldPfand))
+}
+
+// PfandNotNil applies the NotNil predicate on the "Pfand" field.
+func PfandNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldPfand))
 }
 
 // PfandEqualFold applies the EqualFold predicate on the "Pfand" field.
@@ -1154,6 +1279,16 @@ func DingeHasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldDinge, v))
 }
 
+// DingeIsNil applies the IsNil predicate on the "Dinge" field.
+func DingeIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldDinge))
+}
+
+// DingeNotNil applies the NotNil predicate on the "Dinge" field.
+func DingeNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldDinge))
+}
+
 // DingeEqualFold applies the EqualFold predicate on the "Dinge" field.
 func DingeEqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldDinge, v))
@@ -1202,6 +1337,16 @@ func AbgeschicktLT(v time.Time) predicate.Mitarbeiter {
 // AbgeschicktLTE applies the LTE predicate on the "Abgeschickt" field.
 func AbgeschicktLTE(v time.Time) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldLTE(FieldAbgeschickt, v))
+}
+
+// AbgeschicktIsNil applies the IsNil predicate on the "Abgeschickt" field.
+func AbgeschicktIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldAbgeschickt))
+}
+
+// AbgeschicktNotNil applies the NotNil predicate on the "Abgeschickt" field.
+func AbgeschicktNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldAbgeschickt))
 }
 
 // Bild1EQ applies the EQ predicate on the "Bild1" field.
@@ -1257,6 +1402,16 @@ func Bild1HasPrefix(v string) predicate.Mitarbeiter {
 // Bild1HasSuffix applies the HasSuffix predicate on the "Bild1" field.
 func Bild1HasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldBild1, v))
+}
+
+// Bild1IsNil applies the IsNil predicate on the "Bild1" field.
+func Bild1IsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldBild1))
+}
+
+// Bild1NotNil applies the NotNil predicate on the "Bild1" field.
+func Bild1NotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldBild1))
 }
 
 // Bild1EqualFold applies the EqualFold predicate on the "Bild1" field.
@@ -1324,6 +1479,16 @@ func Bild2HasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldBild2, v))
 }
 
+// Bild2IsNil applies the IsNil predicate on the "Bild2" field.
+func Bild2IsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldBild2))
+}
+
+// Bild2NotNil applies the NotNil predicate on the "Bild2" field.
+func Bild2NotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldBild2))
+}
+
 // Bild2EqualFold applies the EqualFold predicate on the "Bild2" field.
 func Bild2EqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldBild2, v))
@@ -1389,6 +1554,16 @@ func Bild3HasSuffix(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldHasSuffix(FieldBild3, v))
 }
 
+// Bild3IsNil applies the IsNil predicate on the "Bild3" field.
+func Bild3IsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldBild3))
+}
+
+// Bild3NotNil applies the NotNil predicate on the "Bild3" field.
+func Bild3NotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldBild3))
+}
+
 // Bild3EqualFold applies the EqualFold predicate on the "Bild3" field.
 func Bild3EqualFold(v string) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEqualFold(FieldBild3, v))
@@ -1439,6 +1614,16 @@ func Bild1DateLTE(v time.Time) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldLTE(FieldBild1Date, v))
 }
 
+// Bild1DateIsNil applies the IsNil predicate on the "Bild1Date" field.
+func Bild1DateIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldBild1Date))
+}
+
+// Bild1DateNotNil applies the NotNil predicate on the "Bild1Date" field.
+func Bild1DateNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldBild1Date))
+}
+
 // Bild2DateEQ applies the EQ predicate on the "Bild2Date" field.
 func Bild2DateEQ(v time.Time) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldEQ(FieldBild2Date, v))
@@ -1477,6 +1662,16 @@ func Bild2DateLT(v time.Time) predicate.Mitarbeiter {
 // Bild2DateLTE applies the LTE predicate on the "Bild2Date" field.
 func Bild2DateLTE(v time.Time) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldLTE(FieldBild2Date, v))
+}
+
+// Bild2DateIsNil applies the IsNil predicate on the "Bild2Date" field.
+func Bild2DateIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldBild2Date))
+}
+
+// Bild2DateNotNil applies the NotNil predicate on the "Bild2Date" field.
+func Bild2DateNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldBild2Date))
 }
 
 // Bild3DateEQ applies the EQ predicate on the "Bild3Date" field.
@@ -1519,44 +1714,14 @@ func Bild3DateLTE(v time.Time) predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldLTE(FieldBild3Date, v))
 }
 
-// AbgescBild3DatehicktEQ applies the EQ predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktEQ(v time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldEQ(FieldAbgescBild3Datehickt, v))
+// Bild3DateIsNil applies the IsNil predicate on the "Bild3Date" field.
+func Bild3DateIsNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldIsNull(FieldBild3Date))
 }
 
-// AbgescBild3DatehicktNEQ applies the NEQ predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktNEQ(v time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldNEQ(FieldAbgescBild3Datehickt, v))
-}
-
-// AbgescBild3DatehicktIn applies the In predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktIn(vs ...time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldIn(FieldAbgescBild3Datehickt, vs...))
-}
-
-// AbgescBild3DatehicktNotIn applies the NotIn predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktNotIn(vs ...time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldNotIn(FieldAbgescBild3Datehickt, vs...))
-}
-
-// AbgescBild3DatehicktGT applies the GT predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktGT(v time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldGT(FieldAbgescBild3Datehickt, v))
-}
-
-// AbgescBild3DatehicktGTE applies the GTE predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktGTE(v time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldGTE(FieldAbgescBild3Datehickt, v))
-}
-
-// AbgescBild3DatehicktLT applies the LT predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktLT(v time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldLT(FieldAbgescBild3Datehickt, v))
-}
-
-// AbgescBild3DatehicktLTE applies the LTE predicate on the "AbgescBild3Datehickt" field.
-func AbgescBild3DatehicktLTE(v time.Time) predicate.Mitarbeiter {
-	return predicate.Mitarbeiter(sql.FieldLTE(FieldAbgescBild3Datehickt, v))
+// Bild3DateNotNil applies the NotNil predicate on the "Bild3Date" field.
+func Bild3DateNotNil() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(sql.FieldNotNull(FieldBild3Date))
 }
 
 // And groups predicates with the AND operator between them.

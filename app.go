@@ -52,6 +52,11 @@ func (a *App) startup(ctx context.Context) {
 		})
 		panic(err)
 	}
+	// run automatic migrations
+	if err := client.Schema.Create(context.Background()); err != nil {
+		panic(err)
+	}
+
 	a.db = client
 }
 

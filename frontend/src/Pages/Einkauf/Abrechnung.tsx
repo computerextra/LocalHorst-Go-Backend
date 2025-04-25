@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { GetEinkaufsListe, SendAbrechnung } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { ent } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
@@ -8,16 +8,16 @@ export default function EinkaufAbrechnung() {
   const [username, setUsername] = useState("");
   const [betrag, setBetrag] = useState<string | undefined>(undefined);
   const [mail, setMail] = useState<string | undefined>(undefined);
-  const [users, setUsers] = useState<undefined | db.Einkauf[]>(undefined);
+  const [users, setUsers] = useState<undefined | ent.Mitarbeiter[]>(undefined);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function x() {
       setLoading(true);
       const res = await GetEinkaufsListe();
-      const ma: db.Einkauf[] = [];
+      const ma: ent.Mitarbeiter[] = [];
       res.forEach((x) => {
-        if (x.Mitarbeiter.Email.Valid && x.Paypal) {
+        if (x.Email && x.Email.length > 0 && x.Paypal) {
           ma.push(x);
         }
       });
@@ -35,9 +35,9 @@ export default function EinkaufAbrechnung() {
     setLoading(true);
     if (await SendAbrechnung(username, betrag, mail)) {
       setUsers((prev) => {
-        const x: db.Einkauf[] = [];
+        const x: ent.Mitarbeiter[] = [];
         prev?.map((y) => {
-          if (y.Mitarbeiter.Email.String != mail) {
+          if (y.Email != mail) {
             x.push(y);
           }
         });
@@ -101,8 +101,8 @@ export default function EinkaufAbrechnung() {
                 Bitte Wählen ...
               </option>
               {users?.map((x) => (
-                <option value={x.Mitarbeiter.Email.String} key={x.Id}>
-                  {x.Mitarbeiter.Name}
+                <option value={x.Email} key={x.id}>
+                  {x.Name}
                 </option>
               ))}
             </select>

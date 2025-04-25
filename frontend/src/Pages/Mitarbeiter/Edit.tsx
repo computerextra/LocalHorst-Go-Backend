@@ -4,14 +4,14 @@ import {
   DeleteMitarbeiter,
   GetMitarbeiter,
 } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { ent } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import MitarbeiterForm from "./components/MitarbeiterForm";
 
 export default function MitarbeiterBearbeiter() {
   const { id } = useParams();
-  const [mitarbeiter, setMitarbeiter] = useState<db.Mitarbeiter | undefined>(
+  const [mitarbeiter, setMitarbeiter] = useState<ent.Mitarbeiter | undefined>(
     undefined
   );
   const [loading, setLoading] = useState(false);
@@ -22,14 +22,14 @@ export default function MitarbeiterBearbeiter() {
     async function x() {
       if (id == null) return;
       setLoading(true);
-      setMitarbeiter(await GetMitarbeiter(id));
+      setMitarbeiter(await GetMitarbeiter(parseInt(id)));
       setLoading(false);
     }
     x();
   }, [id]);
 
   const handleDelete = async () => {
-    await DeleteMitarbeiter(id!);
+    await DeleteMitarbeiter(parseInt(id!));
     localStorage.removeItem("geburtstage");
     localStorage.removeItem("geburtstag-lastsync");
     navigate("/Mitarbeiter");

@@ -56,6 +56,12 @@ func (mu *MitarbeiterUpdate) SetNillableShort(s *string) *MitarbeiterUpdate {
 	return mu
 }
 
+// ClearShort clears the value of the "Short" field.
+func (mu *MitarbeiterUpdate) ClearShort() *MitarbeiterUpdate {
+	mu.mutation.ClearShort()
+	return mu
+}
+
 // SetGruppenwahl sets the "Gruppenwahl" field.
 func (mu *MitarbeiterUpdate) SetGruppenwahl(s string) *MitarbeiterUpdate {
 	mu.mutation.SetGruppenwahl(s)
@@ -67,6 +73,12 @@ func (mu *MitarbeiterUpdate) SetNillableGruppenwahl(s *string) *MitarbeiterUpdat
 	if s != nil {
 		mu.SetGruppenwahl(*s)
 	}
+	return mu
+}
+
+// ClearGruppenwahl clears the value of the "Gruppenwahl" field.
+func (mu *MitarbeiterUpdate) ClearGruppenwahl() *MitarbeiterUpdate {
+	mu.mutation.ClearGruppenwahl()
 	return mu
 }
 
@@ -84,6 +96,12 @@ func (mu *MitarbeiterUpdate) SetNillableInternTelefon1(s *string) *MitarbeiterUp
 	return mu
 }
 
+// ClearInternTelefon1 clears the value of the "InternTelefon1" field.
+func (mu *MitarbeiterUpdate) ClearInternTelefon1() *MitarbeiterUpdate {
+	mu.mutation.ClearInternTelefon1()
+	return mu
+}
+
 // SetInternTelefon2 sets the "InternTelefon2" field.
 func (mu *MitarbeiterUpdate) SetInternTelefon2(s string) *MitarbeiterUpdate {
 	mu.mutation.SetInternTelefon2(s)
@@ -95,6 +113,12 @@ func (mu *MitarbeiterUpdate) SetNillableInternTelefon2(s *string) *MitarbeiterUp
 	if s != nil {
 		mu.SetInternTelefon2(*s)
 	}
+	return mu
+}
+
+// ClearInternTelefon2 clears the value of the "InternTelefon2" field.
+func (mu *MitarbeiterUpdate) ClearInternTelefon2() *MitarbeiterUpdate {
+	mu.mutation.ClearInternTelefon2()
 	return mu
 }
 
@@ -112,6 +136,12 @@ func (mu *MitarbeiterUpdate) SetNillableFestnetzPrivat(s *string) *MitarbeiterUp
 	return mu
 }
 
+// ClearFestnetzPrivat clears the value of the "FestnetzPrivat" field.
+func (mu *MitarbeiterUpdate) ClearFestnetzPrivat() *MitarbeiterUpdate {
+	mu.mutation.ClearFestnetzPrivat()
+	return mu
+}
+
 // SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
 func (mu *MitarbeiterUpdate) SetFestnetzAlternativ(s string) *MitarbeiterUpdate {
 	mu.mutation.SetFestnetzAlternativ(s)
@@ -123,6 +153,12 @@ func (mu *MitarbeiterUpdate) SetNillableFestnetzAlternativ(s *string) *Mitarbeit
 	if s != nil {
 		mu.SetFestnetzAlternativ(*s)
 	}
+	return mu
+}
+
+// ClearFestnetzAlternativ clears the value of the "FestnetzAlternativ" field.
+func (mu *MitarbeiterUpdate) ClearFestnetzAlternativ() *MitarbeiterUpdate {
+	mu.mutation.ClearFestnetzAlternativ()
 	return mu
 }
 
@@ -140,6 +176,12 @@ func (mu *MitarbeiterUpdate) SetNillableHomeOffice(s *string) *MitarbeiterUpdate
 	return mu
 }
 
+// ClearHomeOffice clears the value of the "HomeOffice" field.
+func (mu *MitarbeiterUpdate) ClearHomeOffice() *MitarbeiterUpdate {
+	mu.mutation.ClearHomeOffice()
+	return mu
+}
+
 // SetMobilBusiness sets the "MobilBusiness" field.
 func (mu *MitarbeiterUpdate) SetMobilBusiness(s string) *MitarbeiterUpdate {
 	mu.mutation.SetMobilBusiness(s)
@@ -151,6 +193,12 @@ func (mu *MitarbeiterUpdate) SetNillableMobilBusiness(s *string) *MitarbeiterUpd
 	if s != nil {
 		mu.SetMobilBusiness(*s)
 	}
+	return mu
+}
+
+// ClearMobilBusiness clears the value of the "MobilBusiness" field.
+func (mu *MitarbeiterUpdate) ClearMobilBusiness() *MitarbeiterUpdate {
+	mu.mutation.ClearMobilBusiness()
 	return mu
 }
 
@@ -168,6 +216,12 @@ func (mu *MitarbeiterUpdate) SetNillableMobilPrivat(s *string) *MitarbeiterUpdat
 	return mu
 }
 
+// ClearMobilPrivat clears the value of the "MobilPrivat" field.
+func (mu *MitarbeiterUpdate) ClearMobilPrivat() *MitarbeiterUpdate {
+	mu.mutation.ClearMobilPrivat()
+	return mu
+}
+
 // SetEmail sets the "Email" field.
 func (mu *MitarbeiterUpdate) SetEmail(s string) *MitarbeiterUpdate {
 	mu.mutation.SetEmail(s)
@@ -179,6 +233,12 @@ func (mu *MitarbeiterUpdate) SetNillableEmail(s *string) *MitarbeiterUpdate {
 	if s != nil {
 		mu.SetEmail(*s)
 	}
+	return mu
+}
+
+// ClearEmail clears the value of the "Email" field.
+func (mu *MitarbeiterUpdate) ClearEmail() *MitarbeiterUpdate {
+	mu.mutation.ClearEmail()
 	return mu
 }
 
@@ -207,6 +267,12 @@ func (mu *MitarbeiterUpdate) SetNillableGeburtstag(t *time.Time) *MitarbeiterUpd
 	if t != nil {
 		mu.SetGeburtstag(*t)
 	}
+	return mu
+}
+
+// ClearGeburtstag clears the value of the "Geburtstag" field.
+func (mu *MitarbeiterUpdate) ClearGeburtstag() *MitarbeiterUpdate {
+	mu.mutation.ClearGeburtstag()
 	return mu
 }
 
@@ -252,6 +318,12 @@ func (mu *MitarbeiterUpdate) SetNillableGeld(s *string) *MitarbeiterUpdate {
 	return mu
 }
 
+// ClearGeld clears the value of the "Geld" field.
+func (mu *MitarbeiterUpdate) ClearGeld() *MitarbeiterUpdate {
+	mu.mutation.ClearGeld()
+	return mu
+}
+
 // SetPfand sets the "Pfand" field.
 func (mu *MitarbeiterUpdate) SetPfand(s string) *MitarbeiterUpdate {
 	mu.mutation.SetPfand(s)
@@ -263,6 +335,12 @@ func (mu *MitarbeiterUpdate) SetNillablePfand(s *string) *MitarbeiterUpdate {
 	if s != nil {
 		mu.SetPfand(*s)
 	}
+	return mu
+}
+
+// ClearPfand clears the value of the "Pfand" field.
+func (mu *MitarbeiterUpdate) ClearPfand() *MitarbeiterUpdate {
+	mu.mutation.ClearPfand()
 	return mu
 }
 
@@ -280,6 +358,12 @@ func (mu *MitarbeiterUpdate) SetNillableDinge(s *string) *MitarbeiterUpdate {
 	return mu
 }
 
+// ClearDinge clears the value of the "Dinge" field.
+func (mu *MitarbeiterUpdate) ClearDinge() *MitarbeiterUpdate {
+	mu.mutation.ClearDinge()
+	return mu
+}
+
 // SetAbgeschickt sets the "Abgeschickt" field.
 func (mu *MitarbeiterUpdate) SetAbgeschickt(t time.Time) *MitarbeiterUpdate {
 	mu.mutation.SetAbgeschickt(t)
@@ -291,6 +375,12 @@ func (mu *MitarbeiterUpdate) SetNillableAbgeschickt(t *time.Time) *MitarbeiterUp
 	if t != nil {
 		mu.SetAbgeschickt(*t)
 	}
+	return mu
+}
+
+// ClearAbgeschickt clears the value of the "Abgeschickt" field.
+func (mu *MitarbeiterUpdate) ClearAbgeschickt() *MitarbeiterUpdate {
+	mu.mutation.ClearAbgeschickt()
 	return mu
 }
 
@@ -308,6 +398,12 @@ func (mu *MitarbeiterUpdate) SetNillableBild1(s *string) *MitarbeiterUpdate {
 	return mu
 }
 
+// ClearBild1 clears the value of the "Bild1" field.
+func (mu *MitarbeiterUpdate) ClearBild1() *MitarbeiterUpdate {
+	mu.mutation.ClearBild1()
+	return mu
+}
+
 // SetBild2 sets the "Bild2" field.
 func (mu *MitarbeiterUpdate) SetBild2(s string) *MitarbeiterUpdate {
 	mu.mutation.SetBild2(s)
@@ -319,6 +415,12 @@ func (mu *MitarbeiterUpdate) SetNillableBild2(s *string) *MitarbeiterUpdate {
 	if s != nil {
 		mu.SetBild2(*s)
 	}
+	return mu
+}
+
+// ClearBild2 clears the value of the "Bild2" field.
+func (mu *MitarbeiterUpdate) ClearBild2() *MitarbeiterUpdate {
+	mu.mutation.ClearBild2()
 	return mu
 }
 
@@ -336,6 +438,12 @@ func (mu *MitarbeiterUpdate) SetNillableBild3(s *string) *MitarbeiterUpdate {
 	return mu
 }
 
+// ClearBild3 clears the value of the "Bild3" field.
+func (mu *MitarbeiterUpdate) ClearBild3() *MitarbeiterUpdate {
+	mu.mutation.ClearBild3()
+	return mu
+}
+
 // SetBild1Date sets the "Bild1Date" field.
 func (mu *MitarbeiterUpdate) SetBild1Date(t time.Time) *MitarbeiterUpdate {
 	mu.mutation.SetBild1Date(t)
@@ -347,6 +455,12 @@ func (mu *MitarbeiterUpdate) SetNillableBild1Date(t *time.Time) *MitarbeiterUpda
 	if t != nil {
 		mu.SetBild1Date(*t)
 	}
+	return mu
+}
+
+// ClearBild1Date clears the value of the "Bild1Date" field.
+func (mu *MitarbeiterUpdate) ClearBild1Date() *MitarbeiterUpdate {
+	mu.mutation.ClearBild1Date()
 	return mu
 }
 
@@ -364,6 +478,12 @@ func (mu *MitarbeiterUpdate) SetNillableBild2Date(t *time.Time) *MitarbeiterUpda
 	return mu
 }
 
+// ClearBild2Date clears the value of the "Bild2Date" field.
+func (mu *MitarbeiterUpdate) ClearBild2Date() *MitarbeiterUpdate {
+	mu.mutation.ClearBild2Date()
+	return mu
+}
+
 // SetBild3Date sets the "Bild3Date" field.
 func (mu *MitarbeiterUpdate) SetBild3Date(t time.Time) *MitarbeiterUpdate {
 	mu.mutation.SetBild3Date(t)
@@ -378,17 +498,9 @@ func (mu *MitarbeiterUpdate) SetNillableBild3Date(t *time.Time) *MitarbeiterUpda
 	return mu
 }
 
-// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
-func (mu *MitarbeiterUpdate) SetAbgescBild3Datehickt(t time.Time) *MitarbeiterUpdate {
-	mu.mutation.SetAbgescBild3Datehickt(t)
-	return mu
-}
-
-// SetNillableAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field if the given value is not nil.
-func (mu *MitarbeiterUpdate) SetNillableAbgescBild3Datehickt(t *time.Time) *MitarbeiterUpdate {
-	if t != nil {
-		mu.SetAbgescBild3Datehickt(*t)
-	}
+// ClearBild3Date clears the value of the "Bild3Date" field.
+func (mu *MitarbeiterUpdate) ClearBild3Date() *MitarbeiterUpdate {
+	mu.mutation.ClearBild3Date()
 	return mu
 }
 
@@ -452,38 +564,71 @@ func (mu *MitarbeiterUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := mu.mutation.Short(); ok {
 		_spec.SetField(mitarbeiter.FieldShort, field.TypeString, value)
 	}
+	if mu.mutation.ShortCleared() {
+		_spec.ClearField(mitarbeiter.FieldShort, field.TypeString)
+	}
 	if value, ok := mu.mutation.Gruppenwahl(); ok {
 		_spec.SetField(mitarbeiter.FieldGruppenwahl, field.TypeString, value)
+	}
+	if mu.mutation.GruppenwahlCleared() {
+		_spec.ClearField(mitarbeiter.FieldGruppenwahl, field.TypeString)
 	}
 	if value, ok := mu.mutation.InternTelefon1(); ok {
 		_spec.SetField(mitarbeiter.FieldInternTelefon1, field.TypeString, value)
 	}
+	if mu.mutation.InternTelefon1Cleared() {
+		_spec.ClearField(mitarbeiter.FieldInternTelefon1, field.TypeString)
+	}
 	if value, ok := mu.mutation.InternTelefon2(); ok {
 		_spec.SetField(mitarbeiter.FieldInternTelefon2, field.TypeString, value)
+	}
+	if mu.mutation.InternTelefon2Cleared() {
+		_spec.ClearField(mitarbeiter.FieldInternTelefon2, field.TypeString)
 	}
 	if value, ok := mu.mutation.FestnetzPrivat(); ok {
 		_spec.SetField(mitarbeiter.FieldFestnetzPrivat, field.TypeString, value)
 	}
+	if mu.mutation.FestnetzPrivatCleared() {
+		_spec.ClearField(mitarbeiter.FieldFestnetzPrivat, field.TypeString)
+	}
 	if value, ok := mu.mutation.FestnetzAlternativ(); ok {
 		_spec.SetField(mitarbeiter.FieldFestnetzAlternativ, field.TypeString, value)
+	}
+	if mu.mutation.FestnetzAlternativCleared() {
+		_spec.ClearField(mitarbeiter.FieldFestnetzAlternativ, field.TypeString)
 	}
 	if value, ok := mu.mutation.HomeOffice(); ok {
 		_spec.SetField(mitarbeiter.FieldHomeOffice, field.TypeString, value)
 	}
+	if mu.mutation.HomeOfficeCleared() {
+		_spec.ClearField(mitarbeiter.FieldHomeOffice, field.TypeString)
+	}
 	if value, ok := mu.mutation.MobilBusiness(); ok {
 		_spec.SetField(mitarbeiter.FieldMobilBusiness, field.TypeString, value)
+	}
+	if mu.mutation.MobilBusinessCleared() {
+		_spec.ClearField(mitarbeiter.FieldMobilBusiness, field.TypeString)
 	}
 	if value, ok := mu.mutation.MobilPrivat(); ok {
 		_spec.SetField(mitarbeiter.FieldMobilPrivat, field.TypeString, value)
 	}
+	if mu.mutation.MobilPrivatCleared() {
+		_spec.ClearField(mitarbeiter.FieldMobilPrivat, field.TypeString)
+	}
 	if value, ok := mu.mutation.Email(); ok {
 		_spec.SetField(mitarbeiter.FieldEmail, field.TypeString, value)
+	}
+	if mu.mutation.EmailCleared() {
+		_spec.ClearField(mitarbeiter.FieldEmail, field.TypeString)
 	}
 	if value, ok := mu.mutation.Azubi(); ok {
 		_spec.SetField(mitarbeiter.FieldAzubi, field.TypeBool, value)
 	}
 	if value, ok := mu.mutation.Geburtstag(); ok {
 		_spec.SetField(mitarbeiter.FieldGeburtstag, field.TypeTime, value)
+	}
+	if mu.mutation.GeburtstagCleared() {
+		_spec.ClearField(mitarbeiter.FieldGeburtstag, field.TypeTime)
 	}
 	if value, ok := mu.mutation.Paypal(); ok {
 		_spec.SetField(mitarbeiter.FieldPaypal, field.TypeBool, value)
@@ -494,35 +639,62 @@ func (mu *MitarbeiterUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := mu.mutation.Geld(); ok {
 		_spec.SetField(mitarbeiter.FieldGeld, field.TypeString, value)
 	}
+	if mu.mutation.GeldCleared() {
+		_spec.ClearField(mitarbeiter.FieldGeld, field.TypeString)
+	}
 	if value, ok := mu.mutation.Pfand(); ok {
 		_spec.SetField(mitarbeiter.FieldPfand, field.TypeString, value)
+	}
+	if mu.mutation.PfandCleared() {
+		_spec.ClearField(mitarbeiter.FieldPfand, field.TypeString)
 	}
 	if value, ok := mu.mutation.Dinge(); ok {
 		_spec.SetField(mitarbeiter.FieldDinge, field.TypeString, value)
 	}
+	if mu.mutation.DingeCleared() {
+		_spec.ClearField(mitarbeiter.FieldDinge, field.TypeString)
+	}
 	if value, ok := mu.mutation.Abgeschickt(); ok {
 		_spec.SetField(mitarbeiter.FieldAbgeschickt, field.TypeTime, value)
+	}
+	if mu.mutation.AbgeschicktCleared() {
+		_spec.ClearField(mitarbeiter.FieldAbgeschickt, field.TypeTime)
 	}
 	if value, ok := mu.mutation.Bild1(); ok {
 		_spec.SetField(mitarbeiter.FieldBild1, field.TypeString, value)
 	}
+	if mu.mutation.Bild1Cleared() {
+		_spec.ClearField(mitarbeiter.FieldBild1, field.TypeString)
+	}
 	if value, ok := mu.mutation.Bild2(); ok {
 		_spec.SetField(mitarbeiter.FieldBild2, field.TypeString, value)
+	}
+	if mu.mutation.Bild2Cleared() {
+		_spec.ClearField(mitarbeiter.FieldBild2, field.TypeString)
 	}
 	if value, ok := mu.mutation.Bild3(); ok {
 		_spec.SetField(mitarbeiter.FieldBild3, field.TypeString, value)
 	}
+	if mu.mutation.Bild3Cleared() {
+		_spec.ClearField(mitarbeiter.FieldBild3, field.TypeString)
+	}
 	if value, ok := mu.mutation.Bild1Date(); ok {
 		_spec.SetField(mitarbeiter.FieldBild1Date, field.TypeTime, value)
+	}
+	if mu.mutation.Bild1DateCleared() {
+		_spec.ClearField(mitarbeiter.FieldBild1Date, field.TypeTime)
 	}
 	if value, ok := mu.mutation.Bild2Date(); ok {
 		_spec.SetField(mitarbeiter.FieldBild2Date, field.TypeTime, value)
 	}
+	if mu.mutation.Bild2DateCleared() {
+		_spec.ClearField(mitarbeiter.FieldBild2Date, field.TypeTime)
+	}
 	if value, ok := mu.mutation.Bild3Date(); ok {
 		_spec.SetField(mitarbeiter.FieldBild3Date, field.TypeTime, value)
 	}
-	if value, ok := mu.mutation.AbgescBild3Datehickt(); ok {
-		_spec.SetField(mitarbeiter.FieldAbgescBild3Datehickt, field.TypeTime, value)
+	if mu.mutation.Bild3DateCleared() {
+		_spec.ClearField(mitarbeiter.FieldBild3Date, field.TypeTime)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -572,6 +744,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableShort(s *string) *MitarbeiterUpdateO
 	return muo
 }
 
+// ClearShort clears the value of the "Short" field.
+func (muo *MitarbeiterUpdateOne) ClearShort() *MitarbeiterUpdateOne {
+	muo.mutation.ClearShort()
+	return muo
+}
+
 // SetGruppenwahl sets the "Gruppenwahl" field.
 func (muo *MitarbeiterUpdateOne) SetGruppenwahl(s string) *MitarbeiterUpdateOne {
 	muo.mutation.SetGruppenwahl(s)
@@ -583,6 +761,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableGruppenwahl(s *string) *MitarbeiterU
 	if s != nil {
 		muo.SetGruppenwahl(*s)
 	}
+	return muo
+}
+
+// ClearGruppenwahl clears the value of the "Gruppenwahl" field.
+func (muo *MitarbeiterUpdateOne) ClearGruppenwahl() *MitarbeiterUpdateOne {
+	muo.mutation.ClearGruppenwahl()
 	return muo
 }
 
@@ -600,6 +784,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableInternTelefon1(s *string) *Mitarbeit
 	return muo
 }
 
+// ClearInternTelefon1 clears the value of the "InternTelefon1" field.
+func (muo *MitarbeiterUpdateOne) ClearInternTelefon1() *MitarbeiterUpdateOne {
+	muo.mutation.ClearInternTelefon1()
+	return muo
+}
+
 // SetInternTelefon2 sets the "InternTelefon2" field.
 func (muo *MitarbeiterUpdateOne) SetInternTelefon2(s string) *MitarbeiterUpdateOne {
 	muo.mutation.SetInternTelefon2(s)
@@ -611,6 +801,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableInternTelefon2(s *string) *Mitarbeit
 	if s != nil {
 		muo.SetInternTelefon2(*s)
 	}
+	return muo
+}
+
+// ClearInternTelefon2 clears the value of the "InternTelefon2" field.
+func (muo *MitarbeiterUpdateOne) ClearInternTelefon2() *MitarbeiterUpdateOne {
+	muo.mutation.ClearInternTelefon2()
 	return muo
 }
 
@@ -628,6 +824,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableFestnetzPrivat(s *string) *Mitarbeit
 	return muo
 }
 
+// ClearFestnetzPrivat clears the value of the "FestnetzPrivat" field.
+func (muo *MitarbeiterUpdateOne) ClearFestnetzPrivat() *MitarbeiterUpdateOne {
+	muo.mutation.ClearFestnetzPrivat()
+	return muo
+}
+
 // SetFestnetzAlternativ sets the "FestnetzAlternativ" field.
 func (muo *MitarbeiterUpdateOne) SetFestnetzAlternativ(s string) *MitarbeiterUpdateOne {
 	muo.mutation.SetFestnetzAlternativ(s)
@@ -639,6 +841,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableFestnetzAlternativ(s *string) *Mitar
 	if s != nil {
 		muo.SetFestnetzAlternativ(*s)
 	}
+	return muo
+}
+
+// ClearFestnetzAlternativ clears the value of the "FestnetzAlternativ" field.
+func (muo *MitarbeiterUpdateOne) ClearFestnetzAlternativ() *MitarbeiterUpdateOne {
+	muo.mutation.ClearFestnetzAlternativ()
 	return muo
 }
 
@@ -656,6 +864,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableHomeOffice(s *string) *MitarbeiterUp
 	return muo
 }
 
+// ClearHomeOffice clears the value of the "HomeOffice" field.
+func (muo *MitarbeiterUpdateOne) ClearHomeOffice() *MitarbeiterUpdateOne {
+	muo.mutation.ClearHomeOffice()
+	return muo
+}
+
 // SetMobilBusiness sets the "MobilBusiness" field.
 func (muo *MitarbeiterUpdateOne) SetMobilBusiness(s string) *MitarbeiterUpdateOne {
 	muo.mutation.SetMobilBusiness(s)
@@ -667,6 +881,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableMobilBusiness(s *string) *Mitarbeite
 	if s != nil {
 		muo.SetMobilBusiness(*s)
 	}
+	return muo
+}
+
+// ClearMobilBusiness clears the value of the "MobilBusiness" field.
+func (muo *MitarbeiterUpdateOne) ClearMobilBusiness() *MitarbeiterUpdateOne {
+	muo.mutation.ClearMobilBusiness()
 	return muo
 }
 
@@ -684,6 +904,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableMobilPrivat(s *string) *MitarbeiterU
 	return muo
 }
 
+// ClearMobilPrivat clears the value of the "MobilPrivat" field.
+func (muo *MitarbeiterUpdateOne) ClearMobilPrivat() *MitarbeiterUpdateOne {
+	muo.mutation.ClearMobilPrivat()
+	return muo
+}
+
 // SetEmail sets the "Email" field.
 func (muo *MitarbeiterUpdateOne) SetEmail(s string) *MitarbeiterUpdateOne {
 	muo.mutation.SetEmail(s)
@@ -695,6 +921,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableEmail(s *string) *MitarbeiterUpdateO
 	if s != nil {
 		muo.SetEmail(*s)
 	}
+	return muo
+}
+
+// ClearEmail clears the value of the "Email" field.
+func (muo *MitarbeiterUpdateOne) ClearEmail() *MitarbeiterUpdateOne {
+	muo.mutation.ClearEmail()
 	return muo
 }
 
@@ -723,6 +955,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableGeburtstag(t *time.Time) *Mitarbeite
 	if t != nil {
 		muo.SetGeburtstag(*t)
 	}
+	return muo
+}
+
+// ClearGeburtstag clears the value of the "Geburtstag" field.
+func (muo *MitarbeiterUpdateOne) ClearGeburtstag() *MitarbeiterUpdateOne {
+	muo.mutation.ClearGeburtstag()
 	return muo
 }
 
@@ -768,6 +1006,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableGeld(s *string) *MitarbeiterUpdateOn
 	return muo
 }
 
+// ClearGeld clears the value of the "Geld" field.
+func (muo *MitarbeiterUpdateOne) ClearGeld() *MitarbeiterUpdateOne {
+	muo.mutation.ClearGeld()
+	return muo
+}
+
 // SetPfand sets the "Pfand" field.
 func (muo *MitarbeiterUpdateOne) SetPfand(s string) *MitarbeiterUpdateOne {
 	muo.mutation.SetPfand(s)
@@ -779,6 +1023,12 @@ func (muo *MitarbeiterUpdateOne) SetNillablePfand(s *string) *MitarbeiterUpdateO
 	if s != nil {
 		muo.SetPfand(*s)
 	}
+	return muo
+}
+
+// ClearPfand clears the value of the "Pfand" field.
+func (muo *MitarbeiterUpdateOne) ClearPfand() *MitarbeiterUpdateOne {
+	muo.mutation.ClearPfand()
 	return muo
 }
 
@@ -796,6 +1046,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableDinge(s *string) *MitarbeiterUpdateO
 	return muo
 }
 
+// ClearDinge clears the value of the "Dinge" field.
+func (muo *MitarbeiterUpdateOne) ClearDinge() *MitarbeiterUpdateOne {
+	muo.mutation.ClearDinge()
+	return muo
+}
+
 // SetAbgeschickt sets the "Abgeschickt" field.
 func (muo *MitarbeiterUpdateOne) SetAbgeschickt(t time.Time) *MitarbeiterUpdateOne {
 	muo.mutation.SetAbgeschickt(t)
@@ -807,6 +1063,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableAbgeschickt(t *time.Time) *Mitarbeit
 	if t != nil {
 		muo.SetAbgeschickt(*t)
 	}
+	return muo
+}
+
+// ClearAbgeschickt clears the value of the "Abgeschickt" field.
+func (muo *MitarbeiterUpdateOne) ClearAbgeschickt() *MitarbeiterUpdateOne {
+	muo.mutation.ClearAbgeschickt()
 	return muo
 }
 
@@ -824,6 +1086,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableBild1(s *string) *MitarbeiterUpdateO
 	return muo
 }
 
+// ClearBild1 clears the value of the "Bild1" field.
+func (muo *MitarbeiterUpdateOne) ClearBild1() *MitarbeiterUpdateOne {
+	muo.mutation.ClearBild1()
+	return muo
+}
+
 // SetBild2 sets the "Bild2" field.
 func (muo *MitarbeiterUpdateOne) SetBild2(s string) *MitarbeiterUpdateOne {
 	muo.mutation.SetBild2(s)
@@ -835,6 +1103,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableBild2(s *string) *MitarbeiterUpdateO
 	if s != nil {
 		muo.SetBild2(*s)
 	}
+	return muo
+}
+
+// ClearBild2 clears the value of the "Bild2" field.
+func (muo *MitarbeiterUpdateOne) ClearBild2() *MitarbeiterUpdateOne {
+	muo.mutation.ClearBild2()
 	return muo
 }
 
@@ -852,6 +1126,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableBild3(s *string) *MitarbeiterUpdateO
 	return muo
 }
 
+// ClearBild3 clears the value of the "Bild3" field.
+func (muo *MitarbeiterUpdateOne) ClearBild3() *MitarbeiterUpdateOne {
+	muo.mutation.ClearBild3()
+	return muo
+}
+
 // SetBild1Date sets the "Bild1Date" field.
 func (muo *MitarbeiterUpdateOne) SetBild1Date(t time.Time) *MitarbeiterUpdateOne {
 	muo.mutation.SetBild1Date(t)
@@ -863,6 +1143,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableBild1Date(t *time.Time) *Mitarbeiter
 	if t != nil {
 		muo.SetBild1Date(*t)
 	}
+	return muo
+}
+
+// ClearBild1Date clears the value of the "Bild1Date" field.
+func (muo *MitarbeiterUpdateOne) ClearBild1Date() *MitarbeiterUpdateOne {
+	muo.mutation.ClearBild1Date()
 	return muo
 }
 
@@ -880,6 +1166,12 @@ func (muo *MitarbeiterUpdateOne) SetNillableBild2Date(t *time.Time) *Mitarbeiter
 	return muo
 }
 
+// ClearBild2Date clears the value of the "Bild2Date" field.
+func (muo *MitarbeiterUpdateOne) ClearBild2Date() *MitarbeiterUpdateOne {
+	muo.mutation.ClearBild2Date()
+	return muo
+}
+
 // SetBild3Date sets the "Bild3Date" field.
 func (muo *MitarbeiterUpdateOne) SetBild3Date(t time.Time) *MitarbeiterUpdateOne {
 	muo.mutation.SetBild3Date(t)
@@ -894,17 +1186,9 @@ func (muo *MitarbeiterUpdateOne) SetNillableBild3Date(t *time.Time) *Mitarbeiter
 	return muo
 }
 
-// SetAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field.
-func (muo *MitarbeiterUpdateOne) SetAbgescBild3Datehickt(t time.Time) *MitarbeiterUpdateOne {
-	muo.mutation.SetAbgescBild3Datehickt(t)
-	return muo
-}
-
-// SetNillableAbgescBild3Datehickt sets the "AbgescBild3Datehickt" field if the given value is not nil.
-func (muo *MitarbeiterUpdateOne) SetNillableAbgescBild3Datehickt(t *time.Time) *MitarbeiterUpdateOne {
-	if t != nil {
-		muo.SetAbgescBild3Datehickt(*t)
-	}
+// ClearBild3Date clears the value of the "Bild3Date" field.
+func (muo *MitarbeiterUpdateOne) ClearBild3Date() *MitarbeiterUpdateOne {
+	muo.mutation.ClearBild3Date()
 	return muo
 }
 
@@ -998,38 +1282,71 @@ func (muo *MitarbeiterUpdateOne) sqlSave(ctx context.Context) (_node *Mitarbeite
 	if value, ok := muo.mutation.Short(); ok {
 		_spec.SetField(mitarbeiter.FieldShort, field.TypeString, value)
 	}
+	if muo.mutation.ShortCleared() {
+		_spec.ClearField(mitarbeiter.FieldShort, field.TypeString)
+	}
 	if value, ok := muo.mutation.Gruppenwahl(); ok {
 		_spec.SetField(mitarbeiter.FieldGruppenwahl, field.TypeString, value)
+	}
+	if muo.mutation.GruppenwahlCleared() {
+		_spec.ClearField(mitarbeiter.FieldGruppenwahl, field.TypeString)
 	}
 	if value, ok := muo.mutation.InternTelefon1(); ok {
 		_spec.SetField(mitarbeiter.FieldInternTelefon1, field.TypeString, value)
 	}
+	if muo.mutation.InternTelefon1Cleared() {
+		_spec.ClearField(mitarbeiter.FieldInternTelefon1, field.TypeString)
+	}
 	if value, ok := muo.mutation.InternTelefon2(); ok {
 		_spec.SetField(mitarbeiter.FieldInternTelefon2, field.TypeString, value)
+	}
+	if muo.mutation.InternTelefon2Cleared() {
+		_spec.ClearField(mitarbeiter.FieldInternTelefon2, field.TypeString)
 	}
 	if value, ok := muo.mutation.FestnetzPrivat(); ok {
 		_spec.SetField(mitarbeiter.FieldFestnetzPrivat, field.TypeString, value)
 	}
+	if muo.mutation.FestnetzPrivatCleared() {
+		_spec.ClearField(mitarbeiter.FieldFestnetzPrivat, field.TypeString)
+	}
 	if value, ok := muo.mutation.FestnetzAlternativ(); ok {
 		_spec.SetField(mitarbeiter.FieldFestnetzAlternativ, field.TypeString, value)
+	}
+	if muo.mutation.FestnetzAlternativCleared() {
+		_spec.ClearField(mitarbeiter.FieldFestnetzAlternativ, field.TypeString)
 	}
 	if value, ok := muo.mutation.HomeOffice(); ok {
 		_spec.SetField(mitarbeiter.FieldHomeOffice, field.TypeString, value)
 	}
+	if muo.mutation.HomeOfficeCleared() {
+		_spec.ClearField(mitarbeiter.FieldHomeOffice, field.TypeString)
+	}
 	if value, ok := muo.mutation.MobilBusiness(); ok {
 		_spec.SetField(mitarbeiter.FieldMobilBusiness, field.TypeString, value)
+	}
+	if muo.mutation.MobilBusinessCleared() {
+		_spec.ClearField(mitarbeiter.FieldMobilBusiness, field.TypeString)
 	}
 	if value, ok := muo.mutation.MobilPrivat(); ok {
 		_spec.SetField(mitarbeiter.FieldMobilPrivat, field.TypeString, value)
 	}
+	if muo.mutation.MobilPrivatCleared() {
+		_spec.ClearField(mitarbeiter.FieldMobilPrivat, field.TypeString)
+	}
 	if value, ok := muo.mutation.Email(); ok {
 		_spec.SetField(mitarbeiter.FieldEmail, field.TypeString, value)
+	}
+	if muo.mutation.EmailCleared() {
+		_spec.ClearField(mitarbeiter.FieldEmail, field.TypeString)
 	}
 	if value, ok := muo.mutation.Azubi(); ok {
 		_spec.SetField(mitarbeiter.FieldAzubi, field.TypeBool, value)
 	}
 	if value, ok := muo.mutation.Geburtstag(); ok {
 		_spec.SetField(mitarbeiter.FieldGeburtstag, field.TypeTime, value)
+	}
+	if muo.mutation.GeburtstagCleared() {
+		_spec.ClearField(mitarbeiter.FieldGeburtstag, field.TypeTime)
 	}
 	if value, ok := muo.mutation.Paypal(); ok {
 		_spec.SetField(mitarbeiter.FieldPaypal, field.TypeBool, value)
@@ -1040,35 +1357,62 @@ func (muo *MitarbeiterUpdateOne) sqlSave(ctx context.Context) (_node *Mitarbeite
 	if value, ok := muo.mutation.Geld(); ok {
 		_spec.SetField(mitarbeiter.FieldGeld, field.TypeString, value)
 	}
+	if muo.mutation.GeldCleared() {
+		_spec.ClearField(mitarbeiter.FieldGeld, field.TypeString)
+	}
 	if value, ok := muo.mutation.Pfand(); ok {
 		_spec.SetField(mitarbeiter.FieldPfand, field.TypeString, value)
+	}
+	if muo.mutation.PfandCleared() {
+		_spec.ClearField(mitarbeiter.FieldPfand, field.TypeString)
 	}
 	if value, ok := muo.mutation.Dinge(); ok {
 		_spec.SetField(mitarbeiter.FieldDinge, field.TypeString, value)
 	}
+	if muo.mutation.DingeCleared() {
+		_spec.ClearField(mitarbeiter.FieldDinge, field.TypeString)
+	}
 	if value, ok := muo.mutation.Abgeschickt(); ok {
 		_spec.SetField(mitarbeiter.FieldAbgeschickt, field.TypeTime, value)
+	}
+	if muo.mutation.AbgeschicktCleared() {
+		_spec.ClearField(mitarbeiter.FieldAbgeschickt, field.TypeTime)
 	}
 	if value, ok := muo.mutation.Bild1(); ok {
 		_spec.SetField(mitarbeiter.FieldBild1, field.TypeString, value)
 	}
+	if muo.mutation.Bild1Cleared() {
+		_spec.ClearField(mitarbeiter.FieldBild1, field.TypeString)
+	}
 	if value, ok := muo.mutation.Bild2(); ok {
 		_spec.SetField(mitarbeiter.FieldBild2, field.TypeString, value)
+	}
+	if muo.mutation.Bild2Cleared() {
+		_spec.ClearField(mitarbeiter.FieldBild2, field.TypeString)
 	}
 	if value, ok := muo.mutation.Bild3(); ok {
 		_spec.SetField(mitarbeiter.FieldBild3, field.TypeString, value)
 	}
+	if muo.mutation.Bild3Cleared() {
+		_spec.ClearField(mitarbeiter.FieldBild3, field.TypeString)
+	}
 	if value, ok := muo.mutation.Bild1Date(); ok {
 		_spec.SetField(mitarbeiter.FieldBild1Date, field.TypeTime, value)
+	}
+	if muo.mutation.Bild1DateCleared() {
+		_spec.ClearField(mitarbeiter.FieldBild1Date, field.TypeTime)
 	}
 	if value, ok := muo.mutation.Bild2Date(); ok {
 		_spec.SetField(mitarbeiter.FieldBild2Date, field.TypeTime, value)
 	}
+	if muo.mutation.Bild2DateCleared() {
+		_spec.ClearField(mitarbeiter.FieldBild2Date, field.TypeTime)
+	}
 	if value, ok := muo.mutation.Bild3Date(); ok {
 		_spec.SetField(mitarbeiter.FieldBild3Date, field.TypeTime, value)
 	}
-	if value, ok := muo.mutation.AbgescBild3Datehickt(); ok {
-		_spec.SetField(mitarbeiter.FieldAbgescBild3Datehickt, field.TypeTime, value)
+	if muo.mutation.Bild3DateCleared() {
+		_spec.ClearField(mitarbeiter.FieldBild3Date, field.TypeTime)
 	}
 	_node = &Mitarbeiter{config: muo.config}
 	_spec.Assign = _node.assignValues

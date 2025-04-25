@@ -4,14 +4,14 @@ import {
   DeleteAnsprechpartner,
   GetAnsprechpartner,
 } from "../../../../wailsjs/go/main/App";
-import { db } from "../../../../wailsjs/go/models";
+import { ent } from "../../../../wailsjs/go/models";
 import BackButton from "../../../Components/BackButton";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 import AnsprechpartnerForm from "./components/ApForm";
 
 export default function ApDetails() {
   const { id, lid } = useParams();
-  const [lieferant, setLieferant] = useState<undefined | db.Ansprechpartner>();
+  const [lieferant, setLieferant] = useState<undefined | ent.Ansprechpartner>();
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function ApDetails() {
     async function x() {
       if (lid == null) return;
       setLoading(true);
-      setLieferant(await GetAnsprechpartner(lid));
+      setLieferant(await GetAnsprechpartner(parseInt(lid)));
       setLoading(false);
     }
     x();
@@ -30,7 +30,7 @@ export default function ApDetails() {
     if (lid == null) return;
     localStorage.removeItem("lieferanten");
     localStorage.removeItem("lieferanten-lastsync");
-    await DeleteAnsprechpartner(lid);
+    await DeleteAnsprechpartner(parseInt(lid));
     navigate("/Lieferanten/" + id);
   };
 
@@ -42,7 +42,7 @@ export default function ApDetails() {
       ) : (
         <>
           <h1>{lieferant?.Name} bearbeiten</h1>
-          <AnsprechpartnerForm id={id!} ap={lieferant} />
+          <AnsprechpartnerForm id={parseInt(id!)} ap={lieferant} />
           <div className="divider divider-error my-5">DANGER ZONE</div>
           <button className="btn btn-error" onClick={handleDelete}>
             Ansprechpartner Löschen

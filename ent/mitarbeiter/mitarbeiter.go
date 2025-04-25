@@ -61,8 +61,6 @@ const (
 	FieldBild2Date = "bild2date"
 	// FieldBild3Date holds the string denoting the bild3date field in the database.
 	FieldBild3Date = "bild3date"
-	// FieldAbgescBild3Datehickt holds the string denoting the abgescbild3datehickt field in the database.
-	FieldAbgescBild3Datehickt = "abgesc_bild3datehickt"
 	// Table holds the table name of the mitarbeiter in the database.
 	Table = "mitarbeiters"
 )
@@ -95,7 +93,6 @@ var Columns = []string{
 	FieldBild1Date,
 	FieldBild2Date,
 	FieldBild3Date,
-	FieldAbgescBild3Datehickt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -250,9 +247,4 @@ func ByBild2Date(opts ...sql.OrderTermOption) OrderOption {
 // ByBild3Date orders the results by the Bild3Date field.
 func ByBild3Date(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBild3Date, opts...).ToFunc()
-}
-
-// ByAbgescBild3Datehickt orders the results by the AbgescBild3Datehickt field.
-func ByAbgescBild3Datehickt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAbgescBild3Datehickt, opts...).ToFunc()
 }

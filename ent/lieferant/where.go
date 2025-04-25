@@ -189,6 +189,16 @@ func KundennummerHasSuffix(v string) predicate.Lieferant {
 	return predicate.Lieferant(sql.FieldHasSuffix(FieldKundennummer, v))
 }
 
+// KundennummerIsNil applies the IsNil predicate on the "Kundennummer" field.
+func KundennummerIsNil() predicate.Lieferant {
+	return predicate.Lieferant(sql.FieldIsNull(FieldKundennummer))
+}
+
+// KundennummerNotNil applies the NotNil predicate on the "Kundennummer" field.
+func KundennummerNotNil() predicate.Lieferant {
+	return predicate.Lieferant(sql.FieldNotNull(FieldKundennummer))
+}
+
 // KundennummerEqualFold applies the EqualFold predicate on the "Kundennummer" field.
 func KundennummerEqualFold(v string) predicate.Lieferant {
 	return predicate.Lieferant(sql.FieldEqualFold(FieldKundennummer, v))
@@ -252,6 +262,16 @@ func WebseiteHasPrefix(v string) predicate.Lieferant {
 // WebseiteHasSuffix applies the HasSuffix predicate on the "Webseite" field.
 func WebseiteHasSuffix(v string) predicate.Lieferant {
 	return predicate.Lieferant(sql.FieldHasSuffix(FieldWebseite, v))
+}
+
+// WebseiteIsNil applies the IsNil predicate on the "Webseite" field.
+func WebseiteIsNil() predicate.Lieferant {
+	return predicate.Lieferant(sql.FieldIsNull(FieldWebseite))
+}
+
+// WebseiteNotNil applies the NotNil predicate on the "Webseite" field.
+func WebseiteNotNil() predicate.Lieferant {
+	return predicate.Lieferant(sql.FieldNotNull(FieldWebseite))
 }
 
 // WebseiteEqualFold applies the EqualFold predicate on the "Webseite" field.

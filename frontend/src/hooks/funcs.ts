@@ -2,7 +2,7 @@ import { GetMitarbeiterIdByName, GetUsername } from "../../wailsjs/go/main/App";
 
 export type User = {
   Username: string;
-  id: string;
+  id: number;
 };
 
 export async function get_username(): Promise<string> {
@@ -17,7 +17,7 @@ export async function get_username(): Promise<string> {
   return realName.trim();
 }
 
-export async function get_id(name: string): Promise<string> {
+export async function get_id(name: string): Promise<number> {
   return await GetMitarbeiterIdByName(name);
 }
 

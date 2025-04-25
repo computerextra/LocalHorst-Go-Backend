@@ -3,6 +3,8 @@ package main
 import (
 	"golang-backend/ent"
 	"golang-backend/ent/mitarbeiter"
+	"log"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -42,14 +44,24 @@ type MitarbeiterParams struct {
 	Geburtstag         string
 }
 
-func (a *App) UpsertMitarbeiter(params MitarbeiterParams, id *string) bool {
+func (a *App) UpsertMitarbeiter(params MitarbeiterParams) bool {
 	var Geburtstag time.Time
 
-	if len(param.Geburtstag) > 0 {
+	if len(params.Geburtstag) > 0 {
 		splitted := strings.Split(params.Geburtstag, "-")
-		month := splitted[1]
-		day := splitted[2]
-		Geburtstag = time.Date(time.Now().Year())
+		year, err := strconv.Atoi(splitted[0])
+		if err != nil {
+			return false
+		}
+		month, err := strconv.Atoi(splitted[1])
+		if err != nil {
+			return false
+		}
+		day, err := strconv.Atoi(splitted[2])
+		if err != nil {
+			return false
+		}
+		Geburtstag = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.Local)
 	}
 
 	err := a.db.Mitarbeiter.
@@ -65,26 +77,33 @@ func (a *App) UpsertMitarbeiter(params MitarbeiterParams, id *string) bool {
 		SetMobilBusiness(params.MobilBusiness).
 		SetMobilPrivat(params.MobilPrivat).
 		SetAzubi(params.Azubi).
-		SetGeburtstag(params.Geburtstag)
-	OnConflict().
+		SetGeburtstag(Geburtstag).
+		SetEmail(params.Email).
+		OnConflict().
 		UpdateNewValues().
 		Exec(a.ctx)
 
-	_, err := a.db.UpsertMitarbeiter(params, id)
-	return err == nil
-}
-
-func (a *App) DeleteMitarbeiter(id string) bool {
-
-	_, err := a.db.DeleteMitarbeiter(id)
-	return err == nil
-}
-
-func (a *App) GetMitarbeiterIdByName(name string) string {
-
-	ma, err := a.db.GetMitarbeiterIdByName(name)
 	if err != nil {
-		return ""
+		log.Fatal(err)
 	}
-	return ma
+
+	// _, err := a.db.UpsertMitarbeiter(params, id)
+	return err == nil
+}
+
+func (a *App) DeleteMitarbeiter(id int) bool {
+	err := a.db.Mitarbeiter.DeleteOneID(id).Exec(a.ctx)
+
+	// _, err := a.db.DeleteMitarbeiter(id)
+	return err == nil
+}
+
+func (a *App) GetMitarbeiterIdByName(name string) int {
+	ma, err := a.db.Mitarbeiter.Query().Where(mitarbeiter.Name(name)).Only(a.ctx)
+
+	// ma, err := a.db.GetMitarbeiterIdByName(name)
+	if err != nil {
+		return 0
+	}
+	return ma.ID
 }

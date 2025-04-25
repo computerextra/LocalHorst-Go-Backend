@@ -7,7 +7,7 @@ import {
   UpdateEinkauf,
   UploadImage,
 } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { main } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
@@ -21,7 +21,6 @@ export default function EinkaufEingabe() {
   const [Bild3, setBild3] = useState<string | undefined>(undefined);
   const [Paypal, setPaypal] = useState<boolean | undefined>(undefined);
   const [Abonniert, setAbonniert] = useState<boolean | undefined>(undefined);
-  const [EinkaufId, setEinkaufId] = useState<string | undefined>(undefined);
 
   const [loading, setLoading] = useState(false);
 
@@ -35,13 +34,12 @@ export default function EinkaufEingabe() {
     async function x() {
       if (id == null) return;
       setLoading(true);
-      const res = await GetEinkauf(id);
+      const res = await GetEinkauf(parseInt(id));
       if (res) {
-        setDinge(res.Dinge.Valid ? res.Dinge.String : undefined);
-        setPfand(res.Pfand.Valid ? res.Pfand.String : undefined);
-        setGeld(res.Geld.Valid ? res.Geld.String : undefined);
+        setDinge(res.Dinge ?? undefined);
+        setPfand(res.Pfand ?? undefined);
+        setGeld(res.Geld ?? undefined);
         setPaypal(res.Paypal);
-        setEinkaufId(res.Id);
         setAbonniert(res.Abonniert);
       }
       setLoading(false);
@@ -51,7 +49,7 @@ export default function EinkaufEingabe() {
 
   const uploadFile = async (nr: string) => {
     if (id == null) return;
-    const res = await UploadImage(id, nr);
+    const res = await UploadImage(parseInt(id), nr);
     if (nr == "1") {
       setBild1(res);
       setUploadRes1(res);
@@ -66,7 +64,7 @@ export default function EinkaufEingabe() {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const params: db.UpsertEinkaufParams = {
+    const params: main.UpsertEinkaufParams = {
       Abonniert: Abonniert != null ? Abonniert : false,
       Paypal: Paypal != null ? Paypal : false,
       Bild1: Bild1 != null ? Bild1 : "",
@@ -77,7 +75,7 @@ export default function EinkaufEingabe() {
       Pfand: Pfand != null ? Pfand : "",
       MitarbeiterId: id!,
     };
-    if (await UpdateEinkauf(params, EinkaufId ?? "")) {
+    if (await UpdateEinkauf(params, parseInt(id!))) {
       navigate("/Einkauf");
     } else {
       alert("Server Fehler");
@@ -207,7 +205,7 @@ export default function EinkaufEingabe() {
             <button
               className="btn btn-secondary"
               onClick={async () => {
-                if (await SkipEinkauf(id!)) {
+                if (await SkipEinkauf(parseInt(id!))) {
                   navigate("/Einkauf");
                 } else {
                   alert("Server Fehler!");
@@ -220,7 +218,7 @@ export default function EinkaufEingabe() {
             <button
               className="btn btn-error"
               onClick={async () => {
-                if (await DeleteEinkauf(id!)) {
+                if (await DeleteEinkauf(parseInt(id!))) {
                   navigate("/Einkauf");
                 } else {
                   alert("Server Fehler!");

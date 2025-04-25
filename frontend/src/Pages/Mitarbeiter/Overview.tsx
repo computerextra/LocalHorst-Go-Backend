@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { GetAllMitarbeiter } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { ent } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 
 export default function Mitarbeiterübersicht() {
-  const [Mitarbeiter, setMitarbeiter] = useState<undefined | db.Mitarbeiter[]>(
+  const [Mitarbeiter, setMitarbeiter] = useState<undefined | ent.Mitarbeiter[]>(
     undefined
   );
   const [loading, setLoading] = useState(false);
@@ -49,71 +49,71 @@ export default function Mitarbeiterübersicht() {
           </thead>
           <tbody>
             {Mitarbeiter?.map((mitarbeiter) => (
-              <tr key={mitarbeiter.Id}>
+              <tr key={mitarbeiter.id}>
                 <th>
                   <Link
-                    to={"/Mitarbeiter/" + mitarbeiter.Id}
+                    to={"/Mitarbeiter/" + mitarbeiter.id}
                     className="underline"
                   >
                     {mitarbeiter.Name}
                   </Link>
                 </th>
                 <td>
-                  {mitarbeiter.Email.Valid && (
+                  {mitarbeiter.Email && (
                     <a
                       className="text-error underline"
-                      href={"mailto:" + mitarbeiter.Email.String}
+                      href={"mailto:" + mitarbeiter.Email}
                     >
-                      {mitarbeiter.Email.String}
+                      {mitarbeiter.Email}
                     </a>
                   )}
                 </td>
-                <td>{mitarbeiter.Gruppenwahl.String}</td>
-                <td>{mitarbeiter.InternTelefon1.String}</td>
-                <td>{mitarbeiter.InternTelefon2.String}</td>
+                <td>{mitarbeiter.Gruppenwahl}</td>
+                <td>{mitarbeiter.InternTelefon1}</td>
+                <td>{mitarbeiter.InternTelefon2}</td>
                 <td>
-                  {mitarbeiter.FestnetzAlternativ.Valid && (
+                  {mitarbeiter.FestnetzAlternativ && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.FestnetzAlternativ.String}
+                      href={"tel:" + mitarbeiter.FestnetzAlternativ}
                     >
-                      {mitarbeiter.FestnetzAlternativ.String}
-                    </a>
-                  )}
-                </td>
-                <td>
-                  {mitarbeiter.FestnetzPrivat.Valid && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.FestnetzPrivat.String}
-                    >
-                      {mitarbeiter.FestnetzPrivat.String}
-                    </a>
-                  )}
-                </td>
-                <td>{mitarbeiter.HomeOffice.String}</td>
-                <td>
-                  {mitarbeiter.MobilBusiness.Valid && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.MobilBusiness.String}
-                    >
-                      {mitarbeiter.MobilBusiness.String}
+                      {mitarbeiter.FestnetzAlternativ}
                     </a>
                   )}
                 </td>
                 <td>
-                  {mitarbeiter.MobilPrivat.Valid && (
+                  {mitarbeiter.FestnetzPrivat && (
                     <a
                       className="text-error underline"
-                      href={"tel:" + mitarbeiter.MobilPrivat.String}
+                      href={"tel:" + mitarbeiter.FestnetzPrivat}
                     >
-                      {mitarbeiter.MobilPrivat.String}
+                      {mitarbeiter.FestnetzPrivat}
+                    </a>
+                  )}
+                </td>
+                <td>{mitarbeiter.HomeOffice}</td>
+                <td>
+                  {mitarbeiter.MobilBusiness && (
+                    <a
+                      className="text-error underline"
+                      href={"tel:" + mitarbeiter.MobilBusiness}
+                    >
+                      {mitarbeiter.MobilBusiness}
                     </a>
                   )}
                 </td>
                 <td>
-                  {mitarbeiter.Azubi.Valid && mitarbeiter.Azubi.Bool ? (
+                  {mitarbeiter.MobilPrivat && (
+                    <a
+                      className="text-error underline"
+                      href={"tel:" + mitarbeiter.MobilPrivat}
+                    >
+                      {mitarbeiter.MobilPrivat}
+                    </a>
+                  )}
+                </td>
+                <td>
+                  {mitarbeiter.Azubi ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"

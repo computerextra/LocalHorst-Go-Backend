@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"golang-backend/ent"
 	"golang-backend/ent/mitarbeiter"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -84,29 +85,30 @@ func (a *App) UpdateEinkauf(values UpsertEinkaufParams, id int) bool {
 
 	var Bild1 *string
 	if len(values.Bild1) > 0 {
-		*Bild1 = values.Bild1
+		Bild1 = &values.Bild1
 	}
 	var Bild2 *string
 	if len(values.Bild2) > 0 {
-		*Bild2 = values.Bild2
+		Bild2 = &values.Bild2
 	}
 	var Bild3 *string
 	if len(values.Bild3) > 0 {
-		*Bild3 = values.Bild3
+		Bild3 = &values.Bild3
 	}
 	var Bild1Date *time.Time
+	now := time.Now()
 	if len(*Bild1) > 0 {
-		*Bild1Date = time.Now()
+		Bild1Date = &now
 	}
 
 	var Bild2Date *time.Time
 	if len(*Bild2) > 0 {
-		*Bild2Date = time.Now()
+		Bild2Date = &now
 	}
 
 	var Bild3Date *time.Time
 	if len(*Bild3) > 0 {
-		*Bild3Date = time.Now()
+		Bild3Date = &now
 	}
 
 	err := a.db.Mitarbeiter.UpdateOneID(id).
@@ -122,6 +124,10 @@ func (a *App) UpdateEinkauf(values UpsertEinkaufParams, id int) bool {
 		SetNillableBild2Date(Bild2Date).
 		SetNillableBild3Date(Bild3Date).
 		Exec(a.ctx)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// _, err := a.db.Einkauf.UpsertOne(
 	// 	db.Einkauf.MitarbeiterID.Equals(values.MitarbeiterId),
@@ -151,7 +157,7 @@ func (a *App) UpdateEinkauf(values UpsertEinkaufParams, id int) bool {
 	return err == nil
 }
 
-func (a *App) UploadImage(mitarbeiter string, imageNr string) string {
+func (a *App) UploadImage(mitarbeiter int, imageNr string) string {
 	file, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
 		Filters: []runtime.FileFilter{
 			{
@@ -171,7 +177,7 @@ func (a *App) UploadImage(mitarbeiter string, imageNr string) string {
 		return err.Error()
 	}
 	fileSuffix := filepath.Ext(file)
-	fileName := fmt.Sprintf("%s-%s.%s", mitarbeiter, imageNr, fileSuffix)
+	fileName := fmt.Sprintf("%v-%s.%s", mitarbeiter, imageNr, fileSuffix)
 	filePath := filepath.Join(a.config.UPLOAD_FOLDER, "Upload", fileName)
 	err = os.WriteFile(filePath, data, 0644)
 	if err != nil {

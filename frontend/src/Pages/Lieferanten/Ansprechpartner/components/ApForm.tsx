@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UpsertAnsprechpartner } from "../../../../../wailsjs/go/main/App";
-import { db } from "../../../../../wailsjs/go/models";
+import { ent, main } from "../../../../../wailsjs/go/models";
 
 export default function AnsprechpartnerForm({
   id,
   ap,
 }: {
-  id: string;
-  ap?: db.Ansprechpartner;
+  id: number;
+  ap?: ent.Ansprechpartner;
 }) {
   const [Name, setName] = useState<string | undefined>(undefined);
   const [Telefon, setTelefon] = useState<string | undefined>(undefined);
@@ -23,9 +23,9 @@ export default function AnsprechpartnerForm({
     if (ap == null) return;
 
     setName(ap.Name);
-    setTelefon(ap.Telefon.Valid ? ap.Telefon.String : undefined);
-    setMobil(ap.Mobil.Valid ? ap.Mobil.String : undefined);
-    setMail(ap.Mail.Valid ? ap.Mail.String : undefined);
+    setTelefon(ap.Telefon ?? undefined);
+    setMobil(ap.Mobil ?? undefined);
+    setMail(ap.Mail ?? undefined);
   }, [ap]);
 
   const handleSave = async () => {
@@ -34,14 +34,14 @@ export default function AnsprechpartnerForm({
     setLoading(true);
     localStorage.removeItem("lieferanten");
     localStorage.removeItem("lieferanten-lastsync");
-    const params: db.AnsprechpartnerParams = {
+    const params: main.AnsprechpartnerParams = {
       Name,
       Mail: Mail ?? "",
       Mobil: Mobil ?? "",
       Telefon: Telefon ?? "",
       LieferantenId: id,
     };
-    await UpsertAnsprechpartner(ap?.Id ?? "", params);
+    await UpsertAnsprechpartner(params);
 
     navigate("/Lieferanten/" + id);
   };

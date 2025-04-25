@@ -4,17 +4,17 @@ import {
   GetEntriesFromTeam,
   GetInventurYears,
 } from "../../wailsjs/go/main/App";
-import type { db } from "../../wailsjs/go/models";
+import type { ent } from "../../wailsjs/go/models";
 import BackButton from "../Components/BackButton";
 import LoadingSpinner from "../Components/LoadingSpinner";
 
 export default function Inventur() {
   const [loading, setLoading] = useState(false);
-  const [year, setYear] = useState<string | undefined>(undefined);
+  const [year, setYear] = useState<ent.Inventur | undefined>(undefined);
   const [team, setTeam] = useState<number | undefined>(undefined);
-  const [years, setYears] = useState<string[] | undefined>(undefined);
-  const [teams, setTeams] = useState<db.Team[] | undefined>(undefined);
-  const [entries, setEntries] = useState<db.Artikel[] | undefined>(undefined);
+  const [years, setYears] = useState<ent.Inventur[] | undefined>(undefined);
+  const [teams, setTeams] = useState<ent.Team[] | undefined>(undefined);
+  const [entries, setEntries] = useState<ent.Artikel[] | undefined>(undefined);
 
   useEffect(() => {
     async function x() {
@@ -32,17 +32,19 @@ export default function Inventur() {
     x();
   }, []);
 
-  const handleYearClick = async (year: string) => {
+  const handleYearClick = async (year: ent.Inventur) => {
     setLoading(true);
     setYear(year);
     setTeam(undefined);
     setEntries(undefined);
 
+    if (year == null) return;
+
     const localData = localStorage.getItem(`${year}-team`);
     if (localData != null) {
       setTeams(JSON.parse(localData));
     } else {
-      const res = await GetDataFromYear(year);
+      const res = await GetDataFromYear(year.Jahr!);
       localStorage.setItem(`${year}-team`, JSON.stringify(res));
       setTeams(res);
     }
@@ -85,10 +87,10 @@ export default function Inventur() {
                 {years.map((x) => (
                   <tr
                     className="hover:bg-base-300"
-                    key={x}
+                    key={x.id}
                     onClick={() => handleYearClick(x)}
                   >
-                    <td>{x}</td>
+                    <td>{x.Jahr}</td>
                   </tr>
                 ))}
               </tbody>
@@ -110,10 +112,10 @@ export default function Inventur() {
                 {teams.map((x) => (
                   <tr
                     className="hover:bg-base-300"
-                    key={x.Id}
-                    onClick={() => handleTeamClick(x.Id)}
+                    key={x.id}
+                    onClick={() => handleTeamClick(x.id!)}
                   >
-                    <td>{x.Id}</td>
+                    <td>{x.id}</td>
                     <td>{x.Mitarbeiter}</td>
                     <td>{x.Farbe}</td>
                     <td>{x.Ort}</td>
@@ -127,7 +129,7 @@ export default function Inventur() {
       {entries && (
         <div className="mt-5">
           <h2>
-            Artikel von Team {team} aus {year}
+            Artikel von Team {team} aus {year?.Jahr}
           </h2>
           <div className="h-96 overflow-x-auto mt-5 mb-5">
             <table className="table table-pin-rows">
@@ -140,46 +142,11 @@ export default function Inventur() {
               </thead>
               <tbody>
                 {entries.map((x) => (
-                  <tr className="hover:bg-base-300" key={x.Id}>
+                  <tr className="hover:bg-base-300" key={x.id}>
                     <td>{x.Artikelnummer}</td>
                     <td>{x.Suchbegriff}</td>
                     <td>{x.Anzahl}</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-      {teams && (
-        <div className="mt-5">
-          <h2>Alle Artikel aus {year}</h2>
-          <div className="h-96 overflow-x-auto mt-5 mb-5">
-            <table className="table table-pin-rows">
-              <thead>
-                <tr>
-                  <th>Artikelnummer</th>
-                  <th>Suchbegriff</th>
-                  <th>Anzahl</th>
-                  <th>Team</th>
-                </tr>
-              </thead>
-              <tbody>
-                {teams.map((team) => (
-                  <>
-                    {team.Artikel?.map((item) => (
-                      <tr
-                        className="hover:bg-base-300"
-                        key={item.Id}
-                        onClick={() => handleTeamClick(team.Id)}
-                      >
-                        <td>{item.Artikelnummer}</td>
-                        <td>{item.Suchbegriff}</td>
-                        <td>{item.Anzahl}</td>
-                        <td>{team.Id}</td>
-                      </tr>
-                    ))}
-                  </>
                 ))}
               </tbody>
             </table>

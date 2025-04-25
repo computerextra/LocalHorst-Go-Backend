@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -30,7 +31,7 @@ func (a *App) SearchArchive(search string) []Archive {
 	defer stmt.Close()
 
 	rows, err := stmt.Query(
-		search, search,
+		fmt.Sprintf("%%%s%%", search), fmt.Sprintf("%%%s%%", search),
 	)
 	if err != nil {
 		return nil
@@ -72,9 +73,9 @@ func (a *App) GetArchive(id string) string {
 	}
 
 	// pdf, err := a.db.GetArchive(int32(idInt))
-	if err != nil {
-		return "Document not found"
-	}
+	// if err != nil {
+	// 	return "Document not found"
+	// }
 
 	directory := filepath.Join(a.config.ARCHIVE_PATH, strings.Replace(pdf.Title, ":", ".", 1))
 	file, err := os.ReadFile(directory)

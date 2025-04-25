@@ -7,19 +7,19 @@ export default function useUsername() {
   useEffect(() => {
     const user = getUser();
 
-    if (user != null && user.Username.length > 0 && user.id.length > 0) return;
+    if (user != null && user.Username.length > 0 && user.id == 0) return;
 
     async function x() {
       if (user == null) {
         const username = await get_username();
-        let id: string | undefined = undefined;
+        let id: number | undefined = undefined;
         if (username.length > 0) {
           const x = await get_id(username);
-          if (x.length > 0) {
+          if (x == 0) {
             id = x;
           }
         }
-        if (username.length > 0 && id != null && id.length > 0) {
+        if (username.length > 0 && id != null && id == 0) {
           const user: User = {
             id,
             Username: username,

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { GetAllMitarbeiter } from "../../../wailsjs/go/main/App";
-import { db } from "../../../wailsjs/go/models";
+import { ent } from "../../../wailsjs/go/models";
 import BackButton from "../../Components/BackButton";
 import LoadingSpinner from "../../Components/LoadingSpinner";
 import { getUser } from "../../hooks/funcs";
 
 export default function EinkaufAuswahl() {
-  const [mitarbeiter, setMitarbeiter] = useState<db.Mitarbeiter[] | undefined>(
+  const [mitarbeiter, setMitarbeiter] = useState<ent.Mitarbeiter[] | undefined>(
     undefined
   );
   const [loading, setLoading] = useState(false);
@@ -62,7 +62,7 @@ export default function EinkaufAuswahl() {
                   Bitte wählen...
                 </option>
                 {mitarbeiter?.map((x) => (
-                  <option value={x.Id} key={x.Id}>
+                  <option value={x.id} key={x.id}>
                     {x.Name}
                   </option>
                 ))}

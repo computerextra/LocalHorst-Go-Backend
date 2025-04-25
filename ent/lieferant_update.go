@@ -56,6 +56,12 @@ func (lu *LieferantUpdate) SetNillableKundennummer(s *string) *LieferantUpdate {
 	return lu
 }
 
+// ClearKundennummer clears the value of the "Kundennummer" field.
+func (lu *LieferantUpdate) ClearKundennummer() *LieferantUpdate {
+	lu.mutation.ClearKundennummer()
+	return lu
+}
+
 // SetWebseite sets the "Webseite" field.
 func (lu *LieferantUpdate) SetWebseite(s string) *LieferantUpdate {
 	lu.mutation.SetWebseite(s)
@@ -67,6 +73,12 @@ func (lu *LieferantUpdate) SetNillableWebseite(s *string) *LieferantUpdate {
 	if s != nil {
 		lu.SetWebseite(*s)
 	}
+	return lu
+}
+
+// ClearWebseite clears the value of the "Webseite" field.
+func (lu *LieferantUpdate) ClearWebseite() *LieferantUpdate {
+	lu.mutation.ClearWebseite()
 	return lu
 }
 
@@ -166,8 +178,14 @@ func (lu *LieferantUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := lu.mutation.Kundennummer(); ok {
 		_spec.SetField(lieferant.FieldKundennummer, field.TypeString, value)
 	}
+	if lu.mutation.KundennummerCleared() {
+		_spec.ClearField(lieferant.FieldKundennummer, field.TypeString)
+	}
 	if value, ok := lu.mutation.Webseite(); ok {
 		_spec.SetField(lieferant.FieldWebseite, field.TypeString, value)
+	}
+	if lu.mutation.WebseiteCleared() {
+		_spec.ClearField(lieferant.FieldWebseite, field.TypeString)
 	}
 	if lu.mutation.AnsprechpartnerCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -262,6 +280,12 @@ func (luo *LieferantUpdateOne) SetNillableKundennummer(s *string) *LieferantUpda
 	return luo
 }
 
+// ClearKundennummer clears the value of the "Kundennummer" field.
+func (luo *LieferantUpdateOne) ClearKundennummer() *LieferantUpdateOne {
+	luo.mutation.ClearKundennummer()
+	return luo
+}
+
 // SetWebseite sets the "Webseite" field.
 func (luo *LieferantUpdateOne) SetWebseite(s string) *LieferantUpdateOne {
 	luo.mutation.SetWebseite(s)
@@ -273,6 +297,12 @@ func (luo *LieferantUpdateOne) SetNillableWebseite(s *string) *LieferantUpdateOn
 	if s != nil {
 		luo.SetWebseite(*s)
 	}
+	return luo
+}
+
+// ClearWebseite clears the value of the "Webseite" field.
+func (luo *LieferantUpdateOne) ClearWebseite() *LieferantUpdateOne {
+	luo.mutation.ClearWebseite()
 	return luo
 }
 
@@ -402,8 +432,14 @@ func (luo *LieferantUpdateOne) sqlSave(ctx context.Context) (_node *Lieferant, e
 	if value, ok := luo.mutation.Kundennummer(); ok {
 		_spec.SetField(lieferant.FieldKundennummer, field.TypeString, value)
 	}
+	if luo.mutation.KundennummerCleared() {
+		_spec.ClearField(lieferant.FieldKundennummer, field.TypeString)
+	}
 	if value, ok := luo.mutation.Webseite(); ok {
 		_spec.SetField(lieferant.FieldWebseite, field.TypeString, value)
+	}
+	if luo.mutation.WebseiteCleared() {
+		_spec.ClearField(lieferant.FieldWebseite, field.TypeString)
 	}
 	if luo.mutation.AnsprechpartnerCleared() {
 		edge := &sqlgraph.EdgeSpec{

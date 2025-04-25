@@ -90,6 +90,7 @@ func (a *App) GetAnsprechpartner(id int) *ent.Ansprechpartner {
 type AnsprechpartnerParams struct {
 	Mail          string
 	Mobil         string
+	Telefon       string
 	Name          string
 	LieferantenId int
 }
@@ -99,6 +100,7 @@ func (a *App) UpsertAnsprechpartner(params AnsprechpartnerParams) bool {
 		Create().
 		SetMail(params.Mail).
 		SetMobil(params.Mobil).
+		SetTelefon(params.Telefon).
 		SetName(params.Name).
 		SetLieferantID(params.LieferantenId).
 		OnConflict().

@@ -15,8 +15,8 @@ type Lieferant struct {
 func (Lieferant) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("Firma").NotEmpty().Unique(),
-		field.String("Kundennummer").Nillable(),
-		field.String("Webseite").Nillable(),
+		field.String("Kundennummer").Nillable().Optional(),
+		field.String("Webseite").Nillable().Optional(),
 	}
 }
 

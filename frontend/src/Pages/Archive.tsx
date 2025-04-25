@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { GetArchive, SearchArchive } from "../../wailsjs/go/main/App";
-import type { db } from "../../wailsjs/go/models";
+import type { main } from "../../wailsjs/go/models";
 import BackButton from "../Components/BackButton";
 import LoadingSpinner from "../Components/LoadingSpinner";
 
 export default function Archive() {
   const [search, setSearch] = useState<undefined | string>(undefined);
-  const [results, setResults] = useState<undefined | db.Archive[]>(undefined);
+  const [results, setResults] = useState<undefined | main.Archive[]>(undefined);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState<string | undefined>(undefined);

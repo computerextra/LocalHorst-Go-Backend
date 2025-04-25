@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { UpsertMitarbeiter } from "../../../../wailsjs/go/main/App";
-import { db } from "../../../../wailsjs/go/models";
+import { ent, main } from "../../../../wailsjs/go/models";
 import LoadingSpinner from "../../../Components/LoadingSpinner";
 
 export default function MitarbeiterForm({
   mitarbeiter,
 }: {
-  mitarbeiter?: db.Mitarbeiter;
+  mitarbeiter?: ent.Mitarbeiter;
 }) {
   const [Name, setName] = useState<string | undefined>(undefined);
   const [Short, setShort] = useState<string | undefined>(undefined);
@@ -41,50 +41,24 @@ export default function MitarbeiterForm({
     if (mitarbeiter == null) return;
     setLoading(true);
     setName(mitarbeiter.Name);
-    setShort(mitarbeiter.Short.Valid ? mitarbeiter.Short.String : undefined);
-    setGruppenwahl(
-      mitarbeiter.Gruppenwahl.Valid ? mitarbeiter.Gruppenwahl.String : undefined
-    );
-    setInternTelefon1(
-      mitarbeiter.InternTelefon1.Valid
-        ? mitarbeiter.InternTelefon1.String
-        : undefined
-    );
-    setInternTelefon2(
-      mitarbeiter.InternTelefon2.Valid
-        ? mitarbeiter.InternTelefon2.String
-        : undefined
-    );
-    setFestnetzAlternativ(
-      mitarbeiter.FestnetzAlternativ.Valid
-        ? mitarbeiter.FestnetzAlternativ.String
-        : undefined
-    );
-    setFestnetzPrivat(
-      mitarbeiter.FestnetzPrivat.Valid
-        ? mitarbeiter.FestnetzPrivat.String
-        : undefined
-    );
-    setHomeOffice(
-      mitarbeiter.HomeOffice.Valid ? mitarbeiter.HomeOffice.String : undefined
-    );
-    setMobilBusiness(
-      mitarbeiter.MobilBusiness.Valid
-        ? mitarbeiter.MobilBusiness.String
-        : undefined
-    );
-    setMobilPrivat(
-      mitarbeiter.MobilPrivat.Valid ? mitarbeiter.MobilPrivat.String : undefined
-    );
-    setEmail(mitarbeiter.Email.Valid ? mitarbeiter.Email.String : undefined);
-    setAzubi(mitarbeiter.Azubi.Valid ? mitarbeiter.Azubi.Bool : undefined);
-    const bday = new Date(mitarbeiter.Geburtstag.Time);
+    setShort(mitarbeiter.Short ?? undefined);
+    setGruppenwahl(mitarbeiter.Gruppenwahl ?? undefined);
+    setInternTelefon1(mitarbeiter.InternTelefon1 ?? undefined);
+    setInternTelefon2(mitarbeiter.InternTelefon2 ?? undefined);
+    setFestnetzAlternativ(mitarbeiter.FestnetzAlternativ ?? undefined);
+    setFestnetzPrivat(mitarbeiter.FestnetzPrivat ?? undefined);
+    setHomeOffice(mitarbeiter.HomeOffice ?? undefined);
+    setMobilBusiness(mitarbeiter.MobilBusiness ?? undefined);
+    setMobilPrivat(mitarbeiter.MobilPrivat ?? undefined);
+    setEmail(mitarbeiter.Email ?? undefined);
+    setAzubi(mitarbeiter.Azubi ?? undefined);
+    const bday = new Date(mitarbeiter.Geburtstag);
     const dateStr =
       bday.getFullYear() +
       "-" +
       ("0" + (bday.getMonth() + 1)).slice(-2) +
       "-" +
-      bday.getDate();
+      (bday.getDate() + 1);
     setGeburtstag(dateStr);
     setLoading(false);
   }, [mitarbeiter]);
@@ -94,22 +68,24 @@ export default function MitarbeiterForm({
     if (Name.length < 1) return;
     localStorage.removeItem("geburtstage");
     localStorage.removeItem("geburtstag-lastsync");
-    const params: db.MitarbeiterParams = {
+    const params: main.MitarbeiterParams = {
       Name,
       Azubi: Azubi != null ? Azubi : false,
-      Email,
-      FestnetzAlternativ,
-      FestnetzPrivat,
-      Geburtstag: Geburtstag,
-      HomeOffice,
-      Gruppenwahl,
-      InternTelefon1,
-      InternTelefon2,
-      MobilBusiness,
-      MobilPrivat,
-      Short,
+      Email: Email ?? "",
+      FestnetzAlternativ: FestnetzAlternativ ?? "",
+      FestnetzPrivat: FestnetzPrivat ?? "",
+      Geburtstag: Geburtstag ?? "",
+      HomeOffice: HomeOffice ?? "",
+      Gruppenwahl: Gruppenwahl ?? "",
+      InternTelefon1: InternTelefon1 ?? "",
+      InternTelefon2: InternTelefon2 ?? "",
+      MobilBusiness: MobilBusiness ?? "",
+      MobilPrivat: MobilPrivat ?? "",
+      Short: Short ?? "",
     };
-    await UpsertMitarbeiter(params, mitarbeiter?.Id ?? "");
+
+    await UpsertMitarbeiter(params);
+
     navigate("/Mitarbeiter");
   };
 
