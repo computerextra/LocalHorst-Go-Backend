@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { main } from "../../wailsjs/go/models";
+import { ent } from "../../wailsjs/go/models";
 
 type Session = {
-  User: main.User;
+  User: ent.User;
 };
 
 const getSession = () => {
@@ -15,7 +15,7 @@ const getSession = () => {
   return session as Session;
 };
 
-const setLocalSession = (session: Session) => {
+export const setLocalSession = (session: Session) => {
   localStorage.setItem("session", JSON.stringify(session));
 };
 

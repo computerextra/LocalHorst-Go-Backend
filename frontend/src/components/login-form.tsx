@@ -8,15 +8,38 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { setLocalSession } from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router";
-
-// TODO: Add validation and error handling
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { Login } from "../../wailsjs/go/main/App";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [mail, setMail] = useState<string | undefined>(undefined);
+  const [pass, setPass] = useState<string | undefined>(undefined);
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    if (!mail || !pass) {
+      return;
+    }
+    Login(mail, pass)
+      .then((res) => {
+        setLocalSession({
+          User: res,
+        });
+      })
+      .catch(() => {
+        alert("Anmeldung fehlgeschlagen. Bitte überprüfe deine Anmeldedaten.");
+      })
+      .finally(() => {
+        navigate("/");
+      });
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -34,6 +57,8 @@ export function LoginForm({
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
+                    value={mail}
+                    onChange={(e) => setMail(e.target.value)}
                     type="email"
                     placeholder="max.muster@computer-extra.de"
                     required
@@ -43,9 +68,15 @@ export function LoginForm({
                   <div className="flex items-center">
                     <Label htmlFor="password">Passwort</Label>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                  />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" onClick={handleSubmit}>
                   Anmelden
                 </Button>
               </div>
