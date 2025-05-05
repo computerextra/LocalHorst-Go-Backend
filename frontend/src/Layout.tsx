@@ -9,7 +9,7 @@ export default function Layout() {
         <div className="print:hidden">
           <Navbar />
         </div>
-        <div className="mt-5">
+        <div className="my-5">
           <Outlet />
         </div>
       </div>

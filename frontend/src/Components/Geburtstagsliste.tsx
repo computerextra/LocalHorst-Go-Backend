@@ -22,6 +22,19 @@ const columns: ColumnDef<main.Geburtstag>[] = [
       });
     },
   },
+  {
+    accessorKey: "Diff",
+    header: "Diff",
+    cell: ({ row }) => {
+      const x = row.original;
+      const diff = new Date(x.Geburtstag).getTime() - new Date().getTime();
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const d = days > 0 ? days : days;
+      return days > 0
+        ? `in ${d} Tage${d == 1 ? "" : "n"}`
+        : `Vor ${d * -1} Tage${d == 1 ? "" : "n"}`;
+    },
+  },
 ];
 
 export default function Geburtstagsliste() {
@@ -39,7 +52,7 @@ export default function Geburtstagsliste() {
   }
 
   return (
-    <>
+    <div className="mb-5">
       {data.Heute?.length > 0 &&
         data.Heute.map((x) => (
           <Alert variant="destructive" className="my-4" key={x.Name}>
@@ -50,7 +63,7 @@ export default function Geburtstagsliste() {
         ))}
       {data.Vergangen && (
         <>
-          <h2 className="my-4">Verganene Geburtstage</h2>
+          <h2 className="my-4">Vergangene Geburtstage</h2>
           <DataTable columns={columns} data={data.Vergangen} />
         </>
       )}
@@ -60,6 +73,6 @@ export default function Geburtstagsliste() {
           <DataTable columns={columns} data={data.Zukunft} />
         </>
       )}
-    </>
+    </div>
   );
 }

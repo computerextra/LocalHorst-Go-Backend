@@ -53,6 +53,7 @@ export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
   const queryData = useQuery({
     queryKey: ["mitarbeiter", id],
     queryFn: () => GetMitarbeiter(id),
+    enabled: !!id,
   });
   const navigate = useNavigate();
 

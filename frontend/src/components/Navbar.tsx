@@ -56,18 +56,7 @@ const Menu: MenuItem[] = [
   },
   {
     title: "Mitarbeiter",
-    children: [
-      {
-        title: "Übersicht",
-        description: "Alle Mitarbeiter",
-        href: "/mitarbeiter",
-      },
-      {
-        title: "Geburtstage",
-        description: "Geburtstage der Mitarbeiter",
-        href: "/mitarbeiter/geburtstag",
-      },
-    ],
+    href: "/mitarbeiter",
   },
   {
     title: "Lieferanten",
