@@ -1,74 +1,69 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout";
-import Archive from "./Pages/Archive";
-import EinkaufAbrechnung from "./Pages/Einkauf/Abrechnung";
-import EinkaufAuswahl from "./Pages/Einkauf/Auswahl";
-import EinkaufEingabe from "./Pages/Einkauf/Eingabe";
-import Einkaufsliste from "./Pages/Einkauf/Liste";
-import Geburtstag from "./Pages/Geburtstag";
-import Index from "./Pages/Index";
-import Inventur from "./Pages/Inventur";
-import KundenSuche from "./Pages/KundenSuche";
-import ApDetails from "./Pages/Lieferanten/Ansprechpartner/Details";
-import ApNew from "./Pages/Lieferanten/Ansprechpartner/New";
-import LieferantBearbeiten from "./Pages/Lieferanten/Bearbeiten";
-import LieferantDetails from "./Pages/Lieferanten/Lieferant";
-import NeuerLieferant from "./Pages/Lieferanten/Neu";
-import Lieferantenübersicht from "./Pages/Lieferanten/Overview";
-import MitarbeiterDetails from "./Pages/Mitarbeiter/Details";
-import MitarbeiterBearbeiter from "./Pages/Mitarbeiter/Edit";
-import NeuerMitarbeiter from "./Pages/Mitarbeiter/New";
-import Mitarbeiterübersicht from "./Pages/Mitarbeiter/Overview";
-import NotFound from "./Pages/NotFound";
-import Werkstatt from "./Pages/Werkstatt";
+import Liste from "./Pages/Einkauf/Liste";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import DetailMitarbeiter from "./Pages/Mitarbeiter/Detail";
+import EditMitarbeiter from "./Pages/Mitarbeiter/Edit";
+import GeburtstagMitarbeiter from "./Pages/Mitarbeiter/Geburtstag";
+import NewMitarbeiter from "./Pages/Mitarbeiter/New";
+import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
+import Register from "./Pages/Register";
+
+// Create a client
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <HashRouter basename="/">
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Index />} />
-          <Route path="Einkauf">
-            <Route index element={<Einkaufsliste />} />
-            <Route path="Auswahl" element={<EinkaufAuswahl />} />
-            <Route path="Abrechnung" element={<EinkaufAbrechnung />} />
-            <Route path=":id" element={<EinkaufEingabe />} />
-          </Route>
-          <Route path="Mitarbeiter">
-            <Route index element={<Mitarbeiterübersicht />} />
-            <Route path="Geburtstag" element={<Geburtstag />} />
-            <Route path="Neu" element={<NeuerMitarbeiter />} />
-            <Route path=":id">
-              <Route index element={<MitarbeiterDetails />} />
-              <Route path="Bearbeiten" element={<MitarbeiterBearbeiter />} />
+    <QueryClientProvider client={queryClient}>
+      <HashRouter basename="/">
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="einkauf">
+              <Route index element={<Liste />} />
+              <Route path="rechnung" element={<>Rechnung</>} />
+              <Route path="eingabe" element={<>Eingabe</>} />
             </Route>
-          </Route>
-          <Route path="Lieferanten">
-            <Route index element={<Lieferantenübersicht />} />
-            <Route path="Neu" element={<NeuerLieferant />} />
-            <Route path=":id">
-              <Route index element={<LieferantDetails />} />
-              <Route path="edit" element={<LieferantBearbeiten />} />
-              <Route path="Neu" element={<ApNew />} />
-              <Route path=":lid">
-                <Route index element={<ApDetails />} />
+            <Route path="mitarbeiter">
+              <Route index element={<MitarbeiterOverview />} />
+              <Route path="new" element={<NewMitarbeiter />} />
+              <Route path="geburtstag" element={<GeburtstagMitarbeiter />} />
+              <Route path=":id" element={<DetailMitarbeiter />} />
+              <Route path=":id/edit" element={<EditMitarbeiter />} />
+            </Route>
+            <Route path="lieferanten">
+              <Route index element={<>Lieferanten Übersicht</>} />
+              <Route path="new" element={<>Neuer Lieferant</>} />
+              <Route path=":id">
+                <Route index element={<>Lieferant Detail</>} />
+                <Route path="edit" element={<>Lieferant Edit</>} />
+                <Route path="ap">
+                  <Route index element={<>Ansprechpartner Übersicht</>} />
+                  <Route path="new" element={<>Neuer Ansprechpartner</>} />
+                  <Route path=":aid" element={<>Ansprechpartner Detail</>} />
+                  <Route
+                    path=":aid/edit"
+                    element={<>Ansprechpartner bearbeiten</>}
+                  />
+                </Route>
               </Route>
             </Route>
+            <Route path="archiv" element={<>Archiv</>} />
+            <Route path="suche" element={<>Kundensuche</>} />
+            <Route path="inventur" element={<>Inventur</>} />
+            <Route path="werkstatt" element={<>Werkstatt</>} />
           </Route>
-          <Route path="Archiv">
-            <Route index element={<Archive />} />
-          </Route>
-          <Route path="Kunde" element={<KundenSuche />} />
-          <Route path="Inventur" element={<Inventur />} />
-          <Route path="Werkstatt">
-            <Route index element={<Werkstatt />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </HashRouter>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Routes>
+      </HashRouter>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </StrictMode>
 );

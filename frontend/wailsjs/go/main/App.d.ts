@@ -3,7 +3,13 @@
 import {main} from '../models';
 import {ent} from '../models';
 
-export function CheckImage(arg1:number,arg2:string):Promise<main.ImageResponse>;
+export function ActivateUser(arg1:number):Promise<boolean>;
+
+export function ChangePassword(arg1:number,arg2:string,arg3:string):Promise<boolean>;
+
+export function CreateUser(arg1:main.UserParams):Promise<boolean>;
+
+export function DeactivateUser(arg1:number):Promise<boolean>;
 
 export function DeleteAnsprechpartner(arg1:number):Promise<boolean>;
 
@@ -23,9 +29,11 @@ export function GetDataFromYear(arg1:number):Promise<Array<ent.Team>>;
 
 export function GetEinkauf(arg1:number):Promise<ent.Mitarbeiter>;
 
-export function GetEinkaufsListe():Promise<Array<ent.Mitarbeiter>>;
+export function GetEinkaufsListe():Promise<Array<main.Einkauf>>;
 
 export function GetEntriesFromTeam(arg1:number):Promise<Array<ent.Artikel>>;
+
+export function GetGeburtstagsListe():Promise<main.GeburtstagList>;
 
 export function GetInventurYears():Promise<Array<ent.Inventur>>;
 
@@ -39,7 +47,11 @@ export function GetMitarbeiter(arg1:number):Promise<ent.Mitarbeiter>;
 
 export function GetMitarbeiterIdByName(arg1:string):Promise<number>;
 
+export function GetUser(arg1:number):Promise<ent.User>;
+
 export function GetUsername():Promise<string>;
+
+export function Login(arg1:string,arg2:string):Promise<ent.User>;
 
 export function SearchArchive(arg1:string):Promise<Array<main.Archive>>;
 

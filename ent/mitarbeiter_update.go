@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"golang-backend/ent/mitarbeiter"
 	"golang-backend/ent/predicate"
+	"golang-backend/ent/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -504,9 +505,34 @@ func (mu *MitarbeiterUpdate) ClearBild3Date() *MitarbeiterUpdate {
 	return mu
 }
 
+// SetMitarbeiterID sets the "mitarbeiter" edge to the User entity by ID.
+func (mu *MitarbeiterUpdate) SetMitarbeiterID(id int) *MitarbeiterUpdate {
+	mu.mutation.SetMitarbeiterID(id)
+	return mu
+}
+
+// SetNillableMitarbeiterID sets the "mitarbeiter" edge to the User entity by ID if the given value is not nil.
+func (mu *MitarbeiterUpdate) SetNillableMitarbeiterID(id *int) *MitarbeiterUpdate {
+	if id != nil {
+		mu = mu.SetMitarbeiterID(*id)
+	}
+	return mu
+}
+
+// SetMitarbeiter sets the "mitarbeiter" edge to the User entity.
+func (mu *MitarbeiterUpdate) SetMitarbeiter(u *User) *MitarbeiterUpdate {
+	return mu.SetMitarbeiterID(u.ID)
+}
+
 // Mutation returns the MitarbeiterMutation object of the builder.
 func (mu *MitarbeiterUpdate) Mutation() *MitarbeiterMutation {
 	return mu.mutation
+}
+
+// ClearMitarbeiter clears the "mitarbeiter" edge to the User entity.
+func (mu *MitarbeiterUpdate) ClearMitarbeiter() *MitarbeiterUpdate {
+	mu.mutation.ClearMitarbeiter()
+	return mu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -695,6 +721,35 @@ func (mu *MitarbeiterUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if mu.mutation.Bild3DateCleared() {
 		_spec.ClearField(mitarbeiter.FieldBild3Date, field.TypeTime)
+	}
+	if mu.mutation.MitarbeiterCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   mitarbeiter.MitarbeiterTable,
+			Columns: []string{mitarbeiter.MitarbeiterColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := mu.mutation.MitarbeiterIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   mitarbeiter.MitarbeiterTable,
+			Columns: []string{mitarbeiter.MitarbeiterColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -1192,9 +1247,34 @@ func (muo *MitarbeiterUpdateOne) ClearBild3Date() *MitarbeiterUpdateOne {
 	return muo
 }
 
+// SetMitarbeiterID sets the "mitarbeiter" edge to the User entity by ID.
+func (muo *MitarbeiterUpdateOne) SetMitarbeiterID(id int) *MitarbeiterUpdateOne {
+	muo.mutation.SetMitarbeiterID(id)
+	return muo
+}
+
+// SetNillableMitarbeiterID sets the "mitarbeiter" edge to the User entity by ID if the given value is not nil.
+func (muo *MitarbeiterUpdateOne) SetNillableMitarbeiterID(id *int) *MitarbeiterUpdateOne {
+	if id != nil {
+		muo = muo.SetMitarbeiterID(*id)
+	}
+	return muo
+}
+
+// SetMitarbeiter sets the "mitarbeiter" edge to the User entity.
+func (muo *MitarbeiterUpdateOne) SetMitarbeiter(u *User) *MitarbeiterUpdateOne {
+	return muo.SetMitarbeiterID(u.ID)
+}
+
 // Mutation returns the MitarbeiterMutation object of the builder.
 func (muo *MitarbeiterUpdateOne) Mutation() *MitarbeiterMutation {
 	return muo.mutation
+}
+
+// ClearMitarbeiter clears the "mitarbeiter" edge to the User entity.
+func (muo *MitarbeiterUpdateOne) ClearMitarbeiter() *MitarbeiterUpdateOne {
+	muo.mutation.ClearMitarbeiter()
+	return muo
 }
 
 // Where appends a list predicates to the MitarbeiterUpdate builder.
@@ -1413,6 +1493,35 @@ func (muo *MitarbeiterUpdateOne) sqlSave(ctx context.Context) (_node *Mitarbeite
 	}
 	if muo.mutation.Bild3DateCleared() {
 		_spec.ClearField(mitarbeiter.FieldBild3Date, field.TypeTime)
+	}
+	if muo.mutation.MitarbeiterCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   mitarbeiter.MitarbeiterTable,
+			Columns: []string{mitarbeiter.MitarbeiterColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := muo.mutation.MitarbeiterIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   mitarbeiter.MitarbeiterTable,
+			Columns: []string{mitarbeiter.MitarbeiterColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Mitarbeiter{config: muo.config}
 	_spec.Assign = _node.assignValues

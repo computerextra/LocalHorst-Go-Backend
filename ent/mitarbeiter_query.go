@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"golang-backend/ent/mitarbeiter"
 	"golang-backend/ent/predicate"
+	"golang-backend/ent/user"
 	"math"
 
 	"entgo.io/ent"
@@ -18,10 +19,12 @@ import (
 // MitarbeiterQuery is the builder for querying Mitarbeiter entities.
 type MitarbeiterQuery struct {
 	config
-	ctx        *QueryContext
-	order      []mitarbeiter.OrderOption
-	inters     []Interceptor
-	predicates []predicate.Mitarbeiter
+	ctx             *QueryContext
+	order           []mitarbeiter.OrderOption
+	inters          []Interceptor
+	predicates      []predicate.Mitarbeiter
+	withMitarbeiter *UserQuery
+	withFKs         bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -56,6 +59,28 @@ func (mq *MitarbeiterQuery) Unique(unique bool) *MitarbeiterQuery {
 func (mq *MitarbeiterQuery) Order(o ...mitarbeiter.OrderOption) *MitarbeiterQuery {
 	mq.order = append(mq.order, o...)
 	return mq
+}
+
+// QueryMitarbeiter chains the current query on the "mitarbeiter" edge.
+func (mq *MitarbeiterQuery) QueryMitarbeiter() *UserQuery {
+	query := (&UserClient{config: mq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := mq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := mq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(mitarbeiter.Table, mitarbeiter.FieldID, selector),
+			sqlgraph.To(user.Table, user.FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, mitarbeiter.MitarbeiterTable, mitarbeiter.MitarbeiterColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Mitarbeiter entity from the query.
@@ -245,15 +270,27 @@ func (mq *MitarbeiterQuery) Clone() *MitarbeiterQuery {
 		return nil
 	}
 	return &MitarbeiterQuery{
-		config:     mq.config,
-		ctx:        mq.ctx.Clone(),
-		order:      append([]mitarbeiter.OrderOption{}, mq.order...),
-		inters:     append([]Interceptor{}, mq.inters...),
-		predicates: append([]predicate.Mitarbeiter{}, mq.predicates...),
+		config:          mq.config,
+		ctx:             mq.ctx.Clone(),
+		order:           append([]mitarbeiter.OrderOption{}, mq.order...),
+		inters:          append([]Interceptor{}, mq.inters...),
+		predicates:      append([]predicate.Mitarbeiter{}, mq.predicates...),
+		withMitarbeiter: mq.withMitarbeiter.Clone(),
 		// clone intermediate query.
 		sql:  mq.sql.Clone(),
 		path: mq.path,
 	}
+}
+
+// WithMitarbeiter tells the query-builder to eager-load the nodes that are connected to
+// the "mitarbeiter" edge. The optional arguments are used to configure the query builder of the edge.
+func (mq *MitarbeiterQuery) WithMitarbeiter(opts ...func(*UserQuery)) *MitarbeiterQuery {
+	query := (&UserClient{config: mq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	mq.withMitarbeiter = query
+	return mq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -332,15 +369,26 @@ func (mq *MitarbeiterQuery) prepareQuery(ctx context.Context) error {
 
 func (mq *MitarbeiterQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Mitarbeiter, error) {
 	var (
-		nodes = []*Mitarbeiter{}
-		_spec = mq.querySpec()
+		nodes       = []*Mitarbeiter{}
+		withFKs     = mq.withFKs
+		_spec       = mq.querySpec()
+		loadedTypes = [1]bool{
+			mq.withMitarbeiter != nil,
+		}
 	)
+	if mq.withMitarbeiter != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, mitarbeiter.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Mitarbeiter).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Mitarbeiter{config: mq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -352,7 +400,46 @@ func (mq *MitarbeiterQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := mq.withMitarbeiter; query != nil {
+		if err := mq.loadMitarbeiter(ctx, query, nodes, nil,
+			func(n *Mitarbeiter, e *User) { n.Edges.Mitarbeiter = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (mq *MitarbeiterQuery) loadMitarbeiter(ctx context.Context, query *UserQuery, nodes []*Mitarbeiter, init func(*Mitarbeiter), assign func(*Mitarbeiter, *User)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*Mitarbeiter)
+	for i := range nodes {
+		if nodes[i].user_mitarbeiter == nil {
+			continue
+		}
+		fk := *nodes[i].user_mitarbeiter
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	if len(ids) == 0 {
+		return nil
+	}
+	query.Where(user.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "user_mitarbeiter" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (mq *MitarbeiterQuery) sqlCount(ctx context.Context) (int, error) {

@@ -348,6 +348,106 @@ export namespace ent {
 	
 	
 	
+	export class UserEdges {
+	    mitarbeiter?: Mitarbeiter;
+	
+	    static createFrom(source: any = {}) {
+	        return new UserEdges(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.mitarbeiter = this.convertValues(source["mitarbeiter"], Mitarbeiter);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class User {
+	    id?: number;
+	    Name?: string;
+	    Password?: string;
+	    Mail?: string;
+	    Active?: boolean;
+	    edges: UserEdges;
+	
+	    static createFrom(source: any = {}) {
+	        return new User(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.Name = source["Name"];
+	        this.Password = source["Password"];
+	        this.Mail = source["Mail"];
+	        this.Active = source["Active"];
+	        this.edges = this.convertValues(source["edges"], UserEdges);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class MitarbeiterEdges {
+	    mitarbeiter?: User;
+	
+	    static createFrom(source: any = {}) {
+	        return new MitarbeiterEdges(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.mitarbeiter = this.convertValues(source["mitarbeiter"], User);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class Mitarbeiter {
 	    id?: number;
 	    Name?: string;
@@ -380,6 +480,7 @@ export namespace ent {
 	    Bild2Date?: any;
 	    // Go type: time
 	    Bild3Date?: any;
+	    edges: MitarbeiterEdges;
 	
 	    static createFrom(source: any = {}) {
 	        return new Mitarbeiter(source);
@@ -413,6 +514,7 @@ export namespace ent {
 	        this.Bild1Date = this.convertValues(source["Bild1Date"], null);
 	        this.Bild2Date = this.convertValues(source["Bild2Date"], null);
 	        this.Bild3Date = this.convertValues(source["Bild3Date"], null);
+	        this.edges = this.convertValues(source["edges"], MitarbeiterEdges);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -433,6 +535,9 @@ export namespace ent {
 		    return a;
 		}
 	}
+	
+	
+	
 	
 
 }
@@ -489,6 +594,169 @@ export namespace main {
 	        this.Image = source["Image"];
 	    }
 	}
+	export class Einkauf {
+	    id?: number;
+	    Name?: string;
+	    Short?: string;
+	    Gruppenwahl?: string;
+	    InternTelefon1?: string;
+	    InternTelefon2?: string;
+	    FestnetzPrivat?: string;
+	    FestnetzAlternativ?: string;
+	    HomeOffice?: string;
+	    MobilBusiness?: string;
+	    MobilPrivat?: string;
+	    Email?: string;
+	    Azubi?: boolean;
+	    // Go type: time
+	    Geburtstag?: any;
+	    Paypal?: boolean;
+	    Abonniert?: boolean;
+	    Geld?: string;
+	    Pfand?: string;
+	    Dinge?: string;
+	    // Go type: time
+	    Abgeschickt?: any;
+	    Bild1?: string;
+	    Bild2?: string;
+	    Bild3?: string;
+	    // Go type: time
+	    Bild1Date?: any;
+	    // Go type: time
+	    Bild2Date?: any;
+	    // Go type: time
+	    Bild3Date?: any;
+	    edges: ent.MitarbeiterEdges;
+	    Bild1Data: ImageResponse;
+	    Bild2Data: ImageResponse;
+	    Bild3Data: ImageResponse;
+	
+	    static createFrom(source: any = {}) {
+	        return new Einkauf(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.Name = source["Name"];
+	        this.Short = source["Short"];
+	        this.Gruppenwahl = source["Gruppenwahl"];
+	        this.InternTelefon1 = source["InternTelefon1"];
+	        this.InternTelefon2 = source["InternTelefon2"];
+	        this.FestnetzPrivat = source["FestnetzPrivat"];
+	        this.FestnetzAlternativ = source["FestnetzAlternativ"];
+	        this.HomeOffice = source["HomeOffice"];
+	        this.MobilBusiness = source["MobilBusiness"];
+	        this.MobilPrivat = source["MobilPrivat"];
+	        this.Email = source["Email"];
+	        this.Azubi = source["Azubi"];
+	        this.Geburtstag = this.convertValues(source["Geburtstag"], null);
+	        this.Paypal = source["Paypal"];
+	        this.Abonniert = source["Abonniert"];
+	        this.Geld = source["Geld"];
+	        this.Pfand = source["Pfand"];
+	        this.Dinge = source["Dinge"];
+	        this.Abgeschickt = this.convertValues(source["Abgeschickt"], null);
+	        this.Bild1 = source["Bild1"];
+	        this.Bild2 = source["Bild2"];
+	        this.Bild3 = source["Bild3"];
+	        this.Bild1Date = this.convertValues(source["Bild1Date"], null);
+	        this.Bild2Date = this.convertValues(source["Bild2Date"], null);
+	        this.Bild3Date = this.convertValues(source["Bild3Date"], null);
+	        this.edges = this.convertValues(source["edges"], ent.MitarbeiterEdges);
+	        this.Bild1Data = this.convertValues(source["Bild1Data"], ImageResponse);
+	        this.Bild2Data = this.convertValues(source["Bild2Data"], ImageResponse);
+	        this.Bild3Data = this.convertValues(source["Bild3Data"], ImageResponse);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class Geburtstag {
+	    Name: string;
+	    // Go type: time
+	    Geburtstag: any;
+	    Diff: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new Geburtstag(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Name = source["Name"];
+	        this.Geburtstag = this.convertValues(source["Geburtstag"], null);
+	        this.Diff = source["Diff"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class GeburtstagList {
+	    Vergangen: Geburtstag[];
+	    Heute: Geburtstag[];
+	    Zukunft: Geburtstag[];
+	
+	    static createFrom(source: any = {}) {
+	        return new GeburtstagList(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Vergangen = this.convertValues(source["Vergangen"], Geburtstag);
+	        this.Heute = this.convertValues(source["Heute"], Geburtstag);
+	        this.Zukunft = this.convertValues(source["Zukunft"], Geburtstag);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 	export class Lieferant {
 	    id?: number;
 	    Firma?: string;
@@ -558,7 +826,9 @@ export namespace main {
 	    MobilPrivat: string;
 	    Email: string;
 	    Azubi: boolean;
-	    Geburtstag: string;
+	    Day: number;
+	    Month: number;
+	    Year: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new MitarbeiterParams(source);
@@ -578,7 +848,9 @@ export namespace main {
 	        this.MobilPrivat = source["MobilPrivat"];
 	        this.Email = source["Email"];
 	        this.Azubi = source["Azubi"];
-	        this.Geburtstag = source["Geburtstag"];
+	        this.Day = source["Day"];
+	        this.Month = source["Month"];
+	        this.Year = source["Year"];
 	    }
 	}
 	export class Sg_Adressen {
@@ -675,6 +947,22 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.Name = source["Name"];
 	        this.Vorname = source["Vorname"];
+	    }
+	}
+	export class UserParams {
+	    Name: string;
+	    Password: string;
+	    Mail: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new UserParams(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Name = source["Name"];
+	        this.Password = source["Password"];
+	        this.Mail = source["Mail"];
 	    }
 	}
 

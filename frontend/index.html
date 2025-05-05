@@ -1,22 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="font-geist">
+<html lang="de" class="font-geist">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Victor App</title>
   </head>
   <body
-    class="bg-base-100 text-base-content min-h-[100vh] print:min-h-min print:bg-neutral print:text-neutral-content antialiased"
+    class="min-h-[100vh] print:min-h-min print:bg-white print:text-black antialiased"
   >
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      window.addEventListener("click", function (e) {
-        document.querySelectorAll(".dropdown").forEach(function (dropdown) {
-          dropdown.open = false;
-        });
-      });
-    </script>
   </body>
 </html>

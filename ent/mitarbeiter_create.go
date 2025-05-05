@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"golang-backend/ent/mitarbeiter"
+	"golang-backend/ent/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
@@ -364,6 +365,25 @@ func (mc *MitarbeiterCreate) SetNillableBild3Date(t *time.Time) *MitarbeiterCrea
 	return mc
 }
 
+// SetMitarbeiterID sets the "mitarbeiter" edge to the User entity by ID.
+func (mc *MitarbeiterCreate) SetMitarbeiterID(id int) *MitarbeiterCreate {
+	mc.mutation.SetMitarbeiterID(id)
+	return mc
+}
+
+// SetNillableMitarbeiterID sets the "mitarbeiter" edge to the User entity by ID if the given value is not nil.
+func (mc *MitarbeiterCreate) SetNillableMitarbeiterID(id *int) *MitarbeiterCreate {
+	if id != nil {
+		mc = mc.SetMitarbeiterID(*id)
+	}
+	return mc
+}
+
+// SetMitarbeiter sets the "mitarbeiter" edge to the User entity.
+func (mc *MitarbeiterCreate) SetMitarbeiter(u *User) *MitarbeiterCreate {
+	return mc.SetMitarbeiterID(u.ID)
+}
+
 // Mutation returns the MitarbeiterMutation object of the builder.
 func (mc *MitarbeiterCreate) Mutation() *MitarbeiterMutation {
 	return mc.mutation
@@ -558,6 +578,23 @@ func (mc *MitarbeiterCreate) createSpec() (*Mitarbeiter, *sqlgraph.CreateSpec) {
 	if value, ok := mc.mutation.Bild3Date(); ok {
 		_spec.SetField(mitarbeiter.FieldBild3Date, field.TypeTime, value)
 		_node.Bild3Date = &value
+	}
+	if nodes := mc.mutation.MitarbeiterIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2O,
+			Inverse: true,
+			Table:   mitarbeiter.MitarbeiterTable,
+			Columns: []string{mitarbeiter.MitarbeiterColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.user_mitarbeiter = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

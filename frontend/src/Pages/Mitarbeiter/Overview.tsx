@@ -1,155 +1,159 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { ColumnDef } from "@tanstack/react-table";
+import { Check, Cross } from "lucide-react";
+import { NavLink } from "react-router";
 import { GetAllMitarbeiter } from "../../../wailsjs/go/main/App";
 import { ent } from "../../../wailsjs/go/models";
-import BackButton from "../../Components/BackButton";
-import LoadingSpinner from "../../Components/LoadingSpinner";
+import { DataTable } from "./data-table";
 
-export default function Mitarbeiterübersicht() {
-  const [Mitarbeiter, setMitarbeiter] = useState<undefined | ent.Mitarbeiter[]>(
-    undefined
-  );
-  const [loading, setLoading] = useState(false);
+const columns: ColumnDef<ent.Mitarbeiter>[] = [
+  {
+    accessorKey: "Name",
+    header: "Name",
+    cell: ({ row }) => {
+      const x = row.original;
+      return (
+        <NavLink
+          to={"/mitarbeiter/" + x.id}
+          className={"underline text-primary"}
+        >
+          {x.Name}
+        </NavLink>
+      );
+    },
+  },
+  {
+    accessorKey: "Email",
+    header: "Email",
+    cell: ({ row }) => {
+      const x = row.original;
+      return (
+        <a className="underline" href={"mailto:" + x.Email}>
+          {x.Email}
+        </a>
+      );
+    },
+  },
+  {
+    accessorKey: "Gruppenwahl",
+    header: "Gruppenwahl",
+  },
+  {
+    accessorKey: "InternTelefon1",
+    header: "Interne Durchwahl",
+    cell: ({ row }) => {
+      const x = row.original;
 
-  useEffect(() => {
-    async function x() {
-      setLoading(true);
-      setMitarbeiter(await GetAllMitarbeiter());
-      setLoading(false);
-    }
-    x();
-  }, []);
+      return (
+        <>
+          {x.InternTelefon1 && <p>DW1: {x.InternTelefon1}</p>}
+          {x.InternTelefon2 && <p>DW2: {x.InternTelefon2}</p>}
+        </>
+      );
+    },
+  },
+  {
+    accessorKey: "FestnetzPrivat",
+    header: "Festnetz",
+    cell: ({ row }) => {
+      const x = row.original;
+      return (
+        <div className="grid grid-cols-2">
+          {x.FestnetzPrivat && (
+            <>
+              <div>Privat:</div>
+              <div>
+                <a className="underline" href={"tel:" + x.FestnetzPrivat}>
+                  {x.FestnetzPrivat}
+                </a>
+              </div>
+            </>
+          )}
+          {x.FestnetzAlternativ && (
+            <>
+              <div>Geschäftlich:</div>
+              <div>
+                <a className="underline" href={"tel:" + x.FestnetzAlternativ}>
+                  {x.FestnetzAlternativ}
+                </a>
+              </div>
+            </>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "HomeOffice",
+    header: "Homeoffice",
+  },
+  {
+    accessorKey: "MobilBusiness",
+    header: "Mobil",
+    cell: ({ row }) => {
+      const x = row.original;
+      return (
+        <div className="grid grid-cols-2">
+          {x.MobilPrivat && (
+            <>
+              <div>Privat:</div>
+              <div>
+                <a className="underline" href={"tel:" + x.MobilPrivat}>
+                  {x.MobilPrivat}
+                </a>
+              </div>
+            </>
+          )}
+          {x.MobilBusiness && (
+            <>
+              <div>Geschäftlich:</div>
+              <div>
+                <a className="underline" href={"tel:" + x.MobilBusiness}>
+                  {x.MobilBusiness}
+                </a>
+              </div>
+            </>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "Azubi",
+    header: "Azubi",
+    cell: ({ row }) => {
+      const x = row.original;
+      if (x.Azubi) {
+        return <Check className="w-6 h-6 text-primary" />;
+      } else {
+        return <Cross className="w-6 h-6 text-destructive rotate-45" />;
+      }
+    },
+  },
+];
 
-  if (loading) return <LoadingSpinner />;
+export default function MitarbeiterOverview() {
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ["allemitarbeiter"],
+    queryFn: GetAllMitarbeiter,
+  });
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   return (
     <>
-      <BackButton href="/" />
-      <h1>Mitarbeiter</h1>
-      <Link to="/Mitarbeiter/Neu" className="btn btn-primary my-5">
-        Neuer Mitarbeiter
-      </Link>
-      <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Gruppe</th>
-              <th>Interne Durchwahl 1</th>
-              <th>Interne Durchwahl 2</th>
-              <th>Festnetz Alternativ</th>
-              <th>Festnetz Privat</th>
-              <th>Homeoffice</th>
-              <th>Mobil Business</th>
-              <th>Mobil Privat</th>
-              <th>Azubi</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {Mitarbeiter?.map((mitarbeiter) => (
-              <tr key={mitarbeiter.id}>
-                <th>
-                  <Link
-                    to={"/Mitarbeiter/" + mitarbeiter.id}
-                    className="underline"
-                  >
-                    {mitarbeiter.Name}
-                  </Link>
-                </th>
-                <td>
-                  {mitarbeiter.Email && (
-                    <a
-                      className="text-error underline"
-                      href={"mailto:" + mitarbeiter.Email}
-                    >
-                      {mitarbeiter.Email}
-                    </a>
-                  )}
-                </td>
-                <td>{mitarbeiter.Gruppenwahl}</td>
-                <td>{mitarbeiter.InternTelefon1}</td>
-                <td>{mitarbeiter.InternTelefon2}</td>
-                <td>
-                  {mitarbeiter.FestnetzAlternativ && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.FestnetzAlternativ}
-                    >
-                      {mitarbeiter.FestnetzAlternativ}
-                    </a>
-                  )}
-                </td>
-                <td>
-                  {mitarbeiter.FestnetzPrivat && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.FestnetzPrivat}
-                    >
-                      {mitarbeiter.FestnetzPrivat}
-                    </a>
-                  )}
-                </td>
-                <td>{mitarbeiter.HomeOffice}</td>
-                <td>
-                  {mitarbeiter.MobilBusiness && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.MobilBusiness}
-                    >
-                      {mitarbeiter.MobilBusiness}
-                    </a>
-                  )}
-                </td>
-                <td>
-                  {mitarbeiter.MobilPrivat && (
-                    <a
-                      className="text-error underline"
-                      href={"tel:" + mitarbeiter.MobilPrivat}
-                    >
-                      {mitarbeiter.MobilPrivat}
-                    </a>
-                  )}
-                </td>
-                <td>
-                  {mitarbeiter.Azubi ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-check text-success"
-                    >
-                      <path d="M20 6 9 17l-5-5"></path>
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-cross rotate-45 text-error"
-                    >
-                      <path d="M4 9a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4a1 1 0 0 1 1 1v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a1 1 0 0 1 1-1h4a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-4a1 1 0 0 1-1-1V4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4a1 1 0 0 1-1 1z"></path>
-                    </svg>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <h1 className="text-center">Mitarbeiter Overview</h1>
+      <Button asChild className="mb-4">
+        <NavLink to="/mitarbeiter/new">Neuen Mitarbeiter anlegen</NavLink>
+      </Button>
+      <DataTable columns={columns} data={data} />
     </>
   );
 }

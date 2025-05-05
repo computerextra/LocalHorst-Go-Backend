@@ -105,12 +105,21 @@ var (
 		{Name: "bild1date", Type: field.TypeTime, Nullable: true},
 		{Name: "bild2date", Type: field.TypeTime, Nullable: true},
 		{Name: "bild3date", Type: field.TypeTime, Nullable: true},
+		{Name: "user_mitarbeiter", Type: field.TypeInt, Unique: true, Nullable: true},
 	}
 	// MitarbeitersTable holds the schema information for the "mitarbeiters" table.
 	MitarbeitersTable = &schema.Table{
 		Name:       "mitarbeiters",
 		Columns:    MitarbeitersColumns,
 		PrimaryKey: []*schema.Column{MitarbeitersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "mitarbeiters_users_mitarbeiter",
+				Columns:    []*schema.Column{MitarbeitersColumns[26]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// TeamsColumns holds the columns for the "teams" table.
 	TeamsColumns = []*schema.Column{
@@ -135,6 +144,20 @@ var (
 			},
 		},
 	}
+	// UsersColumns holds the columns for the "users" table.
+	UsersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString, Unique: true},
+		{Name: "password", Type: field.TypeString},
+		{Name: "mail", Type: field.TypeString, Unique: true},
+		{Name: "active", Type: field.TypeBool, Default: true},
+	}
+	// UsersTable holds the schema information for the "users" table.
+	UsersTable = &schema.Table{
+		Name:       "users",
+		Columns:    UsersColumns,
+		PrimaryKey: []*schema.Column{UsersColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AnsprechpartnersTable,
@@ -143,11 +166,13 @@ var (
 		LieferantsTable,
 		MitarbeitersTable,
 		TeamsTable,
+		UsersTable,
 	}
 )
 
 func init() {
 	AnsprechpartnersTable.ForeignKeys[0].RefTable = LieferantsTable
 	ArtikelsTable.ForeignKeys[0].RefTable = TeamsTable
+	MitarbeitersTable.ForeignKeys[0].RefTable = UsersTable
 	TeamsTable.ForeignKeys[0].RefTable = InventursTable
 }

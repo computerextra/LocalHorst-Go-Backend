@@ -17,7 +17,20 @@ import (
 	gomail "gopkg.in/gomail.v2"
 )
 
-func (a *App) GetEinkaufsListe() []*ent.Mitarbeiter {
+type ImageResponse struct {
+	Valid bool
+	Image string
+}
+
+type Einkauf struct {
+	*ent.Mitarbeiter
+	Bild1Data ImageResponse
+	Bild2Data ImageResponse
+	Bild3Data ImageResponse
+}
+
+func (a *App) GetEinkaufsListe() []Einkauf {
+	var EinkaufsListe []Einkauf
 	res, err := a.db.Mitarbeiter.Query().
 		Where(
 			mitarbeiter.Or(
@@ -37,36 +50,32 @@ func (a *App) GetEinkaufsListe() []*ent.Mitarbeiter {
 			),
 		).All(a.ctx)
 
-	// res, err := a.db.Einkauf.FindMany(
-	// 	db.Einkauf.Or(
-	// 		db.Einkauf.Abonniert.Equals(true),
-	// 		db.Einkauf.And(
-	// 			db.Einkauf.Abgeschickt.BeforeEquals(time.Now()),
-	// 			db.Einkauf.Abgeschickt.After(
-	// 				time.Date(
-	// 					time.Now().Year(),
-	// 					time.Now().Month(),
-	// 					time.Now().Add(
-	// 						time.Duration(-24)*time.Hour,
-	// 					).Day(),
-	// 					0,
-	// 					0,
-	// 					0,
-	// 					0,
-	// 					time.Local,
-	// 				),
-	// 			),
-	// 		),
-	// 	),
-	// ).With(
-	// 	db.Einkauf.Mitarbeiter.Fetch(),
-	// ).Exec(a.ctx)
-
-	// res, err := a.db.GetEinkaufsliste()
 	if err != nil {
 		return nil
 	}
-	return res
+
+	for _, e := range res {
+		bild1 := ImageResponse{}
+		bild2 := ImageResponse{}
+		bild3 := ImageResponse{}
+		if len(*e.Bild1) > 0 {
+			bild1 = checkImage(*e.Bild1Date, filepath.Join(a.config.UPLOAD_FOLDER, *e.Bild1))
+		}
+		if len(*e.Bild2) > 0 {
+			bild2 = checkImage(*e.Bild2Date, filepath.Join(a.config.UPLOAD_FOLDER, *e.Bild2))
+		}
+		if len(*e.Bild3) > 0 {
+			bild3 = checkImage(*e.Bild3Date, filepath.Join(a.config.UPLOAD_FOLDER, *e.Bild3))
+		}
+		EinkaufsListe = append(EinkaufsListe, Einkauf{
+			Mitarbeiter: e,
+			Bild1Data:   bild1,
+			Bild2Data:   bild2,
+			Bild3Data:   bild3,
+		})
+	}
+
+	return EinkaufsListe
 }
 
 type UpsertEinkaufParams struct {
@@ -243,52 +252,6 @@ func (a *App) SendAbrechnung(Name, Betrag, Mail string) bool {
 
 	err := d.DialAndSend(m)
 	return err == nil
-}
-
-type ImageResponse struct {
-	Valid bool
-	Image string
-}
-
-func (a *App) CheckImage(id int, Nr string) ImageResponse {
-	ma, err := a.db.Mitarbeiter.Query().Where(mitarbeiter.ID(id)).Only(a.ctx)
-	// ma, err := a.db.Einkauf.FindUnique(db.Einkauf.ID.Equals(id)).Exec(a.ctx)
-
-	// ma, err := a.db.GetEinkauf(id)
-	if err != nil {
-		return ImageResponse{
-			Valid: false,
-		}
-	}
-	switch Nr {
-	case "1":
-		bild_ok := len(*ma.Bild1) > 0
-		date_ok := ma.Bild1Date.IsZero()
-		bild := *ma.Bild1
-		date := *ma.Bild1Date
-		if bild_ok && date_ok {
-			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, bild))
-		}
-	case "2":
-		bild_ok := len(*ma.Bild2) > 0
-		date_ok := ma.Bild2Date.IsZero()
-		bild := *ma.Bild2
-		date := *ma.Bild2Date
-		if bild_ok && date_ok {
-			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, bild))
-		}
-	case "3":
-		bild_ok := len(*ma.Bild3) > 0
-		date_ok := ma.Bild3Date.IsZero()
-		bild := *ma.Bild3
-		date := *ma.Bild3Date
-		if bild_ok && date_ok {
-			return checkImage(date, filepath.Join(a.config.UPLOAD_FOLDER, bild))
-		}
-	}
-	return ImageResponse{
-		Valid: false,
-	}
 }
 
 func checkImage(date time.Time, data string) ImageResponse {

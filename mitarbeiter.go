@@ -4,13 +4,12 @@ import (
 	"golang-backend/ent"
 	"golang-backend/ent/mitarbeiter"
 	"log"
-	"strconv"
-	"strings"
+	"sort"
 	"time"
 )
 
 func (a *App) GetAllMitarbeiter() []*ent.Mitarbeiter {
-	ma, err := a.db.Mitarbeiter.Query().All(a.ctx)
+	ma, err := a.db.Mitarbeiter.Query().Order(ent.Asc(mitarbeiter.FieldName)).All(a.ctx)
 
 	// ma, err := a.db.GetAllMitarbeiter()
 	if err != nil {
@@ -28,6 +27,86 @@ func (a *App) GetMitarbeiter(id int) *ent.Mitarbeiter {
 	return ma
 }
 
+type Geburtstag struct {
+	Name       string
+	Geburtstag time.Time
+	Diff       float64
+}
+
+type GeburtstagList struct {
+	Vergangen []Geburtstag
+	Heute     []Geburtstag
+	Zukunft   []Geburtstag
+}
+
+func (a *App) GetGeburtstagsListe() GeburtstagList {
+	var vergangen, heute, zukunft []Geburtstag
+	location, _ := time.LoadLocation("Europe/Berlin")
+	ma, _ := a.db.Mitarbeiter.
+		Query().
+		Where(
+			mitarbeiter.GeburtstagGT(
+				time.Date(0, 0, 0, 0, 0, 0, 0, location),
+			),
+		).
+		All(a.ctx)
+
+	for _, y := range ma {
+		loc, _ := time.LoadLocation("Europe/Berlin")
+
+		if y.Geburtstag != nil {
+			newDate := time.Date(
+				time.Now().Year(),
+				y.Geburtstag.Month(),
+				y.Geburtstag.Day(),
+				time.Now().Hour(),
+				time.Now().Minute(),
+				time.Now().Second(),
+				time.Now().Nanosecond(),
+				loc,
+			)
+			duration := time.Since(newDate)
+			days := duration.Hours() / 24
+			if days < -1 {
+				zukunft = append(zukunft, Geburtstag{
+					Name:       y.Name,
+					Geburtstag: newDate,
+					Diff:       days,
+				})
+
+			} else if days == 0 {
+				heute = append(heute, Geburtstag{
+					Name:       y.Name,
+					Geburtstag: newDate,
+					Diff:       days,
+				})
+			} else {
+				vergangen = append(vergangen, Geburtstag{
+					Name:       y.Name,
+					Geburtstag: newDate,
+					Diff:       days,
+				})
+			}
+		}
+
+		sort.Slice(heute, func(i, j int) bool {
+			return heute[i].Geburtstag.Before(heute[j].Geburtstag)
+		})
+		sort.Slice(vergangen, func(i, j int) bool {
+			return vergangen[i].Geburtstag.Before(vergangen[j].Geburtstag)
+		})
+		sort.Slice(zukunft, func(i, j int) bool {
+			return zukunft[i].Geburtstag.Before(zukunft[j].Geburtstag)
+		})
+	}
+
+	return GeburtstagList{
+		Vergangen: vergangen,
+		Zukunft:   zukunft,
+		Heute:     heute,
+	}
+}
+
 type MitarbeiterParams struct {
 	Name               string
 	Short              string
@@ -41,30 +120,24 @@ type MitarbeiterParams struct {
 	MobilPrivat        string
 	Email              string
 	Azubi              bool
-	Geburtstag         string
+	Day                int
+	Month              int
+	Year               int
 }
 
 func (a *App) UpsertMitarbeiter(params MitarbeiterParams) bool {
 	var Geburtstag time.Time
-
-	if len(params.Geburtstag) > 0 {
-		splitted := strings.Split(params.Geburtstag, "-")
-		year, err := strconv.Atoi(splitted[0])
-		if err != nil {
-			return false
-		}
-		month, err := strconv.Atoi(splitted[1])
-		if err != nil {
-			return false
-		}
-		day, err := strconv.Atoi(splitted[2])
-		if err != nil {
-			return false
-		}
-		Geburtstag = time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.Local)
+	location, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		log.Fatal(err)
+	}
+	if params.Day > 0 && params.Month > 0 && params.Year > 0 {
+		Geburtstag = time.Date(params.Year, time.Month(params.Month), params.Day, 0, 0, 0, 0, location)
+	} else {
+		Geburtstag = time.Date(0, 0, 0, 0, 0, 0, 0, location)
 	}
 
-	err := a.db.Mitarbeiter.
+	err = a.db.Mitarbeiter.
 		Create().
 		SetName(params.Name).
 		SetShort(params.Short).

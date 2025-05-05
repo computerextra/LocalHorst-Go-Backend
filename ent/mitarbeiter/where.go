@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 // ID filters vertices based on their ID field.
@@ -1722,6 +1723,29 @@ func Bild3DateIsNil() predicate.Mitarbeiter {
 // Bild3DateNotNil applies the NotNil predicate on the "Bild3Date" field.
 func Bild3DateNotNil() predicate.Mitarbeiter {
 	return predicate.Mitarbeiter(sql.FieldNotNull(FieldBild3Date))
+}
+
+// HasMitarbeiter applies the HasEdge predicate on the "mitarbeiter" edge.
+func HasMitarbeiter() predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2O, true, MitarbeiterTable, MitarbeiterColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasMitarbeiterWith applies the HasEdge predicate on the "mitarbeiter" edge with a given conditions (other predicates).
+func HasMitarbeiterWith(preds ...predicate.User) predicate.Mitarbeiter {
+	return predicate.Mitarbeiter(func(s *sql.Selector) {
+		step := newMitarbeiterStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

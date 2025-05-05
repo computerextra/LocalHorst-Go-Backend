@@ -24,6 +24,8 @@ type Tx struct {
 	Mitarbeiter *MitarbeiterClient
 	// Team is the client for interacting with the Team builders.
 	Team *TeamClient
+	// User is the client for interacting with the User builders.
+	User *UserClient
 
 	// lazily loaded.
 	client     *Client
@@ -161,6 +163,7 @@ func (tx *Tx) init() {
 	tx.Lieferant = NewLieferantClient(tx.config)
 	tx.Mitarbeiter = NewMitarbeiterClient(tx.config)
 	tx.Team = NewTeamClient(tx.config)
+	tx.User = NewUserClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

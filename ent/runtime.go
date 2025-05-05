@@ -7,6 +7,7 @@ import (
 	"golang-backend/ent/lieferant"
 	"golang-backend/ent/mitarbeiter"
 	"golang-backend/ent/schema"
+	"golang-backend/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code
@@ -43,4 +44,22 @@ func init() {
 	mitarbeiterDescAbonniert := mitarbeiterFields[14].Descriptor()
 	// mitarbeiter.DefaultAbonniert holds the default value on creation for the Abonniert field.
 	mitarbeiter.DefaultAbonniert = mitarbeiterDescAbonniert.Default.(bool)
+	userFields := schema.User{}.Fields()
+	_ = userFields
+	// userDescName is the schema descriptor for Name field.
+	userDescName := userFields[0].Descriptor()
+	// user.NameValidator is a validator for the "Name" field. It is called by the builders before save.
+	user.NameValidator = userDescName.Validators[0].(func(string) error)
+	// userDescPassword is the schema descriptor for Password field.
+	userDescPassword := userFields[1].Descriptor()
+	// user.PasswordValidator is a validator for the "Password" field. It is called by the builders before save.
+	user.PasswordValidator = userDescPassword.Validators[0].(func(string) error)
+	// userDescMail is the schema descriptor for Mail field.
+	userDescMail := userFields[2].Descriptor()
+	// user.MailValidator is a validator for the "Mail" field. It is called by the builders before save.
+	user.MailValidator = userDescMail.Validators[0].(func(string) error)
+	// userDescActive is the schema descriptor for Active field.
+	userDescActive := userFields[3].Descriptor()
+	// user.DefaultActive holds the default value on creation for the Active field.
+	user.DefaultActive = userDescActive.Default.(bool)
 }

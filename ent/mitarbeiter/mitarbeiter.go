@@ -4,6 +4,7 @@ package mitarbeiter
 
 import (
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -61,8 +62,17 @@ const (
 	FieldBild2Date = "bild2date"
 	// FieldBild3Date holds the string denoting the bild3date field in the database.
 	FieldBild3Date = "bild3date"
+	// EdgeMitarbeiter holds the string denoting the mitarbeiter edge name in mutations.
+	EdgeMitarbeiter = "mitarbeiter"
 	// Table holds the table name of the mitarbeiter in the database.
 	Table = "mitarbeiters"
+	// MitarbeiterTable is the table that holds the mitarbeiter relation/edge.
+	MitarbeiterTable = "mitarbeiters"
+	// MitarbeiterInverseTable is the table name for the User entity.
+	// It exists in this package in order to avoid circular dependency with the "user" package.
+	MitarbeiterInverseTable = "users"
+	// MitarbeiterColumn is the table column denoting the mitarbeiter relation/edge.
+	MitarbeiterColumn = "user_mitarbeiter"
 )
 
 // Columns holds all SQL columns for mitarbeiter fields.
@@ -95,10 +105,21 @@ var Columns = []string{
 	FieldBild3Date,
 }
 
+// ForeignKeys holds the SQL foreign-keys that are owned by the "mitarbeiters"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"user_mitarbeiter",
+}
+
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
+			return true
+		}
+	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -247,4 +268,18 @@ func ByBild2Date(opts ...sql.OrderTermOption) OrderOption {
 // ByBild3Date orders the results by the Bild3Date field.
 func ByBild3Date(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldBild3Date, opts...).ToFunc()
+}
+
+// ByMitarbeiterField orders the results by mitarbeiter field.
+func ByMitarbeiterField(field string, opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newMitarbeiterStep(), sql.OrderByField(field, opts...))
+	}
+}
+func newMitarbeiterStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(MitarbeiterInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2O, true, MitarbeiterTable, MitarbeiterColumn),
+	)
 }

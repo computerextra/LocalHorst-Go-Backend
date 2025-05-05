@@ -1,11 +1,8 @@
-import BackButton from "../../Components/BackButton";
-import MitarbeiterForm from "./components/MitarbeiterForm";
+import MitarbeiterForm from "./mitarbeiter-form";
 
-export default function NeuerMitarbeiter() {
+export default function NewMitarbeiter() {
   return (
     <>
-      <BackButton href="/Mitarbeiter" />
-      <h1>Neuer Mitarbeiter</h1>
       <MitarbeiterForm />
     </>
   );

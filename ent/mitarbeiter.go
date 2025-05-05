@@ -5,6 +5,7 @@ package ent
 import (
 	"fmt"
 	"golang-backend/ent/mitarbeiter"
+	"golang-backend/ent/user"
 	"strings"
 	"time"
 
@@ -66,8 +67,32 @@ type Mitarbeiter struct {
 	// Bild2Date holds the value of the "Bild2Date" field.
 	Bild2Date *time.Time `json:"Bild2Date,omitempty"`
 	// Bild3Date holds the value of the "Bild3Date" field.
-	Bild3Date    *time.Time `json:"Bild3Date,omitempty"`
-	selectValues sql.SelectValues
+	Bild3Date *time.Time `json:"Bild3Date,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the MitarbeiterQuery when eager-loading is set.
+	Edges            MitarbeiterEdges `json:"edges"`
+	user_mitarbeiter *int
+	selectValues     sql.SelectValues
+}
+
+// MitarbeiterEdges holds the relations/edges for other nodes in the graph.
+type MitarbeiterEdges struct {
+	// Mitarbeiter holds the value of the mitarbeiter edge.
+	Mitarbeiter *User `json:"mitarbeiter,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// MitarbeiterOrErr returns the Mitarbeiter value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e MitarbeiterEdges) MitarbeiterOrErr() (*User, error) {
+	if e.Mitarbeiter != nil {
+		return e.Mitarbeiter, nil
+	} else if e.loadedTypes[0] {
+		return nil, &NotFoundError{label: user.Label}
+	}
+	return nil, &NotLoadedError{edge: "mitarbeiter"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -83,6 +108,8 @@ func (*Mitarbeiter) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case mitarbeiter.FieldGeburtstag, mitarbeiter.FieldAbgeschickt, mitarbeiter.FieldBild1Date, mitarbeiter.FieldBild2Date, mitarbeiter.FieldBild3Date:
 			values[i] = new(sql.NullTime)
+		case mitarbeiter.ForeignKeys[0]: // user_mitarbeiter
+			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -275,6 +302,13 @@ func (m *Mitarbeiter) assignValues(columns []string, values []any) error {
 				m.Bild3Date = new(time.Time)
 				*m.Bild3Date = value.Time
 			}
+		case mitarbeiter.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field user_mitarbeiter", value)
+			} else if value.Valid {
+				m.user_mitarbeiter = new(int)
+				*m.user_mitarbeiter = int(value.Int64)
+			}
 		default:
 			m.selectValues.Set(columns[i], values[i])
 		}
@@ -286,6 +320,11 @@ func (m *Mitarbeiter) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (m *Mitarbeiter) Value(name string) (ent.Value, error) {
 	return m.selectValues.Get(name)
+}
+
+// QueryMitarbeiter queries the "mitarbeiter" edge of the Mitarbeiter entity.
+func (m *Mitarbeiter) QueryMitarbeiter() *UserQuery {
+	return NewMitarbeiterClient(m.config).QueryMitarbeiter(m)
 }
 
 // Update returns a builder for updating this Mitarbeiter.

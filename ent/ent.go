@@ -12,6 +12,7 @@ import (
 	"golang-backend/ent/lieferant"
 	"golang-backend/ent/mitarbeiter"
 	"golang-backend/ent/team"
+	"golang-backend/ent/user"
 	"reflect"
 	"sync"
 
@@ -84,6 +85,7 @@ func checkColumn(table, column string) error {
 			lieferant.Table:       lieferant.ValidColumn,
 			mitarbeiter.Table:     mitarbeiter.ValidColumn,
 			team.Table:            team.ValidColumn,
+			user.Table:            user.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)
