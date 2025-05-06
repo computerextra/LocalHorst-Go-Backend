@@ -1,3 +1,4 @@
+import { Login, Session } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,36 +9,38 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { setLocalSession } from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Login } from "../../wailsjs/go/main/App";
+import { useLocalStorage } from "usehooks-ts";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  let session: Session | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_value, setValue, _removeValue] = useLocalStorage("session", session);
+
   const [mail, setMail] = useState<string | undefined>(undefined);
   const [pass, setPass] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  // TODO: Testen: https://usehooks-ts.com/react-hook/use-local-storage
+
+  const handleSubmit = async () => {
     if (!mail || !pass) {
       return;
     }
-    Login(mail, pass)
-      .then((res) => {
-        setLocalSession({
-          User: res,
-        });
-      })
-      .catch(() => {
-        alert("Anmeldung fehlgeschlagen. Bitte überprüfe deine Anmeldedaten.");
-      })
-      .finally(() => {
-        navigate("/");
-      });
+    const user = await Login(mail, pass);
+    if (user == null) {
+      alert("Anmeldung fehlgeschlagen. Bitte überprüfe deine Anmeldedaten.");
+    }
+    const ses: Session = {
+      User: user,
+    };
+    setValue(ses);
+    navigate("/");
   };
 
   return (
