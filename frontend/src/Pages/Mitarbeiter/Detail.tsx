@@ -1,3 +1,4 @@
+import { GetMitarbeiter } from "@/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,13 +13,12 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import { NavLink, useParams } from "react-router";
-import { GetMitarbeiter } from "../../../wailsjs/go/main/App";
 
 export default function DetailMitarbeiter() {
   const { id } = useParams();
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["mitarbeiter", id],
-    queryFn: () => GetMitarbeiter(id ? parseInt(id) : 0),
+    queryFn: () => GetMitarbeiter(id),
     enabled: !!id,
   });
 
@@ -34,8 +34,8 @@ export default function DetailMitarbeiter() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>{data.Name}</CardTitle>
-          <CardDescription>{data.Email}</CardDescription>
+          <CardTitle>{data?.Name}</CardTitle>
+          <CardDescription>{data?.Email}</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="mb-2">Interne Nummern:</p>
@@ -46,7 +46,7 @@ export default function DetailMitarbeiter() {
                 type="text"
                 id="Gruppenwahl"
                 placeholder="Gruppenwahl"
-                value={data.Gruppenwahl}
+                value={data?.Gruppenwahl}
                 disabled
               />
             </div>
@@ -56,7 +56,7 @@ export default function DetailMitarbeiter() {
                 type="text"
                 id="InternTelefon1"
                 placeholder="InternTelefon1"
-                value={data.InternTelefon1}
+                value={data?.InternTelefon1}
                 disabled
               />
             </div>
@@ -66,7 +66,7 @@ export default function DetailMitarbeiter() {
                 type="text"
                 id="InternTelefon2"
                 placeholder="InternTelefon2"
-                value={data.InternTelefon2}
+                value={data?.InternTelefon2}
                 disabled
               />
             </div>
@@ -76,7 +76,7 @@ export default function DetailMitarbeiter() {
                 type="text"
                 id="HomeOffice"
                 placeholder="HomeOffice"
-                value={data.HomeOffice}
+                value={data?.HomeOffice}
                 disabled
               />
             </div>
@@ -86,26 +86,26 @@ export default function DetailMitarbeiter() {
           <div className="grid grid-cols-4 gap-4 mb-4">
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <span>Festnetz Privat</span>
-              <a href={"tel:" + data.FestnetzPrivat} className="underline">
-                {data.FestnetzPrivat}
+              <a href={"tel:" + data?.FestnetzPrivat} className="underline">
+                {data?.FestnetzPrivat}
               </a>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <span>Festnetz Business</span>
-              <a href={"tel:" + data.FestnetzAlternativ} className="underline">
-                {data.FestnetzAlternativ}
+              <a href={"tel:" + data?.FestnetzAlternativ} className="underline">
+                {data?.FestnetzAlternativ}
               </a>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <span>Mobil Privat</span>
-              <a href={"tel:" + data.MobilPrivat} className="underline">
-                {data.MobilPrivat}
+              <a href={"tel:" + data?.MobilPrivat} className="underline">
+                {data?.MobilPrivat}
               </a>
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <span>Mobil Business</span>
-              <a href={"tel:" + data.MobilBusiness} className="underline">
-                {data.MobilBusiness}
+              <a href={"tel:" + data?.MobilBusiness} className="underline">
+                {data?.MobilBusiness}
               </a>
             </div>
           </div>
@@ -113,7 +113,7 @@ export default function DetailMitarbeiter() {
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <span>Geburtstag</span>
             <p>
-              {data.Geburtstag
+              {data?.Geburtstag
                 ? new Date(data.Geburtstag).toLocaleDateString("de-DE", {
                     year: "numeric",
                     month: "2-digit",

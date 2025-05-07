@@ -1,3 +1,5 @@
+import { CreateUser } from "@/api";
+import { Session } from "@/api/user";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,46 +10,40 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { setLocalSession } from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { CreateUser, Login } from "../../wailsjs/go/main/App";
+import { useLocalStorage } from "usehooks-ts";
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  let session: Session | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_value, setValue, _removeValue] = useLocalStorage("session", session);
   const [name, setName] = useState<string | undefined>(undefined);
   const [mail, setMail] = useState<string | undefined>(undefined);
   const [pass, setPass] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name || !mail || !pass) {
       return;
     }
-    CreateUser({
+    const res = await CreateUser({
       Mail: mail,
       Name: name,
       Password: pass,
-    })
-      .then((res) => {
-        if (res) {
-          Login(mail, pass).then((res) => {
-            if (res == null) {
-              return;
-            } else {
-              setLocalSession({
-                User: res,
-              });
-            }
-          });
-        }
-      })
-      .finally(() => {
-        navigate("/");
+    });
+    if (res == null) {
+      alert("Es ist ein Fehler aufgetreten, bitte erneut versuchen!");
+    } else {
+      setValue({
+        User: res,
       });
+    }
+    navigate("/");
   };
 
   return (

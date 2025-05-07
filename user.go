@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"golang-backend/ent"
 	"golang-backend/ent/mitarbeiter"
 	"golang-backend/ent/user"
+	"log"
+	"strings"
 )
 
 func (a *App) GetUser(id int) *ent.User {
@@ -21,23 +24,31 @@ type UserParams struct {
 }
 
 func (a *App) CreateUser(values UserParams) bool {
-	// Finde Mitarbeiter zum Linken
-	r, err := a.db.Mitarbeiter.Query().Where(mitarbeiter.Email(values.Name)).Only(a.ctx)
+	fmt.Println(values)
+
+	r, err := a.db.Mitarbeiter.Query().Where(mitarbeiter.EmailContains(strings.ToLower(values.Mail))).Only(a.ctx)
+
 	if err != nil {
+		log.Fatal(err)
 		return false
 	}
 	err = a.db.User.Create().
 		SetActive(true).
 		SetName(values.Name).
 		SetPassword(values.Password).
-		SetMail(values.Mail).
+		SetMail(strings.ToLower(values.Mail)).
 		SetMitarbeiterID(r.ID).
 		Exec(a.ctx)
-	return err == nil
+
+	if err != nil {
+		log.Fatal(err)
+		return false
+	}
+	return true
 }
 
 func (a *App) Login(mail, password string) *ent.User {
-	r, err := a.db.User.Query().Where(user.MailEQ(mail)).Only(a.ctx)
+	r, err := a.db.User.Query().Where(user.MailEQ(strings.ToLower(mail))).Only(a.ctx)
 	if err != nil {
 		return nil
 	}

@@ -21,6 +21,8 @@ export function DeleteMitarbeiter(arg1:number):Promise<boolean>;
 
 export function GetAllMitarbeiter():Promise<Array<ent.Mitarbeiter>>;
 
+export function GetAllMitarbeiterWithoutMail():Promise<Array<ent.Mitarbeiter>>;
+
 export function GetAnsprechpartner(arg1:number):Promise<ent.Ansprechpartner>;
 
 export function GetArchive(arg1:string):Promise<string>;

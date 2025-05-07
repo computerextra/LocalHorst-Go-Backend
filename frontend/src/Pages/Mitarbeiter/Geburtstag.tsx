@@ -1,4 +1,4 @@
-import Geburtstagsliste from "@/components/Geburtstagsliste";
+import Geburtstagsliste from "./Geburtstagsliste";
 
 export default function GeburtstagMitarbeiter() {
   return (

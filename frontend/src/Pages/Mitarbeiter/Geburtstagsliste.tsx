@@ -1,12 +1,12 @@
+import { GetGeburtstagsliste } from "@/api";
+import type { Geburtstag } from "@/api/mitarbeiter";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { DataTable } from "@/Pages/Mitarbeiter/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { AlertCircle } from "lucide-react";
-import { GetGeburtstagsListe } from "../../wailsjs/go/main/App";
-import { main } from "../../wailsjs/go/models";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
-const columns: ColumnDef<main.Geburtstag>[] = [
+const columns: ColumnDef<Geburtstag>[] = [
   {
     accessorKey: "Name",
     header: "Name",
@@ -40,7 +40,7 @@ const columns: ColumnDef<main.Geburtstag>[] = [
 export default function Geburtstagsliste() {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["geburtstagsliste"],
-    queryFn: GetGeburtstagsListe,
+    queryFn: GetGeburtstagsliste,
   });
 
   if (isPending) {

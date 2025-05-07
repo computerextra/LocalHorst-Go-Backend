@@ -1,13 +1,13 @@
+import { GetAllMitarbeiter } from "@/api";
+import type { Mitarbeiter } from "@/api/mitarbeiter";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross } from "lucide-react";
 import { NavLink } from "react-router";
-import { GetAllMitarbeiter } from "../../../wailsjs/go/main/App";
-import { ent } from "../../../wailsjs/go/models";
 import { DataTable } from "./data-table";
 
-const columns: ColumnDef<ent.Mitarbeiter>[] = [
+const columns: ColumnDef<Mitarbeiter>[] = [
   {
     accessorKey: "Name",
     header: "Name",

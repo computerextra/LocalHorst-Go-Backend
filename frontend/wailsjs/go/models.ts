@@ -916,7 +916,6 @@ export namespace main {
 	    Bild1: string;
 	    Bild2: string;
 	    Bild3: string;
-	    MitarbeiterId: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new UpsertEinkaufParams(source);
@@ -932,7 +931,6 @@ export namespace main {
 	        this.Bild1 = source["Bild1"];
 	        this.Bild2 = source["Bild2"];
 	        this.Bild3 = source["Bild3"];
-	        this.MitarbeiterId = source["MitarbeiterId"];
 	    }
 	}
 	export class User {

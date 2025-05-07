@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"golang-backend/ent"
 	"golang-backend/ent/mitarbeiter"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -31,22 +30,13 @@ type Einkauf struct {
 
 func (a *App) GetEinkaufsListe() []Einkauf {
 	var EinkaufsListe []Einkauf
+	now := time.Now()
+	yesterday := now.Add(time.Duration(-24) * time.Hour)
 	res, err := a.db.Mitarbeiter.Query().
 		Where(
-			mitarbeiter.Or(
-				mitarbeiter.AbgeschicktLTE(time.Now()),
-				mitarbeiter.AbgeschicktGT(time.Date(
-					time.Now().Year(),
-					time.Now().Month(),
-					time.Now().Add(
-						time.Duration(-24)*time.Hour,
-					).Day(),
-					0,
-					0,
-					0,
-					0,
-					time.Local,
-				)),
+			mitarbeiter.And(
+				mitarbeiter.AbgeschicktLTE(now),
+				mitarbeiter.AbgeschicktGTE(yesterday),
 			),
 		).All(a.ctx)
 
@@ -59,13 +49,13 @@ func (a *App) GetEinkaufsListe() []Einkauf {
 		bild2 := ImageResponse{}
 		bild3 := ImageResponse{}
 		if len(*e.Bild1) > 0 {
-			bild1 = checkImage(*e.Bild1Date, filepath.Join(a.config.UPLOAD_FOLDER, *e.Bild1))
+			bild1 = checkImage(*e.Bild1Date, filepath.Join(a.config.UPLOAD_FOLDER, "Upload", *e.Bild1))
 		}
 		if len(*e.Bild2) > 0 {
-			bild2 = checkImage(*e.Bild2Date, filepath.Join(a.config.UPLOAD_FOLDER, *e.Bild2))
+			bild2 = checkImage(*e.Bild2Date, filepath.Join(a.config.UPLOAD_FOLDER, "Upload", *e.Bild2))
 		}
 		if len(*e.Bild3) > 0 {
-			bild3 = checkImage(*e.Bild3Date, filepath.Join(a.config.UPLOAD_FOLDER, *e.Bild3))
+			bild3 = checkImage(*e.Bild3Date, filepath.Join(a.config.UPLOAD_FOLDER, "Upload", *e.Bild3))
 		}
 		EinkaufsListe = append(EinkaufsListe, Einkauf{
 			Mitarbeiter: e,
@@ -79,44 +69,32 @@ func (a *App) GetEinkaufsListe() []Einkauf {
 }
 
 type UpsertEinkaufParams struct {
-	Paypal        bool
-	Abonniert     bool
-	Geld          string
-	Pfand         string
-	Dinge         string
-	Bild1         string
-	Bild2         string
-	Bild3         string
-	MitarbeiterId string
+	Paypal    bool
+	Abonniert bool
+	Geld      string
+	Pfand     string
+	Dinge     string
+	Bild1     string
+	Bild2     string
+	Bild3     string
 }
 
 func (a *App) UpdateEinkauf(values UpsertEinkaufParams, id int) bool {
+	fmt.Println(values)
 
-	var Bild1 *string
-	if len(values.Bild1) > 0 {
-		Bild1 = &values.Bild1
-	}
-	var Bild2 *string
-	if len(values.Bild2) > 0 {
-		Bild2 = &values.Bild2
-	}
-	var Bild3 *string
-	if len(values.Bild3) > 0 {
-		Bild3 = &values.Bild3
-	}
 	var Bild1Date *time.Time
 	now := time.Now()
-	if len(*Bild1) > 0 {
+	if len(values.Bild1) > 0 {
 		Bild1Date = &now
 	}
 
 	var Bild2Date *time.Time
-	if len(*Bild2) > 0 {
+	if len(values.Bild2) > 0 {
 		Bild2Date = &now
 	}
 
 	var Bild3Date *time.Time
-	if len(*Bild3) > 0 {
+	if len(values.Bild3) > 0 {
 		Bild3Date = &now
 	}
 
@@ -126,43 +104,14 @@ func (a *App) UpdateEinkauf(values UpsertEinkaufParams, id int) bool {
 		SetDinge(values.Dinge).
 		SetGeld(values.Geld).
 		SetPfand(values.Pfand).
-		SetNillableBild1(Bild1).
-		SetNillableBild2(Bild2).
-		SetNillableBild3(Bild3).
+		SetBild1(values.Bild1).
+		SetBild2(values.Bild2).
+		SetBild3(values.Bild3).
 		SetNillableBild1Date(Bild1Date).
 		SetNillableBild2Date(Bild2Date).
 		SetNillableBild3Date(Bild3Date).
 		Exec(a.ctx)
 
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// _, err := a.db.Einkauf.UpsertOne(
-	// 	db.Einkauf.MitarbeiterID.Equals(values.MitarbeiterId),
-	// ).Create(
-	// 	db.Einkauf.Bild1.SetIfPresent(&Bild1),
-	// 	db.Einkauf.Bild2.SetIfPresent(&Bild2),
-	// 	db.Einkauf.Bild3.SetIfPresent(&Bild3),
-	// 	db.Einkauf.Bild1Date.SetIfPresent(&Bild1Date),
-	// 	db.Einkauf.Bild2Date.SetIfPresent(&Bild2Date),
-	// 	db.Einkauf.Bild3Date.SetIfPresent(&Bild3Date),
-	// ).Update(
-	// 	db.Einkauf.Abgeschickt.Set(time.Now()),
-	// 	db.Einkauf.Paypal.Set(values.Paypal),
-	// 	db.Einkauf.Abonniert.Set(values.Abonniert),
-	// 	db.Einkauf.Geld.Set(values.Geld),
-	// 	db.Einkauf.Pfand.Set(values.Pfand),
-	// 	db.Einkauf.Dinge.Set(values.Dinge),
-	// 	db.Einkauf.Bild1.SetIfPresent(&Bild1),
-	// 	db.Einkauf.Bild2.SetIfPresent(&Bild2),
-	// 	db.Einkauf.Bild3.SetIfPresent(&Bild3),
-	// 	db.Einkauf.Bild1Date.SetIfPresent(&Bild1Date),
-	// 	db.Einkauf.Bild2Date.SetIfPresent(&Bild2Date),
-	// 	db.Einkauf.Bild3Date.SetIfPresent(&Bild3Date),
-	// ).Exec(a.ctx)
-
-	// _, err := a.db.UpsertEinkauf(values, id)
 	return err == nil
 }
 
@@ -199,9 +148,6 @@ func (a *App) GetEinkauf(id int) *ent.Mitarbeiter {
 
 	res, err := a.db.Mitarbeiter.Query().Where(mitarbeiter.ID(id)).Only(a.ctx)
 
-	// res, err := a.db.Einkauf.FindUnique(db.Einkauf.ID.Equals(id)).Exec(a.ctx)
-
-	// res, err := a.db.GetEinkauf(id)
 	if err != nil {
 		return nil
 	}
@@ -211,23 +157,12 @@ func (a *App) GetEinkauf(id int) *ent.Mitarbeiter {
 func (a *App) SkipEinkauf(id int) bool {
 	err := a.db.Mitarbeiter.UpdateOneID(id).SetAbgeschickt(time.Now().Add(time.Duration(24) * time.Hour)).Exec(a.ctx)
 
-	// _, err := a.db.Einkauf.FindUnique(
-	// 	db.Einkauf.ID.Equals(id),
-	// ).Update(
-	// 	db.Einkauf.Abgeschickt.Set(time.Now().Add(time.Duration(24) * time.Hour)),
-	// ).Exec(a.ctx)
-	// _, err := a.db.SkipEinkauf(id)
 	return err == nil
 }
 
 func (a *App) DeleteEinkauf(id int) bool {
-	err := a.db.Mitarbeiter.UpdateOneID(id).SetNillableAbgeschickt(nil).Exec(a.ctx)
+	err := a.db.Mitarbeiter.UpdateOneID(id).SetAbgeschickt(time.Now().Add(time.Duration(-24) * time.Hour)).Exec(a.ctx)
 
-	// _, err := a.db.Einkauf.FindUnique(
-	// 	db.Einkauf.ID.Equals(id),
-	// ).Delete().Exec(a.ctx)
-
-	// _, err := a.db.DeleteEinkauf(id)
 	return err == nil
 }
 

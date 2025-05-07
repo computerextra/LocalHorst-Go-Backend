@@ -1,3 +1,4 @@
+import { Session } from "@/api/user";
 import {
   Accordion,
   AccordionContent,
@@ -21,9 +22,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import useSession from "@/hooks/useSession";
 import { MenuIcon } from "lucide-react";
 import { NavLink } from "react-router";
+import { useLocalStorage } from "usehooks-ts";
 import { ModeToggle } from "./mode-toggle";
 
 type MenuItem = {
@@ -81,7 +82,9 @@ const Menu: MenuItem[] = [
 ];
 
 const Navbar = () => {
-  const session = useSession();
+  let session: Session | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [value, _setValue, removeValue] = useLocalStorage("session", session);
   return (
     <section className="py-4">
       <div className="container">
@@ -144,13 +147,18 @@ const Navbar = () => {
           </NavigationMenu>
           <div className="hidden items-center gap-4 lg:flex">
             <ModeToggle />
-            {session && session.User ? (
-              <>
-                <Button variant="outline">
-                  {session.User.Vorname + "" + session.User.Name} Abmelden
-                </Button>
-              </>
-            ) : (
+            {value && value.User && (
+              <Button
+                variant={"outline"}
+                onClick={() => {
+                  removeValue();
+                  location.reload();
+                }}
+              >
+                {value?.User.Name} Abmelden
+              </Button>
+            )}
+            {(value == null || value.User == null) && (
               <>
                 <Button variant="outline" asChild>
                   <NavLink to="/login">Anmelden</NavLink>

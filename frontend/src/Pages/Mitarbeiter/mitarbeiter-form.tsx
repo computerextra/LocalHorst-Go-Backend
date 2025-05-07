@@ -1,3 +1,5 @@
+import { DeleteMitarbeiter, GetMitarbeiter, UpsertMitarbeiter } from "@/api";
+import { MitarbeiterParams } from "@/api/mitarbeiter";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -26,12 +28,6 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
-import {
-  DeleteMitarbeiter,
-  GetMitarbeiter,
-  UpsertMitarbeiter,
-} from "../../../wailsjs/go/main/App";
-import { ent, main } from "../../../wailsjs/go/models";
 
 const formSchema = z.object({
   Name: z.string().min(1, { message: "Name ist erforderlich" }),
@@ -44,7 +40,7 @@ const formSchema = z.object({
   HomeOffice: z.string().optional(),
   MobilBusiness: z.string().optional(),
   MobilPrivat: z.string().optional(),
-  Email: z.string().email({ message: "Ungültige E-Mail-Adresse" }).optional(),
+  Email: z.string().email().optional(),
   Azubi: z.boolean(),
   Geburtstag: z.date().optional(),
 });
@@ -52,7 +48,7 @@ const formSchema = z.object({
 export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
   const queryData = useQuery({
     queryKey: ["mitarbeiter", id],
-    queryFn: () => GetMitarbeiter(id),
+    queryFn: () => GetMitarbeiter(id.toString()),
     enabled: !!id,
   });
   const navigate = useNavigate();
@@ -61,6 +57,7 @@ export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       Azubi: false,
+      Email: "",
     },
   });
 
@@ -68,7 +65,7 @@ export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
     if (id == 0) return;
 
     if (queryData.data != null) {
-      const data = queryData.data as ent.Mitarbeiter;
+      const data = queryData.data;
       form.reset({
         Azubi: data.Azubi ?? false,
         Name: data.Name,
@@ -98,7 +95,7 @@ export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
       year = values.Geburtstag.getFullYear();
     }
 
-    const params: main.MitarbeiterParams = {
+    const params: MitarbeiterParams = {
       Name: values.Name,
       Short: values.Short ?? "",
       Gruppenwahl: values.Gruppenwahl ?? "",
@@ -361,7 +358,7 @@ export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
           variant={"destructive"}
           className="mt-4"
           onClick={() => {
-            DeleteMitarbeiter(queryData.data.id!).then(() => {
+            DeleteMitarbeiter(queryData.data?.id).then(() => {
               navigate("/mitarbeiter");
             });
           }}

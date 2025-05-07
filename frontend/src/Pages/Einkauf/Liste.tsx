@@ -1,4 +1,4 @@
-import Einkaufsliste from "@/components/Einkaufsliste";
+import Einkaufsliste from "@/Pages/Einkauf/Einkaufsliste";
 
 export default function Liste() {
   return (

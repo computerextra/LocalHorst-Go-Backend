@@ -5,13 +5,25 @@ import (
 	"golang-backend/ent/mitarbeiter"
 	"log"
 	"sort"
+	"strings"
 	"time"
 )
+
+func (a *App) GetAllMitarbeiterWithoutMail() []*ent.Mitarbeiter {
+	var ret []*ent.Mitarbeiter
+	ma := a.GetAllMitarbeiter()
+
+	for _, x := range ma {
+		if len(*x.Email) < 1 {
+			ret = append(ret, x)
+		}
+	}
+	return ret
+}
 
 func (a *App) GetAllMitarbeiter() []*ent.Mitarbeiter {
 	ma, err := a.db.Mitarbeiter.Query().Order(ent.Asc(mitarbeiter.FieldName)).All(a.ctx)
 
-	// ma, err := a.db.GetAllMitarbeiter()
 	if err != nil {
 		return nil
 	}
@@ -151,7 +163,7 @@ func (a *App) UpsertMitarbeiter(params MitarbeiterParams) bool {
 		SetMobilPrivat(params.MobilPrivat).
 		SetAzubi(params.Azubi).
 		SetGeburtstag(Geburtstag).
-		SetEmail(params.Email).
+		SetEmail(strings.ToLower(params.Email)).
 		OnConflict().
 		UpdateNewValues().
 		Exec(a.ctx)

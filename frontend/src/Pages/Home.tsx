@@ -1,6 +1,6 @@
-import Einkaufsliste from "@/components/Einkaufsliste";
-import Geburtstagsliste from "@/components/Geburtstagsliste";
+import Einkaufsliste from "@/Pages/Einkauf/Einkaufsliste";
 import { Separator } from "@/components/ui/separator";
+import Geburtstagsliste from "./Mitarbeiter/Geburtstagsliste";
 
 export default function Home() {
   return (

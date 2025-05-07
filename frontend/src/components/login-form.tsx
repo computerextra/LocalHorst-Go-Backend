@@ -1,4 +1,5 @@
-import { Login, Session } from "@/auth";
+import { Login } from "@/api";
+import { Session } from "@/api/user";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,8 +26,6 @@ export function LoginForm({
   const [mail, setMail] = useState<string | undefined>(undefined);
   const [pass, setPass] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
-
-  // TODO: Testen: https://usehooks-ts.com/react-hook/use-local-storage
 
   const handleSubmit = async () => {
     if (!mail || !pass) {

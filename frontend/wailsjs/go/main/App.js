@@ -38,6 +38,10 @@ export function GetAllMitarbeiter() {
   return window['go']['main']['App']['GetAllMitarbeiter']();
 }
 
+export function GetAllMitarbeiterWithoutMail() {
+  return window['go']['main']['App']['GetAllMitarbeiterWithoutMail']();
+}
+
 export function GetAnsprechpartner(arg1) {
   return window['go']['main']['App']['GetAnsprechpartner'](arg1);
 }
