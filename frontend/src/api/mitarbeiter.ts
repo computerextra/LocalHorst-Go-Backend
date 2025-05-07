@@ -10,6 +10,7 @@ import {
   UploadImage as ApiUploadImage,
   SkipEinkauf as ApiSkipEinkauf,
   DeleteEinkauf as ApiDeleteEinkauf,
+  SendAbrechnung,
 } from "../../wailsjs/go/main/App";
 import type { main, ent } from "../../wailsjs/go/models";
 
@@ -44,7 +45,7 @@ export const GetMitarbeiter = async (
   id?: string
 ): Promise<Mitarbeiter | null> => {
   let res: Mitarbeiter | null = null;
-  if (id == null) return res;
+  if (id == null) return null;
   const i = parseInt(id);
   res = await ApiGetMitarbeiter(i);
   return res;
@@ -82,4 +83,14 @@ export const SkipEinkauf = async (id: number): Promise<boolean> => {
 
 export const DeleteEinkauf = async (id: number): Promise<boolean> => {
   return await ApiDeleteEinkauf(id);
+};
+
+type PaypalParams = {
+  Name: string;
+  Betrag: string;
+  Mail: string;
+};
+
+export const SendPayPalLink = async (params: PaypalParams) => {
+  return await SendAbrechnung(params.Name, params.Betrag, params.Mail);
 };

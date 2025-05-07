@@ -4,9 +4,10 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross } from "lucide-react";
+import React from "react";
 import { NavLink } from "react-router";
+import { DataTable } from "../../components/data-table";
 import { Button } from "../../components/ui/button";
-import { DataTable } from "../Mitarbeiter/data-table";
 
 export default function Einkaufsliste() {
   const { isPending, isError, data, error } = useQuery({
@@ -142,7 +143,7 @@ export default function Einkaufsliste() {
       {data &&
         data.length > 0 &&
         data.map((item) => (
-          <>
+          <React.Fragment key={item.id}>
             <div className="hidden print:block my-4 text-xs">
               {item.Name} <br />
               Geld: {item.Geld} <br />
@@ -170,7 +171,7 @@ export default function Einkaufsliste() {
               </div>
               <hr />
             </div>
-          </>
+          </React.Fragment>
         ))}
     </>
   );

@@ -11,7 +11,17 @@ import {
   UploadImage,
   SkipEinkauf,
   DeleteEinkauf,
+  SendPayPalLink,
 } from "./mitarbeiter";
+import {
+  GetLieferanten,
+  GetLieferant,
+  UpsertLieferant,
+  DeleteLieferant,
+  GetAnsprechpartner,
+  UpsertAnsprechpartner,
+  DeleteAnsprechpartner,
+} from "./lieferanten";
 
 export {
   GetAllGlobalMitarbeiter,
@@ -27,4 +37,12 @@ export {
   UploadImage,
   SkipEinkauf,
   DeleteEinkauf,
+  SendPayPalLink,
+  GetLieferanten,
+  GetLieferant,
+  UpsertLieferant,
+  DeleteLieferant,
+  GetAnsprechpartner,
+  UpsertAnsprechpartner,
+  DeleteAnsprechpartner,
 };

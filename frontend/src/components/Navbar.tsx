@@ -36,24 +36,12 @@ type MenuItem = {
 
 const Menu: MenuItem[] = [
   {
+    title: "Start",
+    href: "/",
+  },
+  {
     title: "Einkauf",
-    children: [
-      {
-        title: "Eingabe",
-        description: "Eingabe von Bestellungen",
-        href: "/einkauf/eingabe",
-      },
-      {
-        title: "Liste",
-        description: "Aktuelle Einkaufsliste",
-        href: "/einkauf",
-      },
-      {
-        title: "Abrechnung",
-        description: "Paypal Abrechnung",
-        href: "/einkauf/rechnung",
-      },
-    ],
+    href: "/einkauf/eingabe",
   },
   {
     title: "Mitarbeiter",
@@ -89,11 +77,6 @@ const Navbar = () => {
     <section className="py-4">
       <div className="container">
         <nav className="flex items-center justify-between">
-          <NavLink to="/" className="flex items-center gap-2">
-            <span className="text-lg font-semibold tracking-tighter">
-              Victor
-            </span>
-          </NavLink>
           <NavigationMenu className="hidden lg:block">
             <NavigationMenuList>
               {Menu.map((item, idx) => {

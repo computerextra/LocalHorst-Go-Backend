@@ -6,5 +6,9 @@ export default function EditMitarbeiter() {
 
   if (id == null) return <MitarbeiterForm />;
 
-  return <MitarbeiterForm id={parseInt(id)} />;
+  return (
+    <>
+      <MitarbeiterForm id={parseInt(id)} />
+    </>
+  );
 }

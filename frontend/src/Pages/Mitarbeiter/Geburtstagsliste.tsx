@@ -1,7 +1,7 @@
 import { GetGeburtstagsliste } from "@/api";
 import type { Geburtstag } from "@/api/mitarbeiter";
+import { DataTable } from "@/components/data-table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { DataTable } from "@/Pages/Mitarbeiter/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { AlertCircle } from "lucide-react";

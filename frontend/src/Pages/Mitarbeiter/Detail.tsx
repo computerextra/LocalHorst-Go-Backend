@@ -1,4 +1,5 @@
 import { GetMitarbeiter } from "@/api";
+import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,6 +33,7 @@ export default function DetailMitarbeiter() {
 
   return (
     <>
+      <BackButton href="/mitarbeiter" />
       <Card>
         <CardHeader>
           <CardTitle>{data?.Name}</CardTitle>

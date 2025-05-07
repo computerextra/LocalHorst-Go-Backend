@@ -5,9 +5,16 @@ import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout";
+import Abrechnung from "./Pages/Einkauf/Abrechnung";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Liste from "./Pages/Einkauf/Liste";
 import Home from "./Pages/Home";
+import EditAp from "./Pages/Lieferanten/Ansprechpartner/Edit";
+import NeuerAp from "./Pages/Lieferanten/Ansprechpartner/New";
+import LieferantDetail from "./Pages/Lieferanten/Detail";
+import LieferantBearbeiten from "./Pages/Lieferanten/Edit";
+import NeuerLieferant from "./Pages/Lieferanten/New";
+import Overview from "./Pages/Lieferanten/Overview";
 import Login from "./Pages/Login";
 import DetailMitarbeiter from "./Pages/Mitarbeiter/Detail";
 import EditMitarbeiter from "./Pages/Mitarbeiter/Edit";
@@ -28,7 +35,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<Home />} />
             <Route path="einkauf">
               <Route index element={<Liste />} />
-              <Route path="rechnung" element={<>Rechnung</>} />
+              <Route path="rechnung" element={<Abrechnung />} />
               <Route path="eingabe" element={<Eingabe />} />
             </Route>
             <Route path="mitarbeiter">
@@ -39,20 +46,13 @@ createRoot(document.getElementById("root")!).render(
               <Route path=":id/edit" element={<EditMitarbeiter />} />
             </Route>
             <Route path="lieferanten">
-              <Route index element={<>Lieferanten Übersicht</>} />
-              <Route path="new" element={<>Neuer Lieferant</>} />
+              <Route index element={<Overview />} />
+              <Route path="new" element={<NeuerLieferant />} />
               <Route path=":id">
-                <Route index element={<>Lieferant Detail</>} />
-                <Route path="edit" element={<>Lieferant Edit</>} />
-                <Route path="ap">
-                  <Route index element={<>Ansprechpartner Übersicht</>} />
-                  <Route path="new" element={<>Neuer Ansprechpartner</>} />
-                  <Route path=":aid" element={<>Ansprechpartner Detail</>} />
-                  <Route
-                    path=":aid/edit"
-                    element={<>Ansprechpartner bearbeiten</>}
-                  />
-                </Route>
+                <Route index element={<LieferantDetail />} />
+                <Route path="edit" element={<LieferantBearbeiten />} />
+                <Route path="new" element={<NeuerAp />} />
+                <Route path=":aid" element={<EditAp />} />
               </Route>
             </Route>
             <Route path="archiv" element={<>Archiv</>} />

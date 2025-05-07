@@ -20,12 +20,14 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useLocalStorage } from "usehooks-ts";
 
 export default function Eingabe() {
+  const queryClient = useQueryClient();
+
   let session: Session | undefined;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, _setValue, _removeValue] = useLocalStorage("session", session);
@@ -34,7 +36,7 @@ export default function Eingabe() {
     queryFn: () => GetAllGlobalMitarbeiter(),
   });
   const einkauf = useQuery({
-    queryKey: ["mitarbeiter_einkauf"],
+    queryKey: ["mitarbeiter_einkauf", value?.User.id],
     queryFn: () => GetMitarbeiter(value?.User?.id?.toString() ?? undefined),
   });
 
@@ -45,8 +47,8 @@ export default function Eingabe() {
   const [Bild1, setBild1] = useState<string | undefined>(undefined);
   const [Bild2, setBild2] = useState<string | undefined>(undefined);
   const [Bild3, setBild3] = useState<string | undefined>(undefined);
-  const [Paypal, setPaypal] = useState<boolean>(false);
-  const [Abo, setAbo] = useState<boolean>(false);
+  const [Paypal, setPaypal] = useState<boolean | undefined>(undefined);
+  const [Abo, setAbo] = useState<boolean | undefined>(undefined);
 
   const navigate = useNavigate();
 
@@ -143,13 +145,13 @@ export default function Eingabe() {
     }
 
     const params: EinkaufParams = {
-      Abonniert: Abo,
+      Abonniert: Abo ?? false,
       Bild1: Bild1 ?? "",
       Bild2: Bild2 ?? "",
       Bild3: Bild3 ?? "",
       Dinge: Einkauf ?? "",
       Geld: Geld ?? "",
-      Paypal: Paypal,
+      Paypal: Paypal ?? false,
       Pfand: Pfand ?? "",
     };
 
@@ -157,162 +159,206 @@ export default function Eingabe() {
     if (!res) {
       alert("Fehler beim Speichern.");
     } else {
-      navigate("/einkauf");
+      queryClient.invalidateQueries({
+        queryKey: ["mitarbeiter_einkauf", value?.User.id],
+      });
+
+      navigate("/");
     }
   };
 
-  return (
-    <div>
-      {(value == null || value.User == null) && (
-        <>
-          <h2 className="text-center">
-            Nicht angemeldet. Ohne Anmeldung stehen nur allegemein Verfügbare
-            Eingaben zur Verfügung.
-          </h2>
-          <div className="grid my-5">
-            <Button asChild>
-              <Link to="/login">Anmelden</Link>
-            </Button>
-          </div>
-        </>
-      )}
-      <Button variant={"outline"} asChild>
-        <a
-          href="https://www.edeka.de/markt-id/10001842/prospekt/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Edeka Blättchen
-        </a>
-      </Button>
+  if (global.isSuccess && einkauf.isSuccess)
+    return (
+      <div>
+        {(value == null || value.User == null) && (
+          <>
+            <h2 className="text-center">
+              Nicht angemeldet. Ohne Anmeldung stehen nur allegemein Verfügbare
+              Eingaben zur Verfügung.
+            </h2>
+            <div className="grid my-5">
+              <Button asChild>
+                <Link to="/login">Anmelden</Link>
+              </Button>
+            </div>
+          </>
+        )}
+        <Button variant={"outline"} asChild>
+          <a
+            href="https://www.edeka.de/markt-id/10001842/prospekt/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Edeka Blättchen
+          </a>
+        </Button>
 
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-8 mt-5">
-        <Select
-          required
-          onValueChange={(e) => setId(parseInt(e))}
-          value={id?.toString()}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Mitarbeiter" />
-          </SelectTrigger>
-          <SelectContent>
-            {value?.User?.id && (
-              <SelectItem value={value.User.id.toString()}>
-                {value.User.Name}
-              </SelectItem>
-            )}
-            {global.data.map((x) => {
-              if (x.id)
-                return (
-                  <SelectItem key={x.id} value={x.id.toString()}>
-                    {x.Name}
-                  </SelectItem>
-                );
-            })}
-          </SelectContent>
-        </Select>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="Geld">Geld in €</Label>
-            <Input type="text" id="Geld" placeholder="0,25" />
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-8 mt-5">
+          <Select
+            required
+            onValueChange={(e) => setId(parseInt(e))}
+            defaultValue={
+              einkauf && einkauf.data && einkauf.data.id
+                ? einkauf.data.id.toString()
+                : global &&
+                  global.data &&
+                  global.data.length > 0 &&
+                  global.data[0].id
+                ? global.data[0].id.toString()
+                : ""
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Mitarbeiter" />
+            </SelectTrigger>
+            <SelectContent>
+              {value?.User?.id && (
+                <SelectItem value={value.User.id.toString()}>
+                  {value.User.Name}
+                </SelectItem>
+              )}
+              {global.data.map((x) => {
+                if (x.id)
+                  return (
+                    <SelectItem key={x.id} value={x.id.toString()}>
+                      {x.Name}
+                    </SelectItem>
+                  );
+              })}
+            </SelectContent>
+          </Select>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="Geld">Geld in €</Label>
+              <Input
+                type="text"
+                id="Geld"
+                placeholder="0,25"
+                defaultValue={Geld}
+                onChange={(e) => setGeld(e.target.value)}
+              />
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="Pfand">Pfand in €</Label>
+              <Input
+                type="text"
+                id="Pfand"
+                placeholder="0,25"
+                defaultValue={Pfand}
+                onChange={(e) => setPfand(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="Pfand">Pfand in €</Label>
-            <Input type="text" id="Pfand" placeholder="0,25" />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="Paypal"
+                defaultChecked={
+                  einkauf && einkauf.data && einkauf.data.Paypal
+                    ? einkauf.data.Paypal
+                    : global &&
+                      global.data &&
+                      global.data.length > 0 &&
+                      global.data[0].Paypal
+                    ? global.data[0].Paypal
+                    : Paypal
+                }
+                onCheckedChange={() => setPaypal((prev) => !prev)}
+              />
+              <Label htmlFor="Paypal">Paypal</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="Abo"
+                defaultChecked={
+                  einkauf && einkauf.data && einkauf.data.Abonniert
+                    ? einkauf.data.Abonniert
+                    : global &&
+                      global.data &&
+                      global.data.length > 0 &&
+                      global.data[0].Abonniert
+                    ? global.data[0].Abonniert
+                    : Abo
+                }
+                onCheckedChange={() => setAbo((prev) => !prev)}
+              />
+              <Label htmlFor="Abo">Abo</Label>
+            </div>
           </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="Paypal"
-              checked={Paypal}
-              onCheckedChange={() => setPaypal((prev) => !prev)}
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="Einkauf">Dein Einkauf</Label>
+            <Textarea
+              placeholder="Dein Einkauf..."
+              value={Einkauf}
+              onChange={(e) => setEinkauf(e.target.value)}
+              id="Einkauf"
             />
-            <Label htmlFor="Paypal">Paypal</Label>
           </div>
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="Abo"
-              checked={Abo}
-              onCheckedChange={() => setAbo((prev) => !prev)}
-            />
-            <Label htmlFor="Abo">Abo</Label>
+          <div className="grid grid-cols-3">
+            <fieldset>
+              <legend>Bild 1</legend>
+              <Button
+                variant={"outline"}
+                onClick={async () => await uploadImage(1)}
+              >
+                {Bild1 && Bild1.length > 0 ? Bild1 : "Bild hochladen"}
+              </Button>
+            </fieldset>
+            <fieldset>
+              <legend>Bild 2</legend>
+              <Button
+                variant={"outline"}
+                onClick={async () => await uploadImage(2)}
+              >
+                {Bild2 && Bild2.length > 0 ? Bild2 : "Bild hochladen"}
+              </Button>
+            </fieldset>
+            <fieldset>
+              <legend>Bild 3</legend>
+              <Button
+                variant={"outline"}
+                onClick={async () => await uploadImage(3)}
+              >
+                {Bild3 && Bild3.length > 0 ? Bild3 : "Bild hochladen"}
+              </Button>
+            </fieldset>
           </div>
-        </div>
-        <div className="grid w-full gap-1.5">
-          <Label htmlFor="Einkauf">Dein Einkauf</Label>
-          <Textarea
-            placeholder="Dein Einkauf..."
-            value={Einkauf}
-            onChange={(e) => setEinkauf(e.target.value)}
-            id="Einkauf"
-          />
-        </div>
-        <div className="grid grid-cols-3">
-          <fieldset>
-            <legend>Bild 1</legend>
-            <Button
-              variant={"outline"}
-              onClick={async () => await uploadImage(1)}
-            >
-              {Bild1 && Bild1.length > 0 ? Bild1 : "Bild hochladen"}
-            </Button>
-          </fieldset>
-          <fieldset>
-            <legend>Bild 2</legend>
-            <Button
-              variant={"outline"}
-              onClick={async () => await uploadImage(2)}
-            >
-              {Bild2 && Bild2.length > 0 ? Bild2 : "Bild hochladen"}
-            </Button>
-          </fieldset>
-          <fieldset>
-            <legend>Bild 3</legend>
-            <Button
-              variant={"outline"}
-              onClick={async () => await uploadImage(3)}
-            >
-              {Bild3 && Bild3.length > 0 ? Bild3 : "Bild hochladen"}
-            </Button>
-          </fieldset>
-        </div>
-        <Button type="submit" onClick={handleSubmit}>
-          Speichern
-        </Button>
-      </form>
+          <Button type="submit" onClick={handleSubmit}>
+            Speichern
+          </Button>
+        </form>
 
-      <Separator className="my-8" />
-      <div className="flex justify-around mb-10">
-        <Button
-          variant={"secondary"}
-          onClick={async () => {
-            if (id == null) return;
-            const res = await SkipEinkauf(id);
-            if (res) {
-              navigate("/einkauf");
-            } else {
-              alert("Konnte Einkauf nicht verschieben");
-            }
-          }}
-        >
-          Einkauf auf morgen verschieben
-        </Button>
-        <Button
-          variant={"destructive"}
-          onClick={async () => {
-            if (id == null) return;
-            const res = await DeleteEinkauf(id);
-            if (res) {
-              navigate("/einkauf");
-            } else {
-              alert("Konnte Einkauf nicht löschen");
-            }
-          }}
-        >
-          Einkauf löschen
-        </Button>
+        <Separator className="my-8" />
+        <div className="flex justify-around mb-10">
+          <Button
+            variant={"secondary"}
+            onClick={async () => {
+              if (id == null) return;
+              const res = await SkipEinkauf(id);
+              if (res) {
+                navigate("/");
+              } else {
+                alert("Konnte Einkauf nicht verschieben");
+              }
+            }}
+          >
+            Einkauf auf morgen verschieben
+          </Button>
+          <Button
+            variant={"destructive"}
+            onClick={async () => {
+              if (id == null) return;
+              const res = await DeleteEinkauf(id);
+              if (res) {
+                navigate("/");
+              } else {
+                alert("Konnte Einkauf nicht löschen");
+              }
+            }}
+          >
+            Einkauf löschen
+          </Button>
+        </div>
       </div>
-    </div>
-  );
+    );
 }

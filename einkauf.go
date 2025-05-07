@@ -34,9 +34,12 @@ func (a *App) GetEinkaufsListe() []Einkauf {
 	yesterday := now.Add(time.Duration(-24) * time.Hour)
 	res, err := a.db.Mitarbeiter.Query().
 		Where(
-			mitarbeiter.And(
-				mitarbeiter.AbgeschicktLTE(now),
-				mitarbeiter.AbgeschicktGTE(yesterday),
+			mitarbeiter.Or(
+				mitarbeiter.AbonniertEQ(true),
+				mitarbeiter.And(
+					mitarbeiter.AbgeschicktLTE(now),
+					mitarbeiter.AbgeschicktGTE(yesterday),
+				),
 			),
 		).All(a.ctx)
 
@@ -101,6 +104,7 @@ func (a *App) UpdateEinkauf(values UpsertEinkaufParams, id int) bool {
 	err := a.db.Mitarbeiter.UpdateOneID(id).
 		SetAbgeschickt(time.Now()).
 		SetAbonniert(values.Abonniert).
+		SetPaypal(values.Paypal).
 		SetDinge(values.Dinge).
 		SetGeld(values.Geld).
 		SetPfand(values.Pfand).

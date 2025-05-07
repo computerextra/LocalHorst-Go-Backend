@@ -4,6 +4,7 @@ import (
 	"golang-backend/ent"
 	"golang-backend/ent/ansprechpartner"
 	"golang-backend/ent/lieferant"
+	"log"
 )
 
 type Lieferant struct {
@@ -64,23 +65,17 @@ func (a *App) UpsertLieferant(params LieferantenParams) bool {
 		OnConflict().
 		UpdateNewValues().
 		Exec(a.ctx)
-
-	// _, err := a.db.UpsertLieferant(params, id)
-
 	return err == nil
 
 }
 
 func (a *App) DeleteLieferant(id int) bool {
 	err := a.db.Lieferant.DeleteOneID(id).Exec(a.ctx)
-
-	// _, err := a.db.DeleteLieferant(id)
 	return err == nil
 }
 
 func (a *App) GetAnsprechpartner(id int) *ent.Ansprechpartner {
 	res, err := a.db.Ansprechpartner.Query().Where(ansprechpartner.ID(id)).Only(a.ctx)
-	// res, err := a.db.GetAnsprechpartner(id)
 	if err != nil {
 		return nil
 	}
@@ -96,6 +91,7 @@ type AnsprechpartnerParams struct {
 }
 
 func (a *App) UpsertAnsprechpartner(params AnsprechpartnerParams) bool {
+
 	err := a.db.Ansprechpartner.
 		Create().
 		SetMail(params.Mail).
@@ -107,13 +103,13 @@ func (a *App) UpsertAnsprechpartner(params AnsprechpartnerParams) bool {
 		UpdateNewValues().
 		Exec(a.ctx)
 
-	// _, err := a.db.UpsertAnsprechpartner(params, id)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return err == nil
 }
 
 func (a *App) DeleteAnsprechpartner(id int) bool {
 	err := a.db.Ansprechpartner.DeleteOneID(id).Exec(a.ctx)
-
-	// _, err := a.db.DeleteAnsprechpartner(id)
 	return err == nil
 }

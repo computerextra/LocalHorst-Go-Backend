@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross } from "lucide-react";
 import { NavLink } from "react-router";
-import { DataTable } from "./data-table";
+import { DataTable } from "../../components/data-table";
 
 const columns: ColumnDef<Mitarbeiter>[] = [
   {

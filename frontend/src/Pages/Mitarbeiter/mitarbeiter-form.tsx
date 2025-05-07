@@ -1,5 +1,6 @@
 import { DeleteMitarbeiter, GetMitarbeiter, UpsertMitarbeiter } from "@/api";
 import { MitarbeiterParams } from "@/api/mitarbeiter";
+import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -20,7 +21,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
@@ -45,11 +46,11 @@ const formSchema = z.object({
   Geburtstag: z.date().optional(),
 });
 
-export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
+export default function MitarbeiterForm({ id }: { id?: number }) {
+  const queryClient = useQueryClient();
   const queryData = useQuery({
     queryKey: ["mitarbeiter", id],
-    queryFn: () => GetMitarbeiter(id.toString()),
-    enabled: !!id,
+    queryFn: () => GetMitarbeiter(id ? id.toString() : undefined),
   });
   const navigate = useNavigate();
 
@@ -113,7 +114,7 @@ export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
       Year: year ? year : 0,
     };
     await UpsertMitarbeiter(params);
-
+    queryClient.invalidateQueries({ queryKey: ["mitarbeiter", id] });
     navigate("/mitarbeiter");
   };
 
@@ -121,8 +122,13 @@ export default function MitarbeiterForm({ id = 0 }: { id?: number }) {
     return <span>Loading...</span>;
   }
 
+  if (queryData.isError) {
+    return <span>Error: {queryData.error.message}</span>;
+  }
+
   return (
     <>
+      <BackButton href={id == null ? "/mitarbeiter" : `/mitarbeiter/${id}`} />
       {queryData.data && queryData.data.Name ? (
         <h1 className="text-center">{queryData.data.Name} bearbeiten</h1>
       ) : (
