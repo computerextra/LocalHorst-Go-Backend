@@ -73,7 +73,7 @@ export default function AnsprechpartnerForm({
     };
     await UpsertAnsprechpartner(params);
     queryClient.invalidateQueries({ queryKey: ["ap", id] });
-    navigate("/lieferanten");
+    navigate("/lieferanten/" + lid);
   };
 
   if (queryData.isPending) {

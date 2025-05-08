@@ -13,12 +13,12 @@ type Lieferant struct {
 }
 
 func (a *App) GetLieferanten() []Lieferant {
-	res, err := a.db.Lieferant.Query().All(a.ctx)
+	res, err := a.db.Lieferant.Query().Order(ent.Asc(lieferant.FieldFirma)).All(a.ctx)
 
 	var Lieferanten []Lieferant
 
 	for _, x := range res {
-		ap, err := x.QueryAnsprechpartner().All(a.ctx)
+		ap, err := x.QueryAnsprechpartner().Order(ent.Asc(ansprechpartner.FieldName)).All(a.ctx)
 		if err != nil {
 			continue
 		}
@@ -40,7 +40,7 @@ func (a *App) GetLieferant(id int) *Lieferant {
 	if err != nil {
 		return nil
 	}
-	ap, err := res.QueryAnsprechpartner().All(a.ctx)
+	ap, err := res.QueryAnsprechpartner().Order(ent.Asc(ansprechpartner.FieldName)).All(a.ctx)
 	if err != nil {
 		return nil
 	}
