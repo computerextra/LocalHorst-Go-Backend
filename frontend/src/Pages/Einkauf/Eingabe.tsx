@@ -73,10 +73,9 @@ export default function Eingabe() {
         return;
       }
     });
-    if (ma == undefined) {
-      if (einkauf?.data?.id == id) {
-        ma = einkauf.data;
-      }
+
+    if (einkauf?.data?.id == id) {
+      ma = einkauf.data;
     }
 
     if (ma == null) return;
