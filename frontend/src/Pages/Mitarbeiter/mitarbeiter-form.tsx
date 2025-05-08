@@ -1,5 +1,6 @@
 import { DeleteMitarbeiter, GetMitarbeiter, UpsertMitarbeiter } from "@/api";
 import { MitarbeiterParams } from "@/api/mitarbeiter";
+import { Login, Session } from "@/api/user";
 import BackButton from "@/components/BackButton";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -28,6 +29,7 @@ import { CalendarIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useLocalStorage } from "usehooks-ts";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -53,6 +55,10 @@ export default function MitarbeiterForm({ id }: { id?: number }) {
     queryFn: () => GetMitarbeiter(id ? id.toString() : undefined),
   });
   const navigate = useNavigate();
+
+  let session: Session | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [value, setValue, _removeValue] = useLocalStorage("session", session);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -115,6 +121,18 @@ export default function MitarbeiterForm({ id }: { id?: number }) {
     };
     await UpsertMitarbeiter(params);
     queryClient.invalidateQueries({ queryKey: ["mitarbeiter", id] });
+    if (value?.User.Mitarbeiter?.id == id) {
+      if (value?.User.User?.Mail && value.User.User.Password) {
+        const res = await Login(
+          value?.User.User?.Mail,
+          value?.User.User?.Password
+        );
+        const ses: Session = {
+          User: res,
+        };
+        setValue(ses);
+      }
+    }
     navigate("/mitarbeiter");
   };
 

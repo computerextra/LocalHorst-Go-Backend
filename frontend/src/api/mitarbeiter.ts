@@ -64,13 +64,9 @@ export const UpsertMitarbeiter = async (
 
 export const UpdateEinkauf = async (
   params: EinkaufParams,
-  ma: Mitarbeiter
+  id: number
 ): Promise<boolean> => {
-  console.log(params);
-  console.log(ma);
-  if (ma.id == null) return false;
-  console.log("Start API Call");
-  return await ApiUpdateEinkauf(params, ma.id);
+  return await ApiUpdateEinkauf(params, id);
 };
 
 export const UploadImage = async (id: number, nr: string): Promise<string> => {

@@ -53,7 +53,7 @@ export function GetUser(arg1:number):Promise<ent.User>;
 
 export function GetUsername():Promise<string>;
 
-export function Login(arg1:string,arg2:string):Promise<ent.User>;
+export function Login(arg1:string,arg2:string):Promise<main.UserWithMa>;
 
 export function SearchArchive(arg1:string):Promise<Array<main.Archive>>;
 

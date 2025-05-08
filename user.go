@@ -47,13 +47,27 @@ func (a *App) CreateUser(values UserParams) bool {
 	return true
 }
 
-func (a *App) Login(mail, password string) *ent.User {
+type UserWithMa struct {
+	User        *ent.User
+	Mitarbeiter *ent.Mitarbeiter
+}
+
+func (a *App) Login(mail, password string) *UserWithMa {
 	r, err := a.db.User.Query().Where(user.MailEQ(strings.ToLower(mail))).Only(a.ctx)
 	if err != nil {
 		return nil
 	}
 	if r.Password == password {
-		return r
+		ma, err := r.QueryMitarbeiter().Only(a.ctx)
+		if err != nil {
+			return nil
+		}
+
+		u := UserWithMa{
+			User:        r,
+			Mitarbeiter: ma,
+		}
+		return &u
 	}
 	return nil
 }

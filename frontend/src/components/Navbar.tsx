@@ -134,7 +134,7 @@ const Navbar = () => {
                   location.reload();
                 }}
               >
-                {value?.User.Name} Abmelden
+                {value?.User.User?.Name} Abmelden
               </Button>
             )}
             {(value == null || value.User == null) && (
