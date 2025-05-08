@@ -60,10 +60,6 @@ const Menu: MenuItem[] = [
     href: "/suche",
   },
   {
-    title: "Inventur",
-    href: "/inventur",
-  },
-  {
     title: "Werkstatt",
     href: "/werkstatt",
   },
