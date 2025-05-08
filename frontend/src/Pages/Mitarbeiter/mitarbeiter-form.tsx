@@ -22,7 +22,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
@@ -54,6 +54,29 @@ export default function MitarbeiterForm({ id }: { id?: number }) {
     queryKey: ["mitarbeiter", id],
     queryFn: () => GetMitarbeiter(id ? id.toString() : undefined),
   });
+  const mutation = useMutation({
+    mutationFn: (params: MitarbeiterParams) => UpsertMitarbeiter(params),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ["mitarbeiter", id] });
+      if (value?.User.Mitarbeiter?.id == id) {
+        if (value?.User.User?.Mail && value.User.User.Password) {
+          const res = await Login(
+            value?.User.User?.Mail,
+            value?.User.User?.Password
+          );
+          const ses: Session = {
+            User: res,
+          };
+          setValue(ses);
+        }
+      }
+      navigate("/mitarbeiter");
+    },
+    onError: (err) => {
+      alert(err);
+    },
+  });
+
   const navigate = useNavigate();
 
   let session: Session | undefined;
@@ -119,21 +142,7 @@ export default function MitarbeiterForm({ id }: { id?: number }) {
       Month: month ? month : 0,
       Year: year ? year : 0,
     };
-    await UpsertMitarbeiter(params);
-    queryClient.invalidateQueries({ queryKey: ["mitarbeiter", id] });
-    if (value?.User.Mitarbeiter?.id == id) {
-      if (value?.User.User?.Mail && value.User.User.Password) {
-        const res = await Login(
-          value?.User.User?.Mail,
-          value?.User.User?.Password
-        );
-        const ses: Session = {
-          User: res,
-        };
-        setValue(ses);
-      }
-    }
-    navigate("/mitarbeiter");
+    await mutation.mutateAsync(params);
   };
 
   if (queryData.isPending) {

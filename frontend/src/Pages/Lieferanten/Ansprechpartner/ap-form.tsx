@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -40,6 +40,17 @@ export default function AnsprechpartnerForm({
   const queryData = useQuery({
     queryKey: ["ap", id],
     queryFn: () => GetAnsprechpartner(id?.toString()),
+  });
+  const mutation = useMutation({
+    mutationFn: (params: AnsprechpartnerParams) =>
+      UpsertAnsprechpartner(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ap", id] });
+      navigate("/lieferanten/" + lid);
+    },
+    onError: (err) => {
+      alert(err);
+    },
   });
   const navigate = useNavigate();
 
@@ -71,9 +82,7 @@ export default function AnsprechpartnerForm({
       Telefon: values.Telefon ?? "",
       Name: values.Name,
     };
-    await UpsertAnsprechpartner(params);
-    queryClient.invalidateQueries({ queryKey: ["ap", id] });
-    navigate("/lieferanten/" + lid);
+    await mutation.mutateAsync(params);
   };
 
   if (queryData.isPending) {

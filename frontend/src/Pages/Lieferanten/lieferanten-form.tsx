@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -29,6 +29,17 @@ export default function LieferantenForm({ id }: { id?: number }) {
     queryKey: ["lieferant", id],
     queryFn: () => GetLieferant(id?.toString()),
   });
+  const upsertMutation = useMutation({
+    mutationFn: (params: LieferantenParams) => UpsertLieferant(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lieferant", id] });
+      navigate("/lieferanten");
+    },
+    onError: (err) => {
+      alert(err);
+    },
+  });
+
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,9 +67,7 @@ export default function LieferantenForm({ id }: { id?: number }) {
       Kundennummer: values.Kundennummer ?? "",
       Webseite: values.Webseite ?? "",
     };
-    await UpsertLieferant(params);
-    queryClient.invalidateQueries({ queryKey: ["lieferant", id] });
-    navigate("/lieferanten");
+    await upsertMutation.mutateAsync(params);
   };
 
   if (queryData.isPending) {

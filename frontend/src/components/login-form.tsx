@@ -9,11 +9,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { useLocalStorage } from "usehooks-ts";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+
+const formSchema = z.object({
+  mail: z.string().email(),
+  pass: z.string(),
+});
 
 export function LoginForm({
   className,
@@ -23,23 +38,29 @@ export function LoginForm({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_value, setValue, _removeValue] = useLocalStorage("session", session);
 
-  const [mail, setMail] = useState<string | undefined>(undefined);
-  const [pass, setPass] = useState<string | undefined>(undefined);
+  const mutation = useMutation({
+    mutationFn: ({ mail, pass }: { mail: string; pass: string }) =>
+      Login(mail, pass),
+    onSuccess: (data) => {
+      const ses: Session = {
+        User: data,
+      };
+      setValue(ses);
+      navigate("/");
+    },
+    onError: () => {
+      alert("Anmeldung fehlgeschlagen. Bitte überprüfe deine Anmeldedaten.");
+    },
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    if (!mail || !pass) {
-      return;
-    }
-    const user = await Login(mail, pass);
-    if (user == null) {
-      alert("Anmeldung fehlgeschlagen. Bitte überprüfe deine Anmeldedaten.");
-    }
-    const ses: Session = {
-      User: user,
-    };
-    setValue(ses);
-    navigate("/");
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    await mutation.mutateAsync(values);
   };
 
   return (
@@ -52,44 +73,56 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <div className="grid gap-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)}>
               <div className="grid gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    value={mail}
-                    onChange={(e) => setMail(e.target.value)}
-                    type="email"
-                    placeholder="max.muster@computer-extra.de"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Passwort</Label>
+                <div className="grid gap-6">
+                  <div className="grid gap-2">
+                    <FormField
+                      control={form.control}
+                      name="mail"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="max.muster@computer-extra.de"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    required
-                    value={pass}
-                    onChange={(e) => setPass(e.target.value)}
-                  />
+                  <div className="grid gap-2">
+                    <FormField
+                      control={form.control}
+                      name="pass"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Passwort</FormLabel>
+                          <FormControl>
+                            <Input type="password" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">
+                    Anmelden
+                  </Button>
                 </div>
-                <Button type="submit" className="w-full" onClick={handleSubmit}>
-                  Anmelden
-                </Button>
+                <div className="text-center text-sm">
+                  Du hast noch keinen Zugang?{" "}
+                  <Link to="/register" className="underline underline-offset-4">
+                    Registrieren
+                  </Link>
+                </div>
               </div>
-              <div className="text-center text-sm">
-                Du hast noch keinen Zugang?{" "}
-                <Link to="/register" className="underline underline-offset-4">
-                  Registrieren
-                </Link>
-              </div>
-            </div>
-          </form>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </div>
