@@ -24,6 +24,7 @@ import GeburtstagMitarbeiter from "./Pages/Mitarbeiter/Geburtstag";
 import NewMitarbeiter from "./Pages/Mitarbeiter/New";
 import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
 import Register from "./Pages/Register";
+import Werkstatt from "./Pages/Werkstatt/Werkstatt";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -59,8 +60,7 @@ createRoot(document.getElementById("root")!).render(
             </Route>
             <Route path="archiv" element={<Archiv />} />
             <Route path="suche" element={<Kunden />} />
-            <Route path="inventur" element={<>Inventur</>} />
-            <Route path="werkstatt" element={<>Werkstatt</>} />
+            <Route path="werkstatt" element={<Werkstatt />} />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

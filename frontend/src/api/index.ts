@@ -23,6 +23,7 @@ import {
   UpsertAnsprechpartner,
   DeleteAnsprechpartner,
 } from "./lieferanten";
+import { FindeKunde, SucheKunde } from "./kunden";
 
 export {
   GetAllGlobalMitarbeiter,
@@ -48,4 +49,6 @@ export {
   DeleteAnsprechpartner,
   GetArchivEntry,
   SearchArchiv,
+  FindeKunde,
+  SucheKunde,
 };
