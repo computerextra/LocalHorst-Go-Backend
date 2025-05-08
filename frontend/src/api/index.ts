@@ -1,3 +1,4 @@
+import { SearchArchiv, GetArchivEntry } from "./archiv";
 import { Login, CreateUser } from "./user";
 import {
   GetEinkaufsliste,
@@ -45,4 +46,6 @@ export {
   GetAnsprechpartner,
   UpsertAnsprechpartner,
   DeleteAnsprechpartner,
+  GetArchivEntry,
+  SearchArchiv,
 };

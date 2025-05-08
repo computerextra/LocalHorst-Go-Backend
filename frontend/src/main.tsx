@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout";
+import Archiv from "./Pages/Archiv/archiv";
 import Abrechnung from "./Pages/Einkauf/Abrechnung";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Liste from "./Pages/Einkauf/Liste";
@@ -55,7 +56,7 @@ createRoot(document.getElementById("root")!).render(
                 <Route path=":aid" element={<EditAp />} />
               </Route>
             </Route>
-            <Route path="archiv" element={<>Archiv</>} />
+            <Route path="archiv" element={<Archiv />} />
             <Route path="suche" element={<>Kundensuche</>} />
             <Route path="inventur" element={<>Inventur</>} />
             <Route path="werkstatt" element={<>Werkstatt</>} />
