@@ -10,6 +10,7 @@ import Abrechnung from "./Pages/Einkauf/Abrechnung";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Liste from "./Pages/Einkauf/Liste";
 import Home from "./Pages/Home";
+import Kunden from "./Pages/Kunden/Kunden";
 import EditAp from "./Pages/Lieferanten/Ansprechpartner/Edit";
 import NeuerAp from "./Pages/Lieferanten/Ansprechpartner/New";
 import LieferantDetail from "./Pages/Lieferanten/Detail";
@@ -57,7 +58,7 @@ createRoot(document.getElementById("root")!).render(
               </Route>
             </Route>
             <Route path="archiv" element={<Archiv />} />
-            <Route path="suche" element={<>Kundensuche</>} />
+            <Route path="suche" element={<Kunden />} />
             <Route path="inventur" element={<>Inventur</>} />
             <Route path="werkstatt" element={<>Werkstatt</>} />
           </Route>
