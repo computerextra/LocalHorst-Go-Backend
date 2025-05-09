@@ -8,7 +8,7 @@ import {
   GetUser as ApiGetUser,
 } from "../../wailsjs/go/main/App";
 
-type User = main.UserWithMa;
+export type User = main.UserWithMa;
 
 export type Session = {
   User: User;
@@ -36,15 +36,20 @@ export const CreateUser = async (
 };
 
 export const ChangePassword = async (
-  user: User,
+  user: Session,
   newPass: string
-): Promise<boolean> => {
-  if (user == null) return false;
-  if (user.User == null) return false;
-  if (user.User.id == null) return false;
-  if (user.User.Password == null) return false;
+): Promise<string> => {
+  if (user == null) return "Keine Session! Bitte anmelden";
+  if (user.User == null) return "Keine Session! Bitte anmelden";
+  if (user.User.User == null) return "Keine Session! Bitte anmelden";
+  if (user.User.User.id == null) return "Keine Session! Bitte anmelden";
+  if (user.User.User.Password == null) return "Keine Session! Bitte anmelden";
 
-  return await ApiChangePassword(user.User.id, user.User.Password, newPass);
+  return await ApiChangePassword(
+    user.User.User.id,
+    user.User.User.Password,
+    newPass
+  );
 };
 
 export const GetUser = async (id: number): Promise<User | undefined> => {

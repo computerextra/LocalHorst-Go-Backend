@@ -72,20 +72,20 @@ func (a *App) Login(mail, password string) *UserWithMa {
 	return nil
 }
 
-func (a *App) ChangePassword(id int, password, newPassword string) bool {
-	r, err := a.db.User.Query().Where(user.ID(id)).Only(a.ctx)
+func (a *App) ChangePassword(id int, password, newPassword string) string {
+	r, err := a.db.User.Query().Where(user.IDEQ(id)).Only(a.ctx)
 	if err != nil {
-		return false
+		return "Benutzer nicht gefunden"
 	}
 	if r.Password == password {
 		err := r.Update().SetPassword(newPassword).Exec(a.ctx)
 		if err != nil {
-			return false
+			return "Passwörter passen nicht zusammen."
 		} else {
-			return true
+			return "Passwort erfolgreich geändert."
 		}
 	}
-	return false
+	return "Server Fehler!"
 }
 
 func (a *App) DeactivateUser(id int) bool {
