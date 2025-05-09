@@ -120,8 +120,11 @@ export default function Eingabe() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Paypal: false,
-      Abo: false,
+      Paypal: value?.User.Mitarbeiter?.Paypal ?? false,
+      Abo: value?.User.Mitarbeiter?.Abonniert ?? false,
+      Einkauf: value?.User.Mitarbeiter?.Dinge,
+      Geld: value?.User.Mitarbeiter?.Geld,
+      Pfand: value?.User.Mitarbeiter?.Pfand,
     },
   });
 
@@ -131,37 +134,30 @@ export default function Eingabe() {
   const [Bild3, setBild3] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    console.log("Changed id", id);
     if (id == undefined) return;
-    console.log("id not undefined");
     // Find Ma
     if (einkauf.data?.id == id) {
-      console.log("found data");
-      form.reset({
-        Abo: einkauf.data.Abonniert ?? false,
-        Einkauf: einkauf.data.Dinge,
-        Geld: einkauf.data.Geld,
-        Paypal: einkauf.data.Paypal ?? false,
-        Pfand: einkauf.data.Pfand,
-      });
+      form.reset();
+      form.setValue("Abo", einkauf.data.Abonniert ?? false);
+      form.setValue("Einkauf", einkauf.data.Dinge);
+      form.setValue("Geld", einkauf.data.Geld);
+      form.setValue("Paypal", einkauf.data.Paypal ?? false);
+      form.setValue("Pfand", einkauf.data.Pfand);
+
       setBild1(undefined);
       setBild2(undefined);
       setBild3(undefined);
 
       return;
     }
-    console.log("Not a mitarbeiter");
     const found = global.data?.find((x) => x.id === id);
-    console.log(found);
     if (found == null) return;
-    console.log("set daata");
-    form.reset({
-      Abo: found.Abonniert ?? false,
-      Einkauf: found.Dinge,
-      Geld: found.Geld,
-      Paypal: found.Paypal ?? false,
-      Pfand: found.Pfand,
-    });
+    form.reset();
+    form.setValue("Abo", found.Abonniert ?? false);
+    form.setValue("Einkauf", found.Dinge);
+    form.setValue("Geld", found.Geld);
+    form.setValue("Paypal", found.Paypal ?? false);
+    form.setValue("Pfand", found.Pfand);
     setBild1(undefined);
     setBild2(undefined);
     setBild3(undefined);

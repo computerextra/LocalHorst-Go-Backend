@@ -30,15 +30,16 @@ type Einkauf struct {
 
 func (a *App) GetEinkaufsListe() []Einkauf {
 	var EinkaufsListe []Einkauf
-	now := time.Now()
-	yesterday := now.Add(time.Duration(-24) * time.Hour)
+	loc, _ := time.LoadLocation("Europe/Berlin")
+	today := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, loc)
+	tomorrow := today.Add(time.Duration(24) * time.Hour)
 	res, err := a.db.Mitarbeiter.Query().
 		Where(
 			mitarbeiter.Or(
 				mitarbeiter.AbonniertEQ(true),
 				mitarbeiter.And(
-					mitarbeiter.AbgeschicktLTE(now),
-					mitarbeiter.AbgeschicktGTE(yesterday),
+					mitarbeiter.AbgeschicktLT(tomorrow),
+					mitarbeiter.AbgeschicktGTE(today),
 				),
 			),
 		).All(a.ctx)
