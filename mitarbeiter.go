@@ -3,7 +3,6 @@ package main
 import (
 	"golang-backend/ent"
 	"golang-backend/ent/mitarbeiter"
-	"log"
 	"sort"
 	"strings"
 	"time"
@@ -141,7 +140,7 @@ func (a *App) UpsertMitarbeiter(params MitarbeiterParams) bool {
 	var Geburtstag time.Time
 	location, err := time.LoadLocation("Europe/Berlin")
 	if err != nil {
-		log.Fatal(err)
+		return false
 	}
 	if params.Day > 0 && params.Month > 0 && params.Year > 0 {
 		Geburtstag = time.Date(params.Year, time.Month(params.Month), params.Day, 0, 0, 0, 0, location)
@@ -169,7 +168,7 @@ func (a *App) UpsertMitarbeiter(params MitarbeiterParams) bool {
 		Exec(a.ctx)
 
 	if err != nil {
-		log.Fatal(err)
+		return false
 	}
 
 	// _, err := a.db.UpsertMitarbeiter(params, id)

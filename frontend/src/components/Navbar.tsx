@@ -1,4 +1,4 @@
-import { Session } from "@/api/user";
+import { Session, Version } from "@/api/user";
 import {
   Accordion,
   AccordionContent,
@@ -22,7 +22,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useQuery } from "@tanstack/react-query";
 import { MenuIcon } from "lucide-react";
+import { useEffect } from "react";
 import { NavLink } from "react-router";
 import { useLocalStorage } from "usehooks-ts";
 import { ModeToggle } from "./mode-toggle";
@@ -69,6 +71,28 @@ const Navbar = () => {
   let session: Session | undefined;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, _setValue, removeValue] = useLocalStorage("session", session);
+
+  const query = useQuery({
+    queryKey: ["version"],
+    queryFn: Version,
+    refetchInterval: 1000 * 60 * 60 * 1, // Every Hour
+    refetchOnReconnect: true,
+    refetchOnMount: true,
+  });
+
+  useEffect(() => {
+    if (query.isLoading) return;
+    if (query.isError) return;
+    if (!query.data) {
+      alert("Es liegt ein Update der App vor, bitte installieren!");
+      location.reload();
+    }
+  }, [query]);
+
+  if (query.isPending) return <>Loading...</>;
+
+  if (query.isError) return <>Error: {query.error.message}</>;
+
   return (
     <section className="py-4">
       <div className="container">

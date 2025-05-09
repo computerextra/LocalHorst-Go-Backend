@@ -60,6 +60,19 @@ func (a *App) startup(ctx context.Context) {
 	a.db = client
 }
 
+func (a App) CheckVersion() bool {
+	version, err := a.db.Version.Query().First(a.ctx)
+	if err != nil {
+		return true
+	}
+
+	if version.CurrentVersion != CurrentVersion {
+		return false
+	}
+
+	return true
+}
+
 func (a App) GetUsername() string {
 	u, err := user.Current()
 	if err != nil {

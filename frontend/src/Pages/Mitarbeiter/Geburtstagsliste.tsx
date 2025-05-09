@@ -41,6 +41,9 @@ export default function Geburtstagsliste() {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["geburtstagsliste"],
     queryFn: GetGeburtstagsliste,
+    refetchInterval: 1000 * 60 * 60 * 1, // Every Hour
+    refetchOnReconnect: true,
+    refetchOnMount: true,
   });
 
   if (isPending) {

@@ -6,12 +6,17 @@ import {
   CreateUser as ApiCreateUser,
   ChangePassword as ApiChangePassword,
   GetUser as ApiGetUser,
+  CheckVersion,
 } from "../../wailsjs/go/main/App";
 
 export type User = main.UserWithMa;
 
 export type Session = {
   User: User;
+};
+
+export const Version = async (): Promise<boolean> => {
+  return await CheckVersion();
 };
 
 export const Login = async (mail: string, pass: string): Promise<User> => {
@@ -31,8 +36,12 @@ export const CreateUser = async (
   user: main.UserParams
 ): Promise<User | undefined> => {
   const res = await ApiCreateUser(user);
-  if (!res) return undefined;
-  return await Login(user.Mail, user.Password);
+  if (res === "Benutzer erfolgreich angelegt.") {
+    return await Login(user.Mail, user.Password);
+  } else {
+    alert(res);
+    return undefined;
+  }
 };
 
 export const ChangePassword = async (

@@ -18,6 +18,7 @@ import (
 	"golang-backend/ent/mitarbeiter"
 	"golang-backend/ent/team"
 	"golang-backend/ent/user"
+	"golang-backend/ent/version"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
@@ -44,6 +45,8 @@ type Client struct {
 	Team *TeamClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
+	// Version is the client for interacting with the Version builders.
+	Version *VersionClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -62,6 +65,7 @@ func (c *Client) init() {
 	c.Mitarbeiter = NewMitarbeiterClient(c.config)
 	c.Team = NewTeamClient(c.config)
 	c.User = NewUserClient(c.config)
+	c.Version = NewVersionClient(c.config)
 }
 
 type (
@@ -161,6 +165,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Mitarbeiter:     NewMitarbeiterClient(cfg),
 		Team:            NewTeamClient(cfg),
 		User:            NewUserClient(cfg),
+		Version:         NewVersionClient(cfg),
 	}, nil
 }
 
@@ -187,6 +192,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Mitarbeiter:     NewMitarbeiterClient(cfg),
 		Team:            NewTeamClient(cfg),
 		User:            NewUserClient(cfg),
+		Version:         NewVersionClient(cfg),
 	}, nil
 }
 
@@ -217,7 +223,7 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.Ansprechpartner, c.Artikel, c.Inventur, c.Lieferant, c.Mitarbeiter, c.Team,
-		c.User,
+		c.User, c.Version,
 	} {
 		n.Use(hooks...)
 	}
@@ -228,7 +234,7 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.Ansprechpartner, c.Artikel, c.Inventur, c.Lieferant, c.Mitarbeiter, c.Team,
-		c.User,
+		c.User, c.Version,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -251,6 +257,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Team.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
+	case *VersionMutation:
+		return c.Version.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
@@ -1315,14 +1323,147 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 	}
 }
 
+// VersionClient is a client for the Version schema.
+type VersionClient struct {
+	config
+}
+
+// NewVersionClient returns a client for the Version from the given config.
+func NewVersionClient(c config) *VersionClient {
+	return &VersionClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `version.Hooks(f(g(h())))`.
+func (c *VersionClient) Use(hooks ...Hook) {
+	c.hooks.Version = append(c.hooks.Version, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `version.Intercept(f(g(h())))`.
+func (c *VersionClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Version = append(c.inters.Version, interceptors...)
+}
+
+// Create returns a builder for creating a Version entity.
+func (c *VersionClient) Create() *VersionCreate {
+	mutation := newVersionMutation(c.config, OpCreate)
+	return &VersionCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Version entities.
+func (c *VersionClient) CreateBulk(builders ...*VersionCreate) *VersionCreateBulk {
+	return &VersionCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *VersionClient) MapCreateBulk(slice any, setFunc func(*VersionCreate, int)) *VersionCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &VersionCreateBulk{err: fmt.Errorf("calling to VersionClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*VersionCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &VersionCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Version.
+func (c *VersionClient) Update() *VersionUpdate {
+	mutation := newVersionMutation(c.config, OpUpdate)
+	return &VersionUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *VersionClient) UpdateOne(v *Version) *VersionUpdateOne {
+	mutation := newVersionMutation(c.config, OpUpdateOne, withVersion(v))
+	return &VersionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *VersionClient) UpdateOneID(id int) *VersionUpdateOne {
+	mutation := newVersionMutation(c.config, OpUpdateOne, withVersionID(id))
+	return &VersionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Version.
+func (c *VersionClient) Delete() *VersionDelete {
+	mutation := newVersionMutation(c.config, OpDelete)
+	return &VersionDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *VersionClient) DeleteOne(v *Version) *VersionDeleteOne {
+	return c.DeleteOneID(v.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *VersionClient) DeleteOneID(id int) *VersionDeleteOne {
+	builder := c.Delete().Where(version.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &VersionDeleteOne{builder}
+}
+
+// Query returns a query builder for Version.
+func (c *VersionClient) Query() *VersionQuery {
+	return &VersionQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeVersion},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Version entity by its id.
+func (c *VersionClient) Get(ctx context.Context, id int) (*Version, error) {
+	return c.Query().Where(version.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *VersionClient) GetX(ctx context.Context, id int) *Version {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *VersionClient) Hooks() []Hook {
+	return c.hooks.Version
+}
+
+// Interceptors returns the client interceptors.
+func (c *VersionClient) Interceptors() []Interceptor {
+	return c.inters.Version
+}
+
+func (c *VersionClient) mutate(ctx context.Context, m *VersionMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&VersionCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&VersionUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&VersionUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&VersionDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Version mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Ansprechpartner, Artikel, Inventur, Lieferant, Mitarbeiter, Team,
-		User []ent.Hook
+		Ansprechpartner, Artikel, Inventur, Lieferant, Mitarbeiter, Team, User,
+		Version []ent.Hook
 	}
 	inters struct {
-		Ansprechpartner, Artikel, Inventur, Lieferant, Mitarbeiter, Team,
-		User []ent.Interceptor
+		Ansprechpartner, Artikel, Inventur, Lieferant, Mitarbeiter, Team, User,
+		Version []ent.Interceptor
 	}
 )

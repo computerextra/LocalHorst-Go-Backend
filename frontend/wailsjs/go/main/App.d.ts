@@ -7,7 +7,9 @@ export function ActivateUser(arg1:number):Promise<boolean>;
 
 export function ChangePassword(arg1:number,arg2:string,arg3:string):Promise<string>;
 
-export function CreateUser(arg1:main.UserParams):Promise<boolean>;
+export function CheckVersion():Promise<boolean>;
+
+export function CreateUser(arg1:main.UserParams):Promise<string>;
 
 export function DeactivateUser(arg1:number):Promise<boolean>;
 

@@ -4,7 +4,6 @@ import (
 	"golang-backend/ent"
 	"golang-backend/ent/ansprechpartner"
 	"golang-backend/ent/lieferant"
-	"log"
 )
 
 type Lieferant struct {
@@ -104,7 +103,7 @@ func (a *App) UpsertAnsprechpartner(params AnsprechpartnerParams) bool {
 		Exec(a.ctx)
 
 	if err != nil {
-		log.Fatal(err)
+		return false
 	}
 	return err == nil
 }

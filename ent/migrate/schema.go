@@ -158,6 +158,17 @@ var (
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
 	}
+	// VersionsColumns holds the columns for the "versions" table.
+	VersionsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "current_version", Type: field.TypeFloat64, Unique: true},
+	}
+	// VersionsTable holds the schema information for the "versions" table.
+	VersionsTable = &schema.Table{
+		Name:       "versions",
+		Columns:    VersionsColumns,
+		PrimaryKey: []*schema.Column{VersionsColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AnsprechpartnersTable,
@@ -167,6 +178,7 @@ var (
 		MitarbeitersTable,
 		TeamsTable,
 		UsersTable,
+		VersionsTable,
 	}
 )
 

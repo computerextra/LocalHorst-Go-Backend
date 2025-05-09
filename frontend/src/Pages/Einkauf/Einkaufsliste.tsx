@@ -13,6 +13,9 @@ export default function Einkaufsliste() {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["einkaufsliste"],
     queryFn: GetEinkaufsliste,
+    refetchInterval: 1000 * 60 * 0.5, // Every 30 seconds
+    refetchOnReconnect: true,
+    refetchOnMount: true,
   });
 
   if (isPending) {

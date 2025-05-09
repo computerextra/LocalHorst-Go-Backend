@@ -26,3 +26,6 @@ type Team func(*sql.Selector)
 
 // User is the predicate function for user builders.
 type User func(*sql.Selector)
+
+// Version is the predicate function for version builders.
+type Version func(*sql.Selector)

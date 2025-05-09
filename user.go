@@ -5,7 +5,6 @@ import (
 	"golang-backend/ent"
 	"golang-backend/ent/mitarbeiter"
 	"golang-backend/ent/user"
-	"log"
 	"strings"
 )
 
@@ -23,14 +22,12 @@ type UserParams struct {
 	Mail     string
 }
 
-func (a *App) CreateUser(values UserParams) bool {
+func (a *App) CreateUser(values UserParams) string {
 	fmt.Println(values)
 
 	r, err := a.db.Mitarbeiter.Query().Where(mitarbeiter.EmailContains(strings.ToLower(values.Mail))).Only(a.ctx)
-
 	if err != nil {
-		log.Fatal(err)
-		return false
+		return fmt.Sprintf("Fehler: %s", err.Error())
 	}
 	err = a.db.User.Create().
 		SetActive(true).
@@ -41,10 +38,9 @@ func (a *App) CreateUser(values UserParams) bool {
 		Exec(a.ctx)
 
 	if err != nil {
-		log.Fatal(err)
-		return false
+		return fmt.Sprintf("Fehler: %s", err.Error())
 	}
-	return true
+	return "Benutzer erfolgreich angelegt."
 }
 
 type UserWithMa struct {

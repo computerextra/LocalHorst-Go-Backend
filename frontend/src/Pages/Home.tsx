@@ -24,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { UserCheck } from "lucide-react";
+import { Suspense } from "react";
 import { useForm } from "react-hook-form";
 import { useReadLocalStorage } from "usehooks-ts";
 import { z } from "zod";
@@ -89,7 +90,7 @@ export default function Home() {
   return (
     <>
       {session?.User && (
-        <Alert className="mb-2">
+        <Alert className="mb-2 print:hidden">
           <UserCheck className="h-4 w-4" />
           <AlertTitle>
             <div className="flex flex-row justify-between">
@@ -194,12 +195,16 @@ export default function Home() {
       <h1 className="text-center print:hidden">Victor</h1>
       <Separator className="my-4 print:hidden" />
       <h2 className="print:hidden">
-        Einkaufsliste vom {new Date().toLocaleDateString()}
+        <Suspense fallback="Bin Laden ...">
+          Einkaufsliste vom {new Date().toLocaleDateString()}
+        </Suspense>
       </h2>
       <Einkaufsliste />
       <Separator className="my-4 print:hidden" />
       <div className="print:hidden">
-        <h2>Geburtstagsliste</h2>
+        <Suspense fallback="Bin Laden ...">
+          <h2>Geburtstagsliste</h2>
+        </Suspense>
         <Geburtstagsliste />
       </div>
     </>
