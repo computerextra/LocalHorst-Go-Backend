@@ -10,21 +10,11 @@ import { DataTable } from "../../components/data-table";
 import { Button } from "../../components/ui/button";
 
 export default function Einkaufsliste() {
-  const { isPending, isError, data, error } = useQuery({
+  const query = useQuery({
     queryKey: ["einkaufsliste"],
     queryFn: GetEinkaufsliste,
     refetchInterval: 1000 * 60 * 0.5, // Every 30 seconds
-    refetchOnReconnect: true,
-    refetchOnMount: true,
   });
-
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
 
   const columns: ColumnDef<Einkauf>[] = [
     {
@@ -138,14 +128,14 @@ export default function Einkaufsliste() {
           <NavLink to="/einkauf/rechnung">Abrechnung</NavLink>
         </Button>
       </div>
-      {data && (
+      {query.data && (
         <div className="print:hidden mt-5">
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={query.data} />
         </div>
       )}
-      {data &&
-        data.length > 0 &&
-        data.map((item) => (
+      {query.data &&
+        query.data.length > 0 &&
+        query.data.map((item) => (
           <React.Fragment key={item.id}>
             <div className="hidden print:block my-4 text-xs">
               {item.Name} <br />

@@ -195,17 +195,17 @@ export default function Home() {
       <h1 className="text-center print:hidden">Victor</h1>
       <Separator className="my-4 print:hidden" />
       <h2 className="print:hidden">
-        <Suspense fallback="Bin Laden ...">
-          Einkaufsliste vom {new Date().toLocaleDateString()}
-        </Suspense>
+        Einkaufsliste vom {new Date().toLocaleDateString()}
       </h2>
-      <Einkaufsliste />
+      <Suspense fallback="Bin Laden ...">
+        <Einkaufsliste />
+      </Suspense>
       <Separator className="my-4 print:hidden" />
       <div className="print:hidden">
+        <h2>Geburtstagsliste</h2>
         <Suspense fallback="Bin Laden ...">
-          <h2>Geburtstagsliste</h2>
+          <Geburtstagsliste />
         </Suspense>
-        <Geburtstagsliste />
       </div>
     </>
   );

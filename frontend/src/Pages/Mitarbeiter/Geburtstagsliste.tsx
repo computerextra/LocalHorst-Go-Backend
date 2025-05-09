@@ -38,42 +38,36 @@ const columns: ColumnDef<Geburtstag>[] = [
 ];
 
 export default function Geburtstagsliste() {
-  const { isPending, isError, data, error } = useQuery({
+  const query = useQuery({
     queryKey: ["geburtstagsliste"],
     queryFn: GetGeburtstagsliste,
-    refetchInterval: 1000 * 60 * 60 * 1, // Every Hour
-    refetchOnReconnect: true,
-    refetchOnMount: true,
+    refetchInterval: 1000 * 60 * 60 * 24, // Every day
   });
-
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
 
   return (
     <div className="mb-5">
-      {data.Heute?.length > 0 &&
-        data.Heute.map((x) => (
-          <Alert variant="destructive" className="my-4" key={x.Name}>
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>{x.Name}</AlertTitle>
-            <AlertDescription>Hat Heute Geburtstag!</AlertDescription>
-          </Alert>
-        ))}
-      {data.Vergangen && (
+      {query.data && (
         <>
-          <h2 className="my-4">Vergangene Geburtstage</h2>
-          <DataTable columns={columns} data={data.Vergangen} />
-        </>
-      )}
-      {data.Zukunft && (
-        <>
-          <h2 className="my-4">Zukünftige Geburtstage</h2>
-          <DataTable columns={columns} data={data.Zukunft} />
+          {query.data.Heute?.length > 0 &&
+            query.data.Heute.map((x) => (
+              <Alert variant="destructive" className="my-4" key={x.Name}>
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>{x.Name}</AlertTitle>
+                <AlertDescription>Hat Heute Geburtstag!</AlertDescription>
+              </Alert>
+            ))}
+          {query.data.Vergangen && (
+            <>
+              <h2 className="my-4">Vergangene Geburtstage</h2>
+              <DataTable columns={columns} data={query.data.Vergangen} />
+            </>
+          )}
+          {query.data.Zukunft && (
+            <>
+              <h2 className="my-4">Zukünftige Geburtstage</h2>
+              <DataTable columns={columns} data={query.data.Zukunft} />
+            </>
+          )}
         </>
       )}
     </div>

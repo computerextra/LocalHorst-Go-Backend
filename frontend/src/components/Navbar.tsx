@@ -76,8 +76,6 @@ const Navbar = () => {
     queryKey: ["version"],
     queryFn: Version,
     refetchInterval: 1000 * 60 * 60 * 1, // Every Hour
-    refetchOnReconnect: true,
-    refetchOnMount: true,
   });
 
   useEffect(() => {
@@ -88,10 +86,6 @@ const Navbar = () => {
       location.reload();
     }
   }, [query]);
-
-  if (query.isPending) return <>Loading...</>;
-
-  if (query.isError) return <>Error: {query.error.message}</>;
 
   return (
     <section className="py-4">
